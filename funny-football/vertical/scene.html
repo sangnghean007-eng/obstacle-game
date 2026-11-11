@@ -227,7 +227,7 @@ function dog(x, y, t, rot) {
 // ---------- caricature characters ----------
 // Neymar Jr. caricature: long face + pointy chin, bleached "spaghetti" hair with shaved sides,
 // stubble + thin mustache, diamond stud, neck tattoo, yellow #10 with green trim, blue shorts.
-const NEYMAR = { col: '#ffdf00', col2: '#0a8f3c', num: '10', hair: 'noodle', R: 64, bw: 40, skin: '#d9a47a', shorts: '#1e40af', sock: '#ffffff', longFace: 1.22, stubble: true, thinStache: true, earring: true, tattoo: true, collar: '#0a8f3c', bigTeeth: true, name: 'NEYMAR JR' };
+const NEYMAR = { col: '#ffdf00', col2: '#0a8f3c', num: '10', hair: 'noodle', R: 64, bw: 40, skin: '#d9a47a', shorts: '#1e40af', sock: '#ffffff', longFace: 1.22, stubble: true, thinStache: true, earring: true, tattoo: true, collar: '#0a8f3c', bigTeeth: true, name: 'NEYMAR JR', detailed: true, R: 70 };
 const LAYUN = { col: '#0b7a3e', col2: '#ffffff', num: '', hair: 'slick', R: 52, bw: 52, skin: '#c99064', shorts: '#ffffff', sock: '#c1121f', fullBeard: true, collar: '#c1121f' };
 const KID = { col: '#e63946', col2: '#fff', num: '', hair: 'mop', R: 52, bw: 40, skin: '#ffdbac', shorts: '#1e3a8a', sock: '#fff' };
 const GRANNY = { col: '#a855f7', col2: '#fff', num: '', hair: 'bun', R: 50, bw: 54, skin: '#f1c27d', shorts: '#a855f7', pants: '#6b21a8', glasses: true };
@@ -283,22 +283,156 @@ function guy(x, y, base, o = {}) {
     if (o.arms === 'mic' && side > 0) { limb(hx, hy, hx + 26, hy - 30, '#333', 6); ell(hx + 32, hy - 38, 14, 14, '#888', DARK, 4); }
   };
   drawArm(-1);
-  const LF = o.longFace || 1.04;
-  const hy = top - R * LF + 10;
-  limb(0, top + 2, 0, hy + R * 0.6, o.skin, 16);
-  if (o.tattoo) { ctx.fillStyle = 'rgba(30,30,60,.5)'; ctx.font = `900 10px ${F}`; ctx.fillText('✦', -6, top - 6); }
-  ell(-R * 0.9, hy + 6, 12, 15, o.skin);
-  if (o.earring) { ell(-R * 0.92, hy + 22, 5, 5, '#e8f6ff', DARK, 2); sparkle(-R * 0.92, hy + 22, 9, t * 3, '#fff'); }
-  hair(o, R, hy, 'back', t, LF);
-  // head (long face with pointy chin for Neymar)
-  ctx.beginPath(); ctx.ellipse(0, hy, R, R * LF, 0, 0, TAU);
-  if (o.longFace) { ctx.moveTo(-R * 0.45, hy + R * LF * 0.85); ctx.quadraticCurveTo(R * 0.15, hy + R * LF * 1.25, R * 0.5, hy + R * LF * 0.85); }
-  ctx.fillStyle = o.skin; ctx.fill(); ctx.lineWidth = 4; ctx.strokeStyle = DARK; ctx.stroke();
-  if (o.longFace) { ctx.beginPath(); ctx.ellipse(0, hy, R - 2, R * LF - 2, 0, 0, TAU); ctx.fillStyle = o.skin; ctx.fill(); }
-  hair(o, R, hy, 'front', t, LF);
-  face(o, R, hy, t, LF);
+  if (o.detailed) {
+    const sc = R / 100, hy = top - 150 * sc;
+    limb(-8, top + 4, -8, hy + 120 * sc, o.skin, 22 * sc + 6); limb(8, top + 4, 8, hy + 120 * sc, o.skin, 22 * sc + 6);
+    if (o.tattoo) { ctx.strokeStyle = 'rgba(30,30,70,.55)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(10, top - 14, 6, 0, TAU); ctx.moveTo(-14, top - 8); ctx.lineTo(-4, top - 18); ctx.stroke(); }
+    ctx.save(); ctx.translate(0, hy); ctx.scale(sc, sc); neymarHead(o, t); ctx.restore();
+  } else {
+    const LF = o.longFace || 1.04;
+    const hy = top - R * LF + 10;
+    limb(0, top + 2, 0, hy + R * 0.6, o.skin, 16);
+    if (o.tattoo) { ctx.fillStyle = 'rgba(30,30,60,.5)'; ctx.font = `900 10px ${F}`; ctx.fillText('✦', -6, top - 6); }
+    ell(-R * 0.9, hy + 6, 12, 15, o.skin);
+    if (o.earring) { ell(-R * 0.92, hy + 22, 5, 5, '#e8f6ff', DARK, 2); sparkle(-R * 0.92, hy + 22, 9, t * 3, '#fff'); }
+    hair(o, R, hy, 'back', t, LF);
+    // head (long face with pointy chin for Neymar)
+    ctx.beginPath(); ctx.ellipse(0, hy, R, R * LF, 0, 0, TAU);
+    if (o.longFace) { ctx.moveTo(-R * 0.45, hy + R * LF * 0.85); ctx.quadraticCurveTo(R * 0.15, hy + R * LF * 1.25, R * 0.5, hy + R * LF * 0.85); }
+    ctx.fillStyle = o.skin; ctx.fill(); ctx.lineWidth = 4; ctx.strokeStyle = DARK; ctx.stroke();
+    if (o.longFace) { ctx.beginPath(); ctx.ellipse(0, hy, R - 2, R * LF - 2, 0, 0, TAU); ctx.fillStyle = o.skin; ctx.fill(); }
+    hair(o, R, hy, 'front', t, LF);
+    face(o, R, hy, t, LF);
+  }
   drawArm(1);
   ctx.restore();
+}
+
+// ---------- detailed Neymar caricature head (unit space: head half-width = 100) ----------
+const NS = { skin: '#d6a27a', shade: 'rgba(120,70,40,.22)', hair: '#f6d873', root: '#7a5a2a', dark: '#24160d', beard: 'rgba(36,22,12,.62)' };
+function headPath() {
+  ctx.beginPath(); ctx.moveTo(0, -128);
+  ctx.bezierCurveTo(62, -128, 98, -96, 100, -42);
+  ctx.bezierCurveTo(103, 0, 98, 32, 88, 62);
+  ctx.bezierCurveTo(78, 96, 52, 124, 26, 137);
+  ctx.bezierCurveTo(12, 142, -12, 142, -26, 137);
+  ctx.bezierCurveTo(-52, 124, -78, 96, -88, 62);
+  ctx.bezierCurveTo(-98, 32, -103, 0, -100, -42);
+  ctx.bezierCurveTo(-98, -96, -62, -128, 0, -128); ctx.closePath();
+}
+function noodleHair(t, layer) {
+  const R2 = rng(91);
+  const strand = (sx, sy, len, lean, ph, amp, col, lw) => {
+    ctx.beginPath(); ctx.moveTo(sx, sy);
+    for (let j = 1; j <= 24; j++) { const k = j / 24; ctx.lineTo(sx + lean * k + Math.sin(k * 20 + ph + t * 3) * amp, sy - k * len + Math.cos(k * 20 + ph) * amp * 0.8); }
+    ctx.strokeStyle = col; ctx.lineWidth = lw; ctx.stroke();
+  };
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  if (layer === 'back') {
+    // compact, dense bleached curly "spaghetti" mop with dark roots
+    const S = []; for (let i = 0; i < 70; i++) { const sx = lerp(-74, 74, R2()); S.push([sx, -92 - R2() * 18 + Math.abs(sx) * 0.25, 55 + R2() * 55 - Math.abs(sx) * 0.35, sx * 0.35 + (R2() - 0.5) * 30, R2() * 6, 5 + R2() * 4, R2()]); }
+    for (const q of S) strand(q[0], q[1], q[2], q[3], q[4], q[5], 'rgba(70,48,16,.55)', 10);
+    for (const q of S) strand(q[0], q[1], q[2], q[3], q[4], q[5], q[6] < .25 ? '#fff2b8' : q[6] < .5 ? '#e7bf55' : NS.hair, 6);
+  } else {
+    ctx.save(); headPath(); ctx.clip();
+    for (const d of [-1, 1]) { // shaved skin-fade sides
+      const g = ctx.createLinearGradient(0, -120, 0, 20);
+      g.addColorStop(0, 'rgba(36,22,12,.85)'); g.addColorStop(1, 'rgba(36,22,12,0)');
+      ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(d * 50, -130); ctx.lineTo(d * 110, -130); ctx.lineTo(d * 110, 10); ctx.lineTo(d * 92, 10); ctx.quadraticCurveTo(d * 80, -60, d * 52, -92); ctx.closePath(); ctx.fill();
+    }
+    ctx.restore();
+    // curls spilling over the hairline (dark roots underneath)
+    ctx.fillStyle = 'rgba(70,48,16,.85)'; ctx.beginPath(); ctx.ellipse(0, -104, 56, 16, 0, Math.PI, TAU); ctx.fill();
+    for (let i = 0; i < 26; i++) { const sx = lerp(-60, 60, R2()); const q = [sx, -96 + Math.abs(sx) * 0.15, 30 + R2() * 25, sx * 0.3, R2() * 6, 5, R2()]; strand(...q.slice(0, 6), 'rgba(70,48,16,.55)', 10); strand(...q.slice(0, 6), q[6] < .3 ? '#fff2b8' : NS.hair, 6); }
+  }
+}
+function neymarHead(o, t) {
+  const f = o.face || 'smug';
+  const grin = f === 'smug' || f === 'happy', pain = f === 'pain', shock = f === 'shock' || f === 'worried', peek = f === 'peek';
+  noodleHair(t, 'back');
+  // ears (slightly sticking out) + diamond stud
+  for (const d of [-1, 1]) { ell(d * 104, 2, 19, 31, NS.skin, DARK, 4); ctx.strokeStyle = 'rgba(120,70,40,.6)'; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(d * 104, 2, 11, d > 0 ? -1.2 : 1.9, d > 0 ? 1.2 : 4.3); ctx.stroke(); }
+  ell(-106, 30, 6, 6, '#eaf7ff', DARK, 2); sparkle(-106, 30, 12, t * 3, '#ffffff');
+  // head
+  headPath(); ctx.fillStyle = NS.skin; ctx.fill();
+  ctx.save(); headPath(); ctx.clip();
+  const hl = ctx.createRadialGradient(-20, -60, 10, -10, -30, 150); hl.addColorStop(0, 'rgba(255,230,200,.35)'); hl.addColorStop(1, 'rgba(255,230,200,0)'); ctx.fillStyle = hl; ctx.fillRect(-120, -140, 240, 290);
+  ell(-66, 52, 26, 44, NS.shade, null); ell(66, 52, 26, 44, NS.shade, null);       // hollow cheeks under cheekbones
+  ell(-64, 8, 30, 14, 'rgba(255,225,190,.35)', null); ell(64, 8, 30, 14, 'rgba(255,225,190,.35)', null); // cheekbones
+  // chinstrap beard + goatee + mustache (2018 look)
+  ctx.strokeStyle = NS.beard; ctx.lineWidth = 11; ctx.beginPath(); ctx.moveTo(-96, 20); ctx.bezierCurveTo(-90, 70, -60, 122, -20, 136); ctx.lineTo(20, 136); ctx.bezierCurveTo(60, 122, 90, 70, 96, 20); ctx.stroke();
+  ell(0, 124, 17, 12, 'rgba(36,22,12,.38)', null);
+  ctx.restore();
+  headPath(); ctx.lineWidth = 4; ctx.strokeStyle = DARK; ctx.stroke();
+  noodleHair(t, 'front');
+  // eyebrows: thick, groomed, slight arch
+  const bIn = pain || shock ? -14 : (f === 'angry' ? 10 : 0);
+  for (const d of [-1, 1]) {
+    ctx.beginPath(); ctx.moveTo(d * 14, -34 + bIn); ctx.quadraticCurveTo(d * 40, -56 + bIn * 0.5, d * 70, -54); ctx.lineTo(d * 84, -46); ctx.quadraticCurveTo(d * 60, -46, d * 38, -42 + bIn * 0.5); ctx.quadraticCurveTo(d * 24, -38 + bIn, d * 15, -27 + bIn); ctx.closePath();
+    ctx.fillStyle = NS.dark; ctx.fill();
+  }
+  // eyes: almond, slightly hooded, dark brown iris
+  const look = o.look ? [o.look[0] * 0.6, o.look[1] * 0.6] : [0, 0];
+  for (const d of [-1, 1]) {
+    const cx = d * 43, cy = -16;
+    const closed = pain || (peek && d < 0);
+    if (closed) {
+      ctx.strokeStyle = DARK; ctx.lineWidth = 5; ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(cx - d * 24, cy - 2); ctx.quadraticCurveTo(cx, cy + 10, cx + d * 24, cy - 6); ctx.stroke();
+      ctx.lineWidth = 2.5; for (let i = 0; i < 3; i++) { ctx.beginPath(); ctx.moveTo(cx + d * 26, cy - 10 + i * 8); ctx.lineTo(cx + d * 36, cy - 14 + i * 10); ctx.stroke(); }
+      continue;
+    }
+    const up = shock ? -42 : grin ? -30 : -34, lo = shock ? 6 : grin ? -10 : 0;
+    ctx.save();
+    ctx.beginPath(); ctx.moveTo(cx - d * 25, cy); ctx.quadraticCurveTo(cx - d * 4, cy + up + 16, cx + d * 25, cy - 4); ctx.quadraticCurveTo(cx, cy + lo + 14, cx - d * 25, cy); ctx.closePath();
+    ctx.fillStyle = '#fbf7f0'; ctx.fill(); ctx.clip();
+    const ix = cx + look[0], iy = cy - 3 + look[1];
+    ell(ix, iy, 11.5, 11.5, '#4a2c17', null); ell(ix, iy, 5.5, 5.5, '#0c0805', null); ell(ix - 4, iy - 4, 3, 3, '#fff', null);
+    ctx.restore();
+    ctx.strokeStyle = DARK; ctx.lineWidth = 5; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(cx - d * 25, cy); ctx.quadraticCurveTo(cx - d * 4, cy + up + 16, cx + d * 27, cy - 2); ctx.stroke();      // upper lid
+    ctx.lineWidth = 2; ctx.strokeStyle = 'rgba(80,45,25,.7)'; ctx.beginPath(); ctx.moveTo(cx - d * 20, cy - 10 + up * 0.3); ctx.quadraticCurveTo(cx, cy + up + 6, cx + d * 22, cy - 12); ctx.stroke(); // crease
+    ctx.beginPath(); ctx.moveTo(cx - d * 20, cy + 6); ctx.quadraticCurveTo(cx, cy + lo + 16, cx + d * 22, cy + 2); ctx.stroke();           // lower lid
+    if (grin) { ctx.beginPath(); ctx.moveTo(cx + d * 26, cy + 2); ctx.lineTo(cx + d * 34, cy + 8); ctx.moveTo(cx + d * 26, cy - 4); ctx.lineTo(cx + d * 35, cy - 4); ctx.stroke(); } // smile crinkles
+  }
+  // nose: straight bridge, wide rounded base
+  ctx.strokeStyle = 'rgba(120,70,40,.45)'; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.moveTo(-11, -12); ctx.quadraticCurveTo(-13, 12, -17, 26); ctx.moveTo(11, -12); ctx.quadraticCurveTo(13, 12, 17, 26); ctx.stroke();
+  ell(0, 32, 15, 13, 'rgba(255,225,190,.35)', null);
+  ctx.strokeStyle = DARK; ctx.lineWidth = 3.5;
+  ctx.beginPath(); ctx.moveTo(-26, 30); ctx.quadraticCurveTo(-34, 44, -20, 47); ctx.quadraticCurveTo(-10, 52, 0, 48); ctx.quadraticCurveTo(10, 52, 20, 47); ctx.quadraticCurveTo(34, 44, 26, 30); ctx.stroke();
+  ell(-11, 45, 6, 3.5, '#3a2416', null); ell(11, 45, 6, 3.5, '#3a2416', null);
+  // smile folds
+  if (grin || pain) { ctx.strokeStyle = 'rgba(110,60,35,.6)'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(-30, 46); ctx.quadraticCurveTo(-48, 62, -50, 84); ctx.moveTo(30, 46); ctx.quadraticCurveTo(48, 62, 50, 84); ctx.stroke(); }
+  // mustache
+  ctx.fillStyle = NS.beard; ctx.beginPath(); ctx.moveTo(-38, 64); ctx.quadraticCurveTo(0, 50, 38, 64); ctx.quadraticCurveTo(0, 58, -38, 64); ctx.fill();
+  ctx.fillRect(-36, 58, 72, 5);
+  // mouth
+  ctx.lineJoin = 'round';
+  if (grin) {
+    const w = f === 'happy' ? 50 : 44, d = f === 'happy' ? 108 : 98;
+    ctx.save(); ctx.beginPath(); ctx.moveTo(-w, 68); ctx.quadraticCurveTo(0, 60, w, 68); ctx.quadraticCurveTo(0, d, -w, 68); ctx.closePath();
+    ctx.fillStyle = '#5a0f12'; ctx.fill(); ctx.clip();
+    ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.moveTo(-w, 66); ctx.quadraticCurveTo(0, 58, w, 66); ctx.lineTo(w, 72); ctx.quadraticCurveTo(0, 90, -w, 72); ctx.closePath(); ctx.fill();   // big upper teeth
+    ctx.fillStyle = '#f0ece4'; ctx.fillRect(-w * 0.6, d - 16, w * 1.2, 10);
+    ctx.strokeStyle = 'rgba(0,0,0,.25)'; ctx.lineWidth = 1.5; for (let i = -3; i <= 3; i++) { ctx.beginPath(); ctx.moveTo(i * 11, 60); ctx.lineTo(i * 11.5, 82 - Math.abs(i) * 2); ctx.stroke(); }
+    ctx.restore();
+    ctx.strokeStyle = DARK; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(-w, 68); ctx.quadraticCurveTo(0, 60, w, 68); ctx.quadraticCurveTo(0, d, -w, 68); ctx.stroke();
+    ctx.strokeStyle = 'rgba(150,80,70,.8)'; ctx.lineWidth = 5; const lb = (68 + d) / 2 + 6; ctx.beginPath(); ctx.moveTo(-w * 0.55, lb - 4); ctx.quadraticCurveTo(0, lb + 6, w * 0.55, lb - 4); ctx.stroke();   // lower lip
+  } else if (pain || shock || peek) {
+    const h = pain ? 34 + Math.sin(t * 30) * 4 : shock ? 22 : 12, w = pain ? 36 : shock ? 18 : 22;
+    ctx.save(); ctx.beginPath(); ctx.ellipse(0, 82, w, h, 0, 0, TAU); ctx.fillStyle = '#5a0f12'; ctx.fill(); ctx.clip();
+    ctx.fillStyle = '#fff'; ctx.fillRect(-w, 82 - h, w * 2, h * 0.38); ell(0, 82 + h * 0.75, w * 0.6, h * 0.35, '#e0565b', null);
+    ctx.restore(); ell(0, 82, w, h, null, DARK, 4);
+  } else {
+    ctx.strokeStyle = DARK; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(-34, 74); ctx.quadraticCurveTo(0, 86, 36, 70); ctx.stroke();
+    ctx.strokeStyle = 'rgba(150,80,70,.8)'; ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(-20, 88); ctx.quadraticCurveTo(0, 96, 20, 88); ctx.stroke();
+  }
+  if (pain) { ell(-60, 30, 14, 8, 'rgba(255,90,90,.35)', null); ell(60, 30, 14, 8, 'rgba(255,90,90,.35)', null); }
+  if (o.tears) for (const d of [-1, 1]) for (let i = 0; i < 9; i++) {
+    const k = ((t * 3 + i / 9) % 1);
+    ell(d * (40 + k * 170), -10 - k * 100 + k * k * 260, 8, 11, '#5ec8ff', '#1e6fb3', 2);
+  }
 }
 function hair(o, R, hy, layer, t, LF) {
   const top = hy - R * LF;
@@ -533,8 +667,8 @@ function scene7(u) {
   ctx.restore();
   factCard('JULY 2018 · HIS RAZOR-BRAND AD', ['Neymar responds', 'to the criticism:'], u / 0.4, '#16a34a');
   if (u < 3.4) {
-    bubble(540, 700, '"You may think I exaggerate...', 560, 860, (u - 0.5) / 0.3, 40);
-    if (u > 1.6) caption(['*"...and sometimes I do."'], 960, (u - 1.6) / 0.3, 56);
+    bubble(540, 520, '"You may think I exaggerate...', 560, 840, (u - 0.5) / 0.3, 40);
+    if (u > 1.6) caption(['*"...and sometimes I do."'], 670, (u - 1.6) / 0.3, 56);
   }
   if (u > 3.4 && u < 4.4) burst(540, 860, 200, 'HERE WE GO', (u - 3.4) / 0.25, '#ffd60a', 54, 0.05);
   if (u >= 4.4) {
@@ -544,7 +678,7 @@ function scene7(u) {
     popTxt('for more football roasts', 540, 840, 54, (u - 4.7) / 0.3, '#fff');
     if (u > 5.0) { ctx.globalAlpha = clamp((u - 5.0) / 0.3); ['Sources: RTS via CBS Sports & NESN; ESPN;', 'SI; The Drum; Sky Sports (2018).', 'Caricature/parody. Exaggerated scenes are fiction.'].forEach((s, i) => txt(s, 540, 1050 + i * 46, 30, '#bbb', null, 'center', 700)); ctx.globalAlpha = 1; }
   }
-  if (u > 1.6 && u < 3.4) txt('(quote as translated in 2018 media reports)', 540, 1050, 28, '#ddd', DARK, 'center', 700);
+  if (u > 1.6 && u < 3.4) txt('(quote as translated in 2018 media reports)', 540, 750, 28, '#ddd', DARK, 'center', 700);
 }
 
 function vignette() {
@@ -561,6 +695,12 @@ function render(t) {
   ctx.fillStyle = 'rgba(255,255,255,.25)'; ctx.fillRect(0, 0, W, 10); ctx.fillStyle = '#ffd60a'; ctx.fillRect(0, 0, W * t / DURATION, 10);
   for (const b of CUTS) { const a = 1 - Math.abs(t - b) / 0.12; if (a > 0) { ctx.fillStyle = `rgba(255,255,255,${a})`; ctx.fillRect(0, 0, W, H); } }
 }
+window.sheet = () => {
+  ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.fillStyle = '#e9eef5'; ctx.fillRect(0, 0, W, H);
+  const ex = ['happy', 'smug', 'calm', 'shock', 'pain', 'peek'];
+  ex.forEach((f, i) => { const x = 270 + (i % 2) * 540, y = 400 + Math.floor(i / 2) * 560; ctx.save(); ctx.translate(x, y); ctx.scale(1.25, 1.25); neymarHead({ face: f, tears: f === 'pain' }, 0.3); ctx.restore(); txt(f.toUpperCase(), x, y + 210, 34, '#333', null); });
+  guy(540, 1890, NEYMAR, { s: 1.1, face: 'happy', arms: 'hips', t: 0.3 });
+};
 window.render = render; window.DURATION = DURATION;
 if (!location.search.includes('render')) {
   const t0 = performance.now();
