@@ -10,6 +10,7 @@ const fs = require('fs'), path = require('path');
   page.on('pageerror', e => { console.error('PAGE ERROR', e.message); process.exit(1); });
   await page.goto('file://' + path.resolve(__dirname, 'scene.html') + '?render');
   await page.evaluate(() => document.fonts.load('900 40px Inter'));
+  await (typeof page !== 'undefined' ? page : p).waitForFunction(() => window.NEY_IMG && NEY_IMG.complete && NEY_IMG.naturalWidth > 0);
   const times = only ? only.split(',').map(Number) : [...Array(Math.round(await page.evaluate(() => DURATION) * fps)).keys()].map(i => i / fps);
   for (let i = 0; i < times.length; i++) {
     const data = await page.evaluate(t => { render(t); return document.getElementById('c').toDataURL('image/jpeg', 0.92); }, times[i]);
