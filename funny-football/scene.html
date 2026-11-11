@@ -1,0 +1,617 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Bóng đá ăn vạ</title>
+<style>html,body{margin:0;background:#000}canvas{display:block}</style></head>
+<body><canvas id="c" width="1280" height="720"></canvas>
+<script>
+// Hoạt hình biếm họa bóng đá: "Siêu Kinh Điển Ăn Vạ" — vẽ thuần Canvas, render theo thời gian t (giây).
+const W = 1280, H = 720, DURATION = 34;
+const cv = document.getElementById('c');
+const ctx = cv.getContext('2d');
+const F = 'Inter, "DejaVu Sans", sans-serif';
+const DARK = '#151515';
+
+// ---------- tiện ích ----------
+const lerp = (a, b, k) => a + (b - a) * k;
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const ease = k => (k = clamp(k), k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2);
+const easeOut = k => (k = clamp(k), 1 - Math.pow(1 - k, 3));
+const easeOutBack = k => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(k - 1, 3) + c1 * Math.pow(k - 1, 2); };
+function rng(seed) { return () => (seed = (seed * 16807) % 2147483647, (seed - 1) / 2147483646); }
+const TAU = Math.PI * 2;
+
+function ell(x, y, rx, ry, fill, stroke = DARK, lw = 4, rot = 0) {
+  ctx.beginPath(); ctx.ellipse(x, y, Math.abs(rx), Math.abs(ry), rot, 0, TAU);
+  if (fill) { ctx.fillStyle = fill; ctx.fill(); }
+  if (stroke) { ctx.lineWidth = lw; ctx.strokeStyle = stroke; ctx.stroke(); }
+}
+function rrect(x, y, w, h, r, fill, stroke = DARK, lw = 4) {
+  ctx.beginPath(); ctx.roundRect(x, y, w, h, r);
+  if (fill) { ctx.fillStyle = fill; ctx.fill(); }
+  if (stroke) { ctx.lineWidth = lw; ctx.strokeStyle = stroke; ctx.stroke(); }
+}
+function limb(x1, y1, x2, y2, color, w = 8) {
+  ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
+  ctx.strokeStyle = DARK; ctx.lineWidth = w + 6; ctx.stroke();
+  ctx.strokeStyle = color; ctx.lineWidth = w; ctx.stroke();
+}
+function txt(s, x, y, size, fill = '#fff', stroke = DARK, align = 'center', weight = 900) {
+  ctx.font = `${weight} ${size}px ${F}`; ctx.textAlign = align; ctx.textBaseline = 'middle';
+  ctx.lineJoin = 'round';
+  if (stroke) { ctx.lineWidth = Math.max(3, size * 0.2); ctx.strokeStyle = stroke; ctx.strokeText(s, x, y); }
+  ctx.fillStyle = fill; ctx.fillText(s, x, y);
+}
+function popTxt(s, x, y, size, k, fill, stroke = DARK, rot = 0) {
+  if (k <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); const sc = easeOutBack(clamp(k)); ctx.scale(sc, sc);
+  txt(s, 0, 0, size, fill, stroke); ctx.restore();
+}
+function bubble(x, y, s, tx, ty, k, size = 26) {
+  if (k <= 0) return;
+  ctx.save(); ctx.translate(tx, ty); const sc = easeOutBack(clamp(k)); ctx.scale(sc, sc); ctx.translate(-tx, -ty);
+  ctx.font = `800 ${size}px ${F}`;
+  const w = ctx.measureText(s).width + 36, h = size + 28;
+  ctx.beginPath(); ctx.moveTo(x - 18, y + h / 2 - 4); ctx.lineTo(tx, ty); ctx.lineTo(x + 18, y + h / 2 - 4); ctx.closePath();
+  ctx.fillStyle = '#fff'; ctx.fill(); ctx.lineWidth = 4; ctx.strokeStyle = DARK; ctx.stroke();
+  rrect(x - w / 2, y - h / 2, w, h, 18, '#fff');
+  ctx.beginPath(); ctx.moveTo(x - 14, y + h / 2 - 2); ctx.lineTo(x + 14, y + h / 2 - 2); ctx.strokeStyle = '#fff'; ctx.lineWidth = 6; ctx.stroke();
+  txt(s, x, y + 1, size, DARK, null, 'center', 800);
+  ctx.restore();
+}
+function burst(x, y, r, s, k, fill = '#ffd60a', size = 48, rot = 0) {
+  if (k <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); const sc = easeOutBack(clamp(k)); ctx.scale(sc, sc);
+  ctx.beginPath();
+  for (let i = 0; i < 32; i++) { const a = i / 32 * TAU, rr = i % 2 ? r * 0.68 : r; ctx.lineTo(Math.cos(a) * rr, Math.sin(a) * rr * 0.75); }
+  ctx.closePath(); ctx.fillStyle = fill; ctx.fill(); ctx.lineWidth = 6; ctx.strokeStyle = '#c1121f'; ctx.stroke();
+  txt(s, 0, 2, size, '#c1121f', '#fff');
+  ctx.restore();
+}
+function lower(s, k, color = '#c1121f') {
+  if (k <= 0) return;
+  const x = lerp(-900, 0, easeOut(k));
+  ctx.save(); ctx.translate(x, 0);
+  ctx.font = `800 30px ${F}`; const w = ctx.measureText(s).width + 90;
+  ctx.fillStyle = color; ctx.beginPath(); ctx.moveTo(0, 628); ctx.lineTo(w + 30, 628); ctx.lineTo(w, 684); ctx.lineTo(0, 684); ctx.fill();
+  ctx.fillStyle = '#ffd60a'; ctx.fillRect(0, 684, w - 20, 8);
+  txt(s, 50, 657, 30, '#fff', null, 'left', 800);
+  ctx.restore();
+}
+function scoreBug(clock, k = 1) {
+  if (k <= 0) return;
+  ctx.save(); ctx.globalAlpha = clamp(k);
+  rrect(24, 22, 500, 48, 10, 'rgba(10,10,20,.85)', null);
+  rrect(24, 22, 150, 48, [10, 0, 0, 10], '#1d4ed8', null);
+  txt('BỤNG BIA', 99, 46, 22, '#fff', null, 'center', 800);
+  txt('0 - 0', 224, 46, 26, '#fff', null, 'center', 900);
+  rrect(274, 22, 150, 48, 0, '#d62828', null);
+  txt('ĂN VẠ', 349, 46, 22, '#fff', null, 'center', 800);
+  txt(clock, 474, 46, 22, '#ffd60a', null, 'center', 800);
+  ell(548, 46, 7, 7, '#ff2d2d', null); txt('LIVE', 586, 46, 18, '#fff', DARK, 'center', 900);
+  ctx.restore();
+}
+
+// ---------- bối cảnh sân vận động ----------
+const crowd = []; {
+  const R = rng(11);
+  const cols = ['#d62828', '#1d4ed8', '#ffd60a', '#ffffff', '#f97316', '#d62828', '#1d4ed8'];
+  const skins = ['#f1c27d', '#e0ac69', '#c68642', '#ffdbac', '#8d5524'];
+  for (let row = 0; row < 9; row++) {
+    const y = 150 + row * 21;
+    for (let x = -10; x < W + 10; x += 15 + R() * 5)
+      crowd.push({ x: x + (row % 2) * 7, y, c: cols[Math.floor(R() * cols.length)], sk: skins[Math.floor(R() * skins.length)], ph: R() * TAU, r: 6 + row * 0.3, z: R() < 0.06 });
+  }
+}
+function sky(day = 0) {
+  const g = ctx.createLinearGradient(0, 0, 0, 360);
+  g.addColorStop(0, `rgb(${lerp(8, 90, day)},${lerp(18, 170, day)},${lerp(48, 240, day)})`);
+  g.addColorStop(1, `rgb(${lerp(40, 180, day)},${lerp(70, 220, day)},${lerp(130, 255, day)})`);
+  ctx.fillStyle = g; ctx.fillRect(-200, -200, W + 400, 600);
+  if (day < 0.5) { const R = rng(3); ctx.fillStyle = `rgba(255,255,255,${0.7 - day})`; for (let i = 0; i < 60; i++) ctx.fillRect(R() * W, R() * 120, 2, 2); }
+}
+function stands(t, o = {}) {
+  const cheer = o.cheer ?? 0.5, sleep = o.sleep || 0;
+  ctx.fillStyle = '#2b2f3a'; ctx.fillRect(-200, 120, W + 400, 225);
+  ctx.fillStyle = '#3a3f4d'; ctx.fillRect(-200, 120, W + 400, 14);
+  for (let r = 0; r < 9; r++) { ctx.fillStyle = r % 2 ? '#323745' : '#2d313d'; ctx.fillRect(-200, 146 + r * 21, W + 400, 21); }
+  for (const p of crowd) {
+    const bob = sleep ? 0 : -Math.abs(Math.sin(t * 9 + p.ph)) * 7 * cheer;
+    const tilt = sleep ? 4 : 0;
+    ctx.fillStyle = p.c; ctx.fillRect(p.x - p.r, p.y + bob, p.r * 2, p.r * 2 + 4);
+    ctx.beginPath(); ctx.arc(p.x + tilt, p.y - 2 + bob + tilt * .5, p.r * 0.8, 0, TAU); ctx.fillStyle = p.sk; ctx.fill();
+    if (!sleep && cheer > 0.7 && Math.sin(t * 9 + p.ph) > 0.3) { ctx.fillStyle = p.sk; ctx.fillRect(p.x - p.r - 2, p.y - 12 + bob, 3, 10); ctx.fillRect(p.x + p.r - 1, p.y - 12 + bob, 3, 10); }
+    if (sleep && p.z) txt('z', p.x + 10 + Math.sin(t * 3 + p.ph) * 4, p.y - 18 - ((t * 20 + p.ph * 10) % 20), 14, '#fff', DARK);
+  }
+  // băng rôn trên khán đài
+  const banners = [['VAR ƠI TỈNH DẬY!', 200, 190, '#ffd60a'], ['NGÃ ĐẸP LẮM!', 640, 175, '#ffffff'], ['TRẢ TIỀN VÉ!', 1060, 200, '#ffd60a']];
+  for (const [s, x, y, c] of banners) {
+    ctx.save(); ctx.translate(x, y + (sleep ? 0 : Math.sin(t * 4 + x) * 3)); ctx.rotate(Math.sin(x) * 0.05);
+    ctx.font = `900 20px ${F}`; const w = ctx.measureText(s).width + 26;
+    rrect(-w / 2, -16, w, 32, 3, c, DARK, 3); txt(s, 0, 0, 20, '#c1121f', null); ctx.restore();
+  }
+  // biển quảng cáo
+  const ads = ['BIA BỤNG PHỆ', 'MÌ ĂN LIỀN VẠ', 'VAR CHẬM - XIN CHỜ', 'BẢO HIỂM NGÃ', 'DẦU GIÓ CẦU THỦ'];
+  for (let i = 0; i < 7; i++) {
+    const x = -60 + i * 220;
+    ctx.fillStyle = i % 2 ? '#0b3d91' : '#c1121f'; ctx.fillRect(x, 334, 220, 36);
+    txt(ads[i % ads.length], x + 110, 352, 17, '#fff', null, 'center', 900);
+  }
+  ctx.fillStyle = '#111'; ctx.fillRect(-200, 368, W + 400, 4);
+}
+function pitch() {
+  ctx.fillStyle = '#2f8f3c'; ctx.fillRect(-200, 372, W + 400, H);
+  for (let i = -10; i <= 10; i += 2) {
+    const b0 = W / 2 + i * 150, b1 = b0 + 150, k = 0.55;
+    ctx.beginPath(); ctx.moveTo(W / 2 + (b0 - W / 2) * k, 372); ctx.lineTo(W / 2 + (b1 - W / 2) * k, 372);
+    ctx.lineTo(b1 + (b1 - W / 2) * 0.3, H + 60); ctx.lineTo(b0 + (b0 - W / 2) * 0.3, H + 60); ctx.closePath();
+    ctx.fillStyle = '#38a346'; ctx.fill();
+  }
+  ctx.strokeStyle = 'rgba(255,255,255,.8)'; ctx.lineWidth = 4;
+  ctx.beginPath(); ctx.moveTo(-200, 384); ctx.lineTo(W + 200, 384); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(W / 2, 384); ctx.lineTo(W / 2, H + 50); ctx.stroke();
+  ctx.beginPath(); ctx.ellipse(W / 2, 520, 230, 70, 0, 0, TAU); ctx.stroke();
+}
+function lights(t) {
+  for (const x of [70, 1210]) {
+    ctx.fillStyle = '#555'; ctx.fillRect(x - 5, 20, 10, 110);
+    rrect(x - 40, 0, 80, 40, 4, '#ddd', DARK, 3);
+    const g = ctx.createRadialGradient(x, 20, 5, x, 20, 160);
+    g.addColorStop(0, 'rgba(255,255,220,.85)'); g.addColorStop(1, 'rgba(255,255,220,0)');
+    ctx.fillStyle = g; ctx.fillRect(x - 160, -140, 320, 320);
+  }
+}
+function stadium(t, o = {}) { sky(o.day || 0); lights(t); stands(t, o); pitch(); }
+
+// ---------- quả bóng ----------
+function ball(x, y, r, a) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate(a);
+  ell(0, 0, r, r, '#fff', DARK, Math.max(2, r * 0.15));
+  ctx.save(); ctx.beginPath(); ctx.arc(0, 0, r - 1, 0, TAU); ctx.clip();
+  const pent = (cx, cy, s) => { ctx.beginPath(); for (let i = 0; i < 5; i++) { const q = i / 5 * TAU - Math.PI / 2; ctx.lineTo(cx + Math.cos(q) * s, cy + Math.sin(q) * s); } ctx.fillStyle = '#1b1b1b'; ctx.fill(); };
+  pent(0, 0, r * 0.36);
+  for (let i = 0; i < 5; i++) { const q = i / 5 * TAU - Math.PI / 2; pent(Math.cos(q) * r * 0.95, Math.sin(q) * r * 0.95, r * 0.3); }
+  ctx.restore(); ctx.restore();
+}
+
+// ---------- nhân vật biếm họa ----------
+const STRIKER = { col: '#d62828', col2: '#fff', num: '99', hair: 'spikes', R: 62, bw: 38, skin: '#f3c99a', shorts: '#fff' };
+const DEFENDER = { col: '#1d4ed8', col2: '#ffd60a', num: '4', hair: 'flat', R: 50, bw: 82, belly: true, unibrow: true, stache: true, skin: '#d99a6c', shorts: '#fff' };
+const REF = { col: '#1b1b1b', col2: '#ffd60a', num: '', hair: 'bald', R: 56, bw: 52, stache: true, skin: '#f1c27d', shorts: '#1b1b1b', ref: true };
+const GK = { col: '#16a34a', col2: '#111', num: '1', hair: 'mop', R: 50, bw: 56, glove: true, skin: '#c68642', shorts: '#111' };
+const COACH = { col: '#2b2b33', col2: '#fff', num: '', hair: 'combover', R: 58, bw: 64, belly: true, tie: true, skin: '#f0c8a0', shorts: '#2b2b33', pants: '#2b2b33' };
+
+function guy(x, y, base, o = {}) {
+  o = Object.assign({}, base, o);
+  const s = o.s || 1, R = o.R, bw = o.bw, P = o.p || 0, t = o.t || 0;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * (o.flip ? -1 : 1), s);
+  ctx.translate(0, -80); ctx.rotate(o.rot || 0); ctx.translate(0, 80);
+  ctx.lineJoin = 'round';
+  const pose = o.pose || 'stand';
+  let L = [[-12, 0], [12, 0]];
+  if (pose === 'run') L = [[Math.sin(P) * 24, -Math.max(0, Math.cos(P)) * 16], [-Math.sin(P) * 24, -Math.max(0, -Math.cos(P)) * 16]];
+  else if (pose === 'kick') L = [[-16, 0], [50, -36]];
+  else if (pose === 'splay') L = [[-42, -18 + Math.sin(P) * 12], [42, -18 - Math.sin(P) * 12]];
+  else if (pose === 'spread') L = [[-30, 0], [30, 0]];
+  const hipY = -48;
+  // chân
+  L.forEach(([fx, fy], i) => {
+    const hx = i ? 9 : -9;
+    const leg = o.pants || o.skin;
+    limb(hx, hipY, fx, fy - 6, leg, 9);
+    if (!o.pants) limb(lerp(hx, fx, 0.55), lerp(hipY, fy - 6, 0.55), fx, fy - 6, o.ref ? '#1b1b1b' : o.col2 === '#ffd60a' ? '#1d4ed8' : o.col, 10);
+    ell(fx + 7, fy - 3, 15, 8, o.pants ? '#3b2416' : '#111', DARK, 3);
+  });
+  // thân
+  const top = hipY - 60;
+  rrect(-bw / 2, top, bw, 64, 16, o.col);
+  if (o.ref) { ctx.save(); ctx.beginPath(); ctx.roundRect(-bw / 2, top, bw, 64, 16); ctx.clip(); ctx.fillStyle = '#ffd60a'; for (let i = -3; i < 4; i++) ctx.fillRect(i * 16, top, 7, 70); ctx.restore(); rrect(-bw / 2, top, bw, 64, 16, null); }
+  if (o.belly) ell(bw * 0.28, top + 40, bw * 0.42, 27, o.col);
+  if (o.tie) { ctx.beginPath(); ctx.moveTo(-8, top + 2); ctx.lineTo(8, top + 2); ctx.lineTo(4, top + 46); ctx.lineTo(0, top + 54); ctx.lineTo(-4, top + 46); ctx.closePath(); ctx.fillStyle = '#d62828'; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = DARK; ctx.stroke(); }
+  rrect(-bw / 2 - 1, hipY - 8, bw + 2, 16, 5, o.shorts);
+  if (o.num) txt(o.num, o.belly ? -6 : 0, top + 28, 22, o.col2, DARK);
+  // tay
+  const shY = top + 10, sw = bw / 2 - 4;
+  const hand = (side) => {
+    const sx = side * sw, A = o.arms || 'swing';
+    switch (A) {
+      case 'up': return [side * (R + 22) + Math.sin(t * 14 + side) * 8, top - 40];
+      case 'flail': return [sx + Math.cos(P * 1.7 + side * 2) * 46, shY + Math.sin(P * 2.3 + side) * 46];
+      case 'hips': return [side * (bw / 2 + 6), top + 44];
+      case 'shrug': return [side * (bw / 2 + 34), top - 16];
+      case 'hair': return [side * 26 + Math.sin(t * 20) * 4, top - R * 1.6];
+      case 'back': return [side * (bw / 2 - 10), top + 46];
+      case 'clutch': return [12 + side * 6, -26];
+      case 'face': return side > 0 ? [R * 0.3, top - R * 0.9] : [-bw / 2 - 8, top + 46];
+      case 'finger': return side > 0 ? [bw / 2 + 22 + 36 * (o.reach ?? 1), top + 6] : [-bw / 2 - 6, top + 44];
+      case 'point': return side > 0 ? [bw / 2 + 30, top - 70] : [-bw / 2 - 8, top + 44];
+      default: return [sx + side * 6 + Math.sin(P) * side * 18, top + 52];
+    }
+  };
+  const drawArm = (side) => {
+    const [hx, hy] = hand(side); const sx = side * sw;
+    if (o.arms === 'hips' || o.arms === 'shrug') { const ex = side * (bw / 2 + 26), ey = top + 26; limb(sx, shY, ex, ey, o.skin, 8); limb(ex, ey, hx, hy, o.skin, 8); }
+    else limb(sx, shY, hx, hy, o.tie ? o.col : o.skin, 8);
+    limb(sx, shY, lerp(sx, hx, 0.3), lerp(shY, hy, 0.3), o.col, 12);
+    if (o.glove) ell(hx, hy, 17, 17, '#f5f5f5', DARK, 4);
+    else ell(hx, hy, 8, 8, o.skin, DARK, 3);
+    if (o.arms === 'finger' && side > 0) limb(hx, hy, hx + 16, hy - 2, o.skin, 4);
+  };
+  drawArm(-1);
+  // đầu
+  const hy = top - R + 6;
+  limb(0, top + 2, 0, hy + R * 0.6, o.skin, 14);
+  ell(-R * 0.92, hy + 6, 12, 15, o.skin);
+  hair(o, R, hy, 'back', t);
+  ell(0, hy, R, R * 1.04, o.skin);
+  hair(o, R, hy, 'front', t);
+  face(o, R, hy, t);
+  drawArm(1);
+  ctx.restore();
+}
+function hair(o, R, hy, layer, t) {
+  if (o.hair === 'spikes' && layer === 'back') {
+    ctx.beginPath();
+    for (let i = -4; i <= 4; i++) {
+      const a = -Math.PI / 2 + i * 0.3 - 0.15, a2 = a + 0.15;
+      const len = R * (1.55 + (i % 2 ? 0.15 : 0.35));
+      ctx.lineTo(Math.cos(a) * R * 0.9, hy + Math.sin(a) * R * 0.9);
+      ctx.lineTo(Math.cos(a2) * len - 6, hy + Math.sin(a2) * len);
+    }
+    ctx.lineTo(R * 0.9, hy - 10); ctx.lineTo(-R * 0.9, hy - 10); ctx.closePath();
+    ctx.fillStyle = '#ffcc00'; ctx.fill(); ctx.lineWidth = 4; ctx.strokeStyle = DARK; ctx.stroke();
+  }
+  if (o.hair === 'spikes' && layer === 'front') {
+    ctx.save(); ctx.beginPath(); ctx.ellipse(0, hy, R, R * 1.04, 0, 0, TAU); ctx.clip();
+    ctx.fillStyle = '#ffcc00'; ctx.fillRect(-R, hy - R * 1.1, R * 2, R * 0.55);
+    ctx.fillStyle = '#d62828'; ctx.fillRect(-R, hy - R * 0.55, R * 2, 13);
+    ctx.restore(); ell(0, hy, R, R * 1.04, null);
+  }
+  if (o.hair === 'flat' && layer === 'front') rrect(-R * 0.95, hy - R * 1.25, R * 1.9, R * 0.62, 8, '#2a1a10');
+  if (o.hair === 'bald' && layer === 'front') ell(-R * 0.35, hy - R * 0.6, R * 0.25, R * 0.12, 'rgba(255,255,255,.7)', null, 0, -0.4);
+  if (o.hair === 'mop' && layer === 'back') for (let i = 0; i < 11; i++) { const a = Math.PI + i / 10 * Math.PI; ell(Math.cos(a) * R * 0.95, hy + Math.sin(a) * R * 0.95, 18, 18, '#3b2416', DARK, 3); }
+  if (o.hair === 'combover' && layer === 'front') {
+    ctx.strokeStyle = '#3b2416'; ctx.lineWidth = 3;
+    for (let i = 0; i < 5; i++) {
+      ctx.beginPath(); ctx.moveTo(-R * 0.9, hy - R * 0.3 - i * 6);
+      if (o.hairPull) ctx.quadraticCurveTo(-R * 0.6 + i * 10, hy - R * 2 - Math.sin(t * 25 + i) * 20, -R * 0.2 + i * 18, hy - R * 2.4 - i * 8 + Math.cos(t * 30 + i) * 12);
+      else ctx.quadraticCurveTo(0, hy - R * 1.3 - i * 3, R * 0.85, hy - R * 0.45);
+      ctx.stroke();
+    }
+  }
+}
+function face(o, R, hy, t) {
+  const fx = R * 0.14, f = o.face || 'smug';
+  const ex1 = fx - R * 0.33, ex2 = fx + R * 0.33, ey = hy - R * 0.12, er = R * 0.22;
+  // mắt
+  if (f === 'pain') {
+    ctx.strokeStyle = DARK; ctx.lineWidth = 5; ctx.lineCap = 'round';
+    for (const [x, d] of [[ex1, 1], [ex2, -1]]) { ctx.beginPath(); ctx.moveTo(x - d * 12, ey - 10); ctx.lineTo(x + d * 8, ey); ctx.lineTo(x - d * 12, ey + 10); ctx.stroke(); }
+  } else if (f === 'happy') {
+    ctx.strokeStyle = DARK; ctx.lineWidth = 5;
+    for (const x of [ex1, ex2]) { ctx.beginPath(); ctx.arc(x, ey + 6, 12, Math.PI * 1.1, Math.PI * 1.9); ctx.stroke(); }
+  } else if (f === 'sleep') {
+    ctx.strokeStyle = DARK; ctx.lineWidth = 4;
+    for (const x of [ex1, ex2]) { ctx.beginPath(); ctx.arc(x, ey - 4, 11, Math.PI * 0.15, Math.PI * 0.85); ctx.stroke(); }
+  } else {
+    const big = f === 'shock' || f === 'worried' ? 1.3 : 1;
+    const look = o.look ?? [5, 0];
+    for (const x of [ex1, ex2]) {
+      ell(x, ey, er * big, er * big * 1.15, '#fff', DARK, 3);
+      ell(x + look[0], ey + look[1], er * (f === 'shock' ? 0.25 : 0.42), er * (f === 'shock' ? 0.25 : 0.42), DARK, null);
+      if (f === 'smug') { ctx.fillStyle = o.skin; ctx.beginPath(); ctx.ellipse(x, ey, er + 2, er * 1.2 + 2, 0, Math.PI, TAU); ctx.fill(); ctx.strokeStyle = DARK; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(x - er, ey); ctx.lineTo(x + er, ey); ctx.stroke(); }
+    }
+  }
+  // lông mày
+  ctx.strokeStyle = DARK; ctx.lineCap = 'round'; ctx.lineWidth = o.unibrow ? 10 : 6;
+  const by = ey - er * 1.6;
+  ctx.beginPath();
+  if (o.unibrow) { const v = f === 'angry' ? 10 : 0; ctx.moveTo(ex1 - 18, by - v); ctx.lineTo(fx, by + v); ctx.lineTo(ex2 + 18, by - v); }
+  else if (f === 'angry') { ctx.moveTo(ex1 - 14, by - 8); ctx.lineTo(ex1 + 12, by + 6); ctx.moveTo(ex2 + 14, by - 8); ctx.lineTo(ex2 - 12, by + 6); }
+  else if (f === 'pain' || f === 'worried') { ctx.moveTo(ex1 - 14, by + 6); ctx.lineTo(ex1 + 12, by - 8); ctx.moveTo(ex2 + 14, by + 6); ctx.lineTo(ex2 - 12, by - 8); }
+  else if (f === 'smug') { ctx.moveTo(ex1 - 14, by + 2); ctx.lineTo(ex1 + 12, by + 2); ctx.moveTo(ex2 - 12, by - 6); ctx.quadraticCurveTo(ex2, by - 16, ex2 + 14, by - 6); }
+  else { ctx.moveTo(ex1 - 12, by - 4); ctx.lineTo(ex1 + 12, by - 6); ctx.moveTo(ex2 - 12, by - 6); ctx.lineTo(ex2 + 12, by - 4); }
+  ctx.stroke();
+  // má hồng
+  if (f === 'pain' || f === 'happy') { ell(ex1 - 6, hy + R * 0.22, 12, 7, 'rgba(255,90,90,.5)', null); ell(ex2 + 8, hy + R * 0.22, 12, 7, 'rgba(255,90,90,.5)', null); }
+  // miệng
+  const my = hy + R * 0.52;
+  if (f === 'pain') { ell(fx + 4, my, R * 0.36, R * 0.3 + Math.sin(t * 30) * 3, '#7a0a0a'); ell(fx + 4, my + R * 0.16, R * 0.2, R * 0.1, '#ff6b6b', null); }
+  else if (f === 'happy') { ctx.beginPath(); ctx.moveTo(fx - R * 0.4, my - 8); ctx.quadraticCurveTo(fx, my + R * 0.5, fx + R * 0.45, my - 8); ctx.closePath(); ctx.fillStyle = '#7a0a0a'; ctx.fill(); ctx.lineWidth = 4; ctx.strokeStyle = DARK; ctx.stroke(); ctx.fillStyle = '#fff'; ctx.fillRect(fx - R * 0.3, my - 7, R * 0.65, 8); }
+  else if (f === 'angry') { rrect(fx - R * 0.35, my - 10, R * 0.7, 22, 6, '#fff'); ctx.beginPath(); ctx.moveTo(fx - R * 0.35, my + 1); ctx.lineTo(fx + R * 0.35, my + 1); ctx.stroke(); if (o.shout) ell(fx, my + 6, R * 0.38, R * 0.32, '#7a0a0a'); }
+  else if (f === 'shock') ell(fx + 2, my + 4, 10, 14, '#7a0a0a');
+  else if (f === 'worried') { ctx.beginPath(); ctx.moveTo(fx - 22, my); for (let i = 0; i <= 8; i++) ctx.lineTo(fx - 22 + i * 5.5, my + (i % 2 ? -5 : 5)); ctx.lineWidth = 4; ctx.stroke(); }
+  else if (f === 'sleep') ell(fx, my + 4, 7, 6, '#7a0a0a');
+  else { ctx.beginPath(); ctx.moveTo(fx - R * 0.2, my + 4); ctx.quadraticCurveTo(fx + R * 0.15, my + 10, fx + R * 0.38, my - 8); ctx.lineWidth = 5; ctx.stroke(); }
+  // mũi to
+  ell(fx + R * 0.12, hy + R * 0.18, R * 0.2, R * 0.17, o.skin, DARK, 4);
+  ell(fx + R * 0.05, hy + R * 0.12, R * 0.05, R * 0.04, 'rgba(255,255,255,.6)', null);
+  // râu
+  if (o.stache) { ctx.beginPath(); ctx.ellipse(fx + R * 0.02, hy + R * 0.36, R * 0.42, R * 0.11, 0, Math.PI, TAU); ctx.fillStyle = o.ref ? '#6b6b6b' : '#2a1a10'; ctx.fill(); }
+  if (o.beard > 0) {
+    ctx.beginPath(); ctx.moveTo(-R * 0.6, hy + R * 0.5);
+    ctx.quadraticCurveTo(-R * 0.3, hy + R + o.beard, fx + Math.sin(t * 2) * 10, hy + R * 0.8 + o.beard);
+    ctx.quadraticCurveTo(R * 0.6, hy + R + o.beard * 0.8, R * 0.7, hy + R * 0.4);
+    ctx.quadraticCurveTo(fx, hy + R * 0.95, -R * 0.6, hy + R * 0.5);
+    ctx.fillStyle = '#bdbdbd'; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = DARK; ctx.stroke();
+  }
+  // nước mắt phun như vòi
+  if (o.tears) {
+    for (const [x, d] of [[ex1, -1], [ex2, 1]]) for (let i = 0; i < 9; i++) {
+      const k = ((t * 3 + i / 9) % 1);
+      const dx = d * k * 110, dy = -k * 70 + k * k * 160;
+      ell(x + dx, ey + dy, 6, 8, '#5ec8ff', '#1e6fb3', 2);
+    }
+  }
+  if (f === 'sleep') txt('Zzz', R * 1.1, hy - R * 1.1 - (t * 15 % 20), 26, '#fff');
+}
+function trophy(x, y, s) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  rrect(-30, 40, 60, 22, 4, '#222'); rrect(-18, 30, 36, 12, 3, '#d4a017');
+  ell(0, -10, 14, 42, '#f2c230', DARK, 4); ell(0, -62, 14, 14, '#f2c230', DARK, 4);
+  ell(-5, -20, 4, 18, 'rgba(255,255,255,.6)', null);
+  ctx.restore();
+}
+function goal(x) {
+  ctx.strokeStyle = 'rgba(255,255,255,.5)'; ctx.lineWidth = 2;
+  for (let i = 0; i <= 12; i++) { ctx.beginPath(); ctx.moveTo(x + i * 22, 380 + i * 2); ctx.lineTo(x + i * 22, 640); ctx.stroke(); }
+  for (let j = 0; j <= 10; j++) { const y = 390 + j * 25; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + 264, y + (640 - y) * 0.04); ctx.stroke(); }
+  limb(x, 640, x, 380, '#fff', 10); limb(x, 380, x + 264, 404, '#fff', 10); limb(x + 264, 404, x + 264, 640, '#ddd', 8);
+}
+function dust(x, y, t, n = 8) { const R = rng(Math.floor(t * 30) + 5); for (let i = 0; i < n; i++) ell(x + (R() - 0.5) * 80, y - R() * 30, 6 + R() * 10, 5 + R() * 6, 'rgba(160,120,70,.55)', null); }
+function sparkle(x, y, r, a) { ctx.save(); ctx.translate(x, y); ctx.rotate(a); ctx.beginPath(); for (let i = 0; i < 8; i++) { const rr = i % 2 ? r * 0.3 : r; ctx.lineTo(Math.cos(i / 8 * TAU) * rr, Math.sin(i / 8 * TAU) * rr); } ctx.closePath(); ctx.fillStyle = '#fff59d'; ctx.fill(); ctx.restore(); }
+
+function camera(cx, cy, z, shake = 0, t = 0) {
+  ctx.translate(W / 2 + Math.sin(t * 90) * shake, H / 2 + Math.cos(t * 77) * shake); ctx.scale(z, z); ctx.translate(-cx, -cy);
+}
+
+// ---------- CẢNH 1: Giới thiệu (0–4s) ----------
+function scene1(u) {
+  ctx.save(); const z = lerp(1.12, 1, ease(u / 4)); camera(640, 380, z);
+  stadium(u, { cheer: 1 });
+  guy(360, 650, STRIKER, { s: 1.15, face: 'smug', arms: u > 1.8 ? 'up' : 'hips', t: u, p: u * 5 });
+  guy(920, 650, DEFENDER, { s: 1.15, face: 'angry', arms: 'hips', flip: true, t: u });
+  ctx.restore();
+  popTxt('SIÊU KINH ĐIỂN', 640, 120, 92, (u - 0.2) / 0.5, '#ffd60a', '#7a0000', Math.sin(u * 3) * 0.03);
+  popTxt('FC BỤNG BIA  vs  ĂN VẠ UNITED', 640, 210, 40, (u - 0.9) / 0.5, '#fff');
+  if (u > 1.5) { bubble(360, 300, 'Siêu sao VĂN VẠ #99', 360, 360, (u - 1.5) / 0.4, 22); bubble(920, 330, 'Trung vệ TẠ ĐỨC #4', 920, 390, (u - 1.8) / 0.4, 22); }
+  lower('Trận cầu đỉnh cao... của nghệ thuật diễn xuất', (u - 2.4) / 0.5);
+}
+
+// ---------- CẢNH 2: Pha ăn vạ (4–13s) ----------
+function scene2(u) {
+  const zin = clamp((u - 3) / 0.4) * (1 - clamp((u - 4.25) / 0.35));
+  const z = 1 + 1.4 * ease(zin);
+  let shake = 0; if (u > 6.2 && u < 6.6) shake = 14 * (1 - (u - 6.2) / 0.4);
+  ctx.save(); camera(lerp(640, 655, ease(zin)), lerp(360, 500, ease(zin)), z, shake, u);
+  stadium(u, { cheer: u > 6.2 ? 1 : 0.5 });
+
+  // cầu thủ tấn công
+  let sx, sy = 650, rot = 0, opt = { face: 'smug', arms: 'swing', pose: 'run', p: u * 14, t: u };
+  if (u < 3) sx = lerp(150, 600, u / 3);
+  else if (u < 4.2) { sx = 600 + (u - 3) * 4; opt.p = 42 + (u - 3) * 1.2; opt.look = [8, -3]; }
+  else if (u < 6.2) {
+    const k = (u - 4.2) / 2; sx = lerp(600, 300, k); sy = 650 - Math.sin(k * Math.PI) * 420; rot = -ease(k) * 7 * TAU;
+    Object.assign(opt, { pose: 'splay', face: 'pain', arms: 'flail', p: u * 18 });
+  } else {
+    const k = u - 6.2; sx = 300 + Math.sin(k * 6) * 30 * Math.exp(-k * 0.2); sy = 708;
+    rot = -Math.PI / 2 + Math.sin(k * 6) * 0.25;
+    Object.assign(opt, { pose: 'splay', face: 'pain', arms: 'clutch', p: k * 10, tears: true });
+  }
+  // bóng
+  let bx, by, ba;
+  if (u < 4.2) { const k = Math.min(u, 3.0 + (u - 3) * 0.03); bx = (u < 3 ? sx : 600) + 50; by = 632 - Math.abs(Math.sin(k * 7)) * 22; ba = k * 9; }
+  else { const k = u - 4.2; bx = 650 + 300 * (1 - Math.exp(-k * 0.8)); by = 632; ba = 3 * 9 + (1 - Math.exp(-k * 0.8)) * 18; }
+  // hậu vệ
+  let dx = 700, dOpt = { flip: true, t: u, face: 'worried', arms: 'back', pose: 'stand' };
+  if (u < 3) { dx = lerp(1120, 700, u / 3); Object.assign(dOpt, { pose: 'run', p: u * 8 }); }
+  else if (u < 4.2) Object.assign(dOpt, { arms: 'finger', reach: ease((u - 3) / 0.8), face: 'smug', look: [6, 0] });
+  else Object.assign(dOpt, { face: 'shock', arms: u > 6.4 ? 'shrug' : 'finger', reach: 1, look: [-8, 2] });
+  guy(dx, 650, DEFENDER, dOpt);
+  ball(bx, by, 17, ba);
+  guy(sx, sy, STRIKER, Object.assign(opt, { rot }));
+  if (u > 6.2 && u < 6.9) dust(300, 700, u, 10);
+  burst(612, 545, 40, 'chạm', (u - 3.8) / 0.2 * (u < 4.3 ? 1 : 0), '#fff59d', 16);
+
+  // trọng tài chạy tới
+  if (u > 7.3) {
+    const k = clamp((u - 7.3) / 0.9);
+    guy(lerp(1400, 980, easeOut(k)), 650, REF, { flip: true, t: u, pose: k < 1 ? 'run' : 'stand', p: u * 15, arms: k < 1 ? 'swing' : 'point', face: 'angry', shout: k >= 1 });
+  }
+  // tượng Oscar rơi xuống
+  if (u > 6.6) { const k = clamp((u - 6.6) / 0.6); trophy(300, lerp(-100, 520, easeOutBack(k) * 0.98), 1.3); if (k >= 1) for (let i = 0; i < 6; i++) sparkle(300 + Math.cos(u * 3 + i) * 80, 500 + Math.sin(u * 3 + i) * 60, 12, u * 4 + i); }
+  ctx.restore();
+
+  // lớp chữ trên màn hình
+  if (u > 1.3 && u < 3) bubble(860, 360, 'Tôi không chạm đâu nhé!', 790, 440, (u - 1.3) / 0.3, 24);
+  if (u > 3.2 && u < 4.3) {
+    ctx.fillStyle = 'rgba(0,0,0,.25)'; ctx.fillRect(0, 0, W, H);
+    if (Math.floor(u * 4) % 2) ell(1010, 60, 10, 10, '#ff2d2d', null);
+    txt('SLOW MOTION', 1150, 60, 30, '#fff');
+    lower('Lực va chạm: 0,0001 Newton (bằng một cái lông vũ)', (u - 3.3) / 0.4, '#0b3d91');
+  }
+  if (u > 4.3 && u < 6.3) {
+    const k = (u - 4.2) / 2;
+    const n = Math.floor(lerp(3, 14, k));
+    txt('A'.repeat(n) + '!!!', 640, 110 + Math.sin(u * 20) * 5, 56 + k * 20, '#fff', '#c1121f');
+  }
+  if (u > 5.0 && u < 6.9) {
+    txt('Ban giám khảo trượt băng:', 1060, 170, 22, '#fff');
+    for (let i = 0; i < 3; i++) { const k = (u - 5.2 - i * 0.2) / 0.25; if (k > 0) { ctx.save(); ctx.translate(960 + i * 100, 240); ctx.scale(easeOutBack(clamp(k)), easeOutBack(clamp(k))); rrect(-38, -34, 76, 68, 6, '#fff'); txt('10', 0, 0, 40, '#c1121f', null); ctx.restore(); } }
+  }
+  lower('OSCAR 2026: Nam diễn viên chính xuất sắc nhất', (u - 6.9) / 0.4, '#b8860b');
+  if (u > 6.5) bubble(dx - 10, 330, 'Tôi... chưa chạm mà?!', dx - 20, 420, (u - 6.5) / 0.3, 22);
+  if (u > 8.2) burst(960, 280, 110, 'VAR!!!', (u - 8.2) / 0.3, '#ffd60a', 54, -0.08);
+  scoreBug('23:41', 1);
+}
+
+// ---------- CẢNH 3: VAR vô tận (13–19s) ----------
+function scene3(u) {
+  const day = u < 4.6 ? 0.5 + 0.5 * Math.sin(u * 5) : 0;
+  ctx.save(); camera(640, 360, 1, 0, u);
+  stadium(u, { day, sleep: u > 1 && u < 4.6, cheer: u >= 4.6 ? 1.2 : 0.3 });
+  // màn hình VAR
+  ctx.fillStyle = '#444'; ctx.fillRect(850, 460, 16, 190); rrect(790, 640, 136, 16, 4, '#333');
+  rrect(660, 230, 400, 250, 14, '#222', DARK, 6);
+  ctx.save(); ctx.beginPath(); ctx.rect(676, 246, 368, 218); ctx.clip();
+  ctx.fillStyle = '#2f8f3c'; ctx.fillRect(676, 246, 368, 218);
+  const rk = (u * 0.15) % 1;
+  guy(lerp(900, 780, rk), 440 - Math.sin(rk * Math.PI) * 120, STRIKER, { s: 0.45, rot: -rk * 7 * TAU, pose: 'splay', face: 'pain', arms: 'flail', p: u * 2, t: u });
+  txt('REPLAY x0.001', 860, 270, 20, '#ffd60a');
+  ctx.restore();
+  if (u > 2) { // mạng nhện
+    const k = clamp((u - 2) / 1.5); ctx.save(); ctx.translate(1060, 230); ctx.strokeStyle = 'rgba(255,255,255,.8)'; ctx.lineWidth = 1.5;
+    for (let i = 0; i < 6; i++) { const a = Math.PI / 2 + i / 5 * Math.PI / 2; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(Math.cos(a) * 90 * k, Math.sin(a) * 90 * k); ctx.stroke(); }
+    for (let r = 1; r <= 4; r++) { ctx.beginPath(); ctx.arc(0, 0, r * 20 * k, Math.PI / 2, Math.PI); ctx.stroke(); }
+    ell(-30 * k, 40 * k, 5, 6, '#111', null); ctx.restore();
+  }
+  // trọng tài + kính lúp
+  const beard = 170 * ease((u - 0.4) / 4);
+  if (u < 4.6) {
+    guy(450, 655, REF, { s: 1.25, t: u, arms: 'finger', reach: 0.4, face: 'smug', beard, look: [8, 0] });
+    const lx = 600, ly = 395 + Math.sin(u * 3) * 6;
+    limb(560, 470, lx - 40, ly + 50, '#6b3d1f', 12);
+    ctx.beginPath(); ctx.arc(lx, ly, 72, 0, TAU); ctx.fillStyle = 'rgba(190,230,255,.55)'; ctx.fill(); ctx.lineWidth = 10; ctx.strokeStyle = '#333'; ctx.stroke();
+    ell(lx, ly, 50, 40, '#fff', DARK, 3); ell(lx + 16 + Math.sin(u * 7) * 12, ly + Math.cos(u * 5) * 8, 18, 18, '#3b2416', null); ell(lx + 16 + Math.sin(u * 7) * 12, ly + Math.cos(u * 5) * 8, 9, 9, '#000', null);
+    ell(lx - 22, ly - 26, 14, 8, 'rgba(255,255,255,.7)', null, 0, -0.5);
+  } else {
+    guy(450, 655, REF, { s: 1.25, t: u, arms: 'point', face: 'angry', shout: true, beard });
+  }
+  ctx.restore();
+  // đồng hồ VAR
+  const secs = Math.floor(ease(u / 4.5) * (47 * 3600 + 13 * 60));
+  const hh = Math.floor(secs / 3600), mm = Math.floor(secs / 60) % 60, ss = secs % 60;
+  rrect(880, 30, 370, 96, 12, 'rgba(10,10,20,.9)', '#ffd60a', 4);
+  txt('VAR ĐANG KIỂM TRA...', 1065, 58, 22, '#ffd60a', null);
+  txt(`${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')}:${String(ss).padStart(2, '0')}`, 1065, 98, 38, '#fff', null);
+  if (u < 1.6) lower('Trọng tài quyết định xem lại VAR...', (u - 0.2) / 0.4, '#0b3d91');
+  else if (u < 3) lower('3 tiếng sau...', (u - 1.6) / 0.3, '#0b3d91');
+  else if (u < 4.6) lower('Hết luôn một mùa giải...', (u - 3) / 0.3, '#0b3d91');
+  if (u > 4.6) burst(640, 200, 190, 'PENALTY!!!', (u - 4.6) / 0.3, '#ffd60a', 70, Math.sin(u * 8) * 0.04);
+  scoreBug('23:41', 1);
+}
+
+// ---------- CẢNH 4: Sút phạt đền... lên vũ trụ (19–27s) ----------
+function scene4(u) {
+  if (u < 3.6) {
+    ctx.save(); camera(640, 360, 1, u > 3 && u < 3.3 ? 10 : 0, u);
+    stadium(u, { cheer: u > 3.3 ? 0.2 : 0.9 });
+    goal(985);
+    // thủ môn nhảy múa
+    let gx = 1100 + Math.sin(u * 6) * 40, gy = 650, grot = 0, gface = 'worried';
+    if (u > 3.05) { const k = clamp((u - 3.05) / 0.45); gx = lerp(1100, 1180, k); gy = 650 - Math.sin(k * Math.PI) * 80 + k * 40; grot = ease(k) * Math.PI / 2; gface = 'shock'; }
+    guy(gx, gy, GK, { flip: true, pose: 'spread', arms: 'up', face: gface, t: u, rot: grot, look: [4, -2] });
+    // cầu thủ đá phạt đầy nghệ thuật
+    const k = clamp(u / 3), steps = 8, f = k * steps, fr = f - Math.floor(f);
+    const prog = Math.min(1, (Math.floor(f) + ease(fr)) / steps);
+    let sx = lerp(200, 700, prog), sy = 650 - Math.abs(Math.sin(fr * Math.PI)) * 45 * (k < 1 ? 1 : 0);
+    let srot = Math.floor(f) === 4 ? ease(fr) * TAU : 0;
+    const kicking = u >= 3;
+    guy(sx, sy, STRIKER, { pose: kicking ? 'kick' : (fr < 0.5 ? 'spread' : 'run'), p: f * 3, rot: srot, arms: kicking ? 'up' : 'swing', face: u > 3.25 ? 'shock' : 'smug', t: u, look: u > 3.25 ? [4, -8] : [5, 0] });
+    // bóng
+    if (u < 3) ball(765, 632, 17, 0);
+    else ball(765 + (u - 3) * 900, 632 - (u - 3) * 1900, 17, u * 20);
+    ctx.restore();
+    if (u > 0.4 && u < 2.8) bubble(1080, 330, 'Sút nhẹ thôi anh ơi...', 1080, 420, (u - 0.4) / 0.3, 22);
+    lower('Đà chạy nghệ thuật: 8 bước, 1 vòng xoay, 0 lý do', (u - 0.3) / 0.4);
+    burst(860, 500, 90, 'BÙM!', (u - 3) / 0.15, '#ffd60a', 44);
+    if (u > 3.25) popTxt('ỐI GIỜI ƠI!', 640, 140, 64, (u - 3.25) / 0.25, '#fff', '#c1121f');
+    scoreBug('90+47', 1);
+    return;
+  }
+  if (u < 6.4) {
+    // bay lên vũ trụ
+    const v = (u - 3.6) / 2.8;
+    const g = ctx.createLinearGradient(0, 0, 0, H);
+    const c = (a, b) => Math.round(lerp(a, b, clamp(v * 1.4)));
+    g.addColorStop(0, `rgb(${c(110, 2)},${c(190, 2)},${c(255, 20)})`); g.addColorStop(1, `rgb(${c(190, 10)},${c(230, 10)},${c(255, 40)})`);
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    const R = rng(9); ctx.fillStyle = `rgba(255,255,255,${clamp(v * 2 - 0.6)})`; for (let i = 0; i < 160; i++) ctx.fillRect(R() * W, (R() * H * 2 + v * 400) % H, 2, 2);
+    const Y = a => 360 + (v - a) * 2600;
+    for (const [a, x] of [[0.03, 250], [0.09, 1000], [0.16, 420], [0.22, 900]]) { const y = Y(a); for (let i = 0; i < 4; i++) ell(x + i * 45 - 70, y + Math.sin(i) * 12, 50, 32, '#fff', null); }
+    // chim
+    { const y = Y(0.13), x = 760; ctx.strokeStyle = DARK; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(x - 30, y - 10); ctx.quadraticCurveTo(x - 15, y - 25 + Math.sin(u * 30) * 10, x, y); ctx.quadraticCurveTo(x + 15, y - 25 + Math.sin(u * 30) * 10, x + 30, y - 10); ctx.stroke(); txt('!?', x, y - 45, 30, '#fff'); }
+    // máy bay
+    { const y = Y(0.32), x = 300 + (u - 3.6) * 60; ell(x, y, 90, 18, '#eee'); ctx.beginPath(); ctx.moveTo(x - 10, y); ctx.lineTo(x - 40, y + 50); ctx.lineTo(x + 10, y + 50); ctx.lineTo(x + 25, y); ctx.fillStyle = '#ccc'; ctx.fill(); ctx.stroke(); ctx.beginPath(); ctx.moveTo(x - 80, y - 5); ctx.lineTo(x - 95, y - 35); ctx.lineTo(x - 70, y - 10); ctx.fill(); ctx.stroke(); for (let i = 0; i < 5; i++) ell(x - 30 + i * 18, y - 4, 4, 4, '#4aa3df', null); if (Y(0.32) > 100 && Y(0.32) < 650) bubble(x + 40, y - 80, 'Cơ trưởng: tránh ra!!!', x + 20, y - 25, 1, 20); }
+    // vệ tinh
+    { const y = Y(0.66), x = 950; ctx.save(); ctx.translate(x, y); ctx.rotate(u * 0.5); rrect(-25, -20, 50, 40, 4, '#ccc'); rrect(-110, -12, 75, 24, 2, '#1e40af'); rrect(35, -12, 75, 24, 2, '#1e40af'); ctx.restore(); if (y > 120 && y < 680) bubble(x, y - 100, 'Ai sút đấy?!', x, y - 30, 1, 22); }
+    // mặt trăng
+    { const y = Y(1.05); ell(330, y, 110, 110, '#e8e4d0'); ell(300, y - 30, 22, 22, '#c9c3a8', null); ell(370, y + 30, 16, 16, '#c9c3a8', null); }
+    // bóng + lửa
+    const bx = 640 + Math.sin(u * 4) * 20, by = 380;
+    if (v > 0.25) { const fl = clamp((v - 0.25) * 3); const gg = ctx.createLinearGradient(0, by, 0, by + 220 * fl); gg.addColorStop(0, 'rgba(255,220,80,.95)'); gg.addColorStop(1, 'rgba(255,60,0,0)'); ctx.fillStyle = gg; ctx.beginPath(); ctx.moveTo(bx - 24, by + 5); ctx.lineTo(bx + Math.sin(u * 40) * 10, by + 220 * fl); ctx.lineTo(bx + 24, by + 5); ctx.fill(); }
+    else { ctx.strokeStyle = 'rgba(255,255,255,.8)'; ctx.lineWidth = 3; for (let i = -1; i <= 1; i++) { ctx.beginPath(); ctx.moveTo(bx + i * 14, by + 30); ctx.lineTo(bx + i * 14, by + 120); ctx.stroke(); } }
+    ball(bx, by, 30, u * 18);
+    const km = Math.floor(Math.pow(v, 2.2) * 384400);
+    rrect(860, 30, 390, 60, 10, 'rgba(0,0,0,.6)', '#ffd60a', 3);
+    txt(`Độ cao bóng: ${km.toLocaleString('vi-VN')} km`, 1055, 60, 26, '#fff', null);
+    lower(v < 0.5 ? 'Bóng đang rời khỏi sân vận động...' : 'Bóng đang rời khỏi tầng khí quyển...', 1, '#0b3d91');
+    return;
+  }
+  // quay quanh Trái Đất
+  const k = u - 6.4;
+  ctx.fillStyle = '#02030f'; ctx.fillRect(0, 0, W, H);
+  const R = rng(5); ctx.fillStyle = '#fff'; for (let i = 0; i < 200; i++) ctx.fillRect(R() * W, R() * H, 2, 2);
+  const ex = 640, ey = 420;
+  const gl = ctx.createRadialGradient(ex, ey, 150, ex, ey, 230); gl.addColorStop(0, 'rgba(100,180,255,.5)'); gl.addColorStop(1, 'rgba(100,180,255,0)'); ctx.fillStyle = gl; ctx.fillRect(0, 0, W, H);
+  const a = k * 3;
+  const ox = ex + Math.cos(a) * 300, oy = ey + Math.sin(a) * 90;
+  const behind = Math.sin(a) < 0;
+  if (behind) ball(ox, oy, 14, k * 10);
+  ell(ex, ey, 180, 180, '#1e66d0', DARK, 4);
+  ctx.save(); ctx.beginPath(); ctx.arc(ex, ey, 178, 0, TAU); ctx.clip();
+  ctx.fillStyle = '#3fae49'; for (const [x, y, rx, ry] of [[-60, -60, 70, 45], [70, 20, 50, 80], [-40, 90, 40, 30], [10, -120, 60, 25]]) { ctx.beginPath(); ctx.ellipse(ex + x + k * 20, ey + y, rx, ry, 0.4, 0, TAU); ctx.fill(); }
+  ctx.restore();
+  ctx.strokeStyle = 'rgba(255,255,255,.25)'; ctx.setLineDash([8, 10]); ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(ex, ey, 300, 90, 0, 0, TAU); ctx.stroke(); ctx.setLineDash([]);
+  if (!behind) ball(ox, oy, 14, k * 10);
+  popTxt('CHÍNH THỨC: Vệ tinh nhân tạo mới!', 640, 100, 44, k / 0.4, '#ffd60a');
+  lower('NASA đặt tên: "Quả Penalty 2026"', (k - 0.5) / 0.4, '#0b3d91');
+}
+
+// ---------- CẢNH 5: Ăn mừng & tổng kết (27–34s) ----------
+function scene5(u) {
+  ctx.save(); camera(640, 360, 1, 0, u);
+  stadium(u, { cheer: 0.6 });
+  const k = clamp(u / 1.5), sx = lerp(220, 640, easeOut(k));
+  guy(1060, 650, COACH, { flip: true, arms: 'hair', hairPull: true, face: 'angry', shout: true, t: u, s: 1.05 });
+  guy(870, 650, DEFENDER, { flip: true, arms: 'face', face: 'sleep', t: u });
+  guy(sx, 650 + (k < 1 ? 8 : 0), STRIKER, { arms: 'up', face: 'happy', t: u, rot: k < 1 ? -0.25 : Math.sin(u * 6) * 0.08, pose: k < 1 ? 'spread' : 'stand' });
+  if (k < 1) dust(sx - 40, 650, u, 8);
+  for (let i = 0; i < 8; i++) sparkle(sx + Math.cos(u * 2 + i * 0.8) * 130, 470 + Math.sin(u * 2.5 + i) * 110, 10 + (i % 3) * 4, u * 5 + i);
+  ctx.restore();
+  if (u < 3.8) {
+    bubble(sx, 250, 'Tôi là huyền thoại!!!', sx, 330, (u - 0.8) / 0.3, 26);
+    bubble(1020, 230, 'GHI BÀN ĐI CHỨ!!!', 1040, 300, (u - 1.4) / 0.3, 24);
+    lower('Ăn mừng cuồng nhiệt... dù không ghi được bàn nào', (u - 1.8) / 0.4);
+    scoreBug('90+52', 1);
+  }
+  if (u >= 3.8) {
+    const a = clamp((u - 3.8) / 0.3);
+    ctx.fillStyle = `rgba(8,10,25,${0.85 * a})`; ctx.fillRect(0, 0, W, H);
+    popTxt('KẾT QUẢ CHUNG CUỘC: 0 - 0', 640, 110, 56, (u - 3.9) / 0.3, '#ffd60a');
+    const lines = ['Thời gian bóng lăn: 4 phút', 'Thời gian ăn vạ: 86 phút', 'Thời gian xem VAR: 1 mùa giải', 'Số vòng xoay khi ngã: 7 (kỷ lục thế giới)', 'Quả bóng: vẫn đang bay quanh Trái Đất'];
+    lines.forEach((s, i) => { const kk = clamp((u - 4.2 - i * 0.3) / 0.25); if (kk > 0) { ctx.globalAlpha = kk; txt(s, 640 + (1 - kk) * 60, 200 + i * 62, 32, '#fff', null, 'center', 800); ctx.globalAlpha = 1; } });
+    if (u > 5.9) popTxt('HẾT!', 640, 580, 110, (u - 5.9) / 0.25, '#ff3b3b', '#fff', -0.12);
+    if (u > 6.3) txt('* Nhân vật hư cấu. Mọi sự trùng hợp đều... rất có thể.', 640, 680, 18, '#aaa', null, 'center', 600);
+  }
+}
+
+function vignette() {
+  const g = ctx.createRadialGradient(W / 2, H / 2, 300, W / 2, H / 2, 800);
+  g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,.45)'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+}
+
+function render(t) {
+  ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, W, H);
+  if (t < 4) scene1(t); else if (t < 13) scene2(t - 4); else if (t < 19) scene3(t - 13); else if (t < 27) scene4(t - 19); else scene5(t - 27);
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  vignette();
+  for (const b of [4, 13, 19, 27]) { const a = 1 - Math.abs(t - b) / 0.12; if (a > 0) { ctx.fillStyle = `rgba(255,255,255,${a})`; ctx.fillRect(0, 0, W, H); } }
+}
+window.render = render; window.DURATION = DURATION;
+
+// Xem trực tiếp khi mở file trong trình duyệt (không có ?render)
+if (!location.search.includes('render')) {
+  const t0 = performance.now();
+  (function loop() { render(((performance.now() - t0) / 1000) % DURATION); requestAnimationFrame(loop); })();
+}
+</script></body></html>
