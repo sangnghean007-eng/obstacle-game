@@ -1,8 +1,8 @@
 <!doctype html><html><body style="margin:0"><canvas id="c" width="2000" height="1750"></canvas>
-<script src="neymar_vector.js"></script><script src="neymar_body.js"></script>
+<script src="neymar_layers.js"></script><script src="neymar_vector.js"></script><script src="neymar_body.js"></script>
 <script>
 const ctx = document.getElementById('c').getContext('2d');
-window.go = async () => {
+window.go = async () => { await NEY_READY;
   ctx.fillStyle = '#3f9bf0'; ctx.fillRect(0, 0, 2000, 1750);
   const S = [['hips', 'smug', 'CHỐNG NẠNH'], ['celebrate', 'grin', 'ĂN MỪNG'], ['kick', 'angry', 'SÚT BÓNG'], ['run', 'neutral', 'CHẠY']];
   S.forEach(([pose, face, label], i) => {

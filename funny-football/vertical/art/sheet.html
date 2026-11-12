@@ -1,8 +1,8 @@
 <!doctype html><html><body style="margin:0"><canvas id="c" width="1800" height="1300"></canvas>
-<script src="neymar_vector.js"></script>
+<script src="neymar_layers.js"></script><script src="neymar_vector.js"></script>
 <script>
 const ctx = document.getElementById('c').getContext('2d');
-window.go = async () => {
+window.go = async () => { await NEY_READY;
   ctx.fillStyle = '#3f9bf0'; ctx.fillRect(0, 0, 1800, 1300);
   ctx.save(); ctx.translate(40, 60); ctx.scale(1.05, 1.05); drawNeymar(ctx, { ex: 1.1, bust: true }); ctx.restore();
   const ex = [['grin', 'CƯỜI'], ['pain', 'GÀO KHÓC'], ['shock', 'SỐC'], ['wink', 'NHÁY MẮT'], ['angry', 'CÁU'], ['neutral', 'BÌNH THƯỜNG']];
