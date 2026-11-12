@@ -1,4 +1,4 @@
-<!doctype html><html><body style="margin:0"><canvas id="c" width="900" height="1700"></canvas>
+<!doctype html><html><body style="margin:0"><canvas id="c" width="900" height="1900"></canvas>
 <script>
 // Original Sergio Ramos caricature in an editorial-cartoon style (flat colour, brown ink with
 // varying weight, rosy skin, long face & neck, red nose tip, big front teeth). Not a copy of any artist's image.
@@ -26,86 +26,97 @@ function ell(x, y, rx, ry, fill, stroke, lw = 4, r = 0) { ctx.beginPath(); ctx.e
 const mir = pts => pts.map(([x, y]) => [900 - x, y]);
 
 window.go = async () => {
-  // Proportions measured on a CC BY 3.0 reference photo (Ramos, interview 2021): photo (x,y) -> canvas
-  // via x' = 450 + (x-240)*2.6, y' = 250 + (y-90)*2.6, then exaggerated (longer beard & neck, bigger nose/teeth).
-  ctx.canvas.height = 1700;
-  const g = ctx.createLinearGradient(0, 0, 0, 1700); g.addColorStop(0, '#efe6d6'); g.addColorStop(1, '#ddd2bf'); ctx.fillStyle = g; ctx.fillRect(0, 0, 900, 1700);
-  for (let i = 0; i < 9; i++) { ctx.fillStyle = 'rgba(255,255,255,.16)'; ctx.fillRect(60 + i * 95, 0, 34, 1700); }
-  const K = { skin: '#efb293', skin2: '#d9927a', hair: '#3f2717', hair2: '#6e4a30', beard: '#8b4f2b', beard2: '#a8653a', beard3: '#6c3a1f' };
+  // Playing-era look (Real Madrid ~2016). Landmarks measured on "Sergio Ramos entrenando (cropped)1.jpg"
+  // (CC BY-SA 4.0, Wikimedia Commons), 3/4 view. Photo px -> canvas via F(), lower face stretched for caricature.
+  const Wd = 900, Hd = 1900; ctx.canvas.height = Hd;
+  const F = (x, y) => { let X = 450 + (x - 480) * 1.75, Y = 170 + (y - 130) * 1.75; if (Y > 922) Y += (Y - 922) * 0.3; return [X, Y]; };
+  const P = pts => pts.map(([x, y]) => F(x, y));
+  const g = ctx.createLinearGradient(0, 0, 0, Hd); g.addColorStop(0, '#efe6d6'); g.addColorStop(1, '#ddd2bf'); ctx.fillStyle = g; ctx.fillRect(0, 0, Wd, Hd);
+  for (let i = 0; i < 9; i++) { ctx.fillStyle = 'rgba(255,255,255,.16)'; ctx.fillRect(60 + i * 95, 0, 34, Hd); }
+  const K = { skin: '#f0b496', skin2: '#d9937a', hair: '#5e3d24', hair2: '#9a7148', hair3: '#3b2616', fade: '#7d6250', fade2: '#665040', beard: '#8a5631', beard2: '#a8703f', beard3: '#6a3d20' };
 
-  // shirt: dark open collar over white tee (as in the reference photo), no logos
-  shape([[372, 1450], [240, 1490], [120, 1560], [60, 1700], [840, 1700], [780, 1560], [660, 1490], [528, 1450]], '#3a3a3e', C.line, 7);
-  shape([[392, 1452], [450, 1640], [508, 1452]], '#f7f7f4', C.line, 5);
-  shape([[372, 1450], [430, 1600], [392, 1452]], '#2a2a2e', C.line, 5); shape([[528, 1450], [470, 1600], [508, 1452]], '#2a2a2e', C.line, 5);
+  // white kit (plain, no crest/brand marks), high collar
+  shape([[300, 1660], [180, 1700], [80, 1780], [40, 1900], [860, 1900], [820, 1780], [720, 1700], [560, 1660]], C.shirt, C.line, 7);
+  shape([[600, 1680], [720, 1720], [800, 1800], [830, 1900], [700, 1900], [680, 1790]], C.shirt2, null);
+  shape([[296, 1656], [420, 1700], [566, 1656], [580, 1684], [420, 1732], [282, 1684]], '#e9e9e4', C.line, 5);
 
-  // long neck
-  shape([[404, 1100], [398, 1300], [392, 1470], [508, 1470], [502, 1300], [496, 1100]], K.skin, null);
-  shape([[404, 1150], [450, 1220], [496, 1150], [500, 1240], [450, 1290], [400, 1240]], K.skin2, null);
-  ink([[402, 1150], [398, 1300], [392, 1460]], 4, 8); ink([[498, 1150], [502, 1300], [508, 1460]], 4, 8);
+  // long neck (3/4: slanted)
+  shape([[330, 1380], [326, 1520], [318, 1680], [530, 1680], [548, 1500], [560, 1240]], K.skin, null);
+  shape([[330, 1400], [420, 1480], [556, 1300], [552, 1460], [430, 1560], [326, 1480]], K.skin2, null);
+  ink([[330, 1390], [326, 1520], [318, 1670]], 4, 8); ink([[560, 1250], [548, 1500], [530, 1670]], 4, 8);
+  ink([[400, 1560], [414, 1578], [430, 1566]], 2, 4);
 
-  // ears (+ small hoop in the right ear)
-  const EAR = [[196, 500], [160, 486], [140, 520], [146, 590], [166, 650], [196, 676], [212, 640]];
-  shape(EAR, K.skin, C.line, 5); shape(mir(EAR), K.skin, C.line, 5);
-  line([[186, 520], [164, 540], [168, 610], [188, 640]], C.red, 7); line([[714, 520], [736, 540], [732, 610], [712, 640]], C.red, 7);
-  ell(728, 690, 9, 9, null, '#c9c9c9', 4);
+  // big ear on the far side (measured 610..705, 440..600)
+  const EAR = P([[612, 452], [660, 440], [700, 480], [705, 540], [682, 590], [640, 602], [618, 560]]);
+  shape(EAR, K.skin, C.line, 6);
+  line(P([[630, 470], [668, 470], [684, 520], [672, 566], [648, 576]]), C.red, 8);
+  ink(P([[644, 486], [664, 500], [662, 540], [648, 556]]), 2, 4);
 
-  // head: tall forehead, wide cheekbones, long bearded jaw
-  const FACE = [[450, 220], [580, 232], [668, 290], [708, 400], [716, 520], [706, 640], [680, 760], [600, 860], [450, 900], [300, 860], [220, 760], [194, 640], [184, 520], [192, 400], [232, 290], [320, 232]];
+  // head & face (near contour on the left, jaw on the right)
+  const FACE = P([[300, 250], [275, 300], [268, 400], [270, 470], [285, 540], [300, 620], [320, 720], [350, 790], [400, 806], [470, 782], [530, 700], [570, 600], [600, 500], [620, 420], [640, 300], [560, 230], [430, 225]]);
   shape(FACE, K.skin, null);
   ctx.save(); ctx.beginPath(); spline(FACE); ctx.clip();
-  ell(450, 340, 160, 50, 'rgba(231,118,106,.25)', null);                                    // rosy forehead
-  ell(300, 600, 64, 40, 'rgba(231,118,106,.45)', null); ell(600, 600, 64, 40, 'rgba(231,118,106,.45)', null);
-  shape([[196, 420], [240, 440], [236, 600], [220, 700], [196, 600]], K.skin2, null); shape(mir([[196, 420], [240, 440], [236, 600], [220, 700], [196, 600]]), K.skin2, null);
-  ink([[300, 330], [450, 316], [600, 330]], 1.5, 3, 'rgba(58,26,14,.4)'); ink([[320, 372], [450, 360], [580, 372]], 1.5, 3, 'rgba(58,26,14,.4)');  // forehead lines
+  const [cx1, cy1] = F(420, 520); ell(cx1 + 60, cy1, 70, 46, 'rgba(231,118,106,.42)', null);     // far cheek flush
+  const [cx2, cy2] = F(290, 500); ell(cx2, cy2, 40, 44, 'rgba(231,118,106,.38)', null);          // near cheek
+  const [fx, fy] = F(400, 340); ell(fx, fy, 140, 46, 'rgba(231,118,106,.25)', null);              // forehead
+  shape(P([[520, 300], [600, 320], [620, 440], [590, 560], [540, 520], [520, 420]]), K.skin2, null);   // side plane
+  ink(P([[372, 330], [378, 352]]), 2, 4); ink(P([[400, 326], [404, 350]]), 2, 4);                    // frown lines
   ctx.restore();
 
-  // long full beard (dominant feature) with mustache, chin extended for caricature
-  const BEARD = [[188, 560], [196, 680], [214, 800], [250, 920], [310, 1030], [380, 1110], [450, 1150], [520, 1110], [590, 1030], [650, 920], [686, 800], [704, 680], [712, 560], [690, 640], [650, 690], [600, 700], [560, 690], [500, 684], [450, 690], [400, 684], [340, 690], [300, 700], [250, 690], [210, 640]];
+  // beard: jaw line, chin and mustache in one mass (measured), with inner strokes
+  const BEARD = P([[285, 530], [300, 620], [320, 720], [350, 790], [400, 806], [470, 782], [530, 700], [570, 600], [585, 500], [565, 520], [540, 580], [500, 620], [460, 640], [450, 612], [420, 596], [370, 590], [330, 600], [306, 580]]);
   shape(BEARD, K.beard, null);
   ctx.save(); ctx.beginPath(); spline(BEARD); ctx.clip();
-  for (const [x0, w] of [[250, 1], [310, 1], [370, 1], [430, 1], [490, -1], [550, -1], [610, -1], [660, -1]]) ink([[x0, 760], [x0 + w * 10, 880], [x0 + w * 30, 1000]], 2, 6, K.beard2);
-  for (const [x0, w] of [[280, 1], [400, 1], [520, -1], [630, -1]]) ink([[x0, 820], [x0 + w * 14, 940], [x0 + w * 36, 1060]], 2, 5, K.beard3);
+  for (let i = 0; i < 12; i++) { const [x, y] = F(320 + i * 22, 640 + (i % 3) * 30); ink([[x, y], [x + 10, y + 70], [x + 26, y + 140]], 2, 6, i % 2 ? K.beard2 : K.beard3); }
   ctx.restore();
-  ink([[188, 560], [196, 680], [214, 800], [250, 920], [310, 1030], [380, 1110], [450, 1150], [520, 1110], [590, 1030], [650, 920], [686, 800], [704, 680], [712, 560]], 4, 11);
-  // mustache flowing into the beard
-  shape([[330, 742], [380, 712], [450, 708], [520, 712], [570, 742], [590, 790], [548, 768], [500, 752], [450, 756], [400, 752], [352, 768], [310, 790]], K.beard, C.line, 4);
+  ink(P([[285, 530], [300, 620], [320, 720], [350, 790], [400, 806], [470, 782], [530, 700], [570, 600], [585, 500]]), 4, 11);
 
-  // grin: thin upper lip, fuller lower lip, two oversized front teeth
-  const M = [[350, 778], [400, 768], [450, 772], [500, 768], [550, 778], [530, 822], [450, 842], [370, 822]];
-  shape([[340, 774], [400, 760], [450, 766], [500, 760], [560, 774], [548, 838], [450, 870], [352, 838]], '#dc8576', C.line, 4);
+  // open grin (photo shows an open mouth) with two oversized front teeth
+  const M = P([[328, 630], [356, 622], [390, 622], [422, 630], [414, 656], [378, 670], [342, 660]]);
+  shape(P([[318, 626], [356, 612], [392, 614], [432, 626], [424, 664], [378, 684], [334, 670]]), '#dc8576', C.line, 4);
   shape(M, C.gum, null);
   ctx.save(); ctx.beginPath(); spline(M); ctx.clip();
-  ctx.fillStyle = C.teeth; ctx.fillRect(340, 762, 220, 34);
-  shape([[410, 766], [448, 766], [448, 836], [412, 830]], C.teeth, C.line, 3); shape([[452, 766], [490, 766], [488, 830], [452, 836]], C.teeth, C.line, 3);
+  const [tx, ty] = F(340, 610); ctx.fillStyle = C.teeth; ctx.fillRect(tx - 40, ty, 260, 40);
+  const [ax, ay] = F(356, 622); shape([[ax, ay], [ax + 34, ay], [ax + 34, ay + 58], [ax + 2, ay + 54]], C.teeth, C.line, 3);
+  shape([[ax + 38, ay], [ax + 72, ay], [ax + 70, ay + 54], [ax + 38, ay + 58]], C.teeth, C.line, 3);
   ctx.restore(); shape(M, null, C.line, 4);
 
-  // nose: long straight bridge, wide base (205..285 in the photo), red tip
-  shape([[430, 470], [426, 580], [404, 640], [376, 666], [388, 696], [420, 700], [450, 712], [480, 700], [512, 696], [524, 666], [496, 640], [474, 580], [470, 470]], K.skin, null);
-  ell(450, 676, 52, 38, C.red, null);
-  ink([[432, 474], [426, 580], [404, 642]], 2.5, 5.5);
-  ink([[386, 654], [368, 680], [384, 704], [420, 706]], 3, 6.5); ink([[514, 654], [532, 680], [516, 704], [480, 706]], 3, 6.5);
-  ink([[420, 706], [450, 716], [480, 706]], 2, 4);
-  ell(466, 660, 11, 8, 'rgba(255,240,230,.85)', null);
+  // nose: long straight bridge from the brow down-left to a big round red tip (3/4 view)
+  shape(P([[396, 430], [384, 480], [362, 520], [330, 540], [300, 556], [304, 580], [334, 590], [362, 586], [388, 590], [408, 572], [416, 520], [414, 460]]), K.skin, null);
+  const [nx, ny] = F(322, 566); ell(nx, ny, 46, 36, C.red, null);
+  ink(P([[396, 432], [386, 480], [366, 516], [334, 540], [306, 552]]), 3, 7);
+  ink(P([[300, 560], [306, 584], [334, 592], [356, 584]]), 3, 6);
+  ink(P([[372, 576], [394, 588], [410, 570]]), 3, 6);
+  const [hx, hy] = F(316, 556); ell(hx, hy, 11, 7, 'rgba(255,240,230,.85)', null);
 
-  // eyes at the measured spots (341,502) and (541,502), looking sideways like the photo; black pupils
-  for (const cx of [341, 541]) {
-    shape([[cx - 46, 504], [cx - 14, 486], [cx + 26, 488], [cx + 48, 504], [cx + 14, 520], [cx - 22, 518]], C.white, null);
-    ell(cx + 12, 504, 17, 17, '#141010', null); ell(cx + 6, 497, 5, 5, '#fff', null);
-    ink([[cx - 50, 502], [cx - 10, 482], [cx + 34, 486], [cx + 52, 500]], 4, 9);
-    ink([[cx - 30, 520], [cx + 20, 522]], 1, 2.5); ink([[cx - 36, 538], [cx + 30, 540]], 1, 2.5, 'rgba(58,26,14,.4)');
+  // eyes (near & far), black pupils looking left like the photo, heavy lids
+  for (const [ex0, ey0, w] of [[300, 456, 44], [436, 448, 56]]) {
+    const [cx, cy] = F(ex0, ey0), ww = w * 0.9;
+    shape([[cx - ww, cy + 2], [cx - ww * 0.3, cy - 16], [cx + ww * 0.5, cy - 14], [cx + ww, cy + 2], [cx + ww * 0.3, cy + 16], [cx - ww * 0.5, cy + 14]], C.white, null);
+    ell(cx - ww * 0.35, cy, 16, 16, '#141010', null); ell(cx - ww * 0.35 - 5, cy - 6, 4.5, 4.5, '#fff', null);
+    ink([[cx - ww - 4, cy], [cx - ww * 0.2, cy - 22], [cx + ww * 0.6, cy - 18], [cx + ww + 4, cy - 2]], 4, 9);
+    ink([[cx - ww * 0.6, cy + 18], [cx + ww * 0.5, cy + 18]], 1, 2.5);
   }
-  // brows: thick, slightly arched, measured at y~453
-  const BR = [[256, 470], [300, 446], [360, 438], [412, 452], [420, 466], [362, 458], [304, 464], [262, 480]];
-  shape(BR, K.hair, C.line, 3); shape(mir(BR), K.hair, C.line, 3);
+  // thick brows (measured): near 262..332 @ 405-425, far 360..470 @ 395-410
+  shape(P([[262, 412], [296, 398], [334, 404], [336, 420], [298, 418], [266, 426]]), K.hair3, C.line, 3);
+  shape(P([[360, 404], [410, 388], [470, 394], [480, 410], [418, 406], [364, 420]]), K.hair3, C.line, 3);
 
-  // slicked-back hair (2021 look): tight cap, comb lines running back, high hairline
-  const HAIR = [[190, 410], [196, 300], [240, 200], [320, 140], [450, 116], [580, 140], [660, 200], [704, 300], [710, 410], [680, 330], [640, 290], [560, 262], [450, 252], [340, 262], [260, 290], [220, 330]];
-  shape(HAIR, K.hair, null);
-  ctx.save(); ctx.beginPath(); spline(HAIR); ctx.clip();
-  for (const k of [-0.75, -0.5, -0.25, 0, 0.25, 0.5, 0.75]) ink([[450 + k * 260, 262], [450 + k * 220, 180], [450 + k * 120, 116]], 2, 6, K.hair2);
+  // hair: faded undercut on the side + big swept-back quiff (measured silhouette)
+  const FADE = P([[520, 290], [600, 270], [690, 300], [700, 380], [680, 440], [620, 440], [580, 500], [560, 470], [540, 380]]);
+  shape(FADE, K.fade, null);
+  ctx.save(); ctx.beginPath(); spline(FADE); ctx.clip();
+  for (let i = 0; i < 7; i++) { const [x, y] = F(540 + i * 22, 300); ink([[x, y], [x + 6, y + 220]], 1, 3, K.fade2); }
   ctx.restore();
-  ink([[190, 410], [196, 300], [240, 200], [320, 140], [450, 116], [580, 140], [660, 200], [704, 300], [710, 410]], 4, 10);
-  ink([[194, 520], [194, 560]], 3, 6); ink([[706, 520], [706, 560]], 3, 6);
+  const QUIFF = P([[275, 250], [290, 180], [330, 140], [400, 120], [480, 118], [560, 138], [640, 190], [700, 262], [700, 300], [640, 286], [580, 282], [520, 290], [460, 300], [400, 300], [340, 290], [300, 276]]);
+  shape(QUIFF, K.hair, null);
+  ctx.save(); ctx.beginPath(); spline(QUIFF); ctx.clip();
+  for (const k of [0, 1, 2, 3, 4, 5]) { const a = F(300 + k * 30, 280 - k * 4), b = F(380 + k * 40, 170 + k * 6), c = F(520 + k * 36, 160 + k * 22);
+    ink([a, b, c], 2, 10, K.hair2); ink([[a[0] + 10, a[1] + 14], [b[0] + 10, b[1] + 14], [c[0] + 6, c[1] + 14]], 1, 4, K.hair3); }
+  ctx.restore();
+  ink(P([[275, 250], [290, 180], [330, 140], [400, 120], [480, 118], [560, 138], [640, 190], [700, 262], [700, 300]]), 4, 11);
+  ink(P([[700, 300], [700, 380], [680, 440]]), 3, 6);
+  // near face contour ink
+  ink(P([[275, 300], [268, 400], [270, 470], [285, 540]]), 4, 9);
   ctx.font = '900 54px Inter, sans-serif'; ctx.textAlign = 'center'; ctx.fillStyle = '#2b2b2b'; ctx.fillText('SERGIO RAMOS', 450, 70);
 };
 </script></body></html>

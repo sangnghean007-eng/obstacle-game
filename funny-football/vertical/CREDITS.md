@@ -10,3 +10,4 @@
 - This is a caricature/parody. Exaggerated scenes are fiction.
 - Sergio Ramos caricature (art/ramos.html) proportions measured on "Sergio Ramos Interview 2021 (cropped).jpg"
   by Real Madrid, Wikimedia Commons, CC BY 3.0. The drawing is original vector art (not a copy of any artist's caricature).
+- Playing-era Ramos (art/ramos.html, current version): landmarks measured on "Sergio Ramos entrenando (cropped)1.jpg", Wikimedia Commons, CC BY-SA 4.0. Original vector drawing.
