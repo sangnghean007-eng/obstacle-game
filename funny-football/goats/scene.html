@@ -1,0 +1,578 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>The GOATs Clock Out</title>
+<style>html,body{margin:0;background:#000}canvas{display:block;max-height:100vh;margin:auto}</style></head>
+<body><canvas id="c" width="1080" height="1920"></canvas>
+<script>
+const NEY_IMG = null;
+// "THE ROLLING KING" — vertical 9:16 satirical cartoon short, based on real reported facts
+// about Neymar at the 2018 World Cup. Everything is drawn on Canvas, rendered as a function of t (seconds).
+const W = 1080, H = 1920, DURATION = 36;
+const cv = document.getElementById('c');
+const ctx = cv.getContext('2d');
+const F = 'Inter, "DejaVu Sans", sans-serif';
+const DARK = '#151515';
+const GROUND = 1540;
+
+// ---------- utilities ----------
+const lerp = (a, b, k) => a + (b - a) * k;
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const ease = k => (k = clamp(k), k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2);
+const easeOut = k => (k = clamp(k), 1 - Math.pow(1 - k, 3));
+const easeOutBack = k => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(k - 1, 3) + c1 * Math.pow(k - 1, 2); };
+function rng(seed) { return () => (seed = (seed * 16807) % 2147483647, (seed - 1) / 2147483646); }
+const TAU = Math.PI * 2;
+
+function ell(x, y, rx, ry, fill, stroke = DARK, lw = 4, rot = 0) {
+  ctx.beginPath(); ctx.ellipse(x, y, Math.abs(rx), Math.abs(ry), rot, 0, TAU);
+  if (fill) { ctx.fillStyle = fill; ctx.fill(); }
+  if (stroke) { ctx.lineWidth = lw; ctx.strokeStyle = stroke; ctx.stroke(); }
+}
+function rrect(x, y, w, h, r, fill, stroke = DARK, lw = 4) {
+  ctx.beginPath(); ctx.roundRect(x, y, w, h, r);
+  if (fill) { ctx.fillStyle = fill; ctx.fill(); }
+  if (stroke) { ctx.lineWidth = lw; ctx.strokeStyle = stroke; ctx.stroke(); }
+}
+function limb(x1, y1, x2, y2, color, w = 8) {
+  ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
+  ctx.strokeStyle = DARK; ctx.lineWidth = w + 6; ctx.stroke();
+  ctx.strokeStyle = color; ctx.lineWidth = w; ctx.stroke();
+}
+function txt(s, x, y, size, fill = '#fff', stroke = DARK, align = 'center', weight = 900) {
+  ctx.font = `${weight} ${size}px ${F}`; ctx.textAlign = align; ctx.textBaseline = 'middle';
+  ctx.lineJoin = 'round';
+  if (stroke) { ctx.lineWidth = Math.max(4, size * 0.2); ctx.strokeStyle = stroke; ctx.strokeText(s, x, y); }
+  ctx.fillStyle = fill; ctx.fillText(s, x, y);
+}
+function popTxt(s, x, y, size, k, fill = '#fff', stroke = DARK, rot = 0) {
+  if (k <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); const sc = easeOutBack(clamp(k)); ctx.scale(sc, sc);
+  txt(s, 0, 0, size, fill, stroke); ctx.restore();
+}
+function bubble(x, y, s, tx, ty, k, size = 40) {
+  if (k <= 0) return;
+  ctx.save(); ctx.translate(tx, ty); const sc = easeOutBack(clamp(k)); ctx.scale(sc, sc); ctx.translate(-tx, -ty);
+  ctx.font = `800 ${size}px ${F}`;
+  const w = ctx.measureText(s).width + 50, h = size + 40;
+  ctx.beginPath(); ctx.moveTo(x - 24, y + h / 2 - 4); ctx.lineTo(tx, ty); ctx.lineTo(x + 24, y + h / 2 - 4); ctx.closePath();
+  ctx.fillStyle = '#fff'; ctx.fill(); ctx.lineWidth = 5; ctx.strokeStyle = DARK; ctx.stroke();
+  rrect(x - w / 2, y - h / 2, w, h, 26, '#fff', DARK, 5);
+  ctx.beginPath(); ctx.moveTo(x - 19, y + h / 2 - 3); ctx.lineTo(x + 19, y + h / 2 - 3); ctx.strokeStyle = '#fff'; ctx.lineWidth = 8; ctx.stroke();
+  txt(s, x, y + 1, size, DARK, null, 'center', 800);
+  ctx.restore();
+}
+function burst(x, y, r, s, k, fill = '#ffd60a', size = 70, rot = 0) {
+  if (k <= 0) return;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); const sc = easeOutBack(clamp(k)); ctx.scale(sc, sc);
+  ctx.beginPath();
+  for (let i = 0; i < 32; i++) { const a = i / 32 * TAU, rr = i % 2 ? r * 0.7 : r; ctx.lineTo(Math.cos(a) * rr, Math.sin(a) * rr * 0.7); }
+  ctx.closePath(); ctx.fillStyle = fill; ctx.fill(); ctx.lineWidth = 8; ctx.strokeStyle = '#c1121f'; ctx.stroke();
+  txt(s, 0, 2, size, '#c1121f', '#fff');
+  ctx.restore();
+}
+// Shorts-style caption: big bold lines, one word/phrase highlighted
+function caption(lines, y, k, size = 66, hl = '#ffd60a') {
+  if (k <= 0) return;
+  const sc = easeOutBack(clamp(k));
+  ctx.save(); ctx.translate(W / 2, y); ctx.scale(sc, sc);
+  lines.forEach((ln, i) => {
+    const yy = (i - (lines.length - 1) / 2) * size * 1.18;
+    const hot = ln.startsWith('*');
+    txt(hot ? ln.slice(1) : ln, 0, yy, size, hot ? hl : '#fff', DARK);
+  });
+  ctx.restore();
+}
+// Real-fact card at the top: date chip + headline
+function factCard(chip, lines, k, color = '#0b3d91') {
+  if (k <= 0) return;
+  const y = lerp(-260, 150, easeOut(k));
+  ctx.save();
+  const h = 70 + lines.length * 58;
+  rrect(60, y, 960, h, 26, 'rgba(10,14,30,.88)', color, 6);
+  ctx.font = `900 32px ${F}`; const cw = ctx.measureText(chip).width + 44;
+  rrect(540 - cw / 2, y - 26, cw, 52, 26, '#ffd60a', DARK, 4);
+  txt(chip, 540, y, 32, DARK, null);
+  lines.forEach((ln, i) => txt(ln, 540, y + 64 + i * 58, 44, '#fff', null, 'center', 800));
+  rrect(820, y + h - 22, 180, 40, 20, '#16a34a', DARK, 3); txt('REAL FACT', 910, y + h - 2, 22, '#fff', null);
+  ctx.restore();
+}
+
+// ---------- stadium ----------
+const crowd = []; {
+  const R = rng(21);
+  const cols = ['#ffdf00', '#16a34a', '#1e40af', '#ffffff', '#ffdf00', '#d62828', '#16a34a'];
+  const skins = ['#f1c27d', '#e0ac69', '#c68642', '#ffdbac', '#8d5524'];
+  for (let row = 0; row < 22; row++) {
+    const y = 470 + row * 24;
+    for (let x = -10; x < W + 10; x += 16 + R() * 5)
+      crowd.push({ x: x + (row % 2) * 8, y, c: cols[Math.floor(R() * cols.length)], sk: skins[Math.floor(R() * skins.length)], ph: R() * TAU, r: 6 + row * 0.2 });
+  }
+}
+function sky() {
+  const g = ctx.createLinearGradient(0, 0, 0, 470);
+  g.addColorStop(0, '#081230'); g.addColorStop(1, '#25447a');
+  ctx.fillStyle = g; ctx.fillRect(-300, -300, W + 600, 800);
+  const R = rng(3); ctx.fillStyle = 'rgba(255,255,255,.6)'; for (let i = 0; i < 70; i++) ctx.fillRect(R() * W, R() * 400, 2, 2);
+}
+function lights() {
+  for (const x of [110, 970]) {
+    ctx.fillStyle = '#555'; ctx.fillRect(x - 6, 120, 12, 330);
+    rrect(x - 55, 70, 110, 60, 5, '#ddd', DARK, 3);
+    const g = ctx.createRadialGradient(x, 100, 5, x, 100, 230);
+    g.addColorStop(0, 'rgba(255,255,220,.85)'); g.addColorStop(1, 'rgba(255,255,220,0)');
+    ctx.fillStyle = g; ctx.fillRect(x - 230, -130, 460, 460);
+  }
+}
+function stands(t, cheer = 0.6) {
+  ctx.fillStyle = '#2b2f3a'; ctx.fillRect(-300, 440, W + 600, 560);
+  for (let r = 0; r < 22; r++) { ctx.fillStyle = r % 2 ? '#323745' : '#2d313d'; ctx.fillRect(-300, 470 + r * 24 - 8, W + 600, 24); }
+  for (const p of crowd) {
+    const bob = -Math.abs(Math.sin(t * 9 + p.ph)) * 7 * cheer;
+    ctx.fillStyle = p.c; ctx.fillRect(p.x - p.r, p.y + bob, p.r * 2, p.r * 2 + 4);
+    ctx.beginPath(); ctx.arc(p.x, p.y - 2 + bob, p.r * 0.8, 0, TAU); ctx.fillStyle = p.sk; ctx.fill();
+  }
+  const banners = [['GOAT', 230, 560, '#ffd60a'], ['THANK YOU LEGENDS', 640, 700, '#ffffff'], ['ONE LAST DANCE?', 320, 860, '#ffd60a']];
+  for (const [s, x, y, c] of banners) {
+    ctx.save(); ctx.translate(x, y + Math.sin(t * 4 + x) * 4); ctx.rotate(Math.sin(x) * 0.05);
+    ctx.font = `900 30px ${F}`; const w = ctx.measureText(s).width + 34;
+    rrect(-w / 2, -24, w, 48, 4, c, DARK, 3); txt(s, 0, 0, 30, '#c1121f', null); ctx.restore();
+  }
+  const ads = ['RETIREMENT PLANS', 'KNEE CREAM', 'GOAT MILK', 'PENSION FC'];
+  for (let i = 0; i < 5; i++) {
+    const x = -100 + i * 300;
+    ctx.fillStyle = i % 2 ? '#0b3d91' : '#c1121f'; ctx.fillRect(x, 995, 300, 50);
+    txt(ads[i % ads.length], x + 150, 1020, 24, '#fff', null, 'center', 900);
+  }
+  ctx.fillStyle = '#111'; ctx.fillRect(-300, 1043, W + 600, 5);
+}
+function pitch() {
+  ctx.fillStyle = '#2f8f3c'; ctx.fillRect(-300, 1048, W + 600, H);
+  for (let i = -8; i <= 8; i += 2) {
+    const b0 = W / 2 + i * 170, b1 = b0 + 170, k = 0.5;
+    ctx.beginPath(); ctx.moveTo(W / 2 + (b0 - W / 2) * k, 1048); ctx.lineTo(W / 2 + (b1 - W / 2) * k, 1048);
+    ctx.lineTo(b1 + (b1 - W / 2) * 0.5, H + 300); ctx.lineTo(b0 + (b0 - W / 2) * 0.5, H + 300); ctx.closePath();
+    ctx.fillStyle = '#38a346'; ctx.fill();
+  }
+  ctx.strokeStyle = 'rgba(255,255,255,.8)'; ctx.lineWidth = 5;
+  ctx.beginPath(); ctx.moveTo(-300, 1070); ctx.lineTo(W + 300, 1070); ctx.stroke();
+  ctx.beginPath(); ctx.ellipse(W / 2, 1420, 360, 120, 0, 0, TAU); ctx.stroke();
+}
+function stadium(t, cheer) { sky(); lights(); stands(t, cheer); pitch(); }
+function dim(a) { ctx.fillStyle = `rgba(5,8,20,${a})`; ctx.fillRect(-300, -300, W + 600, H + 600); }
+
+// ---------- props ----------
+function ball(x, y, r, a) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate(a);
+  ell(0, 0, r, r, '#fff', DARK, Math.max(2, r * 0.15));
+  ctx.save(); ctx.beginPath(); ctx.arc(0, 0, r - 1, 0, TAU); ctx.clip();
+  const pent = (cx, cy, s) => { ctx.beginPath(); for (let i = 0; i < 5; i++) { const q = i / 5 * TAU - Math.PI / 2; ctx.lineTo(cx + Math.cos(q) * s, cy + Math.sin(q) * s); } ctx.fillStyle = '#1b1b1b'; ctx.fill(); };
+  pent(0, 0, r * 0.36);
+  for (let i = 0; i < 5; i++) { const q = i / 5 * TAU - Math.PI / 2; pent(Math.cos(q) * r * 0.95, Math.sin(q) * r * 0.95, r * 0.3); }
+  ctx.restore(); ctx.restore();
+}
+function sparkle(x, y, r, a, c = '#fff59d') { ctx.save(); ctx.translate(x, y); ctx.rotate(a); ctx.beginPath(); for (let i = 0; i < 8; i++) { const rr = i % 2 ? r * 0.3 : r; ctx.lineTo(Math.cos(i / 8 * TAU) * rr, Math.sin(i / 8 * TAU) * rr); } ctx.closePath(); ctx.fillStyle = c; ctx.fill(); ctx.restore(); }
+function dust(x, y, t, n = 8, spread = 120) { const R = rng(Math.floor(t * 30) + 5); for (let i = 0; i < n; i++) ell(x + (R() - 0.5) * spread, y - R() * 40, 8 + R() * 14, 6 + R() * 8, 'rgba(160,120,70,.55)', null); }
+function butterfly(x, y, t, s = 1) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  const f = Math.abs(Math.sin(t * 18));
+  for (const d of [-1, 1]) { ell(d * 22 * f, -10, 24 * f + 3, 20, '#ff7ac6', DARK, 3); ell(d * 16 * f, 14, 16 * f + 2, 13, '#ffb3e0', DARK, 3); }
+  ell(0, 0, 5, 20, DARK, null); ctx.restore();
+}
+function fork(x, y, a) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate(a);
+  rrect(-12, -420, 24, 300, 10, '#cfd4dc', DARK, 4);
+  rrect(-55, -130, 110, 40, 12, '#cfd4dc', DARK, 4);
+  for (let i = 0; i < 4; i++) rrect(-50 + i * 30, -100, 16, 110, 6, '#cfd4dc', DARK, 4);
+  ctx.restore();
+}
+function noodleBowl(x, y, s, t) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  for (let i = -1; i <= 1; i++) { ctx.strokeStyle = 'rgba(255,255,255,.6)'; ctx.lineWidth = 5; ctx.beginPath(); for (let j = 0; j < 12; j++) ctx.lineTo(i * 26 + Math.sin(j * 0.8 + t * 6 + i) * 8, -60 - j * 7); ctx.stroke(); }
+  ctx.beginPath(); ctx.moveTo(-70, -30); ctx.quadraticCurveTo(0, 90, 70, -30); ctx.closePath(); ctx.fillStyle = '#e63946'; ctx.fill(); ctx.lineWidth = 5; ctx.strokeStyle = DARK; ctx.stroke();
+  ell(0, -30, 70, 16, '#ffe27a', DARK, 4);
+  ctx.strokeStyle = '#e8b931'; ctx.lineWidth = 3; for (let i = 0; i < 5; i++) { ctx.beginPath(); ctx.arc(-40 + i * 20, -30, 10, 0, Math.PI); ctx.stroke(); }
+  ctx.restore();
+}
+function boot(x, y, a, s = 1) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate(a); ctx.scale(s, s);
+  ctx.beginPath(); ctx.moveTo(-40, -40); ctx.lineTo(-10, -40); ctx.lineTo(-6, -8); ctx.quadraticCurveTo(50, -6, 52, 12); ctx.lineTo(-44, 14); ctx.closePath();
+  ctx.fillStyle = '#ff5a1f'; ctx.fill(); ctx.lineWidth = 5; ctx.strokeStyle = DARK; ctx.stroke();
+  for (let i = 0; i < 4; i++) ctx.fillRect(-36 + i * 24, 14, 8, 8);
+  ctx.restore();
+}
+function stopwatch(x, y, r, a, label) {
+  rrect(x - 30, y - r - 60, 60, 50, 8, '#cfd4dc', DARK, 5);
+  ell(x, y, r + 22, r + 22, '#cfd4dc', DARK, 6);
+  ell(x, y, r, r, '#fffdf5', DARK, 5);
+  for (let i = 0; i < 60; i++) { const q = i / 60 * TAU; const l = i % 5 ? 12 : 26; ctx.strokeStyle = DARK; ctx.lineWidth = i % 5 ? 3 : 6; ctx.beginPath(); ctx.moveTo(x + Math.sin(q) * (r - 10), y - Math.cos(q) * (r - 10)); ctx.lineTo(x + Math.sin(q) * (r - 10 - l), y - Math.cos(q) * (r - 10 - l)); ctx.stroke(); }
+  limb(x, y, x + Math.sin(a) * (r - 40), y - Math.cos(a) * (r - 40), '#c1121f', 6);
+  ell(x, y, 12, 12, '#c1121f', DARK, 4);
+  rrect(x - 150, y + r * 0.3, 300, 84, 14, '#111', DARK, 4);
+  txt(label, x, y + r * 0.3 + 44, 62, '#7CFC7C', null, 'center', 900);
+}
+function drumstick(x, y, a, s = 1) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate(a); ctx.scale(s, s);
+  rrect(30, -10, 70, 20, 10, '#f5f0e1', DARK, 4); ell(105, -12, 13, 13, '#f5f0e1', DARK, 4); ell(105, 12, 13, 13, '#f5f0e1', DARK, 4);
+  ell(0, 0, 60, 46, '#c8741c', DARK, 5); ell(-15, -15, 18, 10, 'rgba(255,220,150,.6)', null);
+  ctx.restore();
+}
+function dog(x, y, t, rot) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot);
+  ell(0, 0, 70, 40, '#c68642'); ell(70, -30, 38, 34, '#c68642'); ell(58, -60, 12, 24, '#7a4a1a', DARK, 4, -0.4);
+  ell(80, -36, 6, 6, DARK, null); ell(104, -24, 9, 7, DARK, null);
+  for (const lx of [-40, -15, 20, 45]) limb(lx, 30, lx + Math.sin(t * 20 + lx) * 10, 60, '#c68642', 10);
+  limb(-68, -10, -100, -40 + Math.sin(t * 25) * 15, '#c68642', 8);
+  ctx.restore();
+}
+
+// ---------- caricature characters ----------
+// Neymar Jr. caricature: long face + pointy chin, bleached "spaghetti" hair with shaved sides,
+// stubble + thin mustache, diamond stud, neck tattoo, yellow #10 with green trim, blue shorts.
+function guy(x, y, base, o = {}) {
+  o = Object.assign({}, base, o);
+  const s = o.s || 1, R = o.R, bw = o.bw, P = o.p || 0, t = o.t || 0;
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * (o.flip ? -1 : 1), s);
+  ctx.translate(0, -80); ctx.rotate(o.rot || 0); ctx.translate(0, 80);
+  ctx.lineJoin = 'round';
+  const pose = o.pose || 'stand';
+  let L = [[-12, 0], [12, 0]];
+  if (pose === 'run') L = [[Math.sin(P) * 24, -Math.max(0, Math.cos(P)) * 16], [-Math.sin(P) * 24, -Math.max(0, -Math.cos(P)) * 16]];
+  else if (pose === 'kick') L = [[-16, 0], [50, -36]];
+  else if (pose === 'splay') L = [[-42, -18 + Math.sin(P) * 12], [42, -18 - Math.sin(P) * 12]];
+  else if (pose === 'spread') L = [[-30, 0], [30, 0]];
+  else if (pose === 'jump') L = [[-22, -20], [22, -20]];
+  const hipY = -48;
+  L.forEach(([fx, fy], i) => {
+    const hx = i ? 9 : -9;
+    limb(hx, hipY, fx, fy - 6, o.pants || o.skin, 9);
+    if (!o.pants) limb(lerp(hx, fx, 0.55), lerp(hipY, fy - 6, 0.55), fx, fy - 6, o.sock || '#fff', 10);
+    ell(fx + 7, fy - 3, 15, 8, o.pants ? '#3b2416' : (o.bootCol || '#111'), DARK, 3);
+  });
+  const top = hipY - 60;
+  rrect(-bw / 2, top, bw, 64, 16, o.col);
+  if (o.stripes) { ctx.save(); ctx.beginPath(); ctx.roundRect(-bw / 2, top, bw, 64, 16); ctx.clip(); ctx.fillStyle = o.stripes; for (let i = -3; i < 4; i++) ctx.fillRect(i * 16 - 4, top, 8, 70); ctx.restore(); rrect(-bw / 2, top, bw, 64, 16, null); }
+  if (o.collar) { ctx.beginPath(); ctx.moveTo(-14, top + 1); ctx.lineTo(0, top + 14); ctx.lineTo(14, top + 1); ctx.lineWidth = 6; ctx.strokeStyle = o.collar; ctx.stroke(); }
+  if (o.tie) { ctx.beginPath(); ctx.moveTo(-7, top + 2); ctx.lineTo(7, top + 2); ctx.lineTo(4, top + 44); ctx.lineTo(0, top + 52); ctx.lineTo(-4, top + 44); ctx.closePath(); ctx.fillStyle = '#d62828'; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = DARK; ctx.stroke(); }
+  rrect(-bw / 2 - 1, hipY - 8, bw + 2, 16, 5, o.shorts);
+  if (o.num) txt(o.num, 0, top + 34, 22, o.col2, null);
+  const shY = top + 10, sw = bw / 2 - 4;
+  const hand = (side) => {
+    const sx = side * sw, A = o.arms || 'swing';
+    switch (A) {
+      case 'up': return [side * (R + 22) + Math.sin(t * 14 + side) * 8, top - 40];
+      case 'flail': return [sx + Math.cos(P * 1.7 + side * 2) * 46, shY + Math.sin(P * 2.3 + side) * 46];
+      case 'hips': return [side * (bw / 2 + 6), top + 44];
+      case 'shrug': return [side * (bw / 2 + 34), top - 16];
+      case 'clutch': return [12 + side * 6, -26];
+      case 'mic': return side > 0 ? [bw / 2 + 24, top - 10] : [-bw / 2 - 6, top + 44];
+      case 'point': return side > 0 ? [bw / 2 + 30, top - 70] : [-bw / 2 - 8, top + 44];
+      default: return [sx + side * 6 + Math.sin(P) * side * 18, top + 52];
+    }
+  };
+  const drawArm = (side) => {
+    const [hx, hy] = hand(side); const sx = side * sw;
+    if (o.arms === 'hips' || o.arms === 'shrug') { const ex = side * (bw / 2 + 26), ey = top + 26; limb(sx, shY, ex, ey, o.skin, 8); limb(ex, ey, hx, hy, o.skin, 8); }
+    else limb(sx, shY, hx, hy, o.tie ? o.col : o.skin, 8);
+    limb(sx, shY, lerp(sx, hx, 0.3), lerp(shY, hy, 0.3), o.col, 12);
+    if (o.tattoo && side > 0) { ctx.strokeStyle = 'rgba(30,30,60,.55)'; ctx.lineWidth = 2; for (let i = 0; i < 3; i++) { ctx.beginPath(); ctx.arc(lerp(sx, hx, 0.6 + i * 0.1), lerp(shY, hy, 0.6 + i * 0.1), 3, 0, TAU); ctx.stroke(); } }
+    ell(hx, hy, 8, 8, o.skin, DARK, 3);
+    if (o.arms === 'mic' && side > 0) { limb(hx, hy, hx + 26, hy - 30, '#333', 6); ell(hx + 32, hy - 38, 14, 14, '#888', DARK, 4); }
+  };
+  drawArm(-1);
+  if (o.photo) {
+    const k = R * 2.4 / 585;
+    limb(0, top + 4, 0, top - 30, o.skin, 26);
+    ctx.save(); ctx.translate(0, top + 14); ctx.scale(k, k); ctx.rotate(o.headTilt || Math.sin(t * 2.3) * 0.03);
+    ctx.drawImage(NEY_IMG, -322, -824); photoFace(o, t);
+    ctx.restore();
+  } else if (o.detailed) {
+    const sc = R / 100, hy = top - 150 * sc;
+    limb(-8, top + 4, -8, hy + 120 * sc, o.skin, 22 * sc + 6); limb(8, top + 4, 8, hy + 120 * sc, o.skin, 22 * sc + 6);
+    if (o.tattoo) { ctx.strokeStyle = 'rgba(30,30,70,.55)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(10, top - 14, 6, 0, TAU); ctx.moveTo(-14, top - 8); ctx.lineTo(-4, top - 18); ctx.stroke(); }
+    ctx.save(); ctx.translate(0, hy); ctx.scale(sc, sc); neymarHead(o, t); ctx.restore();
+  } else {
+    const LF = o.longFace || 1.04;
+    const hy = top - R * LF + 10;
+    limb(0, top + 2, 0, hy + R * 0.6, o.skin, 16);
+    if (o.tattoo) { ctx.fillStyle = 'rgba(30,30,60,.5)'; ctx.font = `900 10px ${F}`; ctx.fillText('✦', -6, top - 6); }
+    ell(-R * 0.9, hy + 6, 12, 15, o.skin);
+    if (o.earring) { ell(-R * 0.92, hy + 22, 5, 5, '#e8f6ff', DARK, 2); sparkle(-R * 0.92, hy + 22, 9, t * 3, '#fff'); }
+    hair(o, R, hy, 'back', t, LF);
+    // head (long face with pointy chin for Neymar)
+    ctx.beginPath(); ctx.ellipse(0, hy, R, R * LF, 0, 0, TAU);
+    if (o.longFace) { ctx.moveTo(-R * 0.45, hy + R * LF * 0.85); ctx.quadraticCurveTo(R * 0.15, hy + R * LF * 1.25, R * 0.5, hy + R * LF * 0.85); }
+    ctx.fillStyle = o.skin; ctx.fill(); ctx.lineWidth = 4; ctx.strokeStyle = DARK; ctx.stroke();
+    if (o.longFace) { ctx.beginPath(); ctx.ellipse(0, hy, R - 2, R * LF - 2, 0, 0, TAU); ctx.fillStyle = o.skin; ctx.fill(); }
+    hair(o, R, hy, 'front', t, LF);
+    face(o, R, hy, t, LF);
+  }
+  drawArm(1);
+  ctx.restore();
+}
+
+// ---------- meme overlays on the real photo face (sprite coords, chin at 0,0) ----------
+function hair(o, R, hy, layer, t, LF) {
+  const top = hy - R * LF;
+  if (o.hair === 'messi' && layer === 'front') { // short dark-brown hair, side part, fringe swept to the side
+    ctx.save(); ctx.beginPath(); ctx.ellipse(0, hy, R, R * LF, 0, 0, TAU); ctx.clip();
+    ctx.fillStyle = '#3a2416'; ctx.beginPath(); ctx.moveTo(-R, hy - R * 0.1); ctx.quadraticCurveTo(-R * 0.9, top - 10, 0, top - 6); ctx.quadraticCurveTo(R * 0.9, top - 10, R, hy - R * 0.15);
+    ctx.lineTo(R * 0.7, hy - R * 0.45); ctx.quadraticCurveTo(R * 0.1, hy - R * 0.62, -R * 0.35, hy - R * 0.5); ctx.lineTo(-R * 0.75, hy - R * 0.3); ctx.closePath(); ctx.fill();
+    ctx.restore(); ctx.beginPath(); ctx.ellipse(0, hy, R, R * LF, 0, 0, TAU); ctx.lineWidth = 4; ctx.strokeStyle = DARK; ctx.stroke();
+    ctx.strokeStyle = '#5a3a24'; ctx.lineWidth = 3; for (let i = 0; i < 4; i++) { ctx.beginPath(); ctx.moveTo(-R * 0.5 + i * 18, top + 10); ctx.quadraticCurveTo(-R * 0.2 + i * 18, top + 22, R * 0.2 + i * 14, hy - R * 0.55); ctx.stroke(); }
+  }
+  if (o.hair === 'cr7') { // tall slick quiff, shaved sides
+    if (layer === 'back') { ctx.beginPath(); ctx.moveTo(-R * 0.75, hy - R * 0.55); ctx.quadraticCurveTo(-R * 0.7, top - R * 0.55, R * 0.1, top - R * 0.5); ctx.quadraticCurveTo(R * 0.85, top - R * 0.4, R * 0.8, hy - R * 0.6); ctx.closePath();
+      ctx.fillStyle = '#1c130d'; ctx.fill(); ctx.lineWidth = 4; ctx.strokeStyle = DARK; ctx.stroke(); ctx.strokeStyle = '#4a3324'; ctx.lineWidth = 3;
+      for (let i = 0; i < 5; i++) { ctx.beginPath(); ctx.moveTo(-R * 0.55 + i * 22, hy - R * 0.62); ctx.quadraticCurveTo(-R * 0.5 + i * 24, top - R * 0.3, R * 0.2 + i * 10, top - R * 0.45); ctx.stroke(); } }
+    else { ctx.save(); ctx.beginPath(); ctx.ellipse(0, hy, R, R * LF, 0, 0, TAU); ctx.clip(); ctx.fillStyle = 'rgba(30,20,14,.55)'; ctx.fillRect(-R, top, R * 0.32, R * 0.9); ctx.fillRect(R * 0.68, top, R * 0.4, R * 0.9); ctx.fillStyle = '#1c130d'; ctx.beginPath(); ctx.ellipse(0, top + R * 0.15, R * 0.8, R * 0.32, 0, 0, TAU); ctx.fill(); ctx.restore();
+      ctx.beginPath(); ctx.ellipse(0, hy, R, R * LF, 0, 0, TAU); ctx.lineWidth = 4; ctx.strokeStyle = DARK; ctx.stroke(); }
+  }
+  if (o.hair === 'grey' && layer === 'front') { ctx.save(); ctx.beginPath(); ctx.ellipse(0, hy, R, R * LF, 0, 0, TAU); ctx.clip(); ctx.fillStyle = '#d6d6d6'; ctx.fillRect(-R, top - 4, R * 2, R * 0.45); ctx.restore(); ctx.beginPath(); ctx.ellipse(0, hy, R, R * LF, 0, 0, TAU); ctx.lineWidth = 4; ctx.strokeStyle = DARK; ctx.stroke(); }
+  if (o.hair === 'noodle') {
+    if (layer === 'back') {
+      // big bleached "spaghetti" mop
+      const R2 = rng(77);
+      for (let pass = 0; pass < 2; pass++) for (let i = 0; i < 26; i++) {
+        const sx = lerp(-R * 0.55, R * 0.65, R2()), sy = top + R * 0.25 + R2() * 10;
+        const len = 70 + R2() * 70, dir = (R2() - 0.4) * 1.6, ph = R2() * 6;
+        ctx.beginPath(); ctx.moveTo(sx, sy);
+        for (let j = 1; j <= 14; j++) { const k = j / 14; ctx.lineTo(sx + dir * k * len * 0.6 + Math.sin(k * 12 + ph + t * 4) * 8, sy - k * len + Math.cos(k * 10 + ph) * 6); }
+        ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+        if (pass === 0) { ctx.strokeStyle = DARK; ctx.lineWidth = 12; } else { ctx.strokeStyle = i % 3 ? '#ffe27a' : '#fff0a8'; ctx.lineWidth = 6; }
+        ctx.stroke();
+      }
+    } else {
+      // shaved dark sides
+      ctx.save(); ctx.beginPath(); ctx.ellipse(0, hy, R, R * LF, 0, 0, TAU); ctx.clip();
+      ctx.fillStyle = 'rgba(40,28,20,.55)'; ctx.fillRect(-R, top - 10, R * 0.42, R * 0.9); ctx.fillRect(R * 0.68, top - 10, R * 0.4, R * 0.75);
+      ctx.fillStyle = '#ffe27a'; ctx.beginPath(); ctx.ellipse(R * 0.06, top + R * 0.12, R * 0.66, R * 0.36, 0, 0, TAU); ctx.fill();
+      ctx.restore(); ctx.beginPath(); ctx.ellipse(0, hy, R, R * LF, 0, 0, TAU); ctx.lineWidth = 4; ctx.strokeStyle = DARK; ctx.stroke();
+      ctx.strokeStyle = '#e8b931'; ctx.lineWidth = 3;
+      for (let i = 0; i < 6; i++) { ctx.beginPath(); ctx.moveTo(-R * 0.4 + i * 18, top + R * 0.05); for (let j = 1; j < 6; j++) ctx.lineTo(-R * 0.4 + i * 18 + Math.sin(j * 1.5 + i) * 5, top + R * 0.05 + j * 6); ctx.stroke(); }
+    }
+  }
+  if (o.hair === 'slick' && layer === 'front') { ctx.save(); ctx.beginPath(); ctx.ellipse(0, hy, R, R * LF, 0, 0, TAU); ctx.clip(); ctx.fillStyle = '#1e140c'; ctx.beginPath(); ctx.ellipse(-R * 0.2, top + R * 0.1, R * 1.1, R * 0.5, 0.1, 0, TAU); ctx.fill(); ctx.restore(); ctx.beginPath(); ctx.ellipse(0, hy, R, R * LF, 0, 0, TAU); ctx.lineWidth = 4; ctx.strokeStyle = DARK; ctx.stroke(); }
+  if (o.hair === 'mop' && layer === 'back') for (let i = 0; i < 11; i++) { const a = Math.PI + i / 10 * Math.PI; ell(Math.cos(a) * R * 0.95, hy + Math.sin(a) * R * 0.95, 18, 18, '#6b3d1f', DARK, 3); }
+  if (o.hair === 'bun') { if (layer === 'back') ell(-R * 0.2, top - 10, R * 0.4, R * 0.35, '#d0d0d0'); else { ctx.save(); ctx.beginPath(); ctx.ellipse(0, hy, R, R * LF, 0, 0, TAU); ctx.clip(); ctx.fillStyle = '#d0d0d0'; ctx.fillRect(-R, top - 5, R * 2, R * 0.55); ctx.restore(); ctx.beginPath(); ctx.ellipse(0, hy, R, R * LF, 0, 0, TAU); ctx.lineWidth = 4; ctx.strokeStyle = DARK; ctx.stroke(); } }
+}
+function face(o, R, hy, t, LF) {
+  const fx = R * 0.14, f = o.face || 'smug';
+  const ex1 = fx - R * 0.33, ex2 = fx + R * 0.33, ey = hy - R * 0.1, er = R * 0.2;
+  const drawEye = (x, kind) => {
+    if (kind === 'x') { ctx.strokeStyle = DARK; ctx.lineWidth = 5; ctx.lineCap = 'round'; const d = x < fx ? 1 : -1; ctx.beginPath(); ctx.moveTo(x - d * 12, ey - 10); ctx.lineTo(x + d * 8, ey); ctx.lineTo(x - d * 12, ey + 10); ctx.stroke(); return; }
+    if (kind === 'arc') { ctx.strokeStyle = DARK; ctx.lineWidth = 5; ctx.beginPath(); ctx.arc(x, ey + 6, 12, Math.PI * 1.1, Math.PI * 1.9); ctx.stroke(); return; }
+    if (kind === 'line') { ctx.strokeStyle = DARK; ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(x - 12, ey); ctx.lineTo(x + 12, ey); ctx.stroke(); return; }
+    const big = kind === 'big' ? 1.35 : 1, look = o.look ?? [5, 0];
+    ell(x, ey, er * big, er * big * 1.15, '#fff', DARK, 3);
+    ell(x + look[0], ey + look[1], er * (kind === 'big' ? 0.3 : 0.45), er * (kind === 'big' ? 0.3 : 0.45), DARK, null);
+    if (kind === 'lid') { ctx.fillStyle = o.skin; ctx.beginPath(); ctx.ellipse(x, ey, er + 2, er * 1.2 + 2, 0, Math.PI, TAU); ctx.fill(); ctx.strokeStyle = DARK; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(x - er, ey); ctx.lineTo(x + er, ey); ctx.stroke(); }
+  };
+  const eyes = { pain: ['x', 'x'], happy: ['arc', 'arc'], peek: ['x', 'n'], smug: ['lid', 'lid'], shock: ['big', 'big'], worried: ['big', 'big'], angry: ['n', 'n'], calm: ['n', 'n'] }[f] || ['n', 'n'];
+  drawEye(ex1, eyes[0]); drawEye(ex2, eyes[1]);
+  if (o.glasses) { ctx.strokeStyle = DARK; ctx.lineWidth = 4; ell(ex1, ey, er * 1.5, er * 1.4, null, DARK, 4); ell(ex2, ey, er * 1.5, er * 1.4, null, DARK, 4); }
+  ctx.strokeStyle = DARK; ctx.lineCap = 'round'; ctx.lineWidth = 6;
+  const by = ey - er * 1.7;
+  ctx.beginPath();
+  if (f === 'angry') { ctx.moveTo(ex1 - 14, by - 8); ctx.lineTo(ex1 + 12, by + 6); ctx.moveTo(ex2 + 14, by - 8); ctx.lineTo(ex2 - 12, by + 6); }
+  else if (f === 'pain' || f === 'worried') { ctx.moveTo(ex1 - 14, by + 6); ctx.lineTo(ex1 + 12, by - 8); ctx.moveTo(ex2 + 14, by + 6); ctx.lineTo(ex2 - 12, by - 8); }
+  else if (f === 'smug' || f === 'peek') { ctx.moveTo(ex1 - 14, by + 2); ctx.lineTo(ex1 + 12, by + 2); ctx.moveTo(ex2 - 12, by - 6); ctx.quadraticCurveTo(ex2, by - 16, ex2 + 14, by - 6); }
+  else { ctx.moveTo(ex1 - 12, by - 4); ctx.lineTo(ex1 + 12, by - 6); ctx.moveTo(ex2 - 12, by - 6); ctx.lineTo(ex2 + 12, by - 4); }
+  ctx.stroke();
+  if (f === 'pain' || f === 'happy') { ell(ex1 - 6, hy + R * 0.25, 12, 7, 'rgba(255,90,90,.45)', null); ell(ex2 + 8, hy + R * 0.25, 12, 7, 'rgba(255,90,90,.45)', null); }
+  // stubble along the jaw
+  if (o.stubble) { ctx.save(); ctx.beginPath(); ctx.ellipse(0, hy, R - 2, R * LF - 2, 0, 0, TAU); ctx.clip(); ctx.fillStyle = 'rgba(70,45,30,.28)'; ctx.beginPath(); ctx.ellipse(fx * 0.4, hy + R * LF * 0.95, R * 0.95, R * 0.55, 0, 0, TAU); ctx.fill(); ctx.restore(); }
+  if (o.fullBeard) { ctx.save(); ctx.beginPath(); ctx.ellipse(0, hy, R, R * LF, 0, 0, TAU); ctx.clip(); ctx.fillStyle = '#2a1a10'; ctx.beginPath(); ctx.ellipse(fx * 0.5, hy + R * 0.75, R * 0.95, R * 0.55, 0, 0, TAU); ctx.fill(); ctx.restore(); }
+  const my = hy + R * 0.55;
+  if (f === 'pain') { ell(fx + 4, my, R * 0.36, R * 0.3 + Math.sin(t * 30) * 3, '#7a0a0a'); ell(fx + 4, my + R * 0.16, R * 0.2, R * 0.1, '#ff6b6b', null); }
+  else if (f === 'happy' || (f === 'smug' && o.bigTeeth)) {
+    const w = f === 'happy' ? 0.45 : 0.36;
+    ctx.beginPath(); ctx.moveTo(fx - R * w, my - 8); ctx.quadraticCurveTo(fx, my + R * (f === 'happy' ? 0.5 : 0.3), fx + R * w, my - 8); ctx.closePath(); ctx.fillStyle = '#fff'; ctx.fill(); ctx.lineWidth = 4; ctx.strokeStyle = DARK; ctx.stroke();
+    ctx.lineWidth = 2; for (let i = 1; i < 6; i++) { const xx = fx - R * w + i * R * w * 2 / 6; ctx.beginPath(); ctx.moveTo(xx, my - 7); ctx.lineTo(xx, my + 4); ctx.stroke(); }
+  }
+  else if (f === 'angry') { rrect(fx - R * 0.35, my - 10, R * 0.7, 22, 6, '#fff'); }
+  else if (f === 'shock') ell(fx + 2, my + 4, 10, 14, '#7a0a0a');
+  else if (f === 'worried') { ctx.beginPath(); ctx.moveTo(fx - 22, my); for (let i = 0; i <= 8; i++) ctx.lineTo(fx - 22 + i * 5.5, my + (i % 2 ? -5 : 5)); ctx.lineWidth = 4; ctx.stroke(); }
+  else if (f === 'peek') { ell(fx + 4, my, R * 0.2, R * 0.12, '#7a0a0a'); }
+  else { ctx.beginPath(); ctx.moveTo(fx - R * 0.2, my + 4); ctx.quadraticCurveTo(fx + R * 0.15, my + 10, fx + R * 0.38, my - 8); ctx.lineWidth = 5; ctx.stroke(); }
+  // nose
+  ell(fx + R * 0.12, hy + R * 0.2, R * 0.15, R * 0.2, o.skin, DARK, 4);
+  if (o.thinStache) { ctx.strokeStyle = 'rgba(50,30,20,.8)'; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(fx - R * 0.22, my - 14); ctx.quadraticCurveTo(fx + R * 0.1, my - 22, fx + R * 0.4, my - 14); ctx.stroke(); }
+  if (o.tears) {
+    for (const [x, d] of [[ex1, -1], [ex2, 1]]) for (let i = 0; i < 9; i++) {
+      const k = ((t * 3 + i / 9) % 1);
+      ell(x + d * k * 120, ey - k * 70 + k * k * 170, 6, 8, '#5ec8ff', '#1e6fb3', 2);
+    }
+  }
+}
+function nameTag(x, y, s, k) { if (k <= 0) return; ctx.save(); ctx.translate(x, y); const sc = easeOutBack(clamp(k)); ctx.scale(sc, sc); ctx.font = `900 34px ${F}`; const w = ctx.measureText(s).width + 40; rrect(-w / 2, -28, w, 56, 10, '#ffdf00', DARK, 4); txt(s, 0, 0, 34, '#0a5c2a', null); ctx.restore(); }
+function camera(cx, cy, z, shake = 0, t = 0) { ctx.translate(W / 2 + Math.sin(t * 90) * shake, H / 2 + Math.cos(t * 77) * shake); ctx.scale(z, z); ctx.translate(-cx, -cy); }
+// ================= CHARACTERS =================
+const MESSI = { col: '#ffffff', stripes: '#75aadb', col2: '#1b2a4a', num: '10', hair: 'messi', R: 66, bw: 46, skin: '#e8b48e', shorts: '#1b1b1b', sock: '#ffffff', fullBeard: true, collar: '#1b2a4a' };
+const CR7 = { col: '#d0101a', col2: '#ffffff', num: '7', hair: 'cr7', R: 64, bw: 58, skin: '#e0a77e', shorts: '#0b6e35', sock: '#d0101a', collar: '#0b6e35', bigTeeth: true, longFace: 1.12 };
+const COACH = { col: '#2b2b33', col2: '#fff', num: '', hair: 'grey', R: 56, bw: 62, skin: '#f0c8a0', shorts: '#2b2b33', pants: '#2b2b33', tie: true, glasses: true };
+const OLDIE = { col: '#7c6f64', col2: '#fff', num: '', hair: 'grey', R: 46, bw: 50, skin: '#efc6a2', shorts: '#4b4038', pants: '#4b4038', glasses: true };
+const MS = 1.85, RS = 2.15;   // Messi is shorter
+
+function tag(x, y, s, bg, fg = '#fff') { ctx.font = `900 40px ${F}`; const w = ctx.measureText(s).width + 44; rrect(x - w / 2, y - 32, w, 64, 14, bg, DARK, 5); txt(s, x, y + 1, 40, fg, null); ctx.beginPath(); ctx.moveTo(x - 12, y + 32); ctx.lineTo(x, y + 50); ctx.lineTo(x + 12, y + 32); ctx.fillStyle = bg; ctx.fill(); ctx.lineWidth = 4; ctx.strokeStyle = DARK; ctx.stroke(); }
+const messiTag = (x, y) => tag(x, y, 'MESSI', '#75aadb', '#fff');
+const cr7Tag = (x, y) => tag(x, y, 'RONALDO', '#d0101a', '#fff');
+function headTop(y, s, R) { return y - s * (108 + R * 2.3); }
+
+// ================= PROPS =================
+function jersey(x, y, col, stripes, num, numCol, s = 1, rot = 0) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s);
+  const p = [[-60, -80], [-20, -90], [0, -78], [20, -90], [60, -80], [100, -40], [76, -14], [56, -30], [56, 90], [-56, 90], [-56, -30], [-76, -14], [-100, -40]];
+  ctx.beginPath(); p.forEach((q, i) => ctx[i ? 'lineTo' : 'moveTo'](q[0], q[1])); ctx.closePath(); ctx.fillStyle = col; ctx.fill();
+  if (stripes) { ctx.save(); ctx.clip(); ctx.fillStyle = stripes; for (let i = -4; i < 5; i++) ctx.fillRect(i * 26 - 7, -100, 14, 200); ctx.restore(); ctx.beginPath(); p.forEach((q, i) => ctx[i ? 'lineTo' : 'moveTo'](q[0], q[1])); ctx.closePath(); }
+  ctx.lineWidth = 5; ctx.strokeStyle = DARK; ctx.stroke();
+  txt(num, 0, 20, num.length > 2 ? 46 : 70, numCol, DARK); ctx.restore();
+}
+function hanger(x, y) { ctx.strokeStyle = '#555'; ctx.lineWidth = 6; ctx.beginPath(); ctx.arc(x, y - 112, 14, Math.PI, Math.PI * 2.4); ctx.stroke(); ctx.beginPath(); ctx.moveTo(x - 70, y - 82); ctx.lineTo(x, y - 100); ctx.lineTo(x + 70, y - 82); ctx.stroke(); }
+function paper(x, y, title, stamp, stampCol, k, rot = 0, stampK = 1) {
+  if (k <= 0) return; ctx.save(); ctx.translate(x, y); ctx.rotate(rot); const sc = easeOutBack(clamp(k)); ctx.scale(sc, sc);
+  rrect(-170, -220, 340, 440, 10, '#fffdf4', DARK, 5);
+  txt(title, 0, -170, 34, DARK, null); for (let i = 0; i < 7; i++) { ctx.fillStyle = '#c9c4b5'; ctx.fillRect(-130, -110 + i * 34, 260 - (i % 3) * 40, 10); }
+  ctx.strokeStyle = '#1f3a8a'; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(-120, 160); ctx.bezierCurveTo(-80, 120, -40, 190, 0, 150); ctx.bezierCurveTo(30, 120, 60, 180, 110, 145); ctx.stroke();
+  if (stamp && stampK > 0) { ctx.save(); ctx.rotate(-0.25); const s2 = lerp(2.2, 1, easeOut(clamp(stampK))); ctx.scale(s2, s2); ctx.globalAlpha = clamp(stampK * 2); ctx.font = `900 40px ${F}`; const w = ctx.measureText(stamp).width + 36; ctx.strokeStyle = stampCol; ctx.lineWidth = 7; ctx.strokeRect(-w / 2, -36, w, 72); txt(stamp, 0, 2, 40, stampCol, null); ctx.restore(); }
+  ctx.restore();
+}
+function suitcase(x, y, s = 1) { ctx.save(); ctx.translate(x, y); ctx.scale(s, s); rrect(-70, -100, 140, 110, 12, '#8a5a2b', DARK, 5); rrect(-24, -124, 48, 30, 8, null, DARK, 7); ctx.fillStyle = '#5c3a1a'; ctx.fillRect(-70, -60, 140, 10); ell(-40, 14, 10, 10, '#333', DARK, 3); ell(40, 14, 10, 10, '#333', DARK, 3); ctx.restore(); }
+function receipt(x, y, s, k, paid) {
+  if (k <= 0) return; ctx.save(); ctx.translate(x, y); ctx.rotate(Math.sin(k * 9) * 0.06); const sc = easeOutBack(clamp(k)) * s; ctx.scale(sc, sc);
+  ctx.beginPath(); ctx.moveTo(-120, -170); ctx.lineTo(120, -170); for (let i = 0; i <= 12; i++) ctx.lineTo(120 - i * 20, 170 + (i % 2 ? 14 : 0)); ctx.closePath(); ctx.fillStyle = '#fffef6'; ctx.fill(); ctx.lineWidth = 5; ctx.strokeStyle = DARK; ctx.stroke();
+  txt('FINE', 0, -120, 46, DARK, null); ctx.fillStyle = '#bbb'; for (let i = 0; i < 3; i++) ctx.fillRect(-90, -70 + i * 26, 180, 8);
+  txt('€255', 0, 70, 84, '#c1121f', null);
+  if (paid) { ctx.save(); ctx.rotate(-0.3); ctx.globalAlpha = clamp(paid * 2); ctx.strokeStyle = '#16a34a'; ctx.lineWidth = 8; ctx.strokeRect(-110, -40, 220, 84); txt('PAID', 0, 3, 64, '#16a34a', null); ctx.restore(); }
+  ctx.restore();
+}
+function bill(x, y, a, s = 1) { ctx.save(); ctx.translate(x, y); ctx.rotate(a); ctx.scale(s, s); rrect(-50, -24, 100, 48, 4, '#4caf50', '#1b5e20', 3); ell(0, 0, 14, 14, '#81c784', '#1b5e20', 2); txt('€', 0, 1, 20, '#1b5e20', null); ctx.restore(); }
+function bench(x, y) { rrect(x - 330, y - 30, 660, 40, 8, '#8d5a2b', DARK, 5); rrect(x - 330, y - 150, 660, 30, 8, '#8d5a2b', DARK, 5); for (const dx of [-290, 290]) { ctx.fillStyle = '#444'; ctx.fillRect(x + dx - 10, y + 10, 20, 90); ctx.fillRect(x + dx - 10, y - 130, 20, 110); } }
+function cloud(x, y, t) { ctx.fillStyle = '#7d8590'; for (const [dx, dy, r] of [[-90, 10, 60], [-20, -20, 80], [70, 5, 65], [130, 25, 45], [-150, 30, 40]]) { ctx.beginPath(); ctx.arc(x + dx, y + dy, r, 0, TAU); ctx.fill(); }
+  ctx.strokeStyle = '#4ea8ff'; ctx.lineWidth = 5; for (let i = 0; i < 18; i++) { const xx = x - 170 + (i * 23) % 340, yy = y + 70 + ((t * 600 + i * 97) % 520); ctx.beginPath(); ctx.moveTo(xx, yy); ctx.lineTo(xx - 6, yy + 26); ctx.stroke(); } }
+function mate(x, y) { ell(x, y, 26, 30, '#7b4a1e', DARK, 4); rrect(x - 26, y - 34, 52, 12, 4, '#c0a060', DARK, 3); ctx.strokeStyle = '#c0c0c0'; ctx.lineWidth = 6; ctx.beginPath(); ctx.moveTo(x + 6, y - 30); ctx.lineTo(x + 30, y - 90); ctx.stroke(); }
+function goat(x, y, s, flip, label, col, t) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s * (flip ? -1 : 1), s);
+  for (const lx of [-50, -20, 30, 55]) limb(lx, 20, lx + Math.sin(t * 12 + lx) * 6, 90, '#f2efe6', 12);
+  ell(0, 0, 90, 50, '#f2efe6', DARK, 5); ell(95, -40, 46, 38, '#f2efe6', DARK, 5);
+  ctx.strokeStyle = DARK; ctx.lineWidth = 8; ctx.beginPath(); ctx.moveTo(85, -70); ctx.quadraticCurveTo(70, -130, 30, -120); ctx.stroke(); ctx.beginPath(); ctx.moveTo(108, -72); ctx.quadraticCurveTo(110, -135, 70, -135); ctx.stroke();
+  ell(112, -46, 7, 7, DARK, null); ctx.beginPath(); ctx.moveTo(120, -5); ctx.lineTo(110, 30); ctx.lineTo(128, 0); ctx.fillStyle = '#d8d2c2'; ctx.fill();
+  ctx.save(); ctx.scale(flip ? -1 : 1, 1); rrect(-60, -24, 120, 48, 10, col, DARK, 4); txt(label, 0, 2, 34, '#fff', null); ctx.restore();
+  ctx.restore();
+}
+function room() { ctx.fillStyle = '#e9dcc6'; ctx.fillRect(0, 0, W, H); ctx.fillStyle = '#d8c7aa'; for (let i = 0; i < 12; i++) ctx.fillRect(i * 100, 0, 50, 1150); ctx.fillStyle = '#9c7a52'; ctx.fillRect(0, 1150, W, H); rrect(390, 300, 300, 220, 10, '#cfe3f5', DARK, 6); ctx.strokeStyle = DARK; ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(540, 300); ctx.lineTo(540, 520); ctx.moveTo(390, 410); ctx.lineTo(690, 410); ctx.stroke(); }
+function desk(y) { rrect(120, y, 840, 70, 10, '#7a4f2a', DARK, 6); ctx.fillStyle = '#5e3c1f'; ctx.fillRect(160, y + 70, 60, 330); ctx.fillRect(860, y + 70, 60, 330); }
+function topText(s, k, y = 250, size = 76, col = '#fff') { if (k <= 0) return; const sc = easeOutBack(clamp(k)); ctx.save(); ctx.translate(W / 2, y); ctx.scale(sc, sc); txt(s, 0, 0, size, col, DARK); ctx.restore(); }
+
+// ================= SCENES =================
+// S1 (0–3.5) both hang up their national-team shirts
+function s1(u) {
+  stadium(u, 0.7);
+  rrect(140, 1150, 800, 22, 8, '#888', DARK, 4); txt('NATIONAL TEAM', 540, 1120, 40, '#fff', DARK);
+  const k = ease(u / 1.6);
+  hanger(380, 1180 + 120); jersey(380, lerp(1500, 1300, k), '#ffffff', '#75aadb', '10', '#1b2a4a', 1.1);
+  hanger(700, 1180 + 120); jersey(700, lerp(1500, 1300, k), '#d0101a', null, '7', '#ffffff', 1.1);
+  guy(250, 1720, MESSI, { s: MS, t: u, face: u > 2 ? 'calm' : 'smug', arms: u < 1.6 ? 'up' : 'swing', look: [6, -4] });
+  guy(850, 1720, CR7, { s: RS, flip: true, t: u, face: u > 2 ? 'calm' : 'smug', arms: u < 1.6 ? 'up' : 'hips', look: [6, -4] });
+  messiTag(250, headTop(1720, MS, 66) - 50); cr7Tag(850, headTop(1720, RS, 64) - 70);
+  topText('2026:', (u - 0.2) / 0.3, 230, 80, '#ffd60a'); topText('BOTH GOATs QUIT', (u - 0.5) / 0.3, 340, 92);
+}
+// S2 (3.5–9) Messi signs "Retirement v2.0"
+function s2(u) {
+  room(); 
+  guy(540, 1560, MESSI, { s: 2.3, t: u, face: u > 4 ? 'peek' : (u > 2 ? 'shock' : 'calm'), arms: u < 1.6 ? 'swing' : 'shrug', look: [4, 8] });
+  desk(1420);
+  paper(250, 700, 'RETIREMENT', u > 1.8 ? 'CANCELLED' : null, '#c1121f', (u - 1.4) / 0.3, -0.12, (u - 1.9) / 0.25);
+  if (u > 1.4) txt('2016', 250, 860, 44, '#c1121f', null);
+  paper(830, 720, 'RETIREMENT v2.0', u > 3.2 ? 'FINAL. REALLY.' : null, '#1f8a3a', (u - 2.6) / 0.3, 0.08, (u - 3.2) / 0.25);
+  messiTag(540, 1560 - 2.3 * 260 - 60);
+  topText('Retirement v2.0', (u - 2.8) / 0.3, 200, 74, '#ffd60a');
+  if (u > 1.9 && u < 3) bubble(540, 420, 'Wait... I did this before?', 540, 520, (u - 1.9) / 0.2, 38);
+}
+// S3 (9–14.5) Ronaldo's penalty + SIU; very old fans clap slowly
+function s3(u) {
+  stadium(u, 0.2);
+  // goal
+  ctx.strokeStyle = '#fff'; ctx.lineWidth = 14; ctx.strokeRect(700, 1080, 340, 260); ctx.strokeStyle = 'rgba(255,255,255,.45)'; ctx.lineWidth = 2; for (let i = 0; i < 14; i++) { ctx.beginPath(); ctx.moveTo(700 + i * 25, 1080); ctx.lineTo(700 + i * 25, 1340); ctx.stroke(); } for (let j = 0; j < 10; j++) { ctx.beginPath(); ctx.moveTo(700, 1080 + j * 26); ctx.lineTo(1040, 1080 + j * 26); ctx.stroke(); }
+  let bx = 520, by = 1520; if (u > 1) { const k = clamp((u - 1) / 0.35); bx = lerp(520, 880, k); by = lerp(1520, 1200, k) - Math.sin(k * Math.PI) * 120; }
+  const siu = clamp((u - 1.6) / 0.6), land = u > 2.2;
+  const ry = land ? 1640 : 1640 - Math.sin(siu * Math.PI) * 260;
+  guy(lerp(400, 360, siu), ry, CR7, { s: RS, t: u, pose: u < 1.0 ? 'run' : u < 1.4 ? 'kick' : land ? 'spread' : 'jump', p: u * 12, arms: land ? 'shrug' : 'swing', face: land ? 'happy' : 'smug', rot: (u > 1.6 && !land) ? siu * Math.PI * 2 : 0 });
+  ball(bx, by, 26, u * 10);
+  cr7Tag(380, headTop(ry, RS, 64) - 70);
+  if (land) burst(540, 820, 230, 'SIUUUU!', (u - 2.2) / 0.25, '#ffd60a', 80, -0.05);
+  // ancient fans with canes, slow clap
+  for (let i = 0; i < 5; i++) { const x = 120 + i * 210, cl = Math.abs(Math.sin(u * 2 + i)) ; guy(x, 2010, OLDIE, { s: 1.15, t: u, arms: cl > 0.7 ? 'up' : 'swing', face: 'sleep', look: [0, 0] }); ctx.strokeStyle = '#6b4a2b'; ctx.lineWidth = 8; ctx.beginPath(); ctx.moveTo(x + 70, 1900); ctx.lineTo(x + 80, 2010); ctx.stroke(); }
+  if (u > 2.6) { topText('1st World Cup knockout goal', (u - 2.6) / 0.3, 220, 60, '#ffd60a'); topText('...after 6 World Cups', (u - 3.3) / 0.3, 310, 64); }
+  if (u > 3) { ctx.save(); ctx.globalAlpha = 0.9; txt('clap... clap...', 540, 1660, 46, '#fff', DARK, 'center', 800); ctx.restore(); }
+}
+// S4 (14.5–19.5) Ronaldo walks out with a suitcase; coach chases with the fine
+function s4(u) {
+  stadium(u, 0.3); ctx.fillStyle = 'rgba(0,0,0,.25)'; ctx.fillRect(0, 0, W, H);
+  rrect(60, 980, 300, 70, 10, '#1f2937', DARK, 4); txt('TEAM CAMP', 210, 1015, 36, '#fff', null);
+  const rx = lerp(380, 1300, ease((u - 0.3) / 3.6));
+  guy(rx, 1700, CR7, { s: RS, t: u, pose: 'run', p: u * 9, arms: 'swing', face: 'angry', look: [8, 0] });
+  suitcase(rx + 110, 1640, 1.1);
+  if (rx < 1150) cr7Tag(rx, headTop(1700, RS, 64) - 70);
+  const cx = lerp(-200, 900, ease((u - 1.2) / 3.4));
+  if (u > 1.2) { guy(cx, 1720, COACH, { s: 1.6, t: u, pose: 'run', p: u * 14, arms: 'point', face: 'angry', look: [8, 0] }); receipt(cx + 150, 1290, 0.9, (u - 1.4) / 0.3); tag(cx, 1180, 'COACH', '#374151'); }
+  topText('Walked out of camp', (u - 0.2) / 0.3, 220, 66, '#fff'); topText('FINE: €255', (u - 1.6) / 0.3, 330, 96, '#ffd60a');
+}
+// S5 (19.5–23.5) pays from a wallet that explodes with cash
+function s5(u) {
+  stadium(u, 0.5);
+  guy(330, 1720, CR7, { s: RS, flip: false, t: u, arms: 'mic', face: 'smug', look: [8, 0] });
+  cr7Tag(330, headTop(1720, RS, 64) - 70);
+  const blow = clamp((u - 1.0) / 1.5);
+  guy(lerp(800, 960, easeOut(blow)), 1720, COACH, { s: 1.6, flip: true, t: u, rot: easeOut(blow) * 0.6, face: 'shock', arms: 'flail', p: u * 9 });
+  rrect(400, 1330, 120, 80, 10, '#3b2a1e', DARK, 5);                 // wallet
+  if (u > 0.8) { const R = rng(4); for (let i = 0; i < 40; i++) { const k = clamp((u - 0.8 - R() * 0.4) / 1.4); if (k <= 0) continue; const ang = -Math.PI / 2 + (R() - 0.5) * 2.4; bill(460 + Math.cos(ang) * k * 900 * (0.5 + R()), 1340 + Math.sin(ang) * k * 700 + k * k * 600, u * 4 + i, 1.1); } }
+  receipt(760, 1180, 0.8, 1, (u - 1.6) / 0.3);
+  topText('Basically', (u - 1.8) / 0.3, 230, 70, '#fff'); topText('a parking ticket', (u - 2.1) / 0.3, 330, 80, '#ffd60a');
+  burst(540, 600, 150, 'KA-CHING', (u - 0.9) / 0.2 * (u < 1.8 ? 1 : 0), '#ffd60a', 52);
+}
+// S6 (23.5–28) sad bench in the rain
+function s6(u) {
+  ctx.fillStyle = '#5b6573'; ctx.fillRect(0, 0, W, H); ctx.fillStyle = '#3f6b45'; ctx.fillRect(0, 1300, W, H);
+  bench(540, 1560); ctx.strokeStyle = '#444'; ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(430, 760); ctx.lineTo(400, 640); ctx.moveTo(650, 760); ctx.lineTo(680, 640); ctx.stroke(); rrect(360, 760, 360, 96, 12, '#fff', DARK, 6); txt('RETIRED', 540, 810, 62, '#c1121f', null);
+  guy(370, 1640, MESSI, { s: MS, t: u, arms: 'clutch', face: 'sleep', look: [0, 4] });
+  guy(740, 1640, CR7, { s: RS * 0.9, flip: true, t: u, arms: 'hips', face: 'worried', look: [0, 6] });
+  mate(470, 1480);
+  messiTag(370, headTop(1640, MS, 66) - 40); cr7Tag(740, headTop(1640, RS * 0.9, 64) - 60);
+  
+  cloud(540, 380, u);
+  txt('...', 540, 230, 110, '#fff', DARK);
+}
+// S7 (28–32) 2030? ...knees say no
+function s7(u) {
+  stadium(u, 0.4);
+  bench(540, 1620);
+  guy(330, 1700, MESSI, { s: MS, t: u, arms: 'clutch', face: u > 1.2 ? 'pain' : 'calm', look: [8, -4] });
+  const up = clamp(u / 0.5);
+  guy(760, 1700, CR7, { s: RS, flip: true, t: u, arms: 'up', face: 'happy', look: [0, -6] });
+  jersey(780, lerp(1500, 860, easeOutBack(up)), '#d0101a', null, '2030', '#fff', 1.25);
+  messiTag(330, headTop(1700, MS, 66) - 50); cr7Tag(780, 640);
+  if (u > 0.4 && u < 1.6) bubble(620, 540, 'One more World Cup?', 700, 600, (u - 0.4) / 0.2, 40);
+  if (u > 1.2) { burst(230, 1560, 95, 'CRACK', (u - 1.2) / 0.15, '#fff59d', 34, -0.2); burst(440, 1480, 95, 'CRACK', (u - 1.45) / 0.15, '#fff59d', 34, 0.2); }
+  topText('2030?', (u - 1.0) / 0.3, 230, 96, '#ffd60a'); topText('...my knees say NO', (u - 1.7) / 0.3, 340, 70);
+}
+// S8 (32–36) the GOAT debate never retires
+function s8(u) {
+  stadium(u, 1);
+  const k = Math.abs(Math.sin(u * 4));
+  goat(300 + k * 60, 1500, 1.9, false, '10', '#75aadb', u); goat(780 - k * 60, 1500, 1.9, true, '7', '#d0101a', u);
+  if (k > 0.95) burst(540, 1360, 90, 'BONK', 1, '#ffd60a', 40);
+  topText("Who's the GOAT?", (u - 0.2) / 0.3, 300, 92, '#ffd60a');
+  topText('Comment below', (u - 0.7) / 0.3, 420, 60);
+  txt('Real facts (2026) · jokes are parody', 540, 1780, 30, '#fff', DARK, 'center', 700);
+}
+const CUTS = [3.5, 9, 14.5, 19.5, 23.5, 28, 32];
+function render(t) {
+  ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, W, H);
+  if (t < 3.5) s1(t); else if (t < 9) s2(t - 3.5); else if (t < 14.5) s3(t - 9); else if (t < 19.5) s4(t - 14.5); else if (t < 23.5) s5(t - 19.5); else if (t < 28) s6(t - 23.5); else if (t < 32) s7(t - 28); else s8(t - 32);
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.fillStyle = 'rgba(255,255,255,.25)'; ctx.fillRect(0, 0, W, 10); ctx.fillStyle = '#ffd60a'; ctx.fillRect(0, 0, W * t / DURATION, 10);
+  for (const b of CUTS) { const a = 1 - Math.abs(t - b) / 0.1; if (a > 0) { ctx.fillStyle = `rgba(255,255,255,${a})`; ctx.fillRect(0, 0, W, H); } }
+}
+window.render = render; window.DURATION = DURATION;
+if (!location.search.includes('render')) { const t0 = performance.now(); (function loop() { render(((performance.now() - t0) / 1000) % DURATION); requestAnimationFrame(loop); })(); }
+</script></body></html>
