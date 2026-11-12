@@ -63,3 +63,15 @@ Gợi ý: đăng dạng Reel, không phải video thường; trả lời 5–10 
 
 ### Dữ kiện dùng trong bài (đã kiểm chứng, xem `../review/` và `../../studio/PLAYBOOK.md`)
 Argentina thua Tây Ban Nha 0-1 ở chung kết World Cup ngày 19/7/2026. Messi chia tay đội tuyển ngày 31/8/2026; lần giải nghệ năm 2016 và chuyện quay lại là có thật. Ronaldo có bàn knock-out World Cup đầu tiên trước Croatia (2/7/2026); bỏ trại tập ngày 30/9, bị cấm 30 ngày và phạt €255 vào tháng 10; chia tay đội tuyển ngày 5/11/2026.
+
+---
+
+## Bản "dễ lên xu hướng" (ưu tiên từ khóa người ta đang tìm)
+Công thức: **[Từ khóa đang hot] + [điểm hài/vô lý] + [câu hỏi chọn phe]**, rồi 3–5 hashtag (1 chủ đề rộng, 2 tên người, 1–2 ngách).
+
+- **YouTube title:** `Messi & Ronaldo Retire From National Teams 😂 (Cartoon)`
+- **TikTok:** `Messi retirement + Ronaldo retires = same year 😭 Ronaldo paid his €255 fine like a parking ticket 💸 Team 10 or Team 7? #messi #ronaldo #ronaldoretires #football #worldcup2026`
+- **Instagram (dòng đầu):** `Messi AND Ronaldo retired from national football in 2026?! 🐐🐐`, phần sau giữ như bản trên. Hashtag: `#messi #ronaldo #ronaldoretires #footballmemes #worldcup2026`
+- **Facebook (dòng đầu):** `Messi & Ronaldo both retired from their national teams in 2026 — and this is how it went 😂`, phần sau giữ như bản trên.
+
+Luôn nhớ: nói đúng sự thật ("from national teams"), ghi "parody", không giật tít sai.
