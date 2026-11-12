@@ -8,8 +8,8 @@ window.go = async () => {
   const img = new Image(); img.src = REF; await img.decode();
   ctx.drawImage(img, 20, 60, 600, 840);
   ctx.fillStyle = '#3f9bf0'; ctx.fillRect(640, 0, 620, 980);
-  ctx.save(); ctx.translate(660, 30); ctx.scale(0.98, 0.98); drawNeymar(ctx, { ex: 1.1 }); ctx.restore();
+  ctx.save(); ctx.translate(660, 30); ctx.scale(0.86, 0.86); drawNeymar(ctx, { ex: 1.6 }); ctx.restore();
   ctx.fillStyle = '#3f9bf0'; ctx.fillRect(1280, 0, 620, 980);
-  ctx.save(); ctx.translate(1300, 30); ctx.scale(0.98, 0.98); drawNeymar(ctx, { ex: 1.1, face: 'grin' }); ctx.restore();
+  ctx.save(); ctx.translate(1300, 30); ctx.scale(0.86, 0.86); drawNeymar(ctx, { ex: 1.6, face: 'grin' }); ctx.restore();
 };
 </script></body></html>

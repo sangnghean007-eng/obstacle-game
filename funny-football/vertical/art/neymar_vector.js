@@ -57,7 +57,7 @@
       if (o.num !== false) { ctx.save(); const q = T([300, 1000], 0); ctx.font = '900 70px Inter, sans-serif'; ctx.textAlign = 'center'; ctx.fillStyle = '#109a4a'; ctx.fillText('10', q[0] + 150, q[1]); ctx.restore(); }
     }
     // ---------- neck + tattoo ----------
-    const NECK = [[185, 700], [182, 780], [176, 860], [412, 860], [406, 780], [404, 700]];
+    const NECK = [[200, 700], [196, 820], [190, 1000], [398, 1000], [392, 820], [388, 700]];
     shape(NECK, C.skin, C.line, 5);
     shape([[185, 740], [300, 820], [406, 740], [408, 790], [300, 850], [182, 790]], C.shade, null);
     ctx.save(); ctx.strokeStyle = C.tattoo; ctx.lineWidth = 2.2;
@@ -76,7 +76,7 @@
     // ---------- face ----------
     const FACE = [[95, 330], [100, 400], [100, 470], [100, 560], [110, 622], [130, 682], [165, 732], [215, 772], [270, 796], [300, 799], [345, 791], [400, 766], [440, 726], [470, 670], [478, 600], [482, 520], [485, 450], [480, 380], [470, 300], [400, 250], [290, 232], [180, 250], [110, 300]];
     shape(FACE, C.skin, null);
-    if (LAY.shade) { ctx.save(); ctx.beginPath(); spline(ctx, tp(FACE), true); ctx.clip(); layer(ctx, 'shade'); layer(ctx, 'shade2'); layer(ctx, 'light'); ctx.restore(); }
+    if (LAY.shade) { ctx.save(); ctx.beginPath(); spline(ctx, tp(FACE), true); ctx.clip(); layer(ctx, 'shade'); ctx.globalAlpha = 0.45; layer(ctx, 'light'); ctx.globalAlpha = 1; ctx.restore(); }
     // blush (style signature: pink nose + cheeks)
     ellipse([160, 500], 40, 20, C.blush, null); ellipse([420, 495], 40, 20, C.blush, null);
 

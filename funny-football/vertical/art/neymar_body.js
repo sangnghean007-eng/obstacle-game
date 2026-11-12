@@ -97,7 +97,8 @@
     ctx.save();
     if (o.rot) { ctx.translate(300, 1300); ctx.rotate(o.rot); ctx.translate(-300, -1300); }
     if (o.headTilt) { ctx.translate(300, 880); ctx.rotate(o.headTilt); ctx.translate(-300, -880); }
-    if (o.style === 'hamid' && window.drawNeymarH) { ctx.translate(300, 960); ctx.scale(1.3, 1.3); ctx.translate(-300, -930); drawNeymarH(ctx, { face: o.face, t: o.t, look: o.look }); }
+    if (o.noHead) { poly(ctx, [[238, 780], [362, 780], [372, 960], [228, 960]], C.skin, C.line, 5); }
+    else if (o.style === 'hamid' && window.drawNeymarH) { ctx.translate(300, 960); ctx.scale(1.3, 1.3); ctx.translate(-300, -930); drawNeymarH(ctx, { face: o.face, t: o.t, look: o.look }); }
     else drawNeymar(ctx, { ex: o.ex ?? 1.1, face: o.face, t: o.t, look: o.look });
     ctx.restore();
     ctx.save(); ctx.lineJoin = 'round'; ctx.lineCap = 'round';

@@ -1,0 +1,6 @@
+<!doctype html><html><body style="margin:0"><canvas id="c" width="700" height="1150"></canvas>
+<script src="neymar_vector.js"></script><script src="neymar_body.js"></script>
+<script>
+const ctx = document.getElementById('c').getContext('2d');
+window.go = async () => { ctx.clearRect(0, 0, 700, 1150); ctx.save(); ctx.translate(200, -150); ctx.scale(0.5, 0.5); drawPlayer(ctx, { pose: window.POSE, noHead: true }); ctx.restore(); };
+</script></body></html>
