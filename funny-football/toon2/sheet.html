@@ -1,0 +1,12 @@
+<!doctype html><html><body style="margin:0"><canvas id="c" width="1800" height="1400"></canvas>
+<script src="toon2.js"></script>
+<script>
+const ctx = document.getElementById('c').getContext('2d');
+window.go = async () => {
+  const g = ctx.createLinearGradient(0, 0, 0, 1400); g.addColorStop(0, '#f3e3c8'); g.addColorStop(1, '#e8cfa4'); ctx.fillStyle = g; ctx.fillRect(0, 0, 1800, 1400);
+  toon2.draw(ctx, 'ronaldo', 'hips', 'grin', 230, 1340, 1.0);
+  toon2.draw(ctx, 'ronaldo', 'siu', 'grin', 680, 1340, 1.0);
+  toon2.draw(ctx, 'messi', 'sky', 'happy', 1130, 1340, 0.92);
+  toon2.draw(ctx, 'messi', 'sad', 'sad', 1560, 1340, 0.92);
+};
+</script></body></html>
