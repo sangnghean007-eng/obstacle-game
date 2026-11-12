@@ -8,3 +8,5 @@
 - Facts: RTS via CBS Sports / NESN / theScore (time on the ground, fouls), ESPN / SBS (haircut),
   TIME / SI (Neymar Challenge, KFC South Africa ad), The Drum / Sky Sports (Gillette ad), all 2018.
 - This is a caricature/parody. Exaggerated scenes are fiction.
+- Sergio Ramos caricature (art/ramos.html) proportions measured on "Sergio Ramos Interview 2021 (cropped).jpg"
+  by Real Madrid, Wikimedia Commons, CC BY 3.0. The drawing is original vector art (not a copy of any artist's caricature).
