@@ -1,0 +1,126 @@
+<!doctype html><html><body style="margin:0"><canvas id="c" width="900" height="1900"></canvas>
+<script>
+// Original Neymar Jr. caricature (helpers shared with ramos.html) in an editorial-cartoon style (flat colour, brown ink with
+// varying weight, rosy skin, long face & neck, red nose tip, big front teeth). Not a copy of any artist's image.
+const ctx = document.getElementById('c').getContext('2d');
+const C = { line: '#3a1a0e', skin: '#f3b69b', skin2: '#e39b80', red: '#e7766a', hair: '#6c4729', hair2: '#9c6d42', hair3: '#47301b',
+  fade: '#bca28c', fade2: '#a68a74', beard: '#7b4d2d', beard2: '#94623e', white: '#fff', teeth: '#fffdf6', gum: '#6d1a1a', lipU: '#c9655a', lipL: '#e0857a', shirt: '#f7f7f4', shirt2: '#dcdcd8', trim: '#f08a24' };
+function spline(pts, closed = true) {
+  const n = pts.length, P = i => closed ? pts[(i + n) % n] : pts[Math.max(0, Math.min(n - 1, i))];
+  ctx.moveTo(pts[0][0], pts[0][1]);
+  for (let i = 0; i < (closed ? n : n - 1); i++) { const p0 = P(i - 1), p1 = P(i), p2 = P(i + 1), p3 = P(i + 2);
+    ctx.bezierCurveTo(p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6, p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6, p2[0], p2[1]); }
+  if (closed) ctx.closePath();
+}
+function shape(pts, fill, stroke, lw = 6, closed = true) { ctx.beginPath(); spline(pts, closed); if (fill) { ctx.fillStyle = fill; ctx.fill(); } if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = lw; ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.stroke(); } }
+const line = (pts, c, w) => shape(pts, null, c, w, false);
+// hand-drawn feel: ink line whose width swells in the middle and tapers at the ends
+function ink(pts, w0, w1, col = C.line) {
+  const n = 24; const sm = []; ctx.save(); ctx.beginPath(); spline(pts, false); ctx.restore();
+  for (let i = 0; i < pts.length - 1; i++) for (let k = 0; k < n; k++) { const t = k / n, a = pts[i], b = pts[i + 1]; sm.push([a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t]); }
+  sm.push(pts[pts.length - 1]);
+  for (let i = 0; i < sm.length - 1; i++) { const u = i / (sm.length - 1), w = w0 + (w1 - w0) * Math.sin(Math.PI * u);
+    ctx.beginPath(); ctx.moveTo(sm[i][0], sm[i][1]); ctx.lineTo(sm[i + 1][0], sm[i + 1][1]); ctx.strokeStyle = col; ctx.lineWidth = w; ctx.lineCap = 'round'; ctx.stroke(); }
+}
+function ell(x, y, rx, ry, fill, stroke, lw = 4, r = 0) { ctx.beginPath(); ctx.ellipse(x, y, rx, ry, r, 0, Math.PI * 2); if (fill) { ctx.fillStyle = fill; ctx.fill(); } if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = lw; ctx.stroke(); } }
+const mir = pts => pts.map(([x, y]) => [900 - x, y]);
+
+window.go = async () => {
+  // Landmarks measured on "Neymar Jr presentation - Press conference for PSG 001 (cropped).jpg" (CC BY-SA 2.0,
+  // Wikimedia Commons), 3/4 view, big toothy smile. Photo px (960 wide) -> canvas via F(); chin/jaw stretched.
+  const Wd = 900, Hd = 1700; ctx.canvas.height = Hd;
+  const F = (x, y) => { let X = 450 + (x - 480) * 1.35, Y = 150 + (y - 80) * 1.35; if (Y > 760) Y += (Y - 760) * 0.22; return [X, Y]; };
+  const P = pts => pts.map(([x, y]) => F(x, y));
+  const K = { skin: '#dca277', skin2: '#c4855c', blush: 'rgba(230,104,92,.32)', hair: '#a77a45', hair2: '#7a5530', blond: '#e9c787', blond2: '#f8e3b0', fade: '#3b2a1e',
+    beard: 'rgba(80,50,28,.28)', yel: '#ffd400', yel2: '#e8b800', green: '#119a4a' };
+  ctx.fillStyle = '#3f9bf0'; ctx.fillRect(0, 0, Wd, Hd);
+
+  // shirt: Brazil-style yellow, green collar, #10 (no crest/logos)
+  shape([[230, 1330], [120, 1380], [40, 1480], [10, 1700], [890, 1700], [870, 1480], [800, 1390], [690, 1330]], K.yel, C.line, 7);
+  shape([[690, 1350], [800, 1400], [860, 1500], [880, 1700], [760, 1700], [740, 1500]], K.yel2, null);
+  shape([[300, 1316], [460, 1380], [640, 1316], [660, 1344], [460, 1414], [282, 1344]], K.green, C.line, 5);
+  ctx.font = '900 110px Inter, sans-serif'; ctx.textAlign = 'center'; ctx.fillStyle = K.green; ctx.lineWidth = 6; ctx.strokeStyle = C.line; ctx.strokeText('10', 470, 1600); ctx.fillText('10', 470, 1600);
+
+  // long neck (turned) + script tattoo
+  shape(P([[410, 690], [420, 820], [430, 960], [640, 960], [640, 820], [660, 720]]), K.skin, null);
+  shape(P([[410, 700], [520, 780], [650, 740], [640, 830], [520, 860], [418, 800]]), K.skin2, null);
+  ink(P([[410, 690], [420, 820], [430, 950]]), 4, 8); ink(P([[660, 720], [640, 820], [640, 950]]), 4, 8);
+  ink(P([[450, 770], [462, 790], [452, 812], [468, 832], [458, 856]]), 1.5, 3.5, 'rgba(40,30,50,.8)');
+  ink(P([[472, 780], [482, 800], [474, 824]]), 1.5, 3, 'rgba(40,30,50,.8)');
+
+  // back hair mass (curly, down to the nape) behind the ear
+  const BACK = P([[300, 230], [230, 270], [190, 340], [180, 430], [196, 520], [220, 600], [270, 650], [330, 640], [360, 560], [380, 470], [400, 380], [420, 300]]);
+  shape(BACK, K.hair, C.line, 6);
+  shape(P([[330, 330], [420, 300], [440, 380], [420, 480], [392, 500], [350, 482], [320, 430]]), K.fade, null);   // skin fade
+  for (let i = 0; i < 5; i++) ink(P([[340 + i * 18, 340], [334 + i * 18, 470]]), 1, 2.5, 'rgba(255,255,255,.12)');
+
+  // face (3/4 to the right): forehead, brow, cheekbone, smile-cheek, long jaw/chin
+  const FACE = P([[420, 290], [520, 270], [620, 270], [690, 300], [730, 360], [742, 420], [756, 470], [770, 530], [770, 600], [756, 660], [726, 720], [680, 770], [620, 800], [550, 800], [470, 760], [410, 700], [380, 620], [372, 520], [380, 420], [396, 340]]);
+  shape(FACE, K.skin, null);
+  ctx.save(); ctx.beginPath(); spline(FACE); ctx.clip();
+  shape(P([[380, 420], [440, 440], [460, 560], [450, 680], [410, 700], [376, 600]]), K.skin2, null);    // turned-away side
+  const [b1x, b1y] = F(560, 560); ell(b1x, b1y, 60, 38, K.blush, null);                                   // round smiling cheeks
+  const [b2x, b2y] = F(740, 545); ell(b2x, b2y, 30, 30, K.blush, null);
+  // stubble beard along jaw + chin + upper lip
+  shape(P([[400, 620], [420, 700], [470, 760], [550, 800], [620, 800], [690, 772], [740, 712], [760, 650], [730, 680], [700, 690], [650, 700], [600, 700], [560, 690], [520, 660], [480, 640], [440, 600]]), K.beard, null);
+  { let r = 7; const R = () => (r = (r * 16807) % 2147483647) / 2147483647; ctx.fillStyle = 'rgba(50,30,16,.5)';
+    for (let i = 0; i < 380; i++) { const [x, y] = F(410 + R() * 350, 600 + R() * 200); ctx.fillRect(x, y, 2.4, 2.4); } }
+  ctx.restore();
+  ink(P([[742, 420], [756, 470], [770, 530], [770, 600], [756, 660], [726, 720], [680, 770], [620, 800], [550, 800], [470, 760], [410, 700]]), 4, 10);
+
+  // ear with two silver hoops (measured ~310..390, 500..650)
+  const EAR = P([[392, 500], [350, 482], [318, 504], [312, 560], [324, 616], [352, 648], [384, 640], [396, 590]]);
+  shape(EAR, K.skin, C.line, 5);
+  ink(P([[372, 512], [340, 520], [336, 576], [352, 616]]), 2, 5, C.red);
+  for (const [x, y] of [[338, 638], [356, 644]]) { const [ex, ey] = F(x, y); ell(ex, ey + 12, 9, 14, null, '#d9dde3', 5); ell(ex, ey + 12, 9, 14, null, 'rgba(60,60,70,.6)', 1.5); }
+
+  // big toothy grin (the trademark): wide open, full row of upper teeth, lower lip
+  const M = P([[560, 610], [600, 600], [650, 594], [700, 588], [730, 584], [726, 616], [700, 650], [650, 668], [600, 660], [570, 636]]);
+  shape(M, C.gum, null);
+  ctx.save(); ctx.beginPath(); spline(M); ctx.clip();
+  const T0 = F(560, 594), T1 = F(735, 594); ctx.fillStyle = C.teeth; ctx.beginPath(); ctx.moveTo(T0[0], T0[1] - 20); ctx.lineTo(T1[0], T1[1] - 30); ctx.lineTo(T1[0], T1[1] + 30); ctx.quadraticCurveTo((T0[0] + T1[0]) / 2, T0[1] + 62, T0[0], T0[1] + 30); ctx.closePath(); ctx.fill();
+  for (let i = 1; i < 7; i++) { const [x, y] = F(570 + i * 24, 598 - i * 2); ink([[x, y - 10], [x - 2, y + 30]], 1, 2.5, 'rgba(90,70,60,.5)'); }
+  const L0 = F(600, 650), L1 = F(700, 640); ctx.fillStyle = '#f2ece2'; ctx.fillRect(L0[0], L0[1] - 8, L1[0] - L0[0], 14);
+  ctx.restore();
+  shape(M, null, C.line, 5);
+  ink(P([[580, 662], [640, 682], [700, 664]]), 3, 9, '#c2705f');                                            // lower lip
+  ink(P([[548, 590], [560, 610], [566, 632]]), 2, 4); ink(P([[736, 576], [740, 590]]), 2, 4);             // smile corners
+  ink(P([[560, 520], [544, 560], [548, 596]]), 2, 4.5, 'rgba(70,35,20,.7)');                             // smile fold
+
+  // nose: rounded, a bit wide, pointing right; nostril
+  shape(P([[640, 430], [650, 480], [672, 520], [712, 540], [722, 566], [700, 580], [670, 576], [640, 582], [612, 566], [618, 530], [628, 470]]), K.skin, null);
+  const [nx, ny] = F(700, 556); ell(nx, ny, 32, 26, 'rgba(232,120,105,.5)', null);
+  ink(P([[642, 432], [652, 482], [676, 520], [714, 542], [724, 566], [704, 582], [676, 578]]), 2.5, 6);
+  ink(P([[640, 584], [614, 570], [618, 540]]), 2.5, 5);
+  const [nox, noy] = F(660, 574); ell(nox, noy, 12, 6, '#3b1d12', null, 0, -0.2);
+  const [nh, nhy] = F(700, 540); ell(nh, nhy, 9, 6, 'rgba(255,235,220,.8)', null);
+
+  // eyes squeezed by the smile (crescents), tiny dark iris showing
+  for (const [ex0, ey0, w] of [[528, 470, 46], [680, 462, 36]]) {
+    const [cx, cy] = F(ex0, ey0), ww = w * 1.35;
+    ctx.save(); ctx.beginPath(); ctx.moveTo(cx - ww, cy + 4); ctx.quadraticCurveTo(cx, cy - 26, cx + ww, cy + 2); ctx.quadraticCurveTo(cx, cy + 12, cx - ww, cy + 4); ctx.closePath();
+    ctx.fillStyle = '#fff'; ctx.fill(); ctx.clip(); ell(cx + 6, cy - 4, 15, 15, '#3a2414', null); ell(cx + 6, cy - 4, 7, 7, '#0e0805', null); ell(cx + 1, cy - 9, 4, 4, '#fff', null); ctx.restore();
+    ink([[cx - ww - 4, cy + 6], [cx - ww * 0.3, cy - 20], [cx + ww * 0.5, cy - 18], [cx + ww + 4, cy + 2]], 4, 9);
+    ink([[cx - ww * 0.7, cy + 14], [cx, cy + 20], [cx + ww * 0.7, cy + 14]], 1.5, 3.5, 'rgba(70,35,20,.7)');  // smile bags
+    ink([[cx + ww + 2, cy + 2], [cx + ww + 16, cy - 6]], 1, 3, 'rgba(70,35,20,.6)'); ink([[cx + ww + 2, cy + 8], [cx + ww + 18, cy + 10]], 1, 3, 'rgba(70,35,20,.6)');
+  }
+  // brows: thick, straight-ish
+  shape(P([[470, 420], [520, 410], [578, 418], [582, 432], [524, 426], [474, 434]]), K.hair, C.line, 2.5);
+  shape(P([[640, 416], [690, 410], [734, 418], [732, 430], [690, 424], [644, 428]]), K.hair, C.line, 2.5);
+
+  // curly top: dark roots, bleached blond curls (2017 look), loose locks on the forehead
+  const TOP = P([[300, 230], [330, 150], [400, 100], [470, 84], [540, 90], [600, 120], [650, 170], [690, 230], [706, 290], [680, 300], [640, 286], [600, 300], [560, 290], [520, 306], [480, 296], [440, 312], [420, 300], [400, 380], [380, 440], [360, 400], [340, 330]]);
+  shape(TOP, K.hair, null);
+  ctx.save(); ctx.beginPath(); spline(TOP); spline(BACK); ctx.clip();
+  { let r = 11; const R = () => (r = (r * 16807) % 2147483647) / 2147483647;
+    for (let i = 0; i < 150; i++) { const [x, y] = F(190 + R() * 520, 80 + R() * 560), rad = 13 + R() * 14, a0 = R() * 6.3, back = x < F(400, 0)[0];
+      ctx.beginPath(); ctx.arc(x, y, rad, a0, a0 + 4.2); ctx.lineCap = 'round';
+      ctx.lineWidth = 9; ctx.strokeStyle = back ? '#5b3d22' : '#7a5530'; ctx.stroke();
+      ctx.lineWidth = 5; ctx.strokeStyle = back ? (R() < 0.5 ? K.blond : '#c49a5e') : (R() < 0.7 ? K.blond : K.blond2); ctx.stroke(); } }
+  ctx.restore();
+  ink(P([[300, 230], [330, 150], [400, 100], [470, 84], [540, 90], [600, 120], [650, 170], [690, 230], [706, 290]]), 4, 10);
+  for (const [x, y, d] of [[470, 300, 1], [540, 300, -1], [610, 296, 1], [660, 290, -1]]) {        // forehead curls
+    const [cx, cy] = F(x, y); ctx.beginPath(); ctx.arc(cx, cy + 14, 14, d > 0 ? 3.6 : -0.5, d > 0 ? 7.8 : 3.6); ctx.lineWidth = 9; ctx.strokeStyle = '#6a4a2a'; ctx.stroke(); ctx.lineWidth = 5; ctx.strokeStyle = K.blond2; ctx.stroke(); }
+  ctx.font = '900 54px Inter, sans-serif'; ctx.textAlign = 'center'; ctx.fillStyle = '#fff'; ctx.lineWidth = 8; ctx.strokeStyle = '#1b3d73'; ctx.strokeText('NEYMAR JR', 450, 70); ctx.fillText('NEYMAR JR', 450, 70);
+};
+</script></body></html>

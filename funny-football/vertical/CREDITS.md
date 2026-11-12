@@ -11,3 +11,4 @@
 - Sergio Ramos caricature (art/ramos.html) proportions measured on "Sergio Ramos Interview 2021 (cropped).jpg"
   by Real Madrid, Wikimedia Commons, CC BY 3.0. The drawing is original vector art (not a copy of any artist's caricature).
 - Playing-era Ramos (art/ramos.html, current version): landmarks measured on "Sergio Ramos entrenando (cropped)1.jpg", Wikimedia Commons, CC BY-SA 4.0. Original vector drawing.
+- Smiling Neymar drawing (art/neymar_smile.html): landmarks measured on "Neymar Jr presentation - Press conference for PSG 001 (cropped).jpg", Wikimedia Commons, CC BY-SA 2.0. Original vector drawing; YouTube caricatures were only studied for general ideas (which features artists exaggerate), nothing traced.
