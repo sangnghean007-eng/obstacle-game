@@ -1,5 +1,5 @@
 <!doctype html><html><body style="margin:0"><canvas id="c" width="1900" height="980"></canvas>
-<script src="neymar_layers.js"></script><script src="neymar_vector.js"></script><script src="/tmp/claude-0/-home-user-obstacle-game/e66590ac-2a10-5a33-8fcb-c33592167d49/scratchpad/refimg.js"></script>
+<script src="neymar_traced.js"></script><script src="neymar_vector.js"></script><script src="/tmp/claude-0/-home-user-obstacle-game/e66590ac-2a10-5a33-8fcb-c33592167d49/scratchpad/refimg.js"></script>
 <script>
 const ctx = document.getElementById('c').getContext('2d');
 window.go = async () => {
@@ -8,8 +8,8 @@ window.go = async () => {
   const img = new Image(); img.src = REF; await img.decode();
   ctx.drawImage(img, 20, 60, 600, 840);
   ctx.fillStyle = '#3f9bf0'; ctx.fillRect(640, 0, 620, 980);
-  ctx.save(); ctx.translate(660, 30); ctx.scale(0.86, 0.86); drawNeymar(ctx, { ex: 1.6 }); ctx.restore();
+  ctx.save(); ctx.translate(660, 30); ctx.scale(0.8, 0.8); drawNeymar(ctx, { ex: 2.2 }); ctx.restore();
   ctx.fillStyle = '#3f9bf0'; ctx.fillRect(1280, 0, 620, 980);
-  ctx.save(); ctx.translate(1300, 30); ctx.scale(0.86, 0.86); drawNeymar(ctx, { ex: 1.6, face: 'grin' }); ctx.restore();
+  ctx.save(); ctx.translate(1300, 30); ctx.scale(0.8, 0.8); drawNeymar(ctx, { ex: 2.2, face: 'grin' }); ctx.restore();
 };
 </script></body></html>

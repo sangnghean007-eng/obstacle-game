@@ -18,8 +18,8 @@
     if (y < 380) { const k = Math.min(1, (380 - y) / 330); y = 380 - (380 - y) * (1 + 0.05 * ex * k); x = 290 + (x - 290) * (1 + 0.03 * ex * k); }
     if (y > 590) { const k = Math.min(1, (y - 590) / 210); y = 590 + (y - 590) * (1 + 0.10 * ex * k); x = 290 + (x - 290) * (1 - 0.08 * ex * k); }
     let q = [x, y];
-    q = bulge(q, [290, 525], 95, 0.28 * ex);   // nose
-    q = bulge(q, [292, 622], 115, 0.08 * ex);  // mouth
+    q = bulge(q, [290, 528], 150, 0.24 * ex);   // nose
+    q = bulge(q, [292, 624], 140, 0.10 * ex);  // mouth
     q = bulge(q, [172, 425], 60, 0.10 * ex); q = bulge(q, [348, 418], 60, 0.10 * ex);
     return q;
   }
@@ -39,6 +39,13 @@
   const layer = (ctx, k) => { if (LAY[k]) ctx.drawImage(LAY[k], NEY_LAYERS.x0, NEY_LAYERS.y0, NEY_LAYERS.w, NEY_LAYERS.h); };
   function rng(seed) { return () => (seed = (seed * 16807) % 2147483647, (seed - 1) / 2147483646); }
 
+  function vec(ctx, key, ex, fill, stroke, lw) {
+    const V = window.NEY_VEC && NEY_VEC[key]; if (!V) return false;
+    ctx.beginPath(); for (const c of V) spline(ctx, c.pts.map(p => T(p, ex)), true);
+    if (fill) { ctx.fillStyle = fill; ctx.fill('evenodd'); }
+    if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = lw; ctx.lineJoin = 'round'; ctx.stroke(); }
+    return true;
+  }
   function drawNeymar(ctx, o = {}) {
     const ex = o.ex ?? 1, face = o.face || 'neutral', t = o.t || 0;
     const tp = pts => pts.map(p => T(p, ex));
@@ -76,13 +83,22 @@
     // ---------- face ----------
     const FACE = [[95, 330], [100, 400], [100, 470], [100, 560], [110, 622], [130, 682], [165, 732], [215, 772], [270, 796], [300, 799], [345, 791], [400, 766], [440, 726], [470, 670], [478, 600], [482, 520], [485, 450], [480, 380], [470, 300], [400, 250], [290, 232], [180, 250], [110, 300]];
     shape(FACE, C.skin, null);
-    if (LAY.shade) { ctx.save(); ctx.beginPath(); spline(ctx, tp(FACE), true); ctx.clip(); layer(ctx, 'shade'); ctx.globalAlpha = 0.45; layer(ctx, 'light'); ctx.globalAlpha = 1; ctx.restore(); }
+    const VEC = !!window.NEY_VEC && !o.raster;
+    if (VEC) { ctx.save(); ctx.beginPath(); spline(ctx, tp(FACE), true); ctx.clip(); vec(ctx, 'shade', ex, C.shade); ctx.globalAlpha = 0.5; vec(ctx, 'light', ex, C.light); ctx.globalAlpha = 1; ctx.restore(); }
+    else if (LAY.shade) { ctx.save(); ctx.beginPath(); spline(ctx, tp(FACE), true); ctx.clip(); layer(ctx, 'shade'); ctx.globalAlpha = 0.45; layer(ctx, 'light'); ctx.globalAlpha = 1; ctx.restore(); }
     // blush (style signature: pink nose + cheeks)
     ellipse([160, 500], 40, 20, C.blush, null); ellipse([420, 495], 40, 20, C.blush, null);
 
     // ---------- beard (solid mass + hair flicks) ----------
     const BEARD = [[105, 500], [100, 560], [110, 622], [130, 682], [165, 732], [215, 772], [270, 796], [300, 799], [345, 791], [400, 766], [440, 726], [470, 670], [478, 600], [481, 520], [479, 500], [462, 560], [428, 590], [388, 588], [370, 578], [330, 567], [290, 563], [250, 567], [210, 579], [180, 590], [138, 568], [114, 530]];
-    if (LAY.beard) { ctx.save(); ctx.beginPath(); spline(ctx, tp(FACE), true); ctx.clip(); layer(ctx, 'beard'); ctx.restore(); }
+    if (VEC) { ctx.save(); ctx.beginPath(); spline(ctx, tp(FACE), true); ctx.clip();
+      vec(ctx, 'beard', ex, 'rgba(78,46,28,0.62)'); vec(ctx, 'chin', ex, 'rgba(52,30,18,0.35)');
+      ctx.beginPath(); for (const c of NEY_VEC.beard) spline(ctx, c.pts.map(p => T(p, ex)), true); ctx.clip();
+      { const R = rng(4); ctx.strokeStyle = 'rgba(40,22,12,.45)'; ctx.lineWidth = 2.2;      // stubble flicks
+        for (let i = 0; i < 420; i++) { const x = 100 + R() * 380, y = 470 + R() * 330, q = T([x, y], ex); const d = ctx.getTransform().transformPoint(new DOMPoint(q[0], q[1]));
+          ctx.beginPath(); ctx.moveTo(q[0], q[1]); ctx.lineTo(q[0] + (R() - .5) * 4, q[1] + 5 + R() * 5); ctx.stroke(); } }
+      ctx.restore(); }
+    else if (LAY.beard) { ctx.save(); ctx.beginPath(); spline(ctx, tp(FACE), true); ctx.clip(); layer(ctx, 'beard'); ctx.restore(); }
     else shape(BEARD, C.beard, null);
     // face contour ink (variable width feel: draw twice)
     shape(FACE.slice(2, 19), null, C.line, 6, false);
@@ -96,20 +112,21 @@
       line([[204, 617], [250, 619], [292, 623], [336, 619], [381, 614]], C.line, 4.5);
     } else {
       const h = face === 'pain' ? 70 + Math.sin(t * 30) * 6 : face === 'shock' ? 45 : 34;
-      const w = face === 'shock' ? 55 : 100;
+      const w = face === 'shock' ? 55 : face === 'grin' ? 112 : 100;
       const M = face === 'pain' ? [[292 - w * 0.75, 640], [292 - w * 0.4, 600], [292, 594], [292 + w * 0.4, 600], [292 + w * 0.75, 640], [292 + w * 0.5, 612 + h], [292, 622 + h], [292 - w * 0.5, 612 + h]] : [[292 - w, 612], [292, 596], [292 + w, 612], [292 + w * 0.6, 612 + h * 0.9], [292, 612 + h], [292 - w * 0.6, 612 + h * 0.9]];
       shape(M, '#4a0c0e', C.line, 5);
       ctx.save(); ctx.beginPath(); spline(ctx, tp(M), true); ctx.clip();
       if (face !== 'pain') shape([[292 - w, 600], [292 + w, 600], [292 + w, 628], [292, 640], [292 - w, 628]], '#ffffff', null);       // big upper teeth
       else shape([[292 - w, 600], [292 + w, 600], [292 + w * 0.8, 614], [292 - w * 0.8, 614]], '#ffffff', null);
       for (let i = -3; i <= 3; i++) line([[292 + i * w / 4, 600], [292 + i * w / 4, 634]], 'rgba(0,0,0,.25)', 2);
+      if (face === 'grin') { shape([[262, 598], [322, 598], [322, 646], [292, 650], [262, 646]], '#ffffff', 'rgba(60,30,20,.55)', 2.5); line([[292, 598], [292, 650]], 'rgba(60,30,20,.6)', 3); } // two big front teeth
       if (face !== 'grin') ellipse([292, 612 + h * 0.8], w * 0.5, h * 0.3, '#d65a5f', null);
       ctx.restore();
     }
 
     // ---------- nose ----------
     shape([[262, 430], [262, 480], [250, 508], [232, 516], [224, 532], [236, 550], [258, 548], [276, 558], [292, 562], [308, 558], [326, 548], [348, 550], [358, 532], [350, 516], [332, 508], [322, 480], [320, 430]], C.skin, null);
-    ellipse([292, 522], 28, 20, C.blush, null);
+    ellipse([292, 522], 30, 22, 'rgba(232,110,100,0.45)', null);
     line([[262, 432], [258, 482], [248, 506]], C.line, 3);
     line([[244, 512], [226, 522], [226, 542], [244, 552], [262, 549]], C.line, 4.5);
     line([[340, 512], [358, 522], [358, 542], [340, 552], [322, 549]], C.line, 4.5);
@@ -143,12 +160,23 @@
         ctx.beginPath(); ctx.ellipse(q[0] + d * k * 260, q[1] - k * 120 + k * k * 380, 11, 15, 0, 0, Math.PI * 2); ctx.fillStyle = '#7fd3ff'; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = '#1f6fb0'; ctx.stroke(); } }
     // ---------- brows (thick, straight, close to the eyes) ----------
     const lift = face === 'pain' ? -22 : face === 'shock' ? -14 : face === 'angry' ? 8 : 0;
+    {
     shape([[230, 392 + lift * 0.3], [225, 376 + lift], [180, 368 + lift * 0.6], [140, 374], [108, 390], [114, 398], [150, 388], [190, 384 + lift * 0.5], [228, 396 + lift * 0.3]], C.hair, C.line, 2);
-    shape([[318, 382 + lift * 0.3], [328, 366 + lift], [380, 358 + lift * 0.6], [422, 362], [458, 376], [452, 386], [410, 378], [370, 375 + lift * 0.5], [328, 386 + lift * 0.3]], C.hair, C.line, 2);
+    shape([[318, 382 + lift * 0.3], [328, 366 + lift], [380, 358 + lift * 0.6], [422, 362], [458, 376], [452, 386], [410, 378], [370, 375 + lift * 0.5], [328, 386 + lift * 0.3]], C.hair, C.line, 2); }
 
     // ---------- hair: curly mass with scalloped outline, curls and blond tips ----------
     const HAIR = [[250, 42], [310, 40], [360, 52], [405, 70], [452, 108], [490, 150], [522, 200], [546, 250], [560, 300], [560, 342], [546, 382], [522, 412], [486, 424], [470, 400], [460, 340], [450, 300], [430, 280], [400, 262], [350, 248], [300, 240], [262, 244], [240, 266], [228, 250], [190, 255], [140, 280], [115, 320], [110, 380], [98, 412], [66, 432], [44, 400], [30, 350], [30, 300], [44, 250], [70, 200], [100, 150], [150, 100], [200, 62]];
     const th = tp(HAIR);
+    if (VEC) {
+      vec(ctx, 'hair', ex, '#24160e', null);
+      ctx.save(); ctx.beginPath(); for (const c of NEY_VEC.hair) spline(ctx, c.pts.map(p => T(p, ex)), true); ctx.clip();
+      { const R = rng(17); for (let i = 0; i < 260; i++) { const x = 20 + R() * 560, y = 30 + R() * 420, q = T([x, y], ex), r = 9 + R() * 9, a0 = R() * 6.3;
+          ctx.beginPath(); ctx.arc(q[0], q[1], r, a0, a0 + 3.4); ctx.lineWidth = 3; ctx.strokeStyle = R() < 0.5 ? '#5a3a24' : '#3d2617'; ctx.lineCap = 'round'; ctx.stroke(); } }
+      vec(ctx, 'blond', ex, '#d9a64e', 'rgba(70,44,16,.8)', 1.6);
+      ctx.restore();
+      vec(ctx, 'hair', ex, null, C.line, 6);
+      ctx.restore(); return;
+    }
     if (LAY.hair && !o.vectorHair) { layer(ctx, 'hair'); ctx.restore(); return; }
     // base mass
     ctx.beginPath(); spline(ctx, th, true); ctx.fillStyle = C.hair; ctx.fill();

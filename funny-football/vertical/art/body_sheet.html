@@ -1,15 +1,15 @@
 <!doctype html><html><body style="margin:0"><canvas id="c" width="2000" height="1750"></canvas>
-<script src="neymar_layers.js"></script><script src="neymar_vector.js"></script><script src="neymar_body.js"></script>
+<script src="neymar_traced.js"></script><script src="neymar_vector.js"></script><script src="neymar_body.js"></script>
 <script>
 const ctx = document.getElementById('c').getContext('2d');
 window.go = async () => { await NEY_READY;
   ctx.fillStyle = '#3f9bf0'; ctx.fillRect(0, 0, 2000, 1750);
   const S = [['hips', 'smug', 'CHỐNG NẠNH'], ['celebrate', 'grin', 'ĂN MỪNG'], ['kick', 'angry', 'SÚT BÓNG'], ['run', 'neutral', 'CHẠY']];
   S.forEach(([pose, face, label], i) => {
-    ctx.save(); ctx.translate(60 + i * 480, 30); ctx.scale(0.45, 0.45); drawPlayer(ctx, { pose, face, ex: 1.6 }); ctx.restore();
+    ctx.save(); ctx.translate(60 + i * 480, 30); ctx.scale(0.45, 0.45); drawPlayer(ctx, { pose, face, ex: 2.2 }); ctx.restore();
     ctx.font = '900 40px Inter, sans-serif'; ctx.textAlign = 'center'; ctx.fillStyle = '#fff'; ctx.fillText(label, 200 + i * 480, 1170);
   });
-  ctx.save(); ctx.translate(780, 1010); ctx.scale(0.4, 0.4); drawPlayer(ctx, { pose: 'clutch', face: 'pain', rot: -Math.PI / 2, t: 0.2, ex: 1.6 }); ctx.restore();
+  ctx.save(); ctx.translate(780, 1010); ctx.scale(0.4, 0.4); drawPlayer(ctx, { pose: 'clutch', face: 'pain', rot: -Math.PI / 2, t: 0.2, ex: 2.2 }); ctx.restore();
   ctx.font = '900 40px Inter, sans-serif'; ctx.textAlign = 'center'; ctx.fillStyle = '#fff'; ctx.fillText('NẰM ĂN VẠ', 1000, 1700);
 };
 </script></body></html>
