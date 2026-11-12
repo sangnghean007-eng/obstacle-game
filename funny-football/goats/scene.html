@@ -6,7 +6,7 @@
 const NEY_IMG = null;
 // "THE ROLLING KING" — vertical 9:16 satirical cartoon short, based on real reported facts
 // about Neymar at the 2018 World Cup. Everything is drawn on Canvas, rendered as a function of t (seconds).
-const W = 1080, H = 1920, DURATION = 21.6;
+const W = 1080, H = 1920, DURATION = 21.0;
 const cv = document.getElementById('c');
 const ctx = cv.getContext('2d');
 const F = 'Inter, "DejaVu Sans", sans-serif';
@@ -410,7 +410,7 @@ function nameTag(x, y, s, k) { if (k <= 0) return; ctx.save(); ctx.translate(x, 
 function camera(cx, cy, z, shake = 0, t = 0) { ctx.translate(W / 2 + Math.sin(t * 90) * shake, H / 2 + Math.cos(t * 77) * shake); ctx.scale(z, z); ctx.translate(-cx, -cy); }
 // ================= CHARACTERS =================
 const MESSI = { col: '#ffffff', stripes: '#75aadb', col2: '#1b2a4a', num: '10', hair: 'messi', R: 72, bw: 56, skin: '#e8b48e', shorts: '#1b1b1b', sock: '#ffffff', fullBeard: true, collar: '#1b2a4a' };
-const CR7 = { col: '#d0101a', col2: '#ffffff', num: '7', hair: 'cr7', R: 62, bw: 70, abs: true, skin: '#e0a77e', shorts: '#0b6e35', sock: '#d0101a', collar: '#0b6e35', bigTeeth: true, longFace: 1.12 };
+const CR7 = { col: '#d0101a', col2: '#ffffff', num: '7', hair: 'cr7', R: 62, bw: 70, abs: true, skin: '#c98a5e', shorts: '#0b6e35', sock: '#d0101a', collar: '#0b6e35', bigTeeth: true, longFace: 1.12 };
 const COACH = { col: '#2b2b33', col2: '#fff', num: '', hair: 'grey', R: 56, bw: 62, skin: '#f0c8a0', shorts: '#2b2b33', pants: '#2b2b33', tie: true, glasses: true };
 const OLDIE = { col: '#7c6f64', col2: '#fff', num: '', hair: 'grey', R: 46, bw: 50, skin: '#efc6a2', shorts: '#4b4038', pants: '#4b4038', glasses: true };
 const MS = 1.75, RS = 2.3;   // Messi is shorter
@@ -503,8 +503,8 @@ function s3(u) {
   cr7Tag(380, headTop(ry, RS, 64) - 70);
   if (land) burst(540, 820, 230, 'SIUUUU!', (u - 2.2) / 0.25, '#ffd60a', 80, -0.05);
   // ancient fans with canes, slow clap
-  for (let i = 0; i < 5; i++) { const x = 120 + i * 210, cl = Math.abs(Math.sin(u * 2 + i)) ; guy(x, 1880, OLDIE, { s: 1.2, t: u, arms: cl > 0.7 ? 'up' : 'swing', face: 'sleep', look: [0, 0] }); ctx.strokeStyle = '#6b4a2b'; ctx.lineWidth = 8; ctx.beginPath(); ctx.moveTo(x + 70, 1770); ctx.lineTo(x + 80, 1880); ctx.stroke(); }
-  topText('6 World Cups later...', (u - 0.1) / 0.3, 230, 70, '#fff'); if (u > 2.3) topText('1st knockout goal!', (u - 2.3) / 0.3, 340, 84, '#ffd60a');
+  for (let i = 0; i < 3; i++) { const x = 600 + i * 140, cl = Math.abs(Math.sin(u * 2 + i)) ; guy(x, 1560, OLDIE, { s: 1.25, t: u, arms: cl > 0.7 ? 'up' : 'swing', face: 'sleep', look: [0, 0] }); ctx.strokeStyle = '#6b4a2b'; ctx.lineWidth = 8; ctx.beginPath(); ctx.moveTo(x + 70, (i === 1 && u > 2.2) ? 1250 : 1440); ctx.lineTo(x + 80, (i === 1 && u > 2.2) ? 1360 : 1560); ctx.stroke(); }
+  if (!window.NOCAP) { topText('6 World Cups later...', (u - 0.1) / 0.3, 230, 70, '#fff'); if (u > 2.3) topText('1st knockout goal!', (u - 2.3) / 0.3, 340, 84, '#ffd60a'); }
   
 }
 // S4 (14.5–19.5) Ronaldo walks out with a suitcase; coach chases with the fine
@@ -576,10 +576,10 @@ function benchScene(u, o = {}) {
   cloud(540, 330, u);
   const sign = o.star ? 'RETIRED*' : 'RETIRED';
   ctx.strokeStyle = '#444'; ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(420, 690); ctx.lineTo(390, 560); ctx.moveTo(660, 690); ctx.lineTo(690, 560); ctx.stroke(); rrect(330, 690, 420, 110, 14, '#fff', DARK, 6); txt(sign, 540, 746, 70, '#c1121f', null);
-  if (o.star) txt('*for now', 690, 830, 34, '#fff', DARK, 'center', 800);
+  if (o.star) txt('*for now', 640, 860, 48, '#ffd60a', DARK, 'center', 900);
   // hidden boots (planted for re-watchers) or pulled out
   const pull = o.pull || 0;
-  boot(lerp(300, 120, pull), lerp(1500, 1250, pull), 1.4, true); boot(lerp(780, 960, pull), lerp(1500, 1250, pull), 1.4, false);
+  boot(lerp(300, 170, pull), lerp(1500, 1180, pull), 1.6 + pull * 0.4, true); boot(lerp(780, 860, pull), lerp(1500, 1180, pull), 1.6 + pull * 0.4, false);
   bench(540, 1560);
   const look = o.look || 0;
   guy(360, 1640, MESSI, { s: MS, t: u, arms: pull > 0.2 ? 'shrug' : 'clutch', face: o.face1 || 'sleep', look: [look * 10, 4] });
@@ -588,69 +588,79 @@ function benchScene(u, o = {}) {
   messiTag(360, headTop(1640, MS, 72) - 60); cr7Tag(730, headTop(1640, RS * 0.85, 62) - 80);
 }
 function v_hook(u) {
-  if (u < 0.6) { s3(2.0); ctx.fillStyle = 'rgba(255,255,255,.12)'; ctx.fillRect(0, 0, W, H); return; }
+  if (u < 0.7) {
+    soft(u, 1);
+    ctx.save(); ctx.shadowColor = '#ff2d2d'; ctx.shadowBlur = 40;
+    guy(540, 1500, CR7, { s: 2.6, t: 0.3, pose: 'jump', arms: 'shrug', face: 'happy', look: [0, -4] }); ctx.restore();
+    cr7Tag(540, headTop(1500, 2.6, 62) - 90);
+    burst(540, 820, 210, 'SIUUU!', 1, '#ffd60a', 80, -0.05);
+    topText('BOTH GOATs RETIRED.', 1, 230, 80, '#fff'); topText('SAME YEAR?!', 1, 340, 96, '#ffd60a');
+    return;
+  }
   benchScene(u);
-  topText('SIUUU → SAD BENCH', (u - 0.65) / 0.2, 260, 82, '#ffd60a'); topText('How?!', (u - 0.9) / 0.2, 380, 90, '#fff');
+  topText('How?!', (u - 0.75) / 0.2, 300, 130, '#ffd60a');
 }
 function v_rewind(u) { benchScene(0); ctx.fillStyle = 'rgba(20,20,40,.4)'; ctx.fillRect(0, 0, W, H); const R = rng(Math.floor(u * 90) + 3); for (let i = 0; i < 30; i++) { ctx.fillStyle = `rgba(255,255,255,${0.15 + R() * 0.3})`; ctx.fillRect(0, R() * H, W, 2 + R() * 8); } txt('<< REWIND', 540, 380, 110, '#fff', DARK); }
 function v_messi(u) {
   room(); desk(1420);
-  guy(470, 1600, MESSI, { s: 2.4, t: u, arms: u > 0.2 && u < 0.6 ? 'point' : 'shrug', face: u < 0.6 ? 'angry' : u < 2.2 ? 'shock' : 'peek', look: u < 2.2 ? [10, 6] : [0, 0] });
-  // giant red RETIRE button
-  const press = u > 0.3 && u < 0.55 ? 1 : 0;
-  ell(800, 1400 + press * 12, 120, 40, '#7a0a0a', DARK, 6); ell(800, 1370 + press * 18, 110, 50, '#e11d2a', DARK, 6); txt('RETIRE', 800, 1370 + press * 18, 40, '#fff', null);
-  burst(800, 1240, 110, 'SLAM!', (u - 0.3) / 0.12 * (u < 1.0 ? 1 : 0), '#ffd60a', 44);
-  // drawer pops open: mini 2016 Messi (blond, as he really dyed it in 2016) waves
-  const d = clamp((u - 0.6) / 0.25);
-  rrect(150, 1460, 330, 120 + d * 40, 8, '#6a4524', DARK, 5);
-  if (d > 0) { const pop = easeOutBack(clamp((u - 0.75) / 0.3)); guy(315, 1470 - pop * 40, { ...MESSI, hairCol: '#f1d17a' }, { s: 0.95 * pop + 0.01, t: u, arms: 'up', face: 'happy' }); rrect(150, 1480, 330, 140, 8, '#7a4f2a', DARK, 5); txt('2016', 315, 1550, 44, '#ffd60a', DARK); }
-  if (u > 1.0) bubble(330, 900, 'been there!', 320, 1050, (u - 1.0) / 0.2, 44);
-  topText('Retirement v2.0', (u - 0.5) / 0.25, 260, 92, '#ffd60a');
-  if (u > 2.25 && u < 2.36) paper(900, 700, 'RETIREMENT v3.0', 'DRAFT', '#c1121f', 1, 0.15, 1);   // blink-and-miss easter egg
-  messiTag(470, 1600 - 2.4 * 270 - 40);
+  guy(470, 1600, MESSI, { s: 2.4, t: u, arms: u > 0.55 && u < 0.85 ? 'point' : 'shrug', face: u < 0.85 ? 'angry' : u < 2.2 ? 'shock' : 'peek', look: u < 2.2 ? [10, 6] : [0, 0] });
+  const press = u > 0.6 && u < 0.85 ? 1 : 0;
+  ell(800, 1410 + press * 14, 150, 48, '#7a0a0a', DARK, 6); ell(800, 1372 + press * 22, 138, 60, '#e11d2a', DARK, 6); txt('RETIRE', 800, 1372 + press * 22, 50, '#fff', null);
+  burst(800, 1220, 120, 'SLAM!', (u - 0.6) / 0.12 * (u < 1.2 ? 1 : 0), '#ffd60a', 50);
+  const d = clamp((u - 0.9) / 0.2);
+  rrect(130, 1440, 360, 140 + d * 50, 8, '#6a4524', DARK, 5);
+  if (d > 0) { const pop = easeOutBack(clamp((u - 1.0) / 0.25)); guy(310, 1470 - pop * 60, { ...MESSI, hairCol: '#ffd21f' }, { s: 1.25 * pop + 0.01, t: u, arms: 'up', face: 'happy' }); rrect(130, 1470, 360, 160, 8, '#7a4f2a', DARK, 5); txt('2016', 310, 1550, 54, '#ffd60a', DARK);
+    burst(470, 1420, 80, 'POP', (u - 1.0) / 0.1 * (u < 1.4 ? 1 : 0), '#fff59d', 34); }
+  if (u > 1.3) bubble(300, 720, 'been there!', 300, 800, (u - 1.3) / 0.2, 48);
+  messiTag(560, 1600 - 2.4 * 270 - 40);
+  topText('Retirement v2.0', (u - 0.9) / 0.25, 300, 96, '#ffd60a');
+  if (u > 2.3 && u < 2.4) paper(830, 700, 'RETIREMENT v3.0', 'DRAFT', '#c1121f', 1, 0.15, 1);
+  if (u < 0.55) { ctx.fillStyle = 'rgba(0,0,0,.6)'; ctx.fillRect(0, 0, W, H); rrect(140, 620, 800, 300, 26, '#0b1330', '#ffd60a', 8); txt('WORLD CUP FINAL', 540, 690, 50, '#ffd60a', null); txt('ARG 0 - 1 ESP', 540, 810, 110, '#fff', null); }
 }
 function v_pen(u) {
-  s3(u * 1.3);
-  const n = 1 + Math.min(5, Math.floor(clamp(u / 1.2) * 6)), ko = u * 1.3 > 1.35 ? 1 : 0;
-  rrect(40, 440, 420, 150, 20, 'rgba(10,14,30,.85)', '#ffd60a', 5);
-  txt('WORLD CUPS: ' + n, 250, 485, 42, '#fff', null); txt('KO GOALS: ' + ko, 250, 545, 42, ko ? '#7CFC7C' : '#ff6b6b', null);
+  window.NOCAP = true; s3(u * 1.3); window.NOCAP = false;
+  const yr = Math.min(2026, 2006 + Math.floor(clamp(u / 1.25) * 20 / 4) * 4), goal = u * 1.3 > 1.35;
+  rrect(240, 230, 600, 230, 24, 'rgba(255,255,255,.95)', DARK, 6);
+  txt('WORLD CUP ' + yr, 540, 300, 60, DARK, null);
+  ctx.save(); if (goal) { ctx.shadowColor = '#ffd60a'; ctx.shadowBlur = 30; } txt('KO GOALS: ' + (goal ? 1 : 0), 540, 395, 70, goal ? '#16a34a' : '#c1121f', null); ctx.restore();
+  if (u > 1.9) topText('20 years. 1st one!', (u - 1.9) / 0.25, 560, 64, '#ffd60a');
 }
 function v_camp(u) {
   soft(u, 0.3);
   const turn = u > 1.9;
-  const rx = turn ? 700 : lerp(560, 720, ease(u / 1.0));
-  guy(rx, 1720, CR7, { s: RS, flip: turn, t: u, pose: turn ? 'stand' : 'run', p: u * 9, arms: turn ? 'mic' : 'swing', face: turn ? 'smug' : 'angry', look: [8, 0] });
-  cr7Tag(rx, headTop(1720, RS, 62) - 80);
-  // suitcase stuffed with trophies bursts
+  const rx = turn ? 640 : lerp(520, 700, ease(u / 1.0));
+  guy(rx, 1560, CR7, { s: RS, flip: turn, t: u, pose: turn ? 'stand' : 'run', p: u * 9, arms: turn ? 'mic' : 'swing', face: turn ? 'smug' : 'angry', look: [8, 0] });
+  cr7Tag(rx, headTop(1560, RS, 62) - 80);
   const burstK = clamp((u - 0.55) / 0.8);
-  if (!turn) suitcase(rx + 150, 1640, 1.2);
-  if (burstK > 0) for (let i = 0; i < 6; i++) { const a = -Math.PI / 2 + (i - 2.5) * 0.4; trophy(rx + 150 + Math.cos(a) * burstK * 380, 1560 + Math.sin(a) * burstK * 500 + burstK * burstK * 520, 1.2, i + u * 3); }
-  burst(rx + 150, 1500, 100, 'POP!', (u - 0.55) / 0.12 * (u < 1.1 ? 1 : 0), '#fff59d', 40);
-  // coach from the LEFT with a very long receipt
-  const cx = lerp(-150, 230, ease((u - 0.3) / 0.8)); const buried = clamp((u - 2.2) / 0.8);
-  guy(cx, 1720 + buried * 60, COACH, { s: 1.6, t: u, pose: u < 1.1 ? 'run' : 'stand', p: u * 14, arms: 'point', face: buried > 0.2 ? 'shock' : 'angry' });
-  tag(cx, 1150, 'COACH', '#374151');
-  if (u > 0.9) { const L = clamp((u - 0.9) / 0.6); rrect(cx + 60, 1300, 30 + L * 640, 90, 6, '#fffef6', DARK, 4); if (L > 0.9) { txt('FINE: €255', cx + 60 + (30 + L * 640) / 2, 1346, 50, '#c1121f', null); } }
-  if (u > 2.6) { ctx.save(); ctx.translate(cx + 380, 1345); ctx.rotate(-0.2); ctx.strokeStyle = '#16a34a'; ctx.lineWidth = 8; ctx.strokeRect(-110, -40, 220, 80); txt('PAID', 0, 2, 60, '#16a34a', null); ctx.restore(); }
-  // fridge-sized wallet + cash avalanche on the coach
-  if (turn) { const w = easeOutBack(clamp((u - 1.9) / 0.3)); ctx.save(); ctx.translate(560, 1420); ctx.scale(w, w); rrect(-150, -190, 300, 380, 24, '#3b2a1e', DARK, 7); txt('WALLET', 0, -130, 40, '#d6b98c', null); ctx.restore();
-    const R = rng(9); for (let i = 0; i < 70; i++) { const k = clamp((u - 2.1 - R() * 0.5) / 0.9); if (k <= 0) continue; bill(lerp(520, cx - 120 + R() * 280, k), lerp(1300, 1500 + R() * 260, k) - Math.sin(k * Math.PI) * 300, R() * 6 + u * 5, 1.3); } }
-  topText('FINE: €255', (u - 1.4) / 0.25, 260, 100, '#ffd60a'); if (u > 2.9) topText('Keep the change.', (u - 2.9) / 0.25, 380, 72, '#fff');
+  if (!turn) suitcase(rx + 160, 1480, 1.5);
+  if (burstK > 0) for (let i = 0; i < 6; i++) { const a = -Math.PI / 2 + (i - 2.5) * 0.4; trophy(rx + 120 + Math.cos(a) * burstK * 300, 1400 + Math.sin(a) * burstK * 420 + burstK * burstK * 420, 1.8, i + u * 3); }
+  burst(rx + 140, 1330, 130, 'POP!', (u - 0.55) / 0.12 * (u < 1.1 ? 1 : 0), '#fff59d', 56);
+  const cx = lerp(-150, 170, ease((u - 0.3) / 0.8)); const buried = clamp((u - 2.2) / 0.8);
+  guy(cx, 1560 + buried * 40, COACH, { s: 1.6, t: u, pose: u < 1.1 ? 'run' : 'stand', p: u * 14, arms: 'up', face: buried > 0.2 ? 'shock' : 'angry' });
+  tag(Math.max(cx, 210), 1000, 'COACH', '#374151');
+  // tall receipt strip held up by the coach (unrolls downward)
+  if (u > 0.8) { const L = clamp((u - 0.8) / 0.5); const x0 = Math.max(cx + 40, 150), h = 140 + L * 560;
+    rrect(x0, 760, 170, h, 6, '#fffef6', DARK, 5); ctx.fillStyle = '#c9c4b5'; for (let i = 0; i < Math.floor(h / 40) - 4; i++) ctx.fillRect(x0 + 22, 920 + i * 40, 126 - (i % 3) * 30, 10);
+    txt('FINE', x0 + 85, 800, 44, DARK, null); txt('€255', x0 + 85, 860, 54, '#c1121f', null);
+    if (u > 2.6) { ctx.save(); ctx.translate(x0 + 85, 960); ctx.rotate(-0.21); ctx.globalAlpha = clamp((u - 2.6) * 6); ctx.strokeStyle = '#c1121f'; ctx.lineWidth = 9; ctx.strokeRect(-110, -44, 220, 88); txt('PAID', 0, 2, 66, '#c1121f', null); ctx.restore(); } }
+  if (turn) { const w = easeOutBack(clamp((u - 1.9) / 0.3)); ctx.save(); ctx.translate(760, 1240); ctx.scale(w, w); rrect(-140, -180, 280, 360, 24, '#3b2a1e', DARK, 7); txt('WALLET', 0, -120, 40, '#d6b98c', null); ctx.restore();
+    const R = rng(9); for (let i = 0; i < 70; i++) { const k = clamp((u - 2.1 - R() * 0.5) / 0.9); if (k <= 0) continue; bill(lerp(700, cx - 100 + R() * 260, k), lerp(1150, 1350 + R() * 260, k) - Math.sin(k * Math.PI) * 300, R() * 6 + u * 5, 1.3); } }
+  topText('FINE: €255', (u - 1.3) / 0.25, 260, 100, '#ffd60a'); if (u > 2.8) topText('Keep the change.', (u - 2.8) / 0.25, 390, 76, '#fff');
 }
 function v_tech(u) {
   soft(u, 0.3);
-  rrect(560, 1380, 420, 60, 8, '#7a4f2a', DARK, 5); paper(770, 1250, 'I RETIRE', u > 0.9 ? 'SIGNED' : null, '#1f3a8a', 1, 0.05, (u - 0.9) / 0.2);
+  rrect(560, 1380, 340, 60, 8, '#7a4f2a', DARK, 5); paper(740, 1180, 'I RETIRE', u > 0.9 ? 'SIGNED' : null, '#1f3a8a', 0.8, 0.05, (u - 0.9) / 0.2);
   guy(620, 1720, CR7, { s: RS, flip: false, t: u, arms: 'point', face: 'smug', look: [10, 4] });
   // left hand sneaks a 2030 shirt under his jersey
-  const sneak = clamp((u - 0.4) / 1.2); jersey(lerp(400, 560, sneak), lerp(1300, 1460, sneak), '#d0101a', null, '2030', '#fff', 0.8, -0.3 + sneak * 0.3);
+  const sneak = clamp((u - 0.4) / 1.2); jersey(lerp(400, 560, sneak), lerp(1300, 1460, sneak), '#ffffff', null, '2030', '#111', 1.0, -0.3 + sneak * 0.3);
   guy(220, 1720, MESSI, { s: MS, t: u, arms: 'clutch', face: u > 1.4 ? 'calm' : 'shock', look: u > 1.4 ? [0, 0] : [10, 0] });
   messiTag(220, headTop(1720, MS, 72) - 60); cr7Tag(620, headTop(1720, RS, 62) - 80);
-  topText('Retired.', (u - 0.2) / 0.25, 260, 96, '#fff'); topText('...Technically.', (u - 1.4) / 0.25, 380, 90, '#ffd60a');
+  topText('Retired.', (u - 0.2) / 0.25, 260, 100, '#fff'); topText('...kind of.', (u - 1.4) / 0.25, 390, 100, '#ffd60a');
 }
 function v_twist(u) {
   const pull = u < 0.5 ? 0 : u < 1.0 ? ease((u - 0.5) / 0.3) : u < 1.8 ? 1 : 1 - ease((u - 1.8) / 0.3);
   benchScene(u, { pull, look: u > 1.0 && u < 1.8 ? 1 : 0, face1: u > 1.0 && u < 1.8 ? 'shock' : 'sleep', face2: u > 1.0 && u < 1.8 ? 'shock' : 'worried', star: u > 2.0 });
-  topText('Who un-retires first?', (u - 2.0) / 0.25, 300, 80, '#ffd60a');
+  topText('Who comes back first?', (u - 2.0) / 0.25, 300, 82, '#ffd60a');
 }
 function v_end(u) {
   soft(u, 1);
@@ -659,11 +669,11 @@ function v_end(u) {
   ell(300 + k * 60 + 180, 1355, 30, 26, '#3a2416', null);                                  // bearded goat
   ctx.fillStyle = '#1c130d'; ctx.beginPath(); ctx.ellipse(780 - k * 60 - 180, 1270, 42, 26, 0.5, 0, TAU); ctx.fill();   // quiff goat
   if (k > 0.95) burst(540, 1280, 90, 'BONK', 1, '#ffd60a', 40);
-  topText('10 or 7?', (u - 0.1) / 0.25, 300, 120, '#ffd60a'); topText('Comment who comes back first', (u - 0.4) / 0.25, 430, 50, '#fff');
-  txt('Real 2026 facts · jokes are parody', 540, 1560, 40, '#fff', DARK, 'center', 800);
+  topText('10 or 7?', (u - 0.1) / 0.25, 300, 130, '#ffd60a'); topText('Comment below!', (u - 0.4) / 0.25, 440, 64, '#fff');
+  txt('Real 2026 facts · jokes are parody', 540, 1500, 44, '#fff', DARK, 'center', 800);
 }
-const SEG = [[0, 1.6, v_hook], [1.6, 1.9, v_rewind], [1.9, 5.4, v_messi], [5.4, 9.4, v_pen], [9.4, 13.4, v_camp], [13.4, 16.4, v_tech], [16.4, 19.4, v_twist], [19.4, 21.6, v_end]];
-const PUNCH = [0.6, 2.2, 2.6, 7.1, 10.0, 11.4, 12.0, 15.0, 17.5, 19.6];
+const SEG = [[0, 1.6, v_hook], [1.6, 1.85, v_rewind], [1.85, 5.0, v_messi], [5.0, 9.0, v_pen], [9.0, 13.0, v_camp], [13.0, 15.8, v_tech], [15.8, 18.8, v_twist], [18.8, 21.0, v_end]];
+const PUNCH = [0.3, 0.7, 2.45, 2.85, 6.05, 9.6, 11.0, 11.6, 14.4, 16.9, 19.0];
 window.PUNCH = PUNCH;
 function render(t) {
   ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, W, H);
