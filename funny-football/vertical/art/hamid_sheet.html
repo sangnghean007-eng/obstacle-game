@@ -1,0 +1,13 @@
+<!doctype html><html><body style="margin:0"><canvas id="c" width="1900" height="1250"></canvas>
+<script src="neymar_hamid.js"></script><script src="/tmp/claude-0/-home-user-obstacle-game/e66590ac-2a10-5a33-8fcb-c33592167d49/scratchpad/refimg.js"></script><script src="/tmp/claude-0/-home-user-obstacle-game/e66590ac-2a10-5a33-8fcb-c33592167d49/scratchpad/ref2.js"></script>
+<script>
+const ctx = document.getElementById('c').getContext('2d');
+window.go = async () => {
+  ctx.fillStyle = '#3f9bf0'; ctx.fillRect(0, 0, 1900, 1250);
+  const img = new Image(); img.src = REF; await img.decode(); ctx.drawImage(img, 20, 20, 400, 560);
+  const ham = new Image(); ham.src = HAMID; await ham.decode(); ctx.drawImage(ham, 20, 600, 400, 630);
+  ctx.save(); ctx.translate(440, 20); ctx.scale(1.1, 1.1); drawNeymarH(ctx, { face: 'grin' }); ctx.restore();
+  const ex = ['neutral', 'pain', 'shock', 'wink', 'angry', 'smug'];
+  ex.forEach((f, i) => { ctx.save(); ctx.translate(1120 + (i % 3) * 260, 20 + Math.floor(i / 3) * 610); ctx.scale(0.45, 0.45); drawNeymarH(ctx, { face: f, t: 0.2 }); ctx.restore(); });
+};
+</script></body></html>
