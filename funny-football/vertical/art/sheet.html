@@ -1,0 +1,13 @@
+<!doctype html><html><body style="margin:0"><canvas id="c" width="1800" height="1300"></canvas>
+<script src="neymar_vector.js"></script>
+<script>
+const ctx = document.getElementById('c').getContext('2d');
+window.go = async () => {
+  ctx.fillStyle = '#3f9bf0'; ctx.fillRect(0, 0, 1800, 1300);
+  ctx.save(); ctx.translate(40, 60); ctx.scale(1.05, 1.05); drawNeymar(ctx, { ex: 1.1, bust: true }); ctx.restore();
+  const ex = [['grin', 'CƯỜI'], ['pain', 'GÀO KHÓC'], ['shock', 'SỐC'], ['wink', 'NHÁY MẮT'], ['angry', 'CÁU'], ['neutral', 'BÌNH THƯỜNG']];
+  ex.forEach(([f, l], i) => { const x = 720 + (i % 3) * 360, y = 40 + Math.floor(i / 3) * 620;
+    ctx.save(); ctx.translate(x, y); ctx.scale(0.55, 0.55); drawNeymar(ctx, { ex: 1.1, face: f, t: 0.2 }); ctx.restore();
+    ctx.font = '900 34px Inter, sans-serif'; ctx.textAlign = 'center'; ctx.fillStyle = '#fff'; ctx.fillText(l, x + 165, y + 560); });
+};
+</script></body></html>
