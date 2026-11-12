@@ -3,6 +3,9 @@
 This is the studio's living memory. After every episode, run a retro and update it (see "Retro" at the bottom).
 Every rule here comes from either (U) user feedback, (R) the review room, or (W) external research. Sources are at the end.
 
+## 0. House rules
+- **All deliverables are in English** (video text, scripts, post copy, upload dossiers, studio docs) (U, 2026-11-12).
+
 ## 1. Non-negotiables (checked before every export)
 - [ ] **Know who it is in 1 second, sound off** (U). For real people, use strong signifiers: kit colour and number, beard and hair silhouette, signature pose (e.g. SIUUU), height difference, big readable name tag of at least 56 px. Hand-drawn "likeness" from code alone tops out around 6/10 (U), so do not rely on it.
 - [ ] **Story readable without words** (U, R). Each beat has at most 1 caption of at most 6 words in simple English. A Vietnamese 18-year-old must understand it. Ban words like "un-retire", "technically", "knockout" unless a visual explains them (R).

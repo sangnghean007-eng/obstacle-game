@@ -1,24 +1,22 @@
-# YouTube Shorts: hồ sơ đăng tải "The GOATs Clock Out" (v5, bản chốt)
+# YouTube Shorts: upload dossier, "The GOATs Clock Out" (v5, final)
 
-Ký hiệu mức độ tin cậy: **[CHÍNH THỨC]** = có trong YouTube Help · **[THAM KHẢO]** = chỉ có nguồn bên thứ ba · **[KIỂM TRA]** = xác nhận lại trên giao diện YouTube Studio của bạn.
+Confidence tags: **[OFFICIAL]** = YouTube Help · **[REFERENCE]** = third-party sources only · **[VERIFY]** = confirm in your own YouTube Studio.
 
-## A. Kiểm tra trước khi tải lên (bắt buộc)
-| # | Hạng mục | Trạng thái |
+## A. Pre-upload checklist
+| # | Item | Status |
 |---|---|---|
-| 1 | File `goats-clock-out-9x16.mp4`: 1080x1920, 21 s, H.264/AAC | Đạt |
-| 2 | Dữ kiện trên màn hình đã được kiểm chứng (2 nguồn trở lên mỗi dữ kiện, xem mục E) | Đạt (vòng kiểm tra dữ kiện bản 4, đã sửa ở bản 5) |
-| 3 | Âm thanh 100% tự tạo, không logo, nhân vật hoạt hình tự vẽ | Đạt |
-| 4 | Phụ đề `subtitles-en.srt` khớp với chữ trên màn hình (đã kiểm bằng khung hình trích từ video) | Đạt |
-| 5 | Ghi rõ "parody" trong video và trong mô tả | Đạt |
+| 1 | `goats-clock-out-9x16.mp4`: 1080x1920, 21 s, H.264/AAC | Pass |
+| 2 | On-screen facts verified, 2+ sources each (section E) | Pass (v4 fact check, fixed in v5) |
+| 3 | 100% original audio, no logos, original cartoon characters | Pass |
+| 4 | `subtitles-en.srt` matches on-screen text (checked against frames extracted from the final video) | Pass |
+| 5 | "Parody" stated in the video and in the description | Pass |
 
-## B. Điền từng ô (YouTube Studio trên máy tính → Create → Upload videos)
-
-**1. Title** (tối đa 100 ký tự [CHÍNH THỨC]; trên feed Shorts chỉ hiện khoảng 40 ký tự đầu [THAM KHẢO]):
+## B. Fields (YouTube Studio on desktop → Create → Upload videos)
+**1. Title** (max 100 characters [OFFICIAL]; the Shorts feed shows about the first 40 [REFERENCE]):
 ```
 Messi & Ronaldo Retire From National Teams 😂
 ```
-
-**2. Description** (đặt hashtag ở cuối; nếu quá 60 hashtag YouTube bỏ qua tất cả [CHÍNH THỨC]; tối đa 3 hashtag hiện cạnh tiêu đề [THAM KHẢO]):
+**2. Description** (hashtags at the end; more than 60 hashtags and YouTube ignores all of them [OFFICIAL]; up to 3 show next to the title [REFERENCE]):
 ```
 Messi AND Ronaldo both retired from their national teams in 2026 — same year! 🐐🐐
 
@@ -45,47 +43,44 @@ Parody / caricature for entertainment. Both players still play club football. Or
 
 #Messi #Ronaldo #FootballMemes #WorldCup2026 #Shorts
 ```
+**3. Thumbnail**: custom Shorts thumbnails rolled out in July 2026, desktop only and possibly limited to YouTube Partner Program accounts [REFERENCE, VERIFY]. If you see an upload button, use `cover-9x16.jpg`. Otherwise pick the frame at about 0.4 s (both stamped RETIRED).
 
-**3. Thumbnail**: Shorts có ảnh bìa tùy chỉnh từ 7/2026, chỉ trên máy tính và có thể chỉ cho tài khoản trong YouTube Partner Program [THAM KHẢO, KIỂM TRA]. Nếu có nút tải lên thì dùng `cover-9x16.jpg`; nếu không, chọn khung ở khoảng 0,4 s (hai người bị đóng dấu RETIRED).
+**4. Playlists**: create `Football Roasts (Cartoon)`.
 
-**4. Playlists**: tạo `Football Roasts (Cartoon)`.
-
-**5. Audience**: chọn **No, it's not "made for kids"**. Lý do: nội dung biếm họa tin thể thao dành cho khán giả phổ thông và thanh thiếu niên trở lên, không nhắm tới trẻ em; hình hoạt hình không tự động là nội dung cho trẻ em [CHÍNH THỨC: tiêu chí đánh giá; nhận định là của chúng ta]. **Age restriction**: No.
+**5. Audience**: **No, it's not "made for kids"**. Reason: sports-news satire for a general/teen+ audience, not directed at children; cartoon style alone does not make content "made for kids" [OFFICIAL criteria; the judgement is ours]. **Age restriction**: No.
 
 **6. Show more**
-- **Paid promotion**: không đánh dấu (không có tài trợ).
-- **Altered or synthetic content**: chọn **No**. YouTube chỉ yêu cầu khai báo khi nội dung trông như thật và có thể khiến người xem tưởng là thật; hoạt hình rõ ràng không thật thì không cần [THAM KHẢO, có trích phát ngôn của YouTube; KIỂM TRA câu hỏi trong Studio]. Nếu sau này dùng hình hoặc giọng giống người thật thì phải chọn **Yes**.
-- **Tags** (không bắt buộc, ảnh hưởng nhỏ):
+- **Paid promotion**: leave unchecked (no sponsor).
+- **Altered or synthetic content**: **No**. Disclosure is required for realistic content that could make viewers think it is real; clearly unrealistic animation does not need it [REFERENCE, citing a YouTube statement; VERIFY the question wording in Studio]. If you ever use realistic likeness or voices, answer **Yes**.
+- **Tags** (optional, minor impact):
 ```
 messi, ronaldo, messi retirement, ronaldo retires, messi vs ronaldo, world cup 2026, football memes, football cartoon, ronaldo fine, argentina spain final
 ```
 - **Language**: English. **Caption certification**: None (content has never aired on TV in the U.S.).
-- **Recording date / Location**: để trống.
-- **License**: Standard YouTube License. Bật **Allow embedding** và **Publish to subscriptions feed**.
+- **Recording date / Location**: leave empty.
+- **License**: Standard YouTube License. Turn on **Allow embedding** and **Publish to subscriptions feed**.
 - **Shorts remixing**: Allow video and audio remixing.
 - **Category**: Comedy.
-- **Comments**: On, chọn **Hold potentially inappropriate comments for review** (chủ đề Messi/Ronaldo dễ bị fan hai bên công kích nhau). Sắp xếp theo **Top**.
+- **Comments**: On, with **Hold potentially inappropriate comments for review** (Messi/Ronaldo fan wars). Sort by **Top**.
 
 **7. Video elements → Subtitles**: Upload file → *With timing* → `subtitles-en.srt`.
+**8. Checks**: publish only after Copyright shows *No issues found*.
+**9. Visibility**: **Public**. Publish soon while the Nov 5 news is still fresh.
 
-**8. Checks**: chờ mục Copyright báo *No issues found* rồi mới bấm Publish.
-
-**9. Visibility**: **Public**. Đăng sớm khi tin (5/11) còn nóng.
-
-## C. Sau khi đăng (người chịu trách nhiệm: bạn đăng, studio phân tích)
-| Thời điểm | Việc cần làm |
+## C. After publishing
+| When | Action |
 |---|---|
-| 0–60 phút | Ghim bình luận `Did you spot the RETIREMENT v3.0 draft? 👀 Team 10 or Team 7?`. Trả lời 5–10 bình luận đầu. Ẩn bình luận xúc phạm cầu thủ. |
-| 24 h | Gửi studio 4 số liệu: Views, **Viewed vs. swiped away**, **Average % viewed**, số bình luận. |
-| 48 h | Studio đối chiếu với `studio/scorecard.csv` và cập nhật PLAYBOOK. Nếu tỉ lệ lướt qua cao, sửa hook ở tập sau. |
-| Có tin mới (ví dụ ai đó quay lại đội tuyển) | Studio kiểm tra lại mô tả. Nếu thông tin cũ gây hiểu nhầm, sửa mô tả hoặc thêm bình luận ghim cập nhật. |
+| 0–60 min | Pin: `Did you spot the RETIREMENT v3.0 draft? 👀 Team 10 or Team 7?` Reply to the first 5–10 comments. Hide insults aimed at the players. |
+| 24 h | Send the studio: Views, **Viewed vs. swiped away**, **Average % viewed**, comment count. |
+| 48 h | Studio updates `studio/scorecard.csv` and the PLAYBOOK. If swipe-away is high, the next episode gets a stronger hook. |
+| New developments (e.g. a comeback) | Studio re-checks the description; edit it or pin an update if it becomes misleading. |
 
-## D. Rủi ro và cách xử lý
-- **Bị báo cáo sai sự thật**: mô tả đã ghi rõ "both still play club football" và có nguồn.
-- **Fan công kích nhau trong bình luận**: bật chế độ giữ lại bình luận không phù hợp, ẩn bình luận xúc phạm.
-- **YouTube hỏi về nội dung tổng hợp**: hoạt hình biếm họa thì trả lời No. Nếu YouTube tự gắn nhãn thì không ảnh hưởng tới video.
+## D. Risks
+- **Misinformation reports**: the description says "both still play club football" and links sources.
+- **Fan wars in comments**: hold inappropriate comments, hide insults.
+- **Synthetic-content question**: clearly animated parody → No. An automatic label would not harm the video.
 
-## E. Nguồn
-YouTube Help: [hashtag (giới hạn 60)](https://support.google.com/youtube/answer/6390658) · [xác định "made for kids"](https://support.google.com/youtube/answer/9528076) · [FAQ made for kids](https://support.google.com/youtube/answer/9684541).
-Tham khảo bên thứ ba: [Music Ally: phát ngôn của YouTube về khai báo nội dung tổng hợp](https://musically.com/2024/03/19/youtube-reveals-tool-to-label-altered-or-synthetic-content/) · [ppc.land: ảnh bìa Shorts](https://ppc.land/youtube-ends-2-year-wait-for-shorts-thumbnails-but-blocks-a-b-testing/) · [hashtagtools: giới hạn ký tự](https://hashtagtools.io/blog/youtube-shorts-character-limits-title-description-hashtags-2026).
-Dữ kiện: ESPN, Al Jazeera, NBC New York, CP24, Cyprus Mail (link trong mô tả); kiểm chứng chi tiết ở `../review/`.
+## E. Sources
+YouTube Help: [hashtags (60 limit)](https://support.google.com/youtube/answer/6390658) · [determining "made for kids"](https://support.google.com/youtube/answer/9528076) · [made-for-kids FAQ](https://support.google.com/youtube/answer/9684541).
+Third-party: [Music Ally: YouTube statement on synthetic-content disclosure](https://musically.com/2024/03/19/youtube-reveals-tool-to-label-altered-or-synthetic-content/) · [ppc.land: Shorts thumbnails](https://ppc.land/youtube-ends-2-year-wait-for-shorts-thumbnails-but-blocks-a-b-testing/) · [hashtagtools: character limits](https://hashtagtools.io/blog/youtube-shorts-character-limits-title-description-hashtags-2026).
+Facts: ESPN, Al Jazeera, NBC New York, CP24, Cyprus Mail (links in the description); full fact check in `../review/`.
