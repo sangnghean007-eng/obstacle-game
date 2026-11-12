@@ -494,14 +494,14 @@ function s2(u) {
 function s3(u) {
   stadium(u, 0.2);
   // goal
-  ctx.strokeStyle = '#fff'; ctx.lineWidth = 14; ctx.strokeRect(700, 1080, 340, 260); ctx.strokeStyle = 'rgba(255,255,255,.45)'; ctx.lineWidth = 2; for (let i = 0; i < 14; i++) { ctx.beginPath(); ctx.moveTo(700 + i * 25, 1080); ctx.lineTo(700 + i * 25, 1340); ctx.stroke(); } for (let j = 0; j < 10; j++) { ctx.beginPath(); ctx.moveTo(700, 1080 + j * 26); ctx.lineTo(1040, 1080 + j * 26); ctx.stroke(); }
-  let bx = 520, by = 1520; if (u > 1) { const k = clamp((u - 1) / 0.35); bx = lerp(520, 880, k); by = lerp(1520, 1200, k) - Math.sin(k * Math.PI) * 120; }
+  ctx.strokeStyle = '#fff'; ctx.lineWidth = 14; ctx.strokeRect(600, 1080, 320, 250); ctx.strokeStyle = 'rgba(255,255,255,.45)'; ctx.lineWidth = 2; for (let i = 0; i < 13; i++) { ctx.beginPath(); ctx.moveTo(600 + i * 25, 1080); ctx.lineTo(600 + i * 25, 1330); ctx.stroke(); } for (let j = 0; j < 10; j++) { ctx.beginPath(); ctx.moveTo(600, 1080 + j * 25); ctx.lineTo(920, 1080 + j * 25); ctx.stroke(); }
+  let bx = 520, by = 1520; if (u > 1) { const k = clamp((u - 1) / 0.35); bx = lerp(520, 780, k); by = lerp(1520, 1200, k) - Math.sin(k * Math.PI) * 120; }
   const siu = clamp((u - 1.6) / 0.6), land = u > 2.2;
   const ry = land ? 1640 : 1640 - Math.sin(siu * Math.PI) * 260;
-  guy(lerp(400, 360, siu), ry, CR7, { s: RS, t: u, pose: u < 1.0 ? 'run' : u < 1.4 ? 'kick' : land ? 'spread' : 'jump', p: u * 12, arms: land ? 'shrug' : 'swing', face: land ? 'happy' : 'smug', rot: (u > 1.6 && !land) ? siu * Math.PI * 2 : 0 });
+  guy(lerp(400, 360, siu), ry, CR7, { s: RS, t: u, pose: u < 1.0 ? 'run' : u < 1.4 ? 'kick' : land ? 'spread' : 'jump', p: u * 12, arms: land ? 'shrug' : 'swing', face: land ? 'happy' : 'smug', rot: (u > 1.6 && !land && !window.NOSPIN) ? siu * Math.PI * 2 : 0 });
   ball(bx, by, 26, u * 10);
   cr7Tag(380, headTop(ry, RS, 64) - 70);
-  if (land) burst(540, 820, 230, 'SIUUUU!', (u - 2.2) / 0.25, '#ffd60a', 80, -0.05);
+  if (land) burst(window.NOSPIN ? 400 : 540, window.NOSPIN ? 1000 : 820, window.NOSPIN ? 170 : 230, 'SIUUUU!', (u - 2.2) / 0.25, '#ffd60a', window.NOSPIN ? 60 : 80, -0.05);
   // ancient fans with canes, slow clap
   for (let i = 0; i < 3; i++) { const x = 600 + i * 140, cl = Math.abs(Math.sin(u * 2 + i)) ; guy(x, 1560, OLDIE, { s: 1.25, t: u, arms: cl > 0.7 ? 'up' : 'swing', face: 'sleep', look: [0, 0] }); ctx.strokeStyle = '#6b4a2b'; ctx.lineWidth = 8; ctx.beginPath(); ctx.moveTo(x + 70, (i === 1 && u > 2.2) ? 1250 : 1440); ctx.lineTo(x + 80, (i === 1 && u > 2.2) ? 1360 : 1560); ctx.stroke(); }
   if (!window.NOCAP) { topText('6 World Cups later...', (u - 0.1) / 0.3, 230, 70, '#fff'); if (u > 2.3) topText('1st knockout goal!', (u - 2.3) / 0.3, 340, 84, '#ffd60a'); }
@@ -574,12 +574,12 @@ function trophy(x, y, s, a) { ctx.save(); ctx.translate(x, y); ctx.rotate(a); ct
 function benchScene(u, o = {}) {
   ctx.fillStyle = '#4c5563'; ctx.fillRect(0, 0, W, H); ctx.fillStyle = '#365e3d'; ctx.fillRect(0, 1260, W, H);
   cloud(540, 330, u);
-  const sign = o.star ? 'RETIRED*' : 'RETIRED';
-  ctx.strokeStyle = '#444'; ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(420, 690); ctx.lineTo(390, 560); ctx.moveTo(660, 690); ctx.lineTo(690, 560); ctx.stroke(); rrect(330, 690, 420, 110, 14, '#fff', DARK, 6); txt(sign, 540, 746, 70, '#c1121f', null);
-  if (o.star) txt('*for now', 640, 860, 48, '#ffd60a', DARK, 'center', 900);
+  const sign = 'RETIRED';
+  ctx.strokeStyle = '#444'; ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(420, 690); ctx.lineTo(390, 560); ctx.moveTo(660, 690); ctx.lineTo(690, 560); ctx.stroke(); rrect(300, 680, 480, 150, 14, '#fff', DARK, 6); txt(sign, 540, 730, 70, '#c1121f', null); txt('(from national teams)', 540, 795, 32, '#333', null);
+  if (o.star) { ctx.save(); ctx.translate(820, 640); ctx.rotate(0.15); rrect(-130, -50, 260, 100, 50, '#ffd60a', DARK, 6); txt('COMEBACK?', 0, 2, 44, DARK, null); ctx.restore(); }
   // hidden boots (planted for re-watchers) or pulled out
   const pull = o.pull || 0;
-  boot(lerp(300, 170, pull), lerp(1500, 1180, pull), 1.6 + pull * 0.4, true); boot(lerp(780, 860, pull), lerp(1500, 1180, pull), 1.6 + pull * 0.4, false);
+  boot(lerp(300, 250, pull), lerp(1500, 1050, pull), 1.6 + pull * 1.2, true); boot(lerp(780, 780, pull), lerp(1500, 1000, pull), 1.6 + pull * 1.2, false);
   bench(540, 1560);
   const look = o.look || 0;
   guy(360, 1640, MESSI, { s: MS, t: u, arms: pull > 0.2 ? 'shrug' : 'clutch', face: o.face1 || 'sleep', look: [look * 10, 4] });
@@ -587,14 +587,15 @@ function benchScene(u, o = {}) {
   mate(470, 1480);
   messiTag(360, headTop(1640, MS, 72) - 60); cr7Tag(730, headTop(1640, RS * 0.85, 62) - 80);
 }
+function stamp(x, y, text, k, rot = -0.2) { if (k <= 0) return; ctx.save(); ctx.translate(x, y); ctx.rotate(rot); const sc = lerp(2.4, 1, easeOut(clamp(k))); ctx.scale(sc, sc); ctx.globalAlpha = clamp(k * 3); ctx.font = `900 64px ${F}`; const w = ctx.measureText(text).width + 50; ctx.strokeStyle = '#e11d2a'; ctx.lineWidth = 10; ctx.strokeRect(-w / 2, -50, w, 100); txt(text, 0, 4, 64, '#e11d2a', null); ctx.restore(); }
 function v_hook(u) {
   if (u < 0.7) {
     soft(u, 1);
-    ctx.save(); ctx.shadowColor = '#ff2d2d'; ctx.shadowBlur = 40;
-    guy(540, 1500, CR7, { s: 2.6, t: 0.3, pose: 'jump', arms: 'shrug', face: 'happy', look: [0, -4] }); ctx.restore();
-    cr7Tag(540, headTop(1500, 2.6, 62) - 90);
-    burst(540, 820, 210, 'SIUUU!', 1, '#ffd60a', 80, -0.05);
-    topText('BOTH GOATs RETIRED.', 1, 230, 80, '#fff'); topText('SAME YEAR?!', 1, 340, 96, '#ffd60a');
+    guy(300, 1440, MESSI, { s: 1.9, t: 0.3, arms: 'clutch', face: 'sleep' });
+    guy(780, 1440, CR7, { s: 2.2, t: 0.3, pose: 'jump', arms: 'shrug', face: 'happy', look: [0, -4] });
+    messiTag(300, headTop(1440, 1.9, 72) - 60); cr7Tag(780, headTop(1440, 2.2, 62) - 80);
+    stamp(300, 1180, 'RETIRED', (u - 0.15) / 0.12); stamp(780, 1120, 'RETIRED', (u - 0.35) / 0.12, 0.15);
+    topText('BOTH GOATs QUIT', 1, 230, 86, '#fff'); topText('NATIONAL TEAMS', 1, 335, 74, '#fff'); topText('SAME YEAR?!', 1, 440, 96, '#ffd60a');
     return;
   }
   benchScene(u);
@@ -603,34 +604,35 @@ function v_hook(u) {
 function v_rewind(u) { benchScene(0); ctx.fillStyle = 'rgba(20,20,40,.4)'; ctx.fillRect(0, 0, W, H); const R = rng(Math.floor(u * 90) + 3); for (let i = 0; i < 30; i++) { ctx.fillStyle = `rgba(255,255,255,${0.15 + R() * 0.3})`; ctx.fillRect(0, R() * H, W, 2 + R() * 8); } txt('<< REWIND', 540, 380, 110, '#fff', DARK); }
 function v_messi(u) {
   room(); desk(1420);
-  guy(470, 1600, MESSI, { s: 2.4, t: u, arms: u > 0.55 && u < 0.85 ? 'point' : 'shrug', face: u < 0.85 ? 'angry' : u < 2.2 ? 'shock' : 'peek', look: u < 2.2 ? [10, 6] : [0, 0] });
+  guy(470, 1600, MESSI, { s: 2.4, t: u, arms: u > 0.55 && u < 0.85 ? 'point' : 'shrug', face: u < 0.85 ? 'calm' : u < 2.2 ? 'shock' : 'peek', look: u < 2.2 ? [10, 6] : [0, 0] });
   const press = u > 0.6 && u < 0.85 ? 1 : 0;
   ell(800, 1410 + press * 14, 150, 48, '#7a0a0a', DARK, 6); ell(800, 1372 + press * 22, 138, 60, '#e11d2a', DARK, 6); txt('RETIRE', 800, 1372 + press * 22, 50, '#fff', null);
-  burst(800, 1220, 120, 'SLAM!', (u - 0.6) / 0.12 * (u < 1.2 ? 1 : 0), '#ffd60a', 50);
+  burst(800, 1220, 110, 'CLICK', (u - 0.6) / 0.12 * (u < 1.2 ? 1 : 0), '#ffffff', 46);
   const d = clamp((u - 0.9) / 0.2);
   rrect(130, 1440, 360, 140 + d * 50, 8, '#6a4524', DARK, 5);
   if (d > 0) { const pop = easeOutBack(clamp((u - 1.0) / 0.25)); guy(310, 1470 - pop * 60, { ...MESSI, hairCol: '#ffd21f' }, { s: 1.25 * pop + 0.01, t: u, arms: 'up', face: 'happy' }); rrect(130, 1470, 360, 160, 8, '#7a4f2a', DARK, 5); txt('2016', 310, 1550, 54, '#ffd60a', DARK);
     burst(470, 1420, 80, 'POP', (u - 1.0) / 0.1 * (u < 1.4 ? 1 : 0), '#fff59d', 34); }
-  if (u > 1.3) bubble(300, 720, 'been there!', 300, 800, (u - 1.3) / 0.2, 48);
+  if (u > 1.3) bubble(320, 700, 'been there!', 300, 800, (u - 1.3) / 0.2, 64);
   messiTag(560, 1600 - 2.4 * 270 - 40);
   topText('Retirement v2.0', (u - 0.9) / 0.25, 300, 96, '#ffd60a');
   if (u > 2.3 && u < 2.4) paper(830, 700, 'RETIREMENT v3.0', 'DRAFT', '#c1121f', 1, 0.15, 1);
   if (u < 0.55) { ctx.fillStyle = 'rgba(0,0,0,.6)'; ctx.fillRect(0, 0, W, H); rrect(140, 620, 800, 300, 26, '#0b1330', '#ffd60a', 8); txt('WORLD CUP FINAL', 540, 690, 50, '#ffd60a', null); txt('ARG 0 - 1 ESP', 540, 810, 110, '#fff', null); }
 }
 function v_pen(u) {
-  window.NOCAP = true; s3(u * 1.3); window.NOCAP = false;
-  const yr = Math.min(2026, 2006 + Math.floor(clamp(u / 1.25) * 20 / 4) * 4), goal = u * 1.3 > 1.35;
-  rrect(240, 230, 600, 230, 24, 'rgba(255,255,255,.95)', DARK, 6);
-  txt('WORLD CUP ' + yr, 540, 300, 60, DARK, null);
-  ctx.save(); if (goal) { ctx.shadowColor = '#ffd60a'; ctx.shadowBlur = 30; } txt('KO GOALS: ' + (goal ? 1 : 0), 540, 395, 70, goal ? '#16a34a' : '#c1121f', null); ctx.restore();
-  if (u > 1.9) topText('20 years. 1st one!', (u - 1.9) / 0.25, 560, 64, '#ffd60a');
+  window.NOCAP = true; window.NOSPIN = true; s3(u * 1.3); window.NOCAP = false; window.NOSPIN = false;
+  const yr = 2006 + Math.min(5, Math.floor(clamp(u / 1.0) * 6)) * 4, goal = yr === 2026 && u * 1.3 > 1.35;
+  rrect(180, 420, 720, 300, 30, 'rgba(255,255,255,.96)', DARK, 7);
+  txt('WORLD CUP ' + yr, 540, 500, 64, DARK, null);
+  ctx.save(); if (goal) { ctx.shadowColor = '#ffd60a'; ctx.shadowBlur = 40; } txt((goal ? 1 : 0) + '', 400, 630, 130, goal ? '#16a34a' : '#c1121f', null); ctx.restore();
+  txt('knockout', 640, 610, 46, DARK, null); txt('goals', 640, 660, 46, DARK, null);
+  if (u > 1.9) { const k = easeOutBack(clamp((u - 1.9) / 0.25)); ctx.save(); ctx.translate(540, 290); ctx.scale(k, k); rrect(-330, -50, 660, 100, 50, 'rgba(10,14,30,.9)', '#ffd60a', 5); txt('20 years. 1st one!', 0, 2, 60, '#ffd60a', null); ctx.restore(); }
 }
 function v_camp(u) {
   soft(u, 0.3);
   const turn = u > 1.9;
   const rx = turn ? 640 : lerp(520, 700, ease(u / 1.0));
   guy(rx, 1560, CR7, { s: RS, flip: turn, t: u, pose: turn ? 'stand' : 'run', p: u * 9, arms: turn ? 'mic' : 'swing', face: turn ? 'smug' : 'angry', look: [8, 0] });
-  cr7Tag(rx, headTop(1560, RS, 62) - 80);
+  const tagY = headTop(1560, RS, 62) - 80;
   const burstK = clamp((u - 0.55) / 0.8);
   if (!turn) suitcase(rx + 160, 1480, 1.5);
   if (burstK > 0) for (let i = 0; i < 6; i++) { const a = -Math.PI / 2 + (i - 2.5) * 0.4; trophy(rx + 120 + Math.cos(a) * burstK * 300, 1400 + Math.sin(a) * burstK * 420 + burstK * burstK * 420, 1.8, i + u * 3); }
@@ -649,13 +651,13 @@ function v_camp(u) {
 }
 function v_tech(u) {
   soft(u, 0.3);
-  rrect(560, 1380, 340, 60, 8, '#7a4f2a', DARK, 5); paper(740, 1180, 'I RETIRE', u > 0.9 ? 'SIGNED' : null, '#1f3a8a', 0.8, 0.05, (u - 0.9) / 0.2);
-  guy(620, 1720, CR7, { s: RS, flip: false, t: u, arms: 'point', face: 'smug', look: [10, 4] });
+  rrect(540, 1380, 330, 60, 8, '#7a4f2a', DARK, 5); paper(700, 1160, 'I RETIRE', u > 0.9 ? 'SIGNED' : null, '#1f3a8a', 0.75, 0.05, (u - 0.9) / 0.2);
+  guy(560, 1720, CR7, { s: RS, flip: false, t: u, arms: 'point', face: 'smug', look: [10, 4] });
   // left hand sneaks a 2030 shirt under his jersey
-  const sneak = clamp((u - 0.4) / 1.2); jersey(lerp(400, 560, sneak), lerp(1300, 1460, sneak), '#ffffff', null, '2030', '#111', 1.0, -0.3 + sneak * 0.3);
-  guy(220, 1720, MESSI, { s: MS, t: u, arms: 'clutch', face: u > 1.4 ? 'calm' : 'shock', look: u > 1.4 ? [0, 0] : [10, 0] });
-  messiTag(220, headTop(1720, MS, 72) - 60); cr7Tag(620, headTop(1720, RS, 62) - 80);
-  topText('Retired.', (u - 0.2) / 0.25, 260, 100, '#fff'); topText('...kind of.', (u - 1.4) / 0.25, 390, 100, '#ffd60a');
+  const sneak = clamp((u - 0.4) / 1.4); ctx.save(); ctx.translate(lerp(380, 470, sneak), lerp(1050, 1250, sneak)); ctx.rotate(-0.25 + sneak * 0.2); ctx.scale(1.7, 1.7); jersey(0, 0, '#ffffff', null, '', '#111', 1, 0); txt('2030', 0, 18, 56, '#e11d2a', DARK); ctx.restore();
+  guy(170, 1720, MESSI, { s: MS, t: u, arms: 'clutch', face: u > 1.4 ? 'calm' : 'shock', look: u > 1.4 ? [0, 0] : [10, 0] });
+  messiTag(170, headTop(1720, MS, 72) - 60); cr7Tag(560, headTop(1720, RS, 62) - 80);
+  topText('Retired.', (u - 0.2) / 0.25, 260, 100, '#fff'); topText('...right?', (u - 1.4) / 0.25, 390, 100, '#ffd60a');
 }
 function v_twist(u) {
   const pull = u < 0.5 ? 0 : u < 1.0 ? ease((u - 0.5) / 0.3) : u < 1.8 ? 1 : 1 - ease((u - 1.8) / 0.3);
@@ -665,12 +667,12 @@ function v_twist(u) {
 function v_end(u) {
   soft(u, 1);
   const k = Math.abs(Math.sin(u * 4));
-  goat(300 + k * 60, 1380, 1.9, false, '10', '#75aadb', u); goat(780 - k * 60, 1380, 1.9, true, '7', '#d0101a', u);
-  ell(300 + k * 60 + 180, 1355, 30, 26, '#3a2416', null);                                  // bearded goat
-  ctx.fillStyle = '#1c130d'; ctx.beginPath(); ctx.ellipse(780 - k * 60 - 180, 1270, 42, 26, 0.5, 0, TAU); ctx.fill();   // quiff goat
-  if (k > 0.95) burst(540, 1280, 90, 'BONK', 1, '#ffd60a', 40);
-  topText('10 or 7?', (u - 0.1) / 0.25, 300, 130, '#ffd60a'); topText('Comment below!', (u - 0.4) / 0.25, 440, 64, '#fff');
-  txt('Real 2026 facts · jokes are parody', 540, 1500, 44, '#fff', DARK, 'center', 800);
+  goat(310 + k * 60, 1180, 2.0, false, '10', '#75aadb', u); goat(770 - k * 60, 1180, 2.0, true, '7', '#d0101a', u);
+  ell(310 + k * 60 + 190, 1155, 32, 28, '#3a2416', null);
+  ctx.fillStyle = '#1c130d'; ctx.beginPath(); ctx.ellipse(770 - k * 60 - 190, 1070, 46, 28, 0.5, 0, TAU); ctx.fill();
+  if (k > 0.95) burst(540, 1060, 130, 'BONK', 1, '#ffd60a', 54);
+  topText('10 or 7?', (u - 0.1) / 0.25, 300, 140, '#ffd60a'); topText('Who comes back first?', (u - 0.4) / 0.25, 450, 64, '#fff');
+  rrect(110, 1440, 860, 80, 40, 'rgba(10,14,30,.85)', null); txt('Real 2026 facts · jokes are parody', 540, 1481, 44, '#fff', null, 'center', 800);
 }
 const SEG = [[0, 1.6, v_hook], [1.6, 1.85, v_rewind], [1.85, 5.0, v_messi], [5.0, 9.0, v_pen], [9.0, 13.0, v_camp], [13.0, 15.8, v_tech], [15.8, 18.8, v_twist], [18.8, 21.0, v_end]];
 const PUNCH = [0.3, 0.7, 2.45, 2.85, 6.05, 9.6, 11.0, 11.6, 14.4, 16.9, 19.0];

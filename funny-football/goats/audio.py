@@ -46,14 +46,15 @@ def violin(t0, notes):
 def pizz(t0, notes):
     for f in notes:
         n = int(.18 * SR); t = np.arange(n) / SR; add(np.sin(2 * np.pi * f * t) * np.exp(-t * 18), t0, .35); t0 += .2
-# hook
+# hook: two stamp thuds
+add(drum(90, .2), 0.15, .9); add(drum(80, .2), 0.35, .9)
 siu = tone(np.linspace(220, 440, int(.6 * SR)), .6) * env(int(.6 * SR), .01, .2); add(siu, 0.0, .35); boom(0.3, .7)
 scratch(0.65); boom(0.7, .9); violin(0.75, [(392, .3), (349, .3), (330, .5)])
 n = int(1.0 * SR); add(band(rng.standard_normal(n), 2000, 8000) * env(n, .1, .3), 0.7, .1)
 n = int(.25 * SR); add(tone(np.linspace(1800, 300, n), .25) * env(n, .02, .05), 1.6, .15)
 # Messi: sad sting on the score, slam, drawer pop, ding, ba-dum-tss, easter-egg blip
 violin(1.9, [(330, .25), (294, .3)]); groove(2.4, 15.8, 110)
-boom(2.45, 1.0); add(drum(300, .1), 2.85, .6); add(bell(1318), 2.95, .4); badum(3.6); add(bell(3136, .15), 4.15, .2)
+boom(2.45, .5); add(drum(300, .1), 2.85, .6); add(bell(1318), 2.95, .4); badum(3.6); add(bell(3136, .15), 4.15, .2)
 # penalty: odometer ticks, kick, SIUUU, claps
 for k in range(10): n = int(.02 * SR); add(np.sin(2 * np.pi * 1200 * np.arange(n) / SR), 5.05 + k * .12, .3)
 add(drum(120, .2), 5.0 + 1.0 / 1.3, 1.0); boom(6.05, .9); add(bell(2093), 6.1, .4); add(tone(np.linspace(180, 360, int(.9 * SR)), .9) * env(int(.9 * SR), .02, .3), 6.7, .3)
