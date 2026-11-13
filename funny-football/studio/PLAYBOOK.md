@@ -31,6 +31,8 @@ Every rule here comes from either (U) user feedback, (R) the review room, or (W)
 - **Comment bait as a binary choice**: "10 or 7?" beats "comment below" (R).
 - **Callback twist** at the end (RETIRED → RETIRED* "*for now") instead of repeating the opening (R).
 
+- **Voices make it funny** (U): every episode gets crowd cheers/"ooh", laughs, a SIUUU-style shout and meaningless gibberish "cursing" on reactions. All voices are synthesized (espeak-ng + pitch shifts, `toon2/sfx/make_voices.py`), never real recordings or real players' voices.
+
 ## 3. Anti-patterns (things we got wrong)
 - Static scene with tiny text (the Messi desk in v2) means swipe-away (R).
 - A joke that contradicts the facts ("2030? my knees" after he had already retired) reads as an error, not irony (R).

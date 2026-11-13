@@ -43,6 +43,19 @@ notif(15.6); whoosh(15.5, 1.0); add(drum(60, .4), 16.5, 1.0); boom(16.5, .9)
 for k in range(10): add(drum(250 + (k % 2) * 60, .08), 16.9 + k * .17, .35)
 add(drum(200), 19.0, .6); add(drum(150), 19.2, .6)
 n = int(1.0 * SR); c = band(rng.standard_normal(n), 5000, 12000); add(c / np.abs(c).max() * np.exp(-np.arange(n) / SR * 3.5), 19.4, .35)
+# ---- voice SFX (synthesized with espeak-ng, see ../sfx/make_voices.py) ----
+import os
+def V(name):
+    w = wave.open(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'sfx', name + '.wav')); return np.frombuffer(w.readframes(w.getnframes()), '<i2').astype(np.float32) / 32768
+add(V('cheer_crowd'), 0.2, .45); add(V('chuckle'), 1.3, .5)                     # hook: Barca fans + smug chuckle
+add(V('gasp'), 3.65, .8); add(V('grumble_angry'), 3.9, .75)                     # Ronaldo at home: "0-2?!" + gibberish rant
+add(V('chuckle'), 5.8, .5); add(V('ooh_crowd'), 7.6, .7); add(V('laugh_m'), 8.0, .45)   # Juve reply
+add(V('cheer_crowd'), 10.85, .6); add(V('siu'), 10.95, .9)                       # penalty 1
+add(V('cheer_crowd'), 12.2, .5)                                                   # McKennie
+add(V('cheer_crowd'), 13.65, .6); add(V('siu_crowd'), 13.75, .8)                 # penalty 2
+add(V('gasp'), 14.15, .7); add(V('grumble_sad'), 14.4, .6)                       # Messi reaction
+add(V('bleat'), 16.75, .8); add(V('wail'), 17.0, .6); add(V('laugh_crowd'), 17.3, .55); add(V('bleat'), 18.0, .6)   # goat chase
+add(V('siu_crowd'), 18.8, .7); add(V('laugh_crowd'), 20.2, .45); add(V('siu'), 20.6, .6)   # outro
 out /= np.abs(out).max() * 1.1
 with wave.open(sys.argv[1], 'wb') as w:
     w.setnchannels(2); w.setsampwidth(2); w.setframerate(SR); w.writeframes((np.stack([out, out], 1) * 32767).astype('<i2').tobytes())
