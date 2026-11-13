@@ -6,6 +6,8 @@ Every rule here comes from either (U) user feedback, (R) the review room, or (W)
 ## 0. House rules
 - **All deliverables are in English** (video text, scripts, post copy, upload dossiers, studio docs) (U, 2026-11-12).
 
+- **Accuracy first** (U, 2026-11-13). Every fact on screen and in captions must be verified before production, using the protocol in section 5. Content the user pastes (viral posts, fan pages) is treated as a lead, never as a source.
+
 ## 1. Non-negotiables (checked before every export)
 - [ ] **Know who it is in 1 second, sound off** (U). For real people, use strong signifiers: kit colour and number, beard and hair silhouette, signature pose (e.g. SIUUU), height difference, big readable name tag of at least 56 px. Hand-drawn "likeness" from code alone tops out around 6/10 (U), so do not rely on it.
 - [ ] **Story readable without words** (U, R). Each beat has at most 1 caption of at most 6 words in simple English. A Vietnamese 18-year-old must understand it. Ban words like "un-retire", "technically", "knockout" unless a visual explains them (R).
@@ -49,3 +51,12 @@ Every rule here comes from either (U) user feedback, (R) the review room, or (W)
 - Hook, loop and CTA length: [prepublish.ai](https://prepublish.ai/guides/youtube-shorts-retention), [virvid.ai: looping](https://virvid.ai/blog/looping-structure-shorts-retention-2026), [shortimize](https://www.shortimize.com/blog/youtube-shorts-retention-rate), [conthunt](https://conthunt.app/blog/youtube-shorts-best-practices). The thresholds in these blogs are unverified.
 - Safe zones (vendor estimates, they conflict): [reap.video](https://reap.video/blog/short-form-video-safe-zones), [vidpros](https://vidpros.com/vertical-video-safe-zone/), [adaptlypost](https://adaptlypost.com/blog/social-media-safe-zones-2026-complete-guide).
 - Sound-off viewing and captions: [easyviral.ai, 500 Shorts analysis](https://easyviral.ai/api/blog-md/we-analyzed-500-viral-faceless-shorts) (methodology not shown).
+
+## 5. Fact-check protocol (mandatory, every episode)
+1. **Extract claims.** List every factual claim (dates, scores, scorers, minutes, quotes, numbers, who said what) in `facts.md` in the episode folder.
+2. **Two independent sources per claim**, preferring primary or reputable outlets: official club/league/UEFA/FIFA pages, ESPN, Reuters/AP, BBC, Sky, Al Jazeera. Fan pages, social reposts and AI summaries do not count.
+3. **Quotes.** Mark each quote VERBATIM (exact published wording, with source) or PARAPHRASED (labelled as such on screen).
+4. **Precision.** Exact dates, scores and goal types (penalty, header). Rounded or relative time ("a week later") must be checked against the dates.
+5. **Status column.** Each claim is VERIFIED, CORRECTED (with what changed versus the lead) or DROPPED (could not verify). Unverified claims never appear on screen.
+6. **Independent check.** A fact-checker agent re-verifies `facts.md` against the final frames before release.
+7. **Re-check on publish day** for anything that can change (records, retirements, transfers).
