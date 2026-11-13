@@ -1,0 +1,6 @@
+<!doctype html><html><body style="margin:0"><canvas id="c" width="1600" height="1100"></canvas><script src="toon2.js"></script><script>
+const ctx=document.getElementById('c').getContext('2d');ctx.fillStyle='#bfe9ff';ctx.fillRect(0,0,1600,1100);
+const ex=['happy','grin','shock','angry','sleep','smug','sad'];
+toon2.draw(ctx,'ronaldo','hips','grin',220,1080,0.8);toon2.draw(ctx,'messi','hips','grin',620,1080,0.8,{shirt:'#f7a8c4',stripes:null,collar:'#111',shorts:'#111',sock:'#f7a8c4',sockShade:'#d985a3',num:'#111'});
+ex.forEach((e,i)=>{ctx.save();ctx.beginPath();ctx.rect(860+(i%4)*185,20+Math.floor(i/4)*520,180,500);ctx.clip();toon2.draw(ctx,i%2?'ronaldo':'messi','hips',e,960+(i%4)*185-40,20+Math.floor(i/4)*520+1250*0.8,0.8);ctx.restore();ctx.font='bold 30px sans-serif';ctx.fillStyle='#000';ctx.fillText(e,880+(i%4)*185,60+Math.floor(i/4)*520);});
+</script></body></html>

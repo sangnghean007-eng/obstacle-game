@@ -13,3 +13,10 @@ Wording rule: "retired" always means "from the national team"; the sign gag spel
 
 ## Independent fact check (2026-11-13)
 All claims PASS (beIN, TSN, Inter Miami, SI). Announcement day (Nov 8) is not shown on screen; Decision Day was Nov 7.
+
+## v3 additions (2026-11-13)
+| # | Claim (as shown) | Status | Sources |
+|---|---|---|---|
+| 6 | "Ronaldo (retired from Portugal Nov 5)" | VERIFIED in Ep1 research (`../../goats/review/brief.md`, `../../goats/release/POST.md`): retired from Portugal's national team on Nov 5, 2026 | see Ep1 fact sheet |
+
+v3 parody elements (clearly fictional): scoring while asleep, the snot-bubble goal, the Golden Boot as a pillow, Ronaldo's jumping jacks, "26 GOALS (while napping*)" (the asterisk marks the joke). Ronaldo's lines ("Twenty six?!", "Relax? I don't know how.") are invented parody dialogue in a generic synthesized voice.

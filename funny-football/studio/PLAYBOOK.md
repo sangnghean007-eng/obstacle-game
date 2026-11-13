@@ -76,3 +76,17 @@ Real numbers go in `performance.csv`. Decide with retention data (average watch 
 - Every punchline gets a short, clear spoken English line (MBROLA via `toon2/sfx/make_lines.py`), and the bed ducks under speech.
 - Keep it to one music bed; no leftover layers from older episodes.
 - Visual clarity: zoom the camera (`cam()`) so the face fills the frame. Keep text outside the zoom and away from the top 120 px and bottom 380 px.
+
+## Motion, sound and art standard (from the Ep3 v3 feedback)
+- **Motion:** every shot moves.
+  - Keyframed camera (`camK`/`camR`): push-ins, whip pans, dutch angles.
+  - Anticipation before every action, then squash and stretch, motion trails and an impact flash with shake.
+  - At least one slow-motion beat per video.
+  - Particles on every hit: sand puffs, stars, sweat, steam, Zzz, fireworks.
+- **Sound:** use `toon2/sfx/synth.py`.
+  - Each character gets a music theme; the music style changes per scene.
+  - Every on-screen action gets a matching sound (kick, net, slurp, boing, tweet, scratch, tick).
+  - Voices sit on top: music ducks under speech; reverb and stereo are added.
+- **Art:** the rig has two-tone shading, rim light, iris and catchlight eyes, hair and beard texture, folds and trims.
+  - Use the expressions `sleep`, `angry` and `smug` for acting, not only `grin`.
+- **Story:** a rule-of-three escalation, plus one absurd twist and a character contrast (here: lazy vs restless).
