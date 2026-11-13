@@ -58,9 +58,9 @@
     const legLen = c.leg, armLen = c.arm;
     const leg = (side) => {
       const [ta, sa] = pose[side + 'Leg'], h = hip[side], k = go(h, ta, legLen * 0.5), f = go(k, sa, legLen * 0.5);
-      limb([h, k], [70, 54], c.skin, c.shade);
+      const km = [(h[0] + k[0]) / 2, (h[1] + k[1]) / 2]; limb([h, km, k], [70, 80, 54], c.skin, c.shade);
       const sockTop = [k[0] + (f[0] - k[0]) * 0.12, k[1] + (f[1] - k[1]) * 0.12];
-      limb([sockTop, f], [54, 42], K.sock, K.sockShade);
+      const cm = [sockTop[0] + (f[0] - sockTop[0]) * 0.35, sockTop[1] + (f[1] - sockTop[1]) * 0.35]; limb([sockTop, cm, f], [54, 62, 38], K.sock, K.sockShade);
       boot(f[0], f[1] + 8, 1.1, (pose.face || 1), K.boot);
     };
     leg('l'); leg('r');
@@ -77,7 +77,7 @@
     ctx.font = '900 58px Inter, sans-serif'; ctx.textAlign = 'center'; ctx.fillStyle = K.num; ctx.lineWidth = 6; ctx.strokeStyle = INK; ctx.strokeText(c.num, c.cx + 6, 730); ctx.fillText(c.num, c.cx + 6, 730);
     const arm = (side) => {
       const [ua, fa] = pose[side + 'Arm'], s0 = sh[side], e = go(s0, ua, armLen * 0.5), h = go(e, fa, armLen * 0.5);
-      limb([s0, e, h], [56, 46, 34], c.skin, c.shade);
+      const bm = [(s0[0] + e[0]) / 2, (s0[1] + e[1]) / 2], fm = [e[0] + (h[0] - e[0]) * 0.35, e[1] + (h[1] - e[1]) * 0.35]; limb([s0, bm, e, fm, h], [58, 66, 44, 48, 32], c.skin, c.shade);
       limb([s0, go(s0, ua, armLen * 0.24)], [70, 62], K.shirt, null); ell(s0[0], s0[1] + 6, 34, 30, K.shirt);
       if (K.stripes) { }
       hand(h[0], h[1], 1.1, -D(fa) + Math.PI, (pose.hands || {})[side] || 'open', c.skin);
@@ -85,6 +85,9 @@
     arm('l'); arm('r');
   }
   // ---------------- heads ----------------
+  function tears(x, y, t) { for (const d of [-1, 1]) for (let i = 0; i < 7; i++) { const k = ((t * 2.5 + i / 7) % 1); ell(x + d * (40 + k * 200), y - k * 80 + k * k * 300, 9, 13, '#7fd3ff', 2); } }
+  function wail(x, y, w, h) { const M = [[x - w, y], [x, y - h * 0.3], [x + w, y], [x + w * 0.6, y + h], [x, y + h * 1.1], [x - w * 0.6, y + h]]; fill(M, '#5a1010'); ctx.save(); ctx.beginPath(); spline(M); ctx.clip(); fill([[x - w, y - 40], [x + w, y - 40], [x + w, y + 8], [x - w, y + 8]], '#fff'); ell(x, y + h * 0.85, w * 0.5, h * 0.3, '#d9585c'); ctx.restore(); ink(M, 3, 6, INK, true); }
+
   function headRonaldo(cx, expr) {
     const S = '#c98a5e', SH = '#a96d45';
     // long neck
@@ -105,12 +108,14 @@
     shape([[cx - 34, 250], [cx + 6, 236], [cx + 30, 246], [cx + 26, 256], [cx - 30, 262]], '#1a120c', 1, 2);
     shape([[cx + 50, 244], [cx + 84, 236], [cx + 102, 248], [cx + 96, 256], [cx + 54, 256]], '#1a120c', 1, 2);
     // eyes
-    const ey = expr === 'shock' ? 8 : 0;
-    for (const ex of [cx - 4, cx + 76]) { ell(ex, 282, 16, 9 + ey, '#fff', 3); ell(ex + 4, 282, 6, 6 + ey * 0.6, INK); }
+    const ey = expr === 'shock' ? 10 : 0;
+    for (const ex of [cx - 4, cx + 76]) { if (expr === 'cry') ink([[ex - 16, 276], [ex, 290], [ex + 16, 276]], 3, 6); else { ell(ex, 282, 16, 9 + ey, '#fff', 3); ell(ex + 4, 282, expr === 'shock' ? 4 : 6, expr === 'shock' ? 4 : 6, INK); } }
     // nose: long, straight, pointing right
     shape([[cx + 34, 290], [cx + 64, 350], [cx + 96, 372], [cx + 76, 388], [cx + 44, 382]], S, 2, 5);
     // mouth
-    if (expr === 'sad') { ink([[cx - 6, 438], [cx + 40, 424], [cx + 86, 440]], 3, 7); }
+    if (expr === 'cry') { wail(cx + 40, 418, 56, 60); tears(cx + 36, 286, window.T2T || 0); }
+    else if (expr === 'shock') { ell(cx + 40, 436, 22, 34, '#5a1010', 4); }
+    else if (expr === 'sad') { ink([[cx - 6, 438], [cx + 40, 424], [cx + 86, 440]], 3, 7); }
     else { // signature huge grin
       const M = [[cx - 26, 412], [cx + 40, 406], [cx + 104, 408], [cx + 92, 452], [cx + 40, 472], [cx - 14, 452]];
       fill(M, '#5a1010'); ctx.save(); ctx.beginPath(); spline(M); ctx.clip(); fill([[cx - 40, 396], [cx + 120, 396], [cx + 120, 438], [cx - 40, 438]], '#fffdf6');
@@ -135,11 +140,13 @@
     // soft brows, calm eyes
     shape([[cx - 34, 262], [cx, 252], [cx + 24, 258], [cx + 22, 266], [cx - 30, 270]], '#3b2416', 1, 2);
     shape([[cx + 46, 258], [cx + 78, 252], [cx + 96, 262], [cx + 92, 268], [cx + 50, 268]], '#3b2416', 1, 2);
-    for (const ex of [cx - 6, cx + 70]) { if (expr === 'happy') ink([[ex - 14, 296], [ex, 286], [ex + 14, 296]], 2, 4); else { ell(ex, 292, 14, 10, '#fff', 3); ell(ex + 3, 293, 6, 7, INK); } }
+    for (const ex of [cx - 6, cx + 70]) { if (expr === 'happy' || expr === 'cry') ink([[ex - 14, 296], [ex, 286], [ex + 14, 296]], 2, 4); else { ell(ex, 292, 14, 10, '#fff', 3); ell(ex + 3, 293, 6, 7, INK); } }
     // rounded nose
     shape([[cx + 30, 300], [cx + 52, 344], [cx + 76, 356], [cx + 60, 372], [cx + 34, 364]], S, 2, 5);
     // mouth inside beard
-    if (expr === 'sad') ink([[cx + 4, 418], [cx + 34, 410], [cx + 64, 420]], 3, 6);
+    if (expr === 'cry') { wail(cx + 34, 410, 40, 46); tears(cx + 32, 294, window.T2T || 0); }
+    else if (expr === 'shock') ell(cx + 34, 418, 16, 24, '#5a1010', 4);
+    else if (expr === 'sad') ink([[cx + 4, 418], [cx + 34, 410], [cx + 64, 420]], 3, 6);
     else { const M = [[cx + 2, 404], [cx + 34, 400], [cx + 68, 404], [cx + 56, 426], [cx + 34, 434], [cx + 12, 426]]; fill(M, '#6a1a14'); ctx.save(); ctx.beginPath(); spline(M); ctx.clip(); fill([[cx - 10, 396], [cx + 80, 396], [cx + 80, 412], [cx - 10, 412]], '#fff'); ctx.restore(); ink(M, 2, 5, INK, true); }
   }
   // ---------------- characters ----------------
@@ -151,11 +158,13 @@
     hips: { lArm: [-30, 60], rArm: [30, -60], lLeg: [-6, 2], rLeg: [8, -2], hands: { l: 'fist', r: 'fist' } },
     siu: { lArm: [-40, -20], rArm: [40, 20], lLeg: [-18, -10], rLeg: [18, 10], hands: { l: 'open', r: 'open' } },
     sky: { lArm: [-160, -175], rArm: [160, 175], lLeg: [-4, 0], rLeg: [6, 0], hands: { l: 'point', r: 'point' } },
+    cry: { lArm: [-145, 165], rArm: [145, -165], lLeg: [-30, -14], rLeg: [30, 14], hands: { l: 'open', r: 'open' } },
+    shock: { lArm: [-95, 178], rArm: [95, -178], lLeg: [-10, -4], rLeg: [10, 4], hands: { l: 'open', r: 'open' } },
     sad: { lArm: [-8, 10], rArm: [8, -10], lLeg: [-4, 0], rLeg: [4, 0], hands: {} },
   };
   window.toon2 = {
     draw(c2d, who, pose, expr, x, y, s) {
-      ctx = c2d; ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.translate(-300, -1260); ctx.lineJoin = 'round';
+      ctx = c2d; ctx.save(); ctx.translate(x, y); ctx.rotate(window.T2LEAN || 0); ctx.scale(s, s); ctx.translate(-300, -1260); ctx.lineJoin = 'round';
       const c = who === 'ronaldo' ? RONALDO : MESSI; 
       body(c, POSES[pose]);
       if (who === 'ronaldo') headRonaldo(c.cx, expr); else { ctx.save(); ctx.translate(300, 590); ctx.scale(1.12, 1.12); ctx.translate(-300, -590); headMessi(c.cx, expr); ctx.restore(); }

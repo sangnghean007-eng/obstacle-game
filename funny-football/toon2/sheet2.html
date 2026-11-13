@@ -1,0 +1,14 @@
+<!doctype html><html><body style="margin:0"><canvas id="c" width="2700" height="1400"></canvas>
+<script src="toon2.js"></script>
+<script>
+const ctx = document.getElementById('c').getContext('2d');
+window.go = async () => {
+  const g = ctx.createLinearGradient(0, 0, 0, 1400); g.addColorStop(0, '#f3e3c8'); g.addColorStop(1, '#e8cfa4'); ctx.fillStyle = g; ctx.fillRect(0, 0, 2700, 1400);
+  window.T2T = 0.3;
+  const L = [['ronaldo','siu','grin',0],['ronaldo','cry','cry',0],['ronaldo','shock','shock',-0.08],['messi','sky','happy',0],['messi','cry','cry',0],['messi','shock','shock',0.08]];
+  L.forEach(([w,p,e,lean],i) => { window.T2LEAN = lean; toon2.draw(ctx, w, p, e, 230 + i * 445, 1340, w === 'ronaldo' ? 0.92 : 0.86); });
+  window.T2LEAN = 0;
+  ctx.font = '900 40px Inter, sans-serif'; ctx.textAlign = 'center'; ctx.fillStyle = '#2a160c';
+  ['SIUUU','CRYING','SHOCKED','TO THE SKY','CRYING','SHOCKED'].forEach((t,i) => ctx.fillText(t, 230 + i * 445, 60));
+};
+</script></body></html>
