@@ -59,9 +59,9 @@
     const legLen = c.leg, armLen = c.arm;
     const leg = (side) => {
       const [ta, sa] = pose[side + 'Leg'], h = hip[side], k = go(h, ta, legLen * 0.5), f = go(k, sa, legLen * 0.5);
-      const km = [(h[0] + k[0]) / 2, (h[1] + k[1]) / 2]; limb([h, km, k], [70, 80, 54], c.skin, c.shade);
+      const km = [(h[0] + k[0]) / 2, (h[1] + k[1]) / 2]; const bk = c.bulk || 1; limb([h, km, k], [70 * bk, 80 * bk, 54 * bk], c.skin, c.shade);
       const sockTop = [k[0] + (f[0] - k[0]) * 0.12, k[1] + (f[1] - k[1]) * 0.12];
-      const cm = [sockTop[0] + (f[0] - sockTop[0]) * 0.35, sockTop[1] + (f[1] - sockTop[1]) * 0.35]; limb([sockTop, cm, f], [54, 62, 38], K.sock, K.sockShade); { const b0 = [sockTop[0] + (f[0] - sockTop[0]) * 0.08, sockTop[1] + (f[1] - sockTop[1]) * 0.08], b1 = [sockTop[0] + (f[0] - sockTop[0]) * 0.18, sockTop[1] + (f[1] - sockTop[1]) * 0.18]; limb([b0, b1], [58, 60], K.sockShade); }
+      const cm = [sockTop[0] + (f[0] - sockTop[0]) * 0.35, sockTop[1] + (f[1] - sockTop[1]) * 0.35]; limb([sockTop, cm, f], [54 * bk, 62 * bk, 38 * bk], K.sock, K.sockShade); { const b0 = [sockTop[0] + (f[0] - sockTop[0]) * 0.08, sockTop[1] + (f[1] - sockTop[1]) * 0.08], b1 = [sockTop[0] + (f[0] - sockTop[0]) * 0.18, sockTop[1] + (f[1] - sockTop[1]) * 0.18]; limb([b0, b1], [58, 60], K.sockShade); }
       boot(f[0], f[1] + 8, 1.1, (pose.face || 1), K.boot);
     };
     leg('l'); leg('r');
@@ -85,8 +85,8 @@
     if (c.num) { ctx.font = '900 58px Inter, sans-serif'; ctx.textAlign = 'center'; ctx.fillStyle = K.num; ctx.lineWidth = 6; ctx.strokeStyle = INK; ctx.strokeText(c.num, c.cx + 6, 730); ctx.fillStyle = 'rgba(0,0,0,.25)'; ctx.fillText(c.num, c.cx + 10, 734); ctx.fillStyle = K.num; ctx.fillText(c.num, c.cx + 6, 730); }
     const arm = (side) => {
       const [ua, fa] = pose[side + 'Arm'], s0 = sh[side], e = go(s0, ua, armLen * 0.5), h = go(e, fa, armLen * 0.5);
-      const bm = [(s0[0] + e[0]) / 2, (s0[1] + e[1]) / 2], fm = [e[0] + (h[0] - e[0]) * 0.35, e[1] + (h[1] - e[1]) * 0.35]; limb([s0, bm, e, fm, h], [58, 66, 44, 48, 32], c.skin, c.shade);
-      limb([s0, go(s0, ua, armLen * 0.24)], [70, 62], K.shirt, null); limb([go(s0, ua, armLen * 0.2), go(s0, ua, armLen * 0.25)], [66, 62], K.collar, null); ell(s0[0], s0[1] + 6, 34, 30, K.shirt);
+      const bm = [(s0[0] + e[0]) / 2, (s0[1] + e[1]) / 2], fm = [e[0] + (h[0] - e[0]) * 0.35, e[1] + (h[1] - e[1]) * 0.35]; const bk = c.bulk || 1; limb([s0, bm, e, fm, h], [58 * bk, 66 * bk * bk, 44 * bk, 48 * bk * bk, 32 * bk], c.skin, c.shade);
+      limb([s0, go(s0, ua, armLen * 0.24)], [70 * bk, 62 * bk], K.sleeve || K.shirt, null); limb([go(s0, ua, armLen * 0.2), go(s0, ua, armLen * 0.25)], [66 * bk, 62 * bk], K.collar, null); ell(s0[0], s0[1] + 6, 34 * bk, 30 * bk, K.sleeve || K.shirt);
       if (K.stripes) { }
       hand(h[0], h[1], K.gloves ? 1.5 : 1.1, -D(fa) + Math.PI, (pose.hands || {})[side] || 'open', K.gloves || c.skin);
     };
@@ -180,6 +180,7 @@
   function headGeneric(cx, expr, h, c) {
     const S = c.skin, SH = c.shade, HC = h.hairCol || '#2a1a10';
     limb([[cx - 4, 470], [cx, 590]], [h.neck || 62, (h.neck || 62) + 8], S, SH);
+    if (h.hair === 'curls') { for (const [dx, dy] of [[-120, 330], [-128, 400], [-112, 470], [-70, 510], [-130, 270], [130, 300], [120, 360]]) ell(cx + dx, dy, 48, 44, HC, 3); }
     if (h.hair === 'long' || h.hair === 'bun') shape([[cx - 110, 250], [cx - 130, 420], [cx - 90, 520], [cx + 40, 500], [cx + 100, 400], [cx + 110, 260]], HC, 3, 6);
     if (h.hair === 'afro') { for (let i = 0; i < 14; i++) { const a = Math.PI * (0.95 + i / 13 * 1.1); ell(cx + 6 + Math.cos(a) * 120, 260 + Math.sin(a) * 120, 52, 52, HC, 3); } ell(cx + 6, 240, 120, 110, HC); }
     shape([[cx - 86, 310], [cx - 110, 300], [cx - 114, 340], [cx - 96, 372], [cx - 80, 366]], S);
@@ -195,6 +196,7 @@
     const hs = h.hair || 'short';
     if (hs === 'short' || hs === 'long' || hs === 'bun') shape([[cx - 100, 300], [cx - 108, 220], [cx - 60, 166], [cx + 20, 150], [cx + 100, 170], [cx + 122, 240], [cx + 80, 214], [cx + 20, 220], [cx - 40, 214], [cx - 76, 250]], HC, 3, 7);
     if (hs === 'bun') { ell(cx - 20, 130, 52, 46, HC, 4); }
+    if (hs === 'curls') { const pts = [[-130, 250], [-112, 190], [-70, 150], [-20, 128], [36, 126], [88, 142], [126, 180], [142, 228]]; ell(cx + 5, 190, 118, 62, HC); for (const [dx, dy] of pts) { ell(cx + dx, dy, 44, 40, HC, 3); ink([[cx + dx - 18, dy + 6], [cx + dx, dy - 12], [cx + dx + 18, dy + 4]], 1, 3, 'rgba(255,255,255,.25)'); } }
     if (hs === 'spiky') { const P = [[cx - 100, 290]]; for (let i = 0; i < 9; i++) { const x = cx - 100 + i * 26; P.push([x + 13, 120 + (i % 2) * 20], [x + 26, 205]); } P.push([cx + 124, 260]); shape(P, HC, 3, 6); }
     if (hs === 'bald' || hs === 'afro') { ell(cx + 10, 205, 40, 12, 'rgba(255,255,255,.35)', 0, -0.2); if (hs === 'bald') ink([[cx - 104, 300], [cx - 96, 250]], 2, 6, HC); }
     if (hs === 'cap') { shape([[cx - 104, 250], [cx - 96, 180], [cx - 30, 140], [cx + 60, 142], [cx + 112, 190], [cx + 116, 240]], h.capCol || '#1d4ed8', 3, 6); shape([[cx + 60, 236], [cx + 200, 240], [cx + 196, 262], [cx + 60, 262]], h.capCol || '#1d4ed8', 3, 5); ell(cx + 10, 150, 14, 8, '#fff', 2); }

@@ -1,0 +1,6 @@
+<!doctype html><html><body style="margin:0"><canvas id="c" width="1400" height="900"></canvas><script src="toon2.js"></script><script>
+const ctx=document.getElementById('c').getContext('2d');ctx.fillStyle='#3f9b4a';ctx.fillRect(0,0,1400,900);
+const TRA={skin:'#5a3622',shade:'#432818',shoulder:150,waist:72,leg:300,arm:290,bulk:1.55,abs:true,num:'17',head:{face:'square',wide:1.08,hair:'short',hairCol:'#111',beard:'full',nose:1.3,neck:96},kit:{shirt:'#7a263a',sleeve:'#7a263a',collar:'#7fc6ea',shorts:'#f4f4f4',sock:'#7a263a',sockShade:'#5c1a2b',boot:'#ff7a00',num:'#f4f4f4'}};
+const CUC={skin:'#f0c39e',shade:'#d6a27c',shoulder:90,waist:56,leg:290,arm:265,num:'3',head:{face:'long',hair:'curls',hairCol:'#8a5a32',beard:'stubble',nose:1.2},kit:{shirt:'#034694',collar:'#ffffff',shorts:'#034694',sock:'#ffffff',sockShade:'#cfd8e3',boot:'#ffffff',num:'#ffffff'}};
+toon2.draw(ctx,TRA,'shock','grin',380,880,0.62);toon2.draw(ctx,CUC,'hips','angry',800,880,0.55);toon2.draw(ctx,CUC,'shock','shock',1150,880,0.55);
+</script></body></html>
