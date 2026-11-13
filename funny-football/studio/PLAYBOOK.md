@@ -55,6 +55,9 @@ Every rule here comes from either (U) user feedback, (R) the review room, or (W)
 - Safe zones (vendor estimates, they conflict): [reap.video](https://reap.video/blog/short-form-video-safe-zones), [vidpros](https://vidpros.com/vertical-video-safe-zone/), [adaptlypost](https://adaptlypost.com/blog/social-media-safe-zones-2026-complete-guide).
 - Sound-off viewing and captions: [easyviral.ai, 500 Shorts analysis](https://easyviral.ai/api/blog-md/we-analyzed-500-viral-faceless-shorts) (methodology not shown).
 
+## 4b. Performance log
+Real numbers go in `performance.csv`. Decide with retention data (average watch time, % watched, 3-second hold), not views alone. A single post with fewer than about 1,000 views is not enough evidence to change the format; run A/B tests instead.
+
 ## 5. Fact-check protocol (mandatory, every episode)
 1. **Extract claims.** List every factual claim (dates, scores, scorers, minutes, quotes, numbers, who said what) in `facts.md` in the episode folder.
 2. **Two independent sources per claim**, preferring primary or reputable outlets: official club/league/UEFA/FIFA pages, ESPN, Reuters/AP, BBC, Sky, Al Jazeera. Fan pages, social reposts and AI summaries do not count.
