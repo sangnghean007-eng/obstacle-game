@@ -70,3 +70,9 @@ Real numbers go in `performance.csv`. Decide with retention data (average watch 
 5. **Status column.** Each claim is VERIFIED, CORRECTED (with what changed versus the lead) or DROPPED (could not verify). Unverified claims never appear on screen.
 6. **Independent check.** A fact-checker agent re-verifies `facts.md` against the final frames before release.
 7. **Re-check on publish day** for anything that can change (records, retirements, transfers).
+
+## Sound rule (from Ep3 feedback)
+- Fewer sounds, each one paying off. At most one gibberish or grumble per video, right after a punchline.
+- Every punchline gets a short, clear spoken English line (MBROLA via `toon2/sfx/make_lines.py`), and the bed ducks under speech.
+- Keep it to one music bed; no leftover layers from older episodes.
+- Visual clarity: zoom the camera (`cam()`) so the face fills the frame. Keep text outside the zoom and away from the top 120 px and bottom 380 px.

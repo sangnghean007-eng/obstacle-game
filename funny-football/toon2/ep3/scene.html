@@ -153,10 +153,12 @@ function lyingMessi(x, y, s, expr, kit, t, extra) { lean(x, y, -1.15, () => brea
 
 // ---------- Episode 3 scenes ----------
 function e_cold(u) {
+  cam(430, 1330, 1.35, () => {
   beach(u); umbrella(760, 1500); beachChair(560, 1600);
   lyingMessi(LX, LY, LS, 'happy', PINK, u);
-  sign(760, 840, 'RETIRED', 1);
-  { const [hx, hy] = lyingHead(); goldenBoot(hx + 40, lerp(560, hy - 160, easeOut(clamp(u / 1.2))), 1.5, Math.sin(u * 8) * 0.2); }
+  { const [hx, hy] = lyingHead(); goldenBoot(hx + 60, lerp(700, hy - 170, easeOut(clamp(u / 1.2))), 1.3, Math.sin(u * 8) * 0.2); }
+  });
+  sign(800, 560, 'RETIRED', 0.85);
   txt('RETIRED?!', 540, 230, 130, '#ffd60a');
   txt('...then THIS happened', 540, 370, 56, '#fff');
 }
@@ -171,23 +173,26 @@ function e_quit(u) {
 function jersey10() { ctx.beginPath(); const p = [[-60, -80], [-20, -90], [0, -78], [20, -90], [60, -80], [100, -40], [76, -14], [56, -30], [56, 90], [-56, 90], [-56, -30], [-76, -14], [-100, -40]]; p.forEach((q, i) => ctx[i ? 'lineTo' : 'moveTo'](q[0], q[1])); ctx.closePath(); ctx.fillStyle = '#fff'; ctx.fill(); ctx.save(); ctx.clip(); ctx.fillStyle = '#75aadb'; for (let i = -4; i < 5; i++) ctx.fillRect(i * 26 - 7, -100, 14, 200); ctx.restore(); ctx.lineWidth = 5; ctx.strokeStyle = DARK; ctx.stroke(); txt('10', 0, 20, 64, '#1b2a4a', '#fff'); }
 function e_volley(u) {
   // Miami beach: he scores without getting up; goals montage, counter to 26
-  beach(u); ctx.save(); ctx.translate(640, 1180); ctx.scale(1, 1); bulgeGoal(0, 0, 0); ctx.restore(); beachChair(420, 1760);
   const shots = [0.5, 1.4, 2.0, 2.4, 2.7, 2.9, 3.05, 3.2, 3.3]; let n = 0;
   const kicking = shots.some(k => u > k - 0.12 && u < k + 0.12);
+  cam(480, 1450, 1.3, () => {
+  beach(u); ctx.save(); ctx.translate(640, 1180); bulgeGoal(0, 0, shots.some(k => u > k + 0.3 && u < k + 0.6) ? 0.8 : 0); ctx.restore(); beachChair(420, 1760);
   lyingMessi(700, 1610, 0.62, kicking ? 'grin' : 'happy', PINK, u, kicking ? 'kick' : 'hips');
-  for (const k of shots) { if (u > k && u < k + 0.35) { const p = (u - k) / 0.35; ball(lerp(720, 790, p), lerp(1560, 1280, p) - Math.sin(p * Math.PI) * 100, 24, u * 20); } }
+  for (const k of shots) { if (u > k && u < k + 0.35) { const p = (u - k) / 0.35; ball(lerp(720, 790, p), lerp(1560, 1280, p) - Math.sin(p * Math.PI) * 100, 26, u * 20); } }
+  });
   n = Math.min(26, Math.floor(clamp((u - 0.6) / 2.8) * 26)); if (u > 3.4) n = 26;
-  rr(200, 420, 680, 170, 28, 'rgba(10,14,30,.9)', '#ffd60a', 6); txt('MLS GOALS', 540, 470, 44, '#ffd60a', null); txt(String(n), 540, 545, 90, '#fff', null);
-  topT('2026 season:', (u - 0.0) / 0.2, 300, 56, '#1a0f08');
-  if (u > 0.85 && u < 1.3) burst(780, 1060, 100, 'GOAL', (u - 0.85) / 0.1, 46);
+  rr(200, 200, 680, 200, 28, 'rgba(10,14,30,.92)', '#ffd60a', 6); txt('2026 MLS GOALS', 540, 255, 46, '#ffd60a', null); txt(String(n), 540, 340, 110, '#fff', null);
+  if (u > 0.85 && u < 1.3) burst(720, 560, 110, 'GOAL!', (u - 0.85) / 0.1, 52);
 }
 function e_boot(u) {
-  beach(u); umbrella(760, 1500); beachChair(560, 1600);
-  lyingMessi(LX, LY, LS, u > 0.6 ? 'shock' : 'happy', PINK, u);
   const [hx, hy] = lyingHead();
   const fall = clamp(u / 0.6), bx = hx + 60, by = lerp(500, hy - 150, fall * fall);
+  cam(430, 1330, 1.35, () => {
+  beach(u); umbrella(760, 1500); beachChair(560, 1600);
+  lyingMessi(LX, LY, LS, u > 0.6 ? 'shock' : 'happy', PINK, u);
   goldenBoot(bx, u < 0.6 ? by : hy - 150, 1.4, u < 0.6 ? u * 6 : 0.2);
-  if (u > 0.55 && u < 1.1) burst(bx + 200, hy - 280, 120, 'BONK', (u - 0.55) / 0.1, 54);
+  }, u > 0.55 && u < 0.8 ? 14 : 0, u);
+  if (u > 0.55 && u < 1.1) burst(540 + (bx + 200 - 430) * 1.35, 960 + (hy - 280 - 1330) * 1.35, 130, 'BONK', (u - 0.55) / 0.1, 60);
   topT('GOLDEN BOOT', (u - 0.7) / 0.2, 250, 96, '#ffd60a'); topT('AGAIN. (2025 + 2026)', (u - 0.9) / 0.2, 360, 56, '#fff');
   if (u > 1.6) topT('1st ever back-to-back in MLS', (u - 1.6) / 0.2, 450, 46, '#1a0f08');
 }
@@ -203,23 +208,27 @@ function e_ronaldo(u) {
 }
 function e_siu(u) {
   // Ronaldo's SIUUU flies across the world and lands on Messi's head (Ep2 happy accident, now on purpose)
+  const [hx, hy] = lyingHead(), k = clamp(u / 0.9);
+  cam(430, 1330, 1.35, () => {
   beach(u); umbrella(760, 1500); beachChair(560, 1600);
   lyingMessi(LX, LY, LS, u > 0.9 ? 'shock' : 'sad', PINK, u);
   goldenBoot(lyingHead()[0] + 360, 1380, 1.0, 0.2);
-  const [hx, hy] = lyingHead(), k = clamp(u / 0.9);
-  burst(lerp(-200, hx - 30, easeOut(k)), lerp(300, hy - 150, easeOut(k)), 190, 'SIUUU!', 1, 72, '#ffd60a', -0.1 + k * 0.2);
+  burst(lerp(-200, hx - 30, easeOut(k)), lerp(300, hy - 150, easeOut(k)), 170, 'SIUUU!', 1, 66, '#ffd60a', -0.1 + k * 0.2);
   if (u > 0.9 && u < 1.4) burst(hx + 160, hy - 260, 80, 'BONK', (u - 0.9) / 0.1, 36, '#fff59d');
+  }, u > 0.9 && u < 1.1 ? 14 : 0, u);
 }
 function e_sign(u) {
+  cam(430, 1330, 1.35, () => {
   beach(u); umbrella(760, 1500); beachChair(560, 1600);
   lyingMessi(LX, LY, LS, 'happy', PINK, u);
   goldenBoot(lyingHead()[0] + 360, 1380, 1.0, 0.2);
+  });
   const flip = clamp((u - 0.5) / 0.3);
-  ctx.save(); ctx.translate(560, 800); ctx.scale(1.3, 1.3 * (Math.abs(Math.cos(flip * Math.PI)) || 0.02));
+  ctx.save(); ctx.translate(560, 560); ctx.scale(1.15, 1.15 * (Math.abs(Math.cos(flip * Math.PI)) || 0.02));
   if (flip < 0.5) sign(0, 0, 'RETIRED', 1); else sign(0, 0, 'RETIRED*', 1, '*national team only');
   ctx.restore();
-  topT('Retired? Really?', (u - 1.0) / 0.25, 230, 96, '#ffd60a');
-  topT('10 or 7? Comment below', (u - 1.6) / 0.25, 350, 52, '#1a0f08');
+  topT('Retired? Really?', (u - 1.0) / 0.25, 200, 96, '#ffd60a');
+  topT('10 or 7? Comment below', (u - 1.6) / 0.25, 310, 52, '#1a0f08');
   rr(110, 1490, 860, 80, 40, 'rgba(10,14,30,.85)', null); txt('Real 2026 facts · parody', W / 2, 1531, 40, '#fff', null, 'center', 800);
 }
 const SEG = [[0, 1.4, e_cold], [1.4, 4.0, e_quit], [4.0, 8.0, e_volley], [8.0, 11.0, e_boot], [11.0, 13.6, e_ronaldo], [13.6, 15.4, e_siu], [15.4, 21.0, e_sign], [21.0, 22.5, (u) => ctaFollow(ctx, u, W, H, { txt, rr, easeOutBack, clamp, CR, LM })]];
