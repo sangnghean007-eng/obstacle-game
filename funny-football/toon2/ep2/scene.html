@@ -201,7 +201,7 @@ function s_match(u) {
   let last = null; for (const g of goals) if (u > g[0]) last = g;
   if (last && !react) { rr(240, 420, 600, 84, 42, 'rgba(255,255,255,.95)', DARK, 5); txt(last[1], 540, 463, 44, last[1].includes('McK') ? '#0b4f9c' : '#c1121f', null); }
   for (const k of kicks) if (u > k - 0.9 && u < k - 0.1) burst(560, 1500, 120, 'PENALTY', 1, 40, '#ffffff');
-  for (const k of kicks) if (u > k + 0.4 && u < k + 1.4) burst(380, 640, 170, 'SIUUU!', (u - k - 0.4) / 0.2, 66, '#ffd60a', -0.05);
+  for (const k of kicks) if (!react && u > k + 0.4 && u < k + 1.4) burst(380, 640, 170, 'SIUUU!', (u - k - 0.4) / 0.2, 66, '#ffd60a', -0.05);
   if (react) topT('...', 1, 520, 160, '#fff');
   
 }
