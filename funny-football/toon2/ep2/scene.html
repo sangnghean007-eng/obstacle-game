@@ -6,7 +6,7 @@
 <script>
 // Episode 2: "The GOAT Dictionary" — Juventus vs Barcelona social-media banter (Oct–Dec 2020).
 // Real facts; club posts are paraphrased; original characters, kits without crests or sponsors.
-const W = 1080, H = 1920, DURATION = 22;
+const W = 1080, H = 1920, DURATION = 23.3;
 const ctx = document.getElementById('c').getContext('2d');
 const F = 'Inter, "DejaVu Sans", sans-serif', DARK = '#1a0f08', TAU = Math.PI * 2;
 const lerp = (a, b, k) => a + (b - a) * k, clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
@@ -237,7 +237,21 @@ function s_end(u) {
   topT('AURA: LEGENDARY', (u - 0.0) / 0.25, 260, 92, '#ffd60a'); topT('10 or 7?', (u - 0.6) / 0.25, 400, 110, '#fff');
   rr(110, 1440, 860, 80, 40, 'rgba(10,14,30,.88)', null); txt('Real 2020 facts · parody', W / 2, 1481, 40, '#fff', null, 'center', 800);
 }
-const SEG = [[0, 2.6, s_hook], [2.6, 5.2, s_isolate], [5.2, 8.6, s_reply], [8.6, 9.6, s_cal], [9.6, 15.4, s_match], [15.4, 18.6, s_kept], [18.6, 22, s_end]];
+// cold open: frame 0 already shows both faces, big, in conflict (no fade-in)
+function s_cold(u) {
+  const g = ctx.createLinearGradient(0, 0, W, 0); g.addColorStop(0, '#151515'); g.addColorStop(0.5, '#3a3a3a'); g.addColorStop(0.5, '#0b4f9c'); g.addColorStop(1, '#a50044'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  speedLines(u, 40, 'rgba(255,214,10,.35)');
+  const push = Math.sin(u * 18) * 12;
+  cam(540, 900, 1.0 + u * 0.08, () => {
+    lean(250, 2350, 0.12, () => CR('hips', 'grin', 250 + push, 2350, 1.55));
+    lean(840, 2350, -0.12, () => LM('hips', 'shock', 830 - push, 2350, 1.45, BARCA));
+    goatHead(540, 1380, 2.2);
+  }, 8, u);
+  txt('WHO IS THE GOAT?', 540, 230, 92, '#ffd60a');
+  txt('Juve vs Barça · 2020', 540, 340, 52, '#fff');
+  burst(540, 1650, 150, 'BONK', 1, 64, '#ffd60a');
+}
+const SEG = [[0, 1.3, s_cold], [1.3, 3.9, s_hook], [3.9, 6.5, s_isolate], [6.5, 9.9, s_reply], [9.9, 10.9, s_cal], [10.9, 16.7, s_match], [16.7, 19.9, s_kept], [19.9, 23.3, s_end]];
 function render(t) {
   ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, W, H); window.T2T = t;
   for (const [a, b, fn] of SEG) if (t >= a && t < b) { fn(t - a); break; }

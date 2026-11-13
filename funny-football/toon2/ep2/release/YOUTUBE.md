@@ -26,7 +26,7 @@ Parody cartoon with original characters and synthesized audio. Not affiliated wi
 ```
 **Tags:** `ronaldo, messi, juventus, barcelona, goat, champions league, ronaldo vs messi, juve barca, football memes, football cartoon`
 **Playlist:** Football Roasts (Cartoon) · **Category:** Comedy · **Audience:** Not made for kids · **Altered/synthetic content:** No · **Language:** English
-**Subtitles:** upload `subtitles-en.srt` (With timing) · **Thumbnail:** `cover-9x16.jpg` if custom Shorts thumbnails are available; otherwise choose the frame at about 16.5 s
+**Subtitles:** upload `subtitles-en.srt` (With timing) · **Thumbnail:** `cover-9x16.jpg` if custom Shorts thumbnails are available; otherwise choose the frame at about 17.8 s
 **Remixing:** allowed · **Comments:** on, hold potentially inappropriate
 **Pinned comment:** `What did the dictionary say under GOAT? 👀 Team 10 or Team 7?`
 Full field-by-field reference: `../../../goats/release/YOUTUBE.md`.
