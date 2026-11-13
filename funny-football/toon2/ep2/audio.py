@@ -1,6 +1,6 @@
 """Original synthesized soundtrack for Episode 2 (no third-party audio)."""
 import sys, wave, numpy as np
-SR, T = 44100, 23.3
+SR, T = 44100, 24.8
 OFF = 1.3; N = int(SR * T); out = np.zeros(N); rng = np.random.default_rng(7); tt = np.arange(N) / SR
 def add(s, t0, g=1.0, raw=False):
     i = int((t0 if raw else t0 + OFF) * SR); n = min(len(s), N - i); out[i:i + n] += g * s[:n]
@@ -62,6 +62,10 @@ add(V('siu_crowd'), 18.8, .7); add(V('laugh_crowd'), 20.2, .45); add(V('siu'), 2
 add(drum(70, .4), 0.0, 1.0, raw=True); boom(-OFF + 0.0, 1.0); add(V('siu_crowd'), 0.05, .7, raw=True); add(V('grumble_angry')[:int(.9 * SR)], 0.25, .6, raw=True)
 add(drum(300, .12), 0.4, .7, raw=True); add(drum(300, .12), 0.8, .7, raw=True)
 n = int(.3 * SR); add(band(rng.standard_normal(n), 800, 5000) * np.abs(np.sin(2 * np.pi * 9 * np.arange(n) / SR)), 1.15, .5, raw=True)
+# follow end card (absolute times): pop, tap, bell, voice
+add(drum(300, .1), 23.35, .6, raw=True); add(drum(500, .08), 23.85, .8, raw=True)
+add(bell(1568, .6), 23.9, .5, raw=True); add(bell(2093, .6), 24.0, .4, raw=True)
+add(V('follow'), 23.95, .9, raw=True)
 out /= np.abs(out).max() * 1.1
 with wave.open(sys.argv[1], 'wb') as w:
     w.setnchannels(2); w.setsampwidth(2); w.setframerate(SR); w.writeframes((np.stack([out, out], 1) * 32767).astype('<i2').tobytes())
