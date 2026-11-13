@@ -1,0 +1,152 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>The GOAT Dictionary</title>
+<style>html,body{margin:0;background:#000}canvas{display:block;max-height:100vh;margin:auto}</style></head>
+<body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../toon2.js"></script>
+<script>
+// Episode 2: "The GOAT Dictionary" — Juventus vs Barcelona social-media banter (Oct–Dec 2020).
+// Real facts; club posts are paraphrased; original characters, kits without crests or sponsors.
+const W = 1080, H = 1920, DURATION = 20;
+const ctx = document.getElementById('c').getContext('2d');
+const F = 'Inter, "DejaVu Sans", sans-serif', DARK = '#1a0f08', TAU = Math.PI * 2;
+const lerp = (a, b, k) => a + (b - a) * k, clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const ease = k => (k = clamp(k), k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2);
+const easeOut = k => (k = clamp(k), 1 - Math.pow(1 - k, 3));
+const easeOutBack = k => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(k - 1, 3) + c1 * Math.pow(k - 1, 2); };
+function rng(seed) { return () => (seed = (seed * 16807) % 2147483647, (seed - 1) / 2147483646); }
+
+const JUVE = { shirt: '#ffffff', stripes: '#151515', collar: '#151515', shorts: '#f4f4f4', sock: '#ffffff', sockShade: '#d5d5d5', boot: '#ff5a1f', num: '#ffd21f' };
+const BARCA = { shirt: '#a50044', stripes: '#0b4f9c', collar: '#ffd21f', shorts: '#0b4f9c', sock: '#a50044', sockShade: '#7a0033', boot: '#ffd21f', num: '#ffd21f' };
+const HOODIE = { shirt: '#6b7280', collar: '#4b5563', shorts: '#374151', sock: '#ffffff', sockShade: '#d1d5db', boot: '#ffffff', num: '#6b7280', number: '', abs: false };
+const CR = (pose, expr, x, y, s, kit = JUVE) => toon2.draw(ctx, 'ronaldo', pose, expr, x, y, s, kit);
+const LM = (pose, expr, x, y, s, kit = BARCA) => toon2.draw(ctx, 'messi', pose, expr, x, y, s, kit);
+
+function rr(x, y, w, h, r, fill, stroke, lw = 5) { ctx.beginPath(); ctx.roundRect(x, y, w, h, r); if (fill) { ctx.fillStyle = fill; ctx.fill(); } if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = lw; ctx.stroke(); } }
+function txt(s, x, y, size, fill = '#fff', stroke = DARK, align = 'center', weight = 900) {
+  ctx.font = `${weight} ${size}px ${F}`; ctx.textAlign = align; ctx.textBaseline = 'middle'; ctx.lineJoin = 'round';
+  if (stroke) { ctx.lineWidth = Math.max(5, size * 0.2); ctx.strokeStyle = stroke; ctx.strokeText(s, x, y); }
+  ctx.fillStyle = fill; ctx.fillText(s, x, y);
+}
+function pop(k, x, y, fn) { if (k <= 0) return; ctx.save(); ctx.translate(x, y); const s = easeOutBack(clamp(k)); ctx.scale(s, s); fn(); ctx.restore(); }
+function topT(s, k, y, size, col = '#fff') { pop(k, W / 2 - 40, y, () => txt(s, 0, 0, size, col, col === '#1a0f08' ? '#fff' : DARK)); }
+function burst(x, y, r, s, k, size, fill = '#ffd60a', rot = 0) { pop(k, x, y, () => { ctx.rotate(rot); ctx.beginPath(); for (let i = 0; i < 28; i++) { const a = i / 28 * TAU, rr2 = i % 2 ? r * 0.7 : r; ctx.lineTo(Math.cos(a) * rr2, Math.sin(a) * rr2 * 0.72); } ctx.closePath(); ctx.fillStyle = fill; ctx.fill(); ctx.lineWidth = 7; ctx.strokeStyle = '#c1121f'; ctx.stroke(); txt(s, 0, 2, size, '#c1121f', '#fff'); }); }
+// social post card (generic, no platform or club logos)
+function post(x, y, w, name, col, lines, k, tag = 'club account · paraphrased') {
+  pop(k, x + w / 2, y, () => { ctx.translate(-w / 2, 0); const h = 150 + lines.length * 62;
+    rr(0, 0, w, h, 28, '#ffffff', DARK, 6);
+    ctx.beginPath(); ctx.arc(70, 70, 40, 0, TAU); ctx.fillStyle = col; ctx.fill(); ctx.lineWidth = 4; ctx.strokeStyle = DARK; ctx.stroke(); txt(name[0], 70, 72, 40, '#fff', null);
+    txt(name, 130, 56, 40, DARK, null, 'left'); txt(tag, 130, 98, 26, '#6b7280', null, 'left', 700);
+    lines.forEach((l, i) => txt(l, 40, 170 + i * 62, 46, DARK, null, 'left', 800)); });
+}
+function ball(x, y, r, a) { ctx.save(); ctx.translate(x, y); ctx.rotate(a); ctx.beginPath(); ctx.arc(0, 0, r, 0, TAU); ctx.fillStyle = '#fff'; ctx.fill(); ctx.lineWidth = 4; ctx.strokeStyle = DARK; ctx.stroke(); ctx.beginPath(); for (let i = 0; i < 5; i++) { const q = i / 5 * TAU - 1.57; ctx.lineTo(Math.cos(q) * r * .38, Math.sin(q) * r * .38); } ctx.fillStyle = DARK; ctx.fill(); ctx.restore(); }
+
+// ---------- backgrounds ----------
+const crowd = []; { const R = rng(4); for (let r = 0; r < 18; r++) for (let x = 0; x < W; x += 15 + R() * 6) crowd.push([x, 560 + r * 24, R(), R()]); }
+function stadium(t, home) {
+  const g = ctx.createLinearGradient(0, 0, 0, 560); g.addColorStop(0, '#0b1230'); g.addColorStop(1, '#27406f'); ctx.fillStyle = g; ctx.fillRect(-100, -100, W + 200, 700);
+  for (const x of [120, 960]) { const gl = ctx.createRadialGradient(x, 160, 5, x, 160, 260); gl.addColorStop(0, 'rgba(255,255,220,.8)'); gl.addColorStop(1, 'rgba(255,255,220,0)'); ctx.fillStyle = gl; ctx.fillRect(x - 260, -100, 520, 520); }
+  ctx.fillStyle = '#20263a'; ctx.fillRect(-100, 540, W + 200, 470);
+  const cols = home === 'barca' ? ['#a50044', '#0b4f9c', '#ffd21f'] : ['#ffffff', '#151515', '#ffd21f'];
+  for (const [x, y, a, b] of crowd) { ctx.fillStyle = cols[Math.floor(a * 3)]; ctx.fillRect(x, y + Math.sin(t * 8 + b * 9) * 3, 11, 14); }
+  ctx.fillStyle = 'rgba(8,12,28,.45)'; ctx.fillRect(-100, 540, W + 200, 470);
+  rr(-20, 990, W + 40, 50, 0, home === 'barca' ? '#0b4f9c' : '#151515'); txt(home === 'barca' ? 'BARCELONA · HOME' : 'TURIN · HOME', W / 2, 1015, 28, '#fff', null);
+  ctx.fillStyle = '#2f8f3c'; ctx.fillRect(-100, 1040, W + 200, H); for (let i = 0; i < 8; i++) { ctx.fillStyle = 'rgba(255,255,255,.05)'; ctx.fillRect(i * 160, 1040, 80, H); }
+}
+function room(t) {
+  ctx.fillStyle = '#e9dcc6'; ctx.fillRect(0, 0, W, H); ctx.fillStyle = '#dccbb0'; for (let i = 0; i < 12; i++) ctx.fillRect(i * 100, 0, 46, 1300); ctx.fillStyle = '#8a6a48'; ctx.fillRect(0, 1300, W, H);
+  // TV showing the score
+  rr(90, 420, 560, 340, 18, '#111', DARK, 8); rr(110, 440, 520, 300, 8, '#1f6b3a', null);
+  txt('JUV 0 - 2 BAR', 370, 560, 60, '#fff', DARK); txt('LIVE', 560, 470, 28, '#ff4d4d', null);
+  rr(330, 760, 80, 60, 6, '#333', DARK, 4);
+  rr(700, 360, 300, 110, 14, '#fff7cc', DARK, 5); txt('ISOLATING', 850, 415, 44, '#c1121f', null);
+}
+function campNouSign() { rr(150, 300, 620, 110, 18, '#0b4f9c', DARK, 6); txt('CAMP NOU', 460, 356, 70, '#ffd21f', null); }
+
+// ---------- props ----------
+function dictionary(x, y, k, t) {
+  pop(k, x, y, () => { ctx.rotate(-0.06);
+    rr(-260, -170, 520, 340, 16, '#7a1f1f', DARK, 7); rr(-240, -150, 230, 300, 6, '#fffaf0', DARK, 4); rr(10, -150, 230, 300, 6, '#fffaf0', DARK, 4);
+    txt('GOAT', -125, -100, 52, DARK, null); txt('(n.)', -125, -50, 30, '#6b7280', null, 'center', 700);
+    ctx.fillStyle = '#c9c4b5'; for (let i = 0; i < 4; i++) ctx.fillRect(-215, -10 + i * 30, 180 - i * 20, 10);
+    txt('see: 7', 125, -80, 56, '#c1121f', null); txt('THE RIGHT', 125, 10, 32, DARK, null); txt('EDITION', 125, 50, 32, DARK, null); });
+}
+function calendar(x, y, label, flip) { rr(x - 190, y - 170, 380, 340, 24, '#fff', DARK, 7); rr(x - 190, y - 170, 380, 90, 24, '#c1121f', DARK, 7); txt(label[0], x, y - 125, 48, '#fff', null); txt(label[1], x, y + 30, 140, DARK, null);
+  if (flip > 0) { ctx.save(); ctx.translate(x, y - 80); ctx.scale(1, Math.cos(flip * Math.PI)); rr(-190, 0, 380, 250, 0, '#f3f3f3', DARK, 5); ctx.restore(); } }
+function goal(x, y) { ctx.strokeStyle = '#fff'; ctx.lineWidth = 12; ctx.strokeRect(x, y, 280, 210); ctx.strokeStyle = 'rgba(255,255,255,.4)'; ctx.lineWidth = 2; for (let i = 1; i < 11; i++) { ctx.beginPath(); ctx.moveTo(x + i * 25, y); ctx.lineTo(x + i * 25, y + 210); ctx.stroke(); } for (let j = 1; j < 8; j++) { ctx.beginPath(); ctx.moveTo(x, y + j * 26); ctx.lineTo(x + 280, y + j * 26); ctx.stroke(); } }
+function scoreboard(a, b) { rr(150, 250, 700, 150, 22, 'rgba(10,14,30,.94)', '#ffd60a', 6); txt('BAR', 270, 325, 64, '#fff', null); txt(`${a} - ${b}`, 500, 325, 84, '#ffd60a', null); txt('JUV', 730, 325, 64, '#fff', null); }
+function crate(x, y, k, t) { pop(k, x, y, () => { rr(-190, -150, 380, 300, 12, '#c08a4a', DARK, 7); ctx.strokeStyle = '#8a5a2b'; ctx.lineWidth = 10; ctx.beginPath(); ctx.moveTo(-190, -150); ctx.lineTo(190, 150); ctx.moveTo(190, -150); ctx.lineTo(-190, 150); ctx.stroke();
+  rr(-150, -60, 300, 110, 10, '#fffaf0', DARK, 5); txt('DELIVERED:', 0, -30, 34, DARK, null); txt('1 GOAT (7)', 0, 18, 46, '#c1121f', null);
+  // goat poking out of the top
+  const b = Math.sin(t * 9) * 6; ctx.beginPath(); ctx.ellipse(40, -200 + b, 70, 55, 0, 0, TAU); ctx.fillStyle = '#f2efe6'; ctx.fill(); ctx.lineWidth = 6; ctx.strokeStyle = DARK; ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(20, -250 + b); ctx.quadraticCurveTo(0, -320 + b, -40, -300 + b); ctx.moveTo(60, -250 + b); ctx.quadraticCurveTo(70, -330 + b, 30, -320 + b); ctx.stroke();
+  ctx.beginPath(); ctx.arc(70, -210 + b, 7, 0, TAU); ctx.fillStyle = DARK; ctx.fill(); txt('7', 20, -190 + b, 44, '#c1121f', null); }); }
+
+// ---------- scenes ----------
+function s_hook(u) {
+  stadium(u, 'juve');
+  LM('sky', 'happy', 760, 1720, 0.74);
+  post(70, 360, 860, 'FC Barcelona', '#a50044', ['Glad you got to see the GOAT', 'play at your stadium.'], (u - 0.25) / 0.25);
+  topT('A TWEET STARTED A WAR', (u - 0.0) / 0.25, 200, 72, '#ffd60a');
+  topT('Oct 28, 2020 · Juventus 0-2 Barcelona', (u - 0.6) / 0.25, 1580, 40, '#fff');
+}
+function s_isolate(u) {
+  room(u);
+  const k = u > 1.1;
+  CR(k ? 'shock' : 'hips', k ? 'shock' : 'sad', 760, 1760, 0.72, HOODIE);
+  topT('Meanwhile, Ronaldo:', (u - 0.1) / 0.25, 210, 66, '#1a0f08');
+  topT('isolating with COVID', (u - 0.4) / 0.25, 290, 56, '#c1121f');
+  if (k) burst(380, 920, 150, '0-2?!', (u - 1.1) / 0.2, 60);
+}
+function s_reply(u) {
+  stadium(u, 'juve');
+  CR('hips', 'grin', 790, 1760, 0.72);
+  post(70, 330, 860, 'Juventus', '#151515', ['You looked in the wrong dictionary.', "We'll bring the right one", 'to Camp Nou.'], (u - 0.15) / 0.25);
+  dictionary(380, 1130, (u - 1.1) / 0.25, u);
+  topT('JUVE REPLIED:', (u - 0.0) / 0.2, 210, 72, '#ffd60a');
+  if (u > 1.1) burst(620, 960, 90, 'SLAM', (u - 1.1) / 0.12 * (u < 1.6 ? 1 : 0), 40, '#fff59d');
+}
+function s_cal(u) {
+  ctx.fillStyle = '#ffd60a'; ctx.fillRect(0, 0, W, H);
+  const k = clamp(u / 0.7); calendar(W / 2 - 40, 900, k < 0.5 ? ['OCT 2020', '28'] : ['DEC 2020', '8'], Math.sin(k * Math.PI));
+  topT('6 WEEKS LATER...', 1, 520, 80, '#1a0f08');
+}
+function s_match(u) {
+  stadium(u, 'barca'); goal(560, 1060); campNouSign();
+  const kicks = [0.6, 3.0]; let score = 0; for (const k of kicks) if (u > k + 0.35) score++; if (u > 2.0) score++;
+  scoreboard(0, Math.min(3, score));
+  const kicking = kicks.some(k => u > k - 0.25 && u < k + 0.25), celeb = kicks.some(k => u > k + 0.4 && u < k + 1.6);
+  LM('shock', 'shock', 900, 1700, 0.5);
+  CR(kicking ? 'kick' : celeb ? 'siu' : 'hips', celeb ? 'grin' : 'grin', 330, 1760, 0.72);
+  for (const k of kicks) { if (u > k && u < k + 0.4) { const p = (u - k) / 0.4; ball(lerp(520, 760, p), lerp(1720, 1150, p) - Math.sin(p * Math.PI) * 120, 26, u * 20); } }
+  if (u > 2.0 && u < 2.8) topT('+ a McKennie goal', (u - 2.0) / 0.2, 470, 52, '#fff');
+  for (const k of kicks) if (u > k + 0.4 && u < k + 1.4) burst(330, 640, 170, 'SIUUU!', (u - k - 0.4) / 0.2, 66, '#ffd60a', -0.05);
+  if (u > 3.6) topT('Ronaldo: 2 penalties', (u - 3.6) / 0.2, 470, 60, '#ffd60a');
+}
+function s_kept(u) {
+  stadium(u, 'barca'); campNouSign();
+  crate(330, 1320, (u - 0.5) / 0.3, u);
+  LM('cry', 'cry', 800, 1760, 0.6);
+  post(70, 440, 860, 'Juventus', '#151515', ['We kept our word.', 'We brought it!'], (u - 0.1) / 0.25);
+  topT('AFTER THE 3-0:', 1, 230, 72, '#ffd60a');
+}
+function s_end(u) {
+  stadium(u, 'barca');
+  CR('siu', 'grin', 330, 1700, 0.68); LM('sad', 'sad', 800, 1700, 0.6);
+  topT('FARMING AURA:', (u - 0.0) / 0.25, 220, 80, '#fff'); topT('LEGENDARY', (u - 0.25) / 0.25, 330, 110, '#ffd60a');
+  topT('Best club troll ever? Comment below', (u - 0.7) / 0.25, 460, 44, '#fff');
+  rr(110, 1440, 860, 80, 40, 'rgba(10,14,30,.88)', null); txt('Real 2020 facts · posts paraphrased · parody', W / 2, 1481, 36, '#fff', null, 'center', 800);
+}
+const SEG = [[0, 2.6, s_hook], [2.6, 5.0, s_isolate], [5.0, 8.4, s_reply], [8.4, 9.4, s_cal], [9.4, 14.4, s_match], [14.4, 17.4, s_kept], [17.4, 20, s_end]];
+const PUNCH = [0.3, 3.75, 6.15, 9.0, 10.35, 12.75, 14.95, 17.5];
+function render(t) {
+  ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, W, H); window.T2T = t;
+  let z = 1, sh = 0; for (const p of PUNCH) if (t > p && t < p + 0.6) { const k = Math.exp(-(t - p) * 7); z += 0.12 * k; sh += 18 * k; }
+  ctx.translate(W / 2 + Math.sin(t * 97) * sh, H / 2 + Math.cos(t * 83) * sh); ctx.scale(z, z); ctx.translate(-W / 2, -H / 2);
+  for (const [a, b, fn] of SEG) if (t >= a && t < b) { fn(t - a); break; }
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.fillStyle = 'rgba(255,255,255,.25)'; ctx.fillRect(0, 0, W, 10); ctx.fillStyle = '#ffd60a'; ctx.fillRect(0, 0, W * t / DURATION, 10);
+  for (const [a] of SEG.slice(1)) { const al = 1 - Math.abs(t - a) / 0.07; if (al > 0) { ctx.fillStyle = `rgba(255,255,255,${al})`; ctx.fillRect(0, 0, W, H); } }
+}
+window.render = render; window.DURATION = DURATION;
+if (!location.search.includes('render')) { const t0 = performance.now(); (function loop() { render(((performance.now() - t0) / 1000) % DURATION); requestAnimationFrame(loop); })(); }
+</script></body></html>
