@@ -3,7 +3,7 @@
 **Caption** (the first 2 lines matter):
 ```
 Remember this man? 💪 Nobody could move Adama Traoré at the corner flag 😂🧱
-Push, koala mode, flex… then a brawl, a red card and £625,000 in fines 💸
+Push, piggyback mode, flex… then a brawl, a red card and £625,000 in fines 💸
 
 Cucurella after the game: "João Pedro saved my life" 😂
 Who could stop him? Comment below 👇 (Real facts · parody cartoon)
@@ -25,6 +25,6 @@ The corner flag was the only thing that stayed calm 😂
 
 **Why this should hold attention on Facebook** (the Ep2 data showed swipes in under 3 s):
 - Frame 0 already shows Traoré and the question.
-- The collision happens at 0.8 s.
+- The collision happens at frame 0.
 
 After 24 h, log the "3-second viewers" share and the average watch time in `../../../studio/performance.csv`.

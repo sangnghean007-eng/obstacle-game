@@ -221,7 +221,7 @@ function pitch(t, crowdCols = ['#034694', '#ffffff', '#7a263a']) {
   for (const x of [80, 1000]) { const gl = ctx.createRadialGradient(x, 60, 5, x, 60, 300); gl.addColorStop(0, 'rgba(255,255,220,.85)'); gl.addColorStop(1, 'rgba(255,255,220,0)'); ctx.fillStyle = gl; ctx.fillRect(x - 300, -240, 600, 600); }
   const R = rng(3); for (let r = 0; r < 20; r++) for (let x = -700; x < 1800; x += 16 + R() * 6) { const a = R(), b = R(); ctx.fillStyle = crowdCols[Math.floor(a * crowdCols.length)]; ctx.fillRect(x, 360 + r * 23 + Math.sin(t * 9 + b * 9) * 3 * (b > .5), 11, 14); }
   ctx.fillStyle = 'rgba(8,12,28,.4)'; ctx.fillRect(-800, 360, 2700, 470);
-  for (let i = -6; i < 12; i++) { const x = i * 300 + ((t * 120) % 300); rr(x, 830, 290, 100, 6, i % 2 ? '#1d4ed8' : '#111827', null); txt(i % 2 ? 'FOOTBALL ROASTS' : '+ FOLLOW', x + 145, 880, 34, i % 2 ? '#fff' : '#ffd60a', null); }
+  for (let i = -6; i < 12; i++) { const x = i * 300 + ((t * 120) % 300); rr(x, 830, 290, 100, 6, i % 2 ? '#1e3a8a' : '#111827', null); ctx.globalAlpha = 0.25; txt(i % 2 ? 'FOOTBALL ROASTS' : '+ FOLLOW', x + 145, 880, 34, '#fff', null); ctx.globalAlpha = 1; }
   ctx.fillStyle = '#2f8f3c'; ctx.fillRect(-800, 930, 2700, 2000); for (let i = -6; i < 14; i++) { ctx.fillStyle = 'rgba(255,255,255,.06)'; ctx.fillRect(i * 160, 930, 80, 2000); }
   ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.lineWidth = 10; ctx.beginPath(); ctx.moveTo(-800, 1060); ctx.lineTo(1030, 1060); ctx.lineTo(1030, 2600); ctx.stroke(); ctx.beginPath(); ctx.arc(1030, 1060, 70, Math.PI / 2, Math.PI); ctx.stroke();
 }
@@ -243,33 +243,37 @@ function boot0(x, y) { ctx.beginPath(); ctx.ellipse(x + 10, y, 36, 20, 0, 0, TAU
 function redCard(x, y, k) { pop(k, x, y, () => { ctx.rotate(-0.15); rr(-40, -60, 80, 120, 8, '#e11d2a', DARK, 5); }); }
 function pressBoard() { ctx.fillStyle = '#e8eef7'; ctx.fillRect(-300, -300, W + 600, H + 600); for (let r = 0; r < 14; r++) for (let c = 0; c < 4; c++) { const x = c * 300 + (r % 2) * 150 - 40, y = 80 + r * 140; txt(r % 2 ? 'PRESS' : 'ROASTS', x + 100, y, 40, '#1d4ed8', null); } ctx.fillStyle = '#c7d2e3'; ctx.fillRect(-300, 1500, W + 600, 800); }
 function bandaid(x, y, a = 0.5) { ctx.save(); ctx.translate(x, y); ctx.rotate(a); rr(-40, -14, 80, 28, 12, '#f2c79a', DARK, 3); rr(-12, -10, 24, 20, 4, '#e0ad7e', null); ctx.restore(); }
-function receipt(x, y, k, u) { const h = 1000 * easeOut(k); ctx.save(); ctx.translate(x, y); ctx.rotate(-0.03); ctx.beginPath(); ctx.rect(-330, 0, 660, h); ctx.clip();
-  rr(-330, 0, 660, 1000, 0, '#fffdf6', DARK, 6); const L = [['THE FA', 60, 70, '#111'], ['Disciplinary fine', 40, 140, '#6b7280'], ['Reason: mass confrontation', 34, 200, '#6b7280'], ['CHELSEA', 50, 330, '#034694'], ['£325,000', 84, 420, '#111'], ['WEST HAM', 50, 560, '#7a263a'], ['£300,000', 84, 650, '#111'], ['TOTAL £625,000', 56, 820, '#c1121f']];
+function receipt(x, y, k, u) { const h = 960 * easeOut(k); ctx.save(); ctx.translate(x, y); ctx.rotate(-0.03); ctx.beginPath(); ctx.rect(-330, 0, 660, h); ctx.clip();
+  rr(-330, 0, 660, 960, 0, '#fffdf6', DARK, 6); const L = [['THE FA', 60, 70, '#111'], ['Disciplinary fine', 40, 140, '#6b7280'], ['Reason: mass confrontation', 34, 200, '#6b7280'], ['CHELSEA', 50, 330, '#034694'], ['£325,000', 84, 420, '#111'], ['WEST HAM', 50, 560, '#7a263a'], ['£300,000', 84, 650, '#111'], ['TOTAL £625,000', 56, 820, '#c1121f']];
   for (const [s, z, yy, c] of L) txt(s, 0, yy, z, c, null); ctx.strokeStyle = '#bbb'; ctx.setLineDash([12, 10]); ctx.lineWidth = 4; for (const yy of [250, 490, 740]) { ctx.beginPath(); ctx.moveTo(-290, yy); ctx.lineTo(290, yy); ctx.stroke(); } ctx.setLineDash([]); ctx.restore(); }
 
-function e_hook(u) { // Cucurella charges and bounces off the wall
-  const hit = 0.8;
-  const C = camK([[0, 480, 1420, 1.3, 0], [0.8, 520, 1400, 1.42, 0.02], [1.0, 520, 1400, 1.42, -0.02], [2.2, 500, 1420, 1.32, 0]], u);
+function speedLinesH(x, y, t) { ctx.strokeStyle = 'rgba(255,255,255,.75)'; ctx.lineWidth = 6; const R = rng(Math.floor(t * 30)); for (let i = 0; i < 7; i++) { const yy = y + R() * 400; ctx.beginPath(); ctx.moveTo(x, yy); ctx.lineTo(x - 200 - R() * 200, yy); ctx.stroke(); } }
+
+function ghosts(fn, k, n = 4, dk = 0.04) { for (let i = n; i >= 1; i--) { if (k - i * dk < 0) continue; ctx.globalAlpha = 0.12 * (n + 1 - i); fn(k - i * dk); } ctx.globalAlpha = 1; fn(k); }
+function launchUp(u0, x0, y0) { // Cucurella launched up and out of the top of the frame
+  const k = clamp(u0 / 0.7); ghosts(q => { const x = lerp(x0, x0 - 260, q), y = lerp(y0, -500, easeOut(q)) ; lean(x, y, -q * 9, () => X(CUC, 'shock', 'shock', x, y, 0.52)); }, k); }
+function e_hook(u) { // frame 0 IS the impact
+  const C = camK([[0, 520, 1380, 1.4, -0.03], [0.4, 500, 1380, 1.32, 0.02], [2.0, 500, 1400, 1.3, 0]], u);
   camR(C[0], C[1], C[2], C[3], () => {
     pitch(u); cornerFlag(960, 1640, u); shadow(TX, TY, 170);
-    const sq = u > hit && u < hit + 0.2 ? 1 - 0.04 * Math.sin((u - hit) / 0.2 * Math.PI) : 1;
-    ctx.save(); ctx.translate(TX, TY); ctx.scale(1 / sq, sq); ctx.translate(-TX, -TY); X(TRA, SHIELD, u > hit + 0.3 ? 'smug' : 'grin', TX, TY, TS); ctx.restore(); ball(TX + 150, TY - 10, 26, 0);
-    if (u < hit) { const x = lerp(-250, TX - 230, u / hit), b = Math.abs(Math.sin(u * 22)) * 20; lean(x, 1740, 0.25, () => X(CUC, Math.floor(u * 12) % 2 ? 'run1' : 'run2', 'angry', x, 1740 - b, 0.52)); speedLinesH(x - 200, 1400, u); }
-    else { const k = clamp((u - hit) / 0.8), x = lerp(TX - 230, -260, easeOut(k)), y = 1740 - Math.sin(k * Math.PI) * 500; lean(x, y, -k * 6, () => X(CUC, 'shock', 'shock', x, y, 0.52)); }
-  }, u > hit && u < hit + 0.25 ? 16 : 0, u);
-  if (u > hit && u < hit + 0.6) burst(430, 1060, 120, 'BOING!', (u - hit) / 0.07, 54, '#ffd60a', -0.1);
-  pop(eOB(u / 0.15), W / 2, 250, () => txt('Remember this MAN?', 0, 0, 84, '#fff'));
-  if (u > 1.1) pop(eOB((u - 1.1) / 0.2), W / 2, 370, () => { rr(-250, -45, 500, 90, 45, '#7a263a', DARK, 5); txt('Adama Traoré 💪', 0, 2, 50, '#fff', null); });
+    const sq = u < 0.25 ? 1 - 0.05 * Math.sin(u / 0.25 * Math.PI) : 1;
+    ctx.save(); ctx.translate(TX, TY); ctx.scale(1 / sq, sq); ctx.translate(-TX, -TY); X(TRA, SHIELD, u > 0.4 ? 'smug' : 'grin', TX, TY, TS); ctx.restore(); ball(TX + 150, TY - 10, 26, 0);
+    if (u < 0.08) { ctx.save(); ctx.translate(TX - 200, 1740); ctx.scale(0.8, 1.05); ctx.translate(-(TX - 200), -1740); lean(TX - 200, 1740, 0.3, () => X(CUC, PUSH, 'shock', TX - 200, 1740, 0.52)); ctx.restore(); }
+    else if (u < 0.8) launchUp(u - 0.08, TX - 200, 1740);
+    else if (u < 1.25) { const k = clamp((u - 0.8) / 0.45); const y = lerp(-400, 1760, k * k); lean(TX - 330, y, (1 - k) * 4, () => X(CUC, 'shock', 'shock', TX - 330, y, 0.52)); }
+    else { X(CUC, 'sad', 'sad', TX - 330, 1760, 0.52); stars(TX - 330 + 30, 1760 - 520, u, 80); puff(TX - 330, 1760, (u - 1.25) / 0.4); }
+  }, u < 0.25 || (u > 1.25 && u < 1.4) ? 16 : 0, u);
+  if (u < 0.5) burst(400, 1080, 140, 'BOING!', 1, 64, '#ffd60a', -0.1);
+  pop(1, W / 2, 240, () => { rr(-400, -62, 800, 124, 30, 'rgba(10,14,30,.85)', null); txt('Remember this MAN?', 0, 2, 80, '#fff', null); });
+  if (u > 0.5) pop(eOB((u - 0.5) / 0.2), W / 2, 360, () => { rr(-250, -45, 500, 90, 45, '#7a263a', DARK, 5); txt('Adama Traoré 💪', 0, 2, 50, '#fff', null); });
 }
-function speedLinesH(x, y, t) { ctx.strokeStyle = 'rgba(255,255,255,.75)'; ctx.lineWidth = 6; const R = rng(Math.floor(t * 30)); for (let i = 0; i < 7; i++) { const yy = y + R() * 400; ctx.beginPath(); ctx.moveTo(x, yy); ctx.lineTo(x - 200 - R() * 200, yy); ctx.stroke(); } }
-function e_match(u) { // scoreboard: 0-2 -> 3-2, Traoré comes on
-  pitch(u * 2); ctx.fillStyle = 'rgba(5,10,25,.45)'; ctx.fillRect(0, 0, W, H);
-  const steps = [[0, '0 - 2'], [0.9, '1 - 2'], [1.3, '2 - 2'], [1.75, '3 - 2']]; let sc = steps[0][1], last = 0; for (const [t, v] of steps) if (u >= t) { sc = v; last = t; }
-  pop(eOB((u - 0.1) / 0.2), W / 2, 760, () => { const b = 1 + 0.2 * Math.max(0, 1 - (u - last) * 5) * (last > 0); ctx.scale(b, b); rr(-400, -110, 800, 220, 30, 'rgba(10,14,30,.95)', '#ffd60a', 7); txt('CHE', -270, 0, 80, '#7fb2ff', null); txt(sc, 0, 0, 110, '#fff', null); txt('WHU', 270, 0, 80, '#e58aa0', null); });
-  if (u > 1.75) pop(eOB((u - 1.75) / 0.2), W / 2, 960, () => txt('Enzo, 90+ min 😱', 0, 0, 60, '#ffd60a'));
-  // substitution board
-  const k = eOB((u - 0.35) / 0.25); if (u > 0.35) { ctx.save(); ctx.translate(820, 1450); ctx.scale(k, k); ctx.rotate(0.05); rr(-170, -120, 340, 240, 20, '#111', '#ffd60a', 6); txt('SUB ON', 0, -70, 40, '#ffd60a', null); txt('17', 0, 15, 120, '#3cff6b', null); txt('debut', 0, 90, 34, '#fff', null); ctx.restore(); }
-  cam(600, 1500, 1.0, () => { shadow(250, 2000, 150); X(TRA, toon2.mix('hips', 'shock', 0.5 + 0.5 * Math.sin(u * 6)), 'grin', 250, 2000, 0.55); });
+function e_match(u) { // short: big Traoré walks on, compact score
+  pitch(u * 2);
+  const steps = [[0, '0 - 2'], [0.45, '1 - 2'], [0.65, '2 - 2'], [0.85, '3 - 2']]; let sc = steps[0][1], last = 0; for (const [t, v] of steps) if (u >= t) { sc = v; last = t; }
+  const x = lerp(1100, 560, easeOut(clamp(u / 1.0)));
+  cam(560, 1400, 1.3, () => { shadow(x, TY, 170); const p = u < 1.0 ? (Math.floor(u * 8) % 2 ? 'run1' : 'run2') : 'shock'; X(TRA, p, 'grin', x, TY - Math.abs(Math.sin(u * 16)) * 20 * (u < 1), TS);
+    ctx.save(); ctx.translate(x - 330, 1250); ctx.rotate(-0.08); rr(-120, -90, 240, 180, 16, '#111', '#ffd60a', 6); txt('SUB ON', 0, -50, 30, '#ffd60a', null); txt('17', 0, 15, 90, '#3cff6b', null); txt('debut', 0, 68, 26, '#fff', null); ctx.restore(); });
+  pop(eOB((u - 0.1) / 0.2), W / 2, 440, () => { const b = 1 + 0.2 * Math.max(0, 1 - (u - last) * 5) * (last > 0); ctx.scale(b, b); rr(-280, -60, 560, 120, 24, 'rgba(10,14,30,.95)', '#ffd60a', 6); txt('CHE', -190, 0, 50, '#7fb2ff', null); txt(sc, 0, 0, 70, '#fff', null); txt('WHU', 190, 0, 50, '#e58aa0', null); });
   chapter('JAN 31, 2026', 'Chelsea vs West Ham', u, '#034694');
 }
 function e_shield(u) { // three attempts, the wall doesn't move
@@ -278,86 +282,90 @@ function e_shield(u) { // three attempts, the wall doesn't move
   camR(C[0], C[1], C[2], C[3], () => {
     pitch(u + 3); cornerFlag(960, 1640, u); shadow(TX, TY, 170);
     const ball0 = () => ball(TX + 150, TY - 10, 26, Math.sin(u * 3) * 0.3);
-    if (u < 1.6) { // a) push
-      label = 'PUSH'; const k = Math.sin(u * 14), x = TX - 260 - Math.max(0, u - 0.4) * 60;
-      X(TRA, SHIELD, 'smug', TX, TY, TS); ball0();
-      lean(x, 1740, 0.38 + 0.05 * k, () => X(CUC, PUSH, 'angry', x, 1740, 0.52)); sweat(x + 60, 1260, u, 4);
-      if (u > 0.6) puff(x - 40, 1740, (u * 2) % 1, 'rgba(120,180,110,', 5, 60);
-    } else if (u < 3.3) { // b) koala on his back
-      label = 'KOALA MODE'; const q = u - 1.6, wob = Math.sin(q * 16) * 0.08;
-      lean(TX + 40, TY - 360, 0.35 + wob, () => X(CUC, 'sky', 'angry', TX + 40, TY - 330, 0.5));
-      X(TRA, SHIELD, q > 0.8 && q < 1.3 ? 'shock' : 'smug', TX, TY, TS); ball0();
+    if (u < 1.6) { label = 'PUSH 🫸'; const k = Math.sin(u * 14), x = TX - 260 - Math.max(0, u - 0.4) * 60;
+      X(TRA, SHIELD, 'smug', TX, TY, TS); ball0(); lean(x, 1740, 0.38 + 0.05 * k, () => X(CUC, PUSH, 'angry', x, 1740, 0.52)); sweat(x + 60, 1260, u, 4); if (u > 0.6) puff(x - 40, 1740, (u * 2) % 1, 'rgba(120,180,110,', 5, 60);
+    } else if (u < 3.3) { label = 'PIGGYBACK 🐨'; const q = u - 1.6, wob = Math.sin(q * 16) * 0.08;
+      lean(TX + 40, TY - 360, 0.35 + wob, () => X(CUC, 'sky', 'angry', TX + 40, TY - 330, 0.5)); X(TRA, SHIELD, q > 0.8 && q < 1.3 ? 'shock' : 'smug', TX, TY, TS); ball0();
       if (q > 0.8 && q < 1.3) txt('*yawn*', TX + 230, TY - 640, 50, '#fff', DARK);
-    } else { // c) flex: shockwave
-      label = 'FLEX'; const q = u - 3.3;
+    } else { label = 'FLEX 💪'; const q = u - 3.3;
       X(TRA, q > 0.2 ? 'shock' : SHIELD, q > 0.2 ? 'grin' : 'smug', TX, TY, TS); ball0();
       if (q > 0.2) { ctx.strokeStyle = 'rgba(255,255,255,.8)'; ctx.lineWidth = 8; for (let i = 0; i < 3; i++) { const r = ((q - 0.2) * 900 + i * 150) % 500; ctx.globalAlpha = 1 - r / 500; ctx.beginPath(); ctx.arc(TX, TY - 520, r, 0, TAU); ctx.stroke(); } ctx.globalAlpha = 1; }
-      const x = TX - 280 - (q > 0.25 ? easeOut((q - 0.25) / 0.6) * 220 : 0);
-      lean(x, 1740, q > 0.25 ? -0.35 : 0, () => X(CUC, q > 0.25 ? 'shock' : 'hips', q > 0.25 ? 'shock' : 'angry', x, 1740, 0.52));
-      if (q > 0.25) wind(x + 120, 1350, u);
+      const x = TX - 280 - (q > 0.25 ? easeOut((q - 0.25) / 0.6) * 220 : 0); lean(x, 1740, q > 0.25 ? -0.35 : 0, () => X(CUC, q > 0.25 ? 'shock' : 'hips', q > 0.25 ? 'shock' : 'angry', x, 1740, 0.52)); if (q > 0.25) wind(x + 120, 1350, u);
     }
   }, 0, u);
   const step = u < 1.6 ? 1 : u < 3.3 ? 2 : 3, st = [0, 1.6, 3.3][step - 1];
   chapter('LATE ON...', '', u);
-  pop(eOB((u - st) / 0.15), W / 2, 290, () => { txt(`Attempt ${step}: ${label}`, 0, 0, 64, '#fff'); });
-  pop(eOB((u - st - 0.5) / 0.15), W / 2, 395, () => txt('Traoré: 0 movement', 0, 0, 44, '#ffd60a'));
+  pop(eOB((u - st) / 0.15), W / 2, 285, () => { rr(-360, -55, 720, 110, 30, 'rgba(10,14,30,.85)', null); txt(`Attempt ${step}: ${label}`, 0, 2, 60, '#fff', null); });
+  pop(eOB((u - st - 0.4) / 0.15), W / 2, 395, () => { rr(-260, -38, 520, 76, 38, '#ffd60a', DARK, 4); txt('Traoré: 0 movement', 0, 2, 48, DARK, null); });
 }
-function e_yeet(u) { // a gentle flick
-  const tf = 0.6;
-  const C = camK([[0, 520, 1420, 1.35, 0], [tf, 540, 1400, 1.42, 0], [1.0, 400, 1100, 0.85, -0.04], [2.6, 360, 1000, 0.8, 0]], u);
+function e_yeet(u) { // one-finger flick, Cucurella flies big across the sky
+  const tf = 0.5;
+  const C = camK([[0, 520, 1350, 1.5, 0], [tf, 560, 1300, 1.6, 0], [0.8, 420, 1050, 1.0, -0.05], [2.6, 380, 900, 0.95, 0]], u);
   camR(C[0], C[1], C[2], C[3], () => {
     pitch(u + 8); cornerFlag(960, 1640, u); shadow(TX, TY, 170);
-    const swing = u < tf ? SHIELD : toon2.mix(SHIELD, { lArm: [-60, -20], rArm: [150, 120], lLeg: [-16, -6], rLeg: [16, 6], hands: { l: 'fist', r: 'open' } }, easeOut((u - tf) / 0.12));
+    const swing = u < tf - 0.15 ? SHIELD : u < tf ? toon2.mix(SHIELD, { lArm: [-60, -20], rArm: [20, -90], lLeg: [-16, -6], rLeg: [16, 6], hands: { l: 'fist', r: 'point' } }, (u - tf + 0.15) / 0.15) : toon2.mix({ lArm: [-60, -20], rArm: [20, -90], lLeg: [-16, -6], rLeg: [16, 6], hands: { l: 'fist', r: 'point' } }, { lArm: [-60, -20], rArm: [150, 120], lLeg: [-16, -6], rLeg: [16, 6], hands: { l: 'fist', r: 'point' } }, easeOut((u - tf) / 0.1));
     X(TRA, swing, u > tf + 0.3 ? 'smug' : 'grin', TX, TY, TS); ball(TX + 150, TY - 10, 26, 0);
-    if (u < tf) X(CUC, 'hips', 'angry', TX - 260, 1740, 0.52);
-    else { const k = clamp((u - tf) / 1.2), x = lerp(TX - 260, -700, k), y = lerp(1740, 300, k) - Math.sin(k * Math.PI) * 500, s = lerp(0.52, 0.12, k); lean(x, y, -k * 14, () => X(CUC, 'shock', 'shock', x, y, s)); if (k >= 1) { } }
+    if (u >= tf && u < tf + 0.5) { ctx.strokeStyle = 'rgba(255,255,255,.85)'; ctx.lineWidth = 10; ctx.beginPath(); ctx.arc(TX, TY - 560, 240, Math.PI * 0.9, Math.PI * 1.4); ctx.stroke(); }
+    if (u < tf) X(CUC, 'hips', 'angry', TX - 250, 1740, 0.52);
+    else { const k = clamp((u - tf) / 1.6); ghosts(q => { const x = lerp(TX - 250, -500, q), y = lerp(1740, 500, q) - Math.sin(q * Math.PI) * 600, s = lerp(0.52, 0.34, q); lean(x, y - 300 * s, -q * 12, () => X(CUC, 'shock', 'shock', x, y, s)); }, k, 5, 0.03); }
   }, u > tf && u < tf + 0.2 ? 14 : 0, u);
-  if (u > tf + 0.05 && u < tf + 0.7) burst(560, 900, 110, 'flick', (u - tf - 0.05) / 0.07, 44, '#fff59d');
-  if (u > 1.35) { pop(eOB((u - 1.35) / 0.15), W / 2, 330, () => { ctx.rotate(-0.06); txt('YEET', 0, 0, 170, '#ffd60a'); }); sparkles(170, 640, u, 30); }
+  if (u > tf && u < tf + 0.5) burst(700, 820, 110, 'flick!', (u - tf) / 0.07, 46, '#fff59d');
+  if (u > 1.1) { pop(eOB((u - 1.1) / 0.15), W / 2, 320, () => { ctx.rotate(-0.06); txt('BYE BYE 👋', 0, 0, 120, '#ffd60a'); }); pop(eOB((u - 1.3) / 0.15), W / 2, 440, () => { rr(-200, -32, 400, 64, 32, 'rgba(10,14,30,.85)', null); txt('(cartoon physics)', 0, 2, 36, '#fff', null); }); }
 }
-function e_brawl(u) {
-  const C = camK([[0, 600, 1400, 1.2, 0], [3.2, 620, 1400, 1.28, 0.02]], u);
+function nameTag(x, y, s, col = '#111') { ctx.font = `900 34px ${F}`; const w = ctx.measureText(s).width + 36; rr(x - w / 2, y - 26, w, 52, 26, col, DARK, 4); txt(s, x, y + 1, 34, '#fff', null); }
+function e_brawl(u) { // flailing chaos bounces off a calm Traoré
+  const C = camK([[0, 560, 1350, 1.15, 0], [3.2, 560, 1350, 1.22, 0.02]], u);
   camR(C[0], C[1], C[2], C[3], () => {
     pitch(u + 11); cornerFlag(960, 1640, u);
-    const k = eOB(u / 0.3); brawl(560, 1350, u, k);
-    if (u > 1.2) { const x = lerp(1300, 880, easeOut((u - 1.2) / 0.4)); const pose = u > 1.7 ? { lArm: [-30, 60], rArm: [170, 175], lLeg: [-4, 0], rLeg: [6, 0], hands: { l: 'fist', r: 'fist' } } : (Math.floor(u * 10) % 2 ? 'run1' : 'run2'); shadow(x, 1800, 120); X(REF, pose, 'angry', x, 1800, 0.5); if (u > 1.7) { const hp = handPos(REF, pose, 'r', x, 1800, 0.5); redCard(hp[0], hp[1] - 70, eOB((u - 1.7) / 0.15)); } }
+    brawl(TX - 40, 1380, u, eOB(u / 0.3) * 1.25);
+    shadow(TX, TY, 170); X(TRA, SHIELD, 'smug', TX, TY, TS);
+    // labelled players at the edges of the cloud
+    const jx = 900 + Math.sin(u * 9) * 12; X(JP, 'shock', 'shock', jx, 1800, 0.44); nameTag(jx - 60, 1160, 'João Pedro', '#034694');
+    const tdx = 250 + Math.sin(u * 8) * 12, tdp = u > 1.7 ? 'sad' : 'shock'; X(TOD, tdp, u > 1.7 ? 'sad' : 'angry', tdx, 1820, 0.44); nameTag(tdx + 30, 1160, 'Todibo', '#7a263a');
+    if (u > 1.2) { const x = lerp(1300, 760, easeOut((u - 1.2) / 0.4)); const pose = u > 1.7 ? { lArm: [-120, -100], rArm: [170, 175], lLeg: [-4, 0], rLeg: [6, 0], hands: { l: 'point', r: 'fist' } } : (Math.floor(u * 10) % 2 ? 'run1' : 'run2'); X(REF, pose, 'angry', x, 1880, 0.42); if (u > 1.7) { const hp = handPos(REF, pose, 'r', x, 1880, 0.42); redCard(hp[0], hp[1] - 60, eOB((u - 1.7) / 0.15)); } }
   }, 8 * (u < 1.5), u);
   chapter('THEN...', 'MASS BRAWL', u, '#c1121f');
-  if (u > 1.8) pop(eOB((u - 1.8) / 0.2), W / 2, 420, () => { rr(-330, -50, 660, 100, 26, '#e11d2a', DARK, 5); txt('RED CARD: Todibo 🟥', 0, 2, 50, '#fff', null); });
+  pop(eOB((u - 0.5) / 0.15), W / 2, 400, () => { rr(-260, -38, 520, 76, 38, '#ffd60a', DARK, 4); txt('Traoré: 0 movement', 0, 2, 48, DARK, null); });
+  if (u > 1.8) pop(eOB((u - 1.8) / 0.2), W / 2, 510, () => { rr(-400, -50, 800, 100, 26, '#e11d2a', DARK, 5); txt('RED CARD: Todibo (not Traoré)', 0, 2, 44, '#fff', null); });
 }
-function e_press(u) { // "João Pedro saved my life"
-  const C = camK([[0, 600, 1450, 1.45, 0], [3.2, 590, 1420, 1.6, 0]], u);
+function e_press(u) { // the quote came later, on TV
+  const C = camK([[0, 600, 1450, 1.45, 0], [3.0, 590, 1420, 1.6, 0]], u);
   camR(C[0], C[1], C[2], C[3], () => {
     pressBoard();
     X(JP, { lArm: [-40, 100], rArm: [40, -100], lLeg: [-8, 0], rLeg: [8, 0], hands: { l: 'fist', r: 'fist' } }, 'smug', 790, 1780, 0.56);
-    X(CUC, 'sad', u > 0.6 && u < 2.6 && Math.floor(u * 8) % 2 ? 'shock' : 'sad', 420, 1800, 0.56);
+    X(CUC, 'sad', u > 0.6 && u < 2.4 && Math.floor(u * 8) % 2 ? 'shock' : 'sad', 420, 1800, 0.56);
     const [hx, hy] = [420 + 40 * 0.56 * 1.1, 1800 - 940 * 0.56]; bandaid(hx + 60, hy - 30); bandaid(hx - 40, hy + 40, -0.4);
-    ctx.fillStyle = '#222'; ctx.fillRect(455, hy + 200, 10, 140); ctx.beginPath(); ctx.arc(460, hy + 190, 26, 0, TAU); ctx.fillStyle = '#9ca3af'; ctx.fill(); ctx.lineWidth = 5; ctx.strokeStyle = DARK; ctx.stroke();
-    for (let i = 0; i < 4; i++) { const k = (u * 2.5 + i / 4) % 1; if (k < 0.12) { ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.beginPath(); ctx.arc(150 + i * 260, 300 + (i % 2) * 120, 60, 0, TAU); ctx.fill(); } }
+    ctx.fillStyle = '#222'; ctx.fillRect(525, hy + 300, 10, 140); ctx.beginPath(); ctx.arc(530, hy + 290, 26, 0, TAU); ctx.fillStyle = '#9ca3af'; ctx.fill(); ctx.lineWidth = 5; ctx.strokeStyle = DARK; ctx.stroke();
   });
-  chapter('AFTER THE GAME', '', u, '#034694');
+  rr(780, 150, 150, 60, 10, '#e11d2a', null); txt('● LIVE', 855, 181, 32, '#fff', null);
+  chapter('LATER, ON TV', '', u, '#034694');
   pop(eOB((u - 0.1) / 0.2), W / 2, 300, () => txt('Cucurella:', 0, 0, 64, '#fff'));
   if (u > 0.5) pop(eOB((u - 0.5) / 0.15), W / 2, 420, () => { rr(-400, -60, 800, 120, 30, '#fff', DARK, 6); txt('"João Pedro saved my life"', 0, 2, 50, DARK, null); });
 }
 function e_bill(u) {
   pitch(u + 15); ctx.fillStyle = 'rgba(5,10,25,.55)'; ctx.fillRect(0, 0, W, H);
-  receipt(W / 2, 440, (u - 0.2) / 0.9, u);
-  shadow(170, 1890, 110); X(TRA, u > 1.4 ? 'shock' : 'hips', u > 1.4 ? 'smug' : 'grin', 170, 1890, 0.42);
-  shadow(930, 1890, 90); X(CUC, 'sad', 'sad', 930, 1890, 0.42); bandaid(930 + 30, 1890 - 940 * 0.42 - 20);
+  receipt(W / 2, 400, (u - 0.1) / 0.7, u);
+  if (u > 1.3) pop(eOB((u - 1.3) / 0.12), W / 2, 1310, () => { ctx.rotate(-0.12); rr(-300, -50, 600, 100, 14, 'rgba(255,255,255,.0)', '#2a9d8f', 8); txt('TRAORÉ: £0 · DIDN\'T MOVE ✔', 0, 2, 38, '#2a9d8f', null); });
+  X(TRA, u > 1.4 ? 'shock' : 'hips', u > 1.4 ? 'smug' : 'grin', 130, 1540, 0.36);
+  X(CUC, 'sad', 'sad', 870, 1540, 0.36); bandaid(870 + 26, 1540 - 940 * 0.36 - 18);
   chapter('THE BILL', '', u, '#d4a017');
-  if (u > 1.5) pop(eOB((u - 1.5) / 0.2), W / 2, 300, () => { ctx.rotate(-0.04); txt('Most expensive', 0, -40, 62, '#ffd60a'); txt('corner flag EVER 💸', 0, 40, 62, '#ffd60a'); });
+  if (u > 1.7) pop(eOB((u - 1.7) / 0.2), W / 2, 300, () => { ctx.rotate(-0.04); rr(-380, -80, 760, 160, 30, 'rgba(10,14,30,.85)', null); txt('Most expensive', 0, -32, 56, '#ffd60a', null); txt('corner flag EVER 💸', 0, 36, 56, '#ffd60a', null); });
 }
-function e_end(u) {
-  const C = camK([[0, 500, 1420, 1.25, 0], [2.4, 500, 1420, 1.32, 0]], u);
+function e_end(u) { // Attempt 4: REVENGE -> bounces out the top (loops to frame 0)
+  const hit = 0.7;
+  const C = camK([[0, 480, 1420, 1.3, 0], [hit, 520, 1390, 1.4, 0.02], [2.6, 520, 1380, 1.4, -0.03]], u);
   camR(C[0], C[1], C[2], C[3], () => {
     pitch(u + 18); cornerFlag(960, 1640, u); shadow(TX, TY, 170);
-    X(TRA, SHIELD, 'smug', TX, TY, TS); ball(TX + 150, TY - 10, 26, 0);
-    for (let i = 0; i < 4; i++) { const ph = (u * 0.9 + i / 4) % 1, x = ph < 0.5 ? lerp(-200, TX - 220, ph / 0.5) : lerp(TX - 220, -300, (ph - 0.5) / 0.5), y = 1760 - (ph > 0.5 ? Math.sin((ph - 0.5) / 0.5 * Math.PI) * 400 : 0); lean(x, y, ph > 0.5 ? -(ph - 0.5) * 10 : 0.2, () => X(i % 2 ? 'gk' : 'fanAfro', ph > 0.5 ? 'shock' : 'run1', ph > 0.5 ? 'shock' : 'angry', x, y, 0.4)); }
-  });
-  topT('Who could stop him?', (u - 0.1) / 0.25, 250, 84, '#ffd60a'); topT('Comment below 👇', (u - 0.5) / 0.25, 360, 52, '#fff');
+    X(TRA, SHIELD, u > hit ? 'smug' : 'grin', TX, TY, TS); ball(TX + 150, TY - 10, 26, 0);
+    if (u < hit) { const x = lerp(-250, TX - 200, u / hit), b = Math.abs(Math.sin(u * 22)) * 20; lean(x, 1740, 0.25, () => X(CUC, Math.floor(u * 12) % 2 ? 'run1' : 'run2', 'angry', x, 1740 - b, 0.52)); const hy = 1740 - 940 * 0.52; bandaid(x + 40, hy - 20); speedLinesH(x - 200, 1400, u); }
+    else launchUp(u - hit, TX - 200, 1740);
+  }, u > hit && u < hit + 0.25 ? 16 : 0, u);
+  pop(eOB(u / 0.15), W / 2, 285, () => { rr(-360, -55, 720, 110, 30, 'rgba(10,14,30,.85)', null); txt('Attempt 4: REVENGE 😤', 0, 2, 60, '#fff', null); });
+  if (u > hit && u < hit + 0.5) burst(400, 1080, 140, 'BOING!', (u - hit) / 0.07, 64, '#ffd60a', -0.1);
+  if (u > 1.1) pop(eOB((u - 1.1) / 0.2), W / 2, 420, () => { rr(-330, -50, 660, 100, 30, '#ffd60a', DARK, 5); txt('Who could stop him? 👇', 0, 2, 52, DARK, null); });
   rr(110, 1440, 860, 80, 40, 'rgba(10,14,30,.85)', null); txt('Real 2026 facts · parody', W / 2, 1481, 40, '#fff', null, 'center', 800);
 }
-const LEN = [['hook', 2.2, e_hook], ['match', 2.8, e_match], ['shield', 5.0, e_shield], ['yeet', 2.6, e_yeet], ['brawl', 3.2, e_brawl], ['press', 3.2, e_press], ['bill', 3.0, e_bill], ['end', 2.4, e_end], ['cta', 1.5, (u) => ctaFollow(ctx, u, W, H, { txt, rr, easeOutBack, clamp, CR: (p, e, x, y, s) => X(TRA, p, e, x, y, s * 0.95), LM: (p, e, x, y, s) => X(CUC, p, e, x, y, s) })]];
+const LEN = [['hook', 2.0, e_hook], ['match', 1.8, e_match], ['shield', 5.0, e_shield], ['yeet', 2.6, e_yeet], ['brawl', 3.2, e_brawl], ['press', 3.0, e_press], ['bill', 3.0, e_bill], ['end', 2.6, e_end], ['cta', 1.5, (u) => ctaFollow(ctx, u, W, H, { txt, rr, easeOutBack, clamp, CR: (p, e, x, y, s) => X(TRA, p, e, x, y, s * 0.95), LM: (p, e, x, y, s) => X(CUC, p, e, x, y, s) })]];
 const SEG = []; { let t = 0; for (const [n, d, f] of LEN) { SEG.push([t, t + d, f, n]); t += d; } }
 const DURATION = SEG[SEG.length - 1][1];
 window.SEGS = SEG.map(s => [s[3], +s[0].toFixed(2)]);

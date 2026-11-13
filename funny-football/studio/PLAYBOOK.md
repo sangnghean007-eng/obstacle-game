@@ -101,3 +101,15 @@ Real numbers go in `performance.csv`. Decide with retention data (average watch 
   - Vary body types, skin tones, hair, hats and outfits.
   - Repeated actions get different reactions (dive, face-plant, white flag).
 - **Locations:** at least 3 different settings per video (stadium, beach, gym, ...), each with its own palette and music.
+
+## Standing order: the team decides, then builds (user instruction, Nov 13 2026)
+For every new video, run this pipeline automatically. Do not stop to ask the user to approve a script.
+1. **Pre-production room** (parallel agents): comedy writer, retention strategist, art director, audience panel, fact checker.
+   - Input: the researched facts.
+   - Output: each role pitches or critiques. The producer merges the best into one optimal script, with a short "why this version" note.
+2. **Build** the video to the playbook standards.
+3. **Post-production review room** on the rendered frames and the audio timeline.
+   - Apply every fix that 2 or more roles agree on, plus any fact error.
+   - Re-render, and log the scores in `scorecard.csv`.
+4. **Ship:** the video, cover, subtitles, the 4 platform dossiers and the facts sheet.
+   - Send the video to the user with a short summary of what the room decided and changed.

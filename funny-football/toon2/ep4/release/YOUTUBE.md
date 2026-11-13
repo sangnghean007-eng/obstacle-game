@@ -12,7 +12,7 @@ Backup titles:
 ```
 Remember this man? 💪 Adama Traoré's West Ham debut at Chelsea (Jan 31, 2026)…
 Cucurella tried to push him. Then climbed on him. Then Traoré flexed 😂
-It ended in a mass brawl, a red card for Todibo and £625,000 in FA fines 💸
+It ended in a mass brawl, a red card for Todibo (not Traoré) and £625,000 in FA fines 💸
 Cucurella after the game: "João Pedro saved my life."
 
 Who could stop him? 👇
@@ -26,7 +26,7 @@ https://www.espn.in/football/report/_/gameId/740835
 https://www.sportsmole.co.uk/football/chelsea/news/aware-of-his-actions-disproportionate-duo-singled-out-as-chelsea-west-ham-hit-with-fines_592670.html
 https://www.aol.com/news/marc-cucurella-speaks-adama-traore-142831732.html
 
-Parody cartoon: the bounce, koala and "yeet" are jokes 😄 Original characters, drawings and synthesized audio. Not affiliated with any club.
+Parody cartoon: the bounce, piggyback and "bye bye" flight are jokes 😄 Original characters, drawings and synthesized audio. Not affiliated with any club.
 
 #AdamaTraore #Cucurella #WestHam #Chelsea #PremierLeague
 ```
@@ -46,14 +46,14 @@ adama traore, traore strength, cucurella, cucurella traore, chelsea vs west ham,
 | Altered or synthetic content | No (stylized 2D cartoon) |
 | Language | English |
 | Subtitles | `subtitles-en.srt` |
-| Thumbnail | `cover-9x16.jpg`, or the frame at about 1.2 s |
+| Thumbnail | `cover-9x16.jpg`, or the frame at about 0.2 s |
 | Remixing | Allowed |
 | Comments | On; hold potentially inappropriate |
 | Related video | Ep3 "RETIRED?!" |
 
 **Pinned comment:**
 ```
-Attempt 2 (koala mode) at 7s 😂 Who could stop him? Tag a defender 👇
+Attempt 2 (piggyback 🐨) at 6s 😂 Who could stop him? Tag a defender 👇
 ```
 
 **First 2 hours:**

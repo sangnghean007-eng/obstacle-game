@@ -6,9 +6,9 @@ Nobody can move Adama Traoré 😂🧱
 
 Jan 31, 2026: Chelsea 3-2 West Ham
 Attempt 1: push ❌
-Attempt 2: koala mode ❌
+Attempt 2: piggyback mode ❌
 Attempt 3: Traoré flexes 💪
-Then: mass brawl, a red card for Todibo and £625k in FA fines 💸
+Then: mass brawl, a red card for Todibo (not Traoré) and £625k in FA fines 💸
 Cucurella: "João Pedro saved my life" 😂
 
 Who could stop him? 👇

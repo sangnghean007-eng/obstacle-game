@@ -12,7 +12,7 @@ Nobody can move Adama Traoré 😂🧱 Cucurella tried 3 times… then "João Pe
 | Setting | Value |
 |---|---|
 | Sound | Keep the original (the march and the boings carry the jokes) |
-| Cover | Frame at about 1.2 s (Traoré + "Remember this MAN?") |
+| Cover | Frame at about 0.2 s (Traoré + "Remember this MAN?") |
 | Interaction | Duet and Stitch on |
 | AI-generated content label | Off (2D cartoon, not a realistic person) |
 | Tags | No @ of players or clubs |
@@ -20,7 +20,7 @@ Nobody can move Adama Traoré 😂🧱 Cucurella tried 3 times… then "João Pe
 
 **Pinned comment:**
 ```
-Koala mode at 7s 😭 rate Cucurella's attempts 1–10
+Piggyback mode at 6s 😭 rate Cucurella's attempts 1–10
 ```
 
 **Reply ideas:**

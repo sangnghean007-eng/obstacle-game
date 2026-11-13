@@ -14,3 +14,12 @@
 Wording note: the FA commission also said Cucurella "was not wholly without fault" and tried to provoke a reaction. The video does not blame one side; the brawl is a cartoon dust cloud with no real violence.
 
 Parody elements (clearly fictional): the "BOING" bounce, the push, koala and flex attempts, the "flick"/"YEET" flight, the bodyguard João Pedro, the receipt shape.
+
+## Review room v1 → v2 (Nov 13, 2026)
+- An independent fact check passed all 7 claims, with new sources: 11v11, theScore, Fox Sports, Flashscore, The Star, the42 and ProFootballNetwork. Details:
+  - Goals: João Pedro 57', Cucurella 70', Enzo 90+2'.
+  - Todibo was booked first, then shown red after VAR.
+  - Traoré and João Pedro each got a yellow card.
+  - The fines were announced on Feb 25, 2026.
+- The quote was said on Catalan TV (3Cat), not at a press conference, so the scene is relabelled "LATER, ON TV".
+- The red-card pill now reads "Todibo (not Traoré)". The flight carries a "(cartoon physics)" tag. The brawl shows no neck grab.
