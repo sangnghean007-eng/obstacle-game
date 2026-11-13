@@ -159,15 +159,19 @@
     siu: { lArm: [-40, -20], rArm: [40, 20], lLeg: [-18, -10], rLeg: [18, 10], hands: { l: 'open', r: 'open' } },
     sky: { lArm: [-160, -175], rArm: [160, 175], lLeg: [-4, 0], rLeg: [6, 0], hands: { l: 'point', r: 'point' } },
     cry: { lArm: [-145, 165], rArm: [145, -165], lLeg: [-30, -14], rLeg: [30, 14], hands: { l: 'open', r: 'open' } },
+    run1: { lArm: [40, 100], rArm: [-40, -10], lLeg: [-35, 10], rLeg: [35, -60], hands: { l: 'fist', r: 'fist' } },
+    run2: { lArm: [-40, -10], rArm: [40, 100], lLeg: [35, -60], rLeg: [-35, 10], hands: { l: 'fist', r: 'fist' } },
     kick: { lArm: [-70, -30], rArm: [50, 10], lLeg: [-4, 0], rLeg: [60, 95], hands: { l: 'open', r: 'fist' } },
     shock: { lArm: [-95, 178], rArm: [95, -178], lLeg: [-10, -4], rLeg: [10, 4], hands: { l: 'open', r: 'open' } },
     sad: { lArm: [-8, 10], rArm: [8, -10], lLeg: [-4, 0], rLeg: [4, 0], hands: {} },
   };
-  window.toon2 = {
+  function mix(a, b, k) { a = POSES[a] || a; b = POSES[b] || b; const o = { hands: k < 0.5 ? a.hands : b.hands };
+    for (const key of ['lArm', 'rArm', 'lLeg', 'rLeg']) o[key] = [0, 1].map(i => a[key][i] + (b[key][i] - a[key][i]) * k); return o; }
+  window.toon2 = { mix, POSES,
     draw(c2d, who, pose, expr, x, y, s, kit) {
       ctx = c2d; ctx.save(); ctx.translate(x, y); ctx.rotate(window.T2LEAN || 0); ctx.scale(s, s); ctx.translate(-300, -1260); ctx.lineJoin = 'round';
       const c0 = who === 'ronaldo' ? RONALDO : MESSI; const c = kit ? Object.assign({}, c0, { kit: Object.assign({}, c0.kit, kit), num: kit.number ?? c0.num, abs: kit.abs ?? c0.abs }) : c0; 
-      body(c, POSES[pose]);
+      body(c, typeof pose === 'string' ? POSES[pose] : pose);
       if (who === 'ronaldo') headRonaldo(c.cx, expr); else { ctx.save(); ctx.translate(300, 590); ctx.scale(1.12, 1.12); ctx.translate(-300, -590); headMessi(c.cx, expr); ctx.restore(); }
       ctx.restore();
     }
