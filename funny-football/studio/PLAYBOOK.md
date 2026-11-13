@@ -31,6 +31,7 @@ Every rule here comes from either (U) user feedback, (R) the review room, or (W)
 - **Comment bait as a binary choice**: "10 or 7?" beats "comment below" (R).
 - **Callback twist** at the end (RETIRED → RETIRED* "*for now") instead of repeating the opening (R).
 
+- **Show, don't tell** (U, 2026-11-13): the story must be understood from images and actions alone. Max about 3 words of on-screen text per scene (scores, dates, one punchline). No screenshots-of-text or long post cards; turn each statement into an action (planting a flag, a dictionary with a picture, swapping the flag back).
 - **Voices make it funny** (U): every episode gets crowd cheers/"ooh", laughs, a SIUUU-style shout and meaningless gibberish "cursing" on reactions. All voices are synthesized (espeak-ng + pitch shifts, `toon2/sfx/make_voices.py`), never real recordings or real players' voices.
 
 ## 3. Anti-patterns (things we got wrong)

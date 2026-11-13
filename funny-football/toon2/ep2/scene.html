@@ -105,20 +105,34 @@ function goatChar(x, y, s, t, flip) { ctx.save(); ctx.translate(x, y); ctx.scale
   ctx.beginPath(); ctx.arc(116, -66 - b, 7, 0, TAU); ctx.fillStyle = DARK; ctx.fill(); ctx.restore(); }
 
 // ---------- scenes ----------
+// ---------- visual-storytelling props ----------
+function goatHead(x, y, s) { ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.beginPath(); ctx.ellipse(0, 0, 46, 38, 0.2, 0, TAU); ctx.fillStyle = '#f2efe6'; ctx.fill(); ctx.lineWidth = 6; ctx.strokeStyle = DARK; ctx.stroke();
+  ctx.lineWidth = 9; ctx.beginPath(); ctx.moveTo(-10, -30); ctx.quadraticCurveTo(-30, -90, -70, -80); ctx.moveTo(14, -32); ctx.quadraticCurveTo(16, -100, -24, -98); ctx.stroke();
+  ctx.beginPath(); ctx.arc(14, -6, 7, 0, TAU); ctx.fillStyle = DARK; ctx.fill(); ctx.beginPath(); ctx.moveTo(-6, 30); ctx.lineTo(4, 70); ctx.lineTo(14, 30); ctx.fillStyle = '#d8d2c2'; ctx.fill(); ctx.restore(); }
+function flag(x, y, num, col, col2, k = 1, rot = 0) { if (k <= 0) return; ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(k, k);
+  ctx.fillStyle = '#5b4632'; ctx.fillRect(-7, -560, 14, 560); ctx.lineWidth = 4; ctx.strokeStyle = DARK; ctx.strokeRect(-7, -560, 14, 560);
+  const w = Math.sin(T2T * 6) * 14; ctx.beginPath(); ctx.moveTo(7, -560); ctx.quadraticCurveTo(140, -590 + w, 300, -560); ctx.lineTo(300, -360); ctx.quadraticCurveTo(140, -390 - w, 7, -360); ctx.closePath();
+  ctx.fillStyle = col; ctx.fill(); ctx.lineWidth = 6; ctx.stroke(); if (col2) { ctx.save(); ctx.clip(); ctx.fillStyle = col2; for (let i = 0; i < 6; i++) ctx.fillRect(20 + i * 52, -600, 26, 260); ctx.restore(); }
+  goatHead(100, -460, 0.9); txt(num, 230, -460, 90, '#ffd21f', DARK); ctx.restore(); }
+function crown(x, y, s) { ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.beginPath(); ctx.moveTo(-90, 0); ctx.lineTo(-90, -60); ctx.lineTo(-45, -20); ctx.lineTo(0, -80); ctx.lineTo(45, -20); ctx.lineTo(90, -60); ctx.lineTo(90, 0); ctx.closePath(); ctx.fillStyle = '#ffd21f'; ctx.fill(); ctx.lineWidth = 6; ctx.strokeStyle = DARK; ctx.stroke();
+  ctx.lineWidth = 12; ctx.beginPath(); ctx.moveTo(-60, -40); ctx.quadraticCurveTo(-110, -150, -160, -120); ctx.moveTo(60, -40); ctx.quadraticCurveTo(110, -150, 160, -120); ctx.strokeStyle = '#d8d2c2'; ctx.stroke(); ctx.restore(); }
+function plane(x, y, a, s) { ctx.save(); ctx.translate(x, y); ctx.rotate(a); ctx.scale(s, s); ctx.beginPath(); ctx.ellipse(0, 0, 150, 34, 0, 0, TAU); ctx.fillStyle = '#e5e7eb'; ctx.fill(); ctx.lineWidth = 6; ctx.strokeStyle = DARK; ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(-20, 0); ctx.lineTo(-70, 110); ctx.lineTo(10, 110); ctx.lineTo(40, 0); ctx.fill(); ctx.stroke(); ctx.beginPath(); ctx.moveTo(-130, -10); ctx.lineTo(-160, -80); ctx.lineTo(-110, -20); ctx.fill(); ctx.stroke(); ctx.restore(); }
+function thermometer(x, y, a) { ctx.save(); ctx.translate(x, y); ctx.rotate(a); rr(-8, -90, 16, 110, 8, '#fff', DARK, 4); ctx.fillStyle = '#e11d2a'; ctx.fillRect(-4, -40, 8, 55); ctx.beginPath(); ctx.arc(0, 20, 13, 0, TAU); ctx.fill(); ctx.lineWidth = 4; ctx.stroke(); ctx.restore(); }
+
 function s_hook(u) {
-  cam(540, 960, lerp(1.0, 1.08, u / 2.6), () => {
+  cam(540, 960, lerp(1.0, 1.06, u / 2.6), () => {
     stadium(u, 'juve');
-    breathe(800, 1720, u, 0.012, () => LM('sky', 'happy', 800, 1720, 0.74));
-    sparkles(...headPos(800, 1720, 0.74), u, 220); hearts(u, 0.9);
-  });
-  const rise = easeOut(clamp(u / 0.45));
-  phone(330, lerp(2400, 960, rise), 0.8, () => {
-    txt('9:41', -200, -440, 30, DARK, null, 'left', 800);
-    rr(-250, -400, 500, 90, 20, '#e8ecf5', null); txt('FC Barcelona posted', -220, -355, 30, DARK, null, 'left', 800);
-    post(-250, -280, 500, 'FC Barcelona', '#a50044', ['Glad you got to', 'see the GOAT play', 'at your stadium.'], (u - 0.5) / 0.25);
-  });
-  topT('A TWEET STARTED A WAR', (u - 0.05) / 0.25, 190, 72, '#ffd60a');
-  topT('Oct 28, 2020 · Juventus 0-2 Barcelona', (u - 1.0) / 0.25, 1560, 40, '#fff');
+    rr(300, 230, 480, 120, 22, 'rgba(10,14,30,.92)', '#ffd60a', 6); txt('JUV 0-2 BAR', 540, 292, 64, '#fff', null);
+    const run = clamp(u / 0.8), mx = lerp(-150, 700, easeOut(run));
+    const planted = u > 0.85;
+    if (planted) flag(400, 1600 + (1 - clamp((u - 0.85) / 0.12)) * -300, '10', '#a50044', '#0b4f9c', 1.35);
+    const pose = u < 0.8 ? (Math.floor(u * 12) % 2 ? 'run1' : 'run2') : 'sky';
+    breathe(mx, 1720, u, 0.012, () => LM(pose, 'happy', mx, 1720, 0.74, BARCA));
+    if (u > 1.25) { const [hx, hy] = headPos(mx, 1720, 0.74); const k = easeOutBack(clamp((u - 1.25) / 0.25)); crown(hx - 10, lerp(hy - 500, hy - 150, k), 0.9); sparkles(hx, hy - 150, u, 230); }
+  }, u > 0.85 && u < 1.05 ? 14 : 0, u);
+  if (u > 0.85 && u < 1.25) burst(400, 1300, 110, 'THUD', (u - 0.85) / 0.1, 46, '#fff59d');
+  topT('Oct 28, 2020', (u - 0.1) / 0.2, 150, 44, '#fff');
 }
 function s_isolate(u) {
   const close = u > 1.1 && u < 2.2, z = close ? lerp(1.9, 1.7, (u - 1.1)) : lerp(1.0, 1.05, u / 1.1), [hx, hy] = headPos(760, 1760, 0.72);
@@ -126,24 +140,33 @@ function s_isolate(u) {
     room(u);
     const shock = u > 1.1;
     lean(760, 1760, shock ? Math.sin(u * 30) * 0.03 : 0, () => breathe(760, 1760, u, 0.015, () => CR(shock ? 'shock' : 'hips', shock ? 'shock' : 'sad', 760, 1760, 0.72, HOODIE)));
+    if (!shock) thermometer(hx + 90, hy + 190, -0.6); else if (u < 1.9) { const k = clamp((u - 1.1) / 0.8); thermometer(lerp(hx + 90, hx + 400, k), lerp(hy + 190, hy - 300, k), u * 20); }
     if (u > 1.4) { const k = clamp((u - 1.4) / 0.6); ctx.save(); ctx.translate(lerp(820, 200, k), lerp(1100, 700, k) - Math.sin(k * Math.PI) * 300); ctx.rotate(u * 18); rr(-20, -60, 40, 120, 10, '#222', DARK, 4); ctx.restore(); }
   }, close ? 10 : 0, u);
   if (close) { speedLines(u, 50, 'rgba(193,18,31,.35)'); topT('0-2?!', (u - 1.15) / 0.15, 520, 160, '#ffd60a'); }
-  else { topT('Meanwhile, Ronaldo:', (u - 0.1) / 0.25, 210, 66, '#1a0f08'); topT('isolating with COVID', (u - 0.35) / 0.25, 290, 56, '#c1121f'); }
 }
 function s_reply(u) {
-  const close = u > 2.4, [hx, hy] = headPos(800, 1760, 0.72);
-  cam(close ? hx : 540, close ? hy + 60 : 960, close ? lerp(2.2, 2.0, u - 2.4) : 1, () => {
-    stadium(u, 'juve');
-    const typing = u < 1.0;
-    breathe(800, 1760, u, 0.012, () => CR(typing ? toon2.mix('hips', 'shock', 0.35 + 0.15 * Math.sin(u * 30)) : 'hips', 'grin', 800, 1760, 0.72));
-    post(70, 330, 860, 'Juventus', '#151515', ['You looked in the', 'wrong dictionary.', "We'll bring the right one", 'to Camp Nou.'], (u - 0.2) / 0.25);
-    const drop = clamp((u - 1.2) / 0.3); if (drop > 0) { ctx.save(); ctx.translate(0, (1 - easeOut(drop)) * -1300); dictionary(360, 1180, 1, u); ctx.restore(); }
-    if (u > 1.5 && u < 2.3) { const R = rng(3); for (let i = 0; i < 10; i++) { const k = clamp((u - 1.5) / 0.8); ctx.save(); ctx.translate(360 + (R() - 0.5) * 600 * k, 1180 - R() * 500 * k); ctx.rotate(k * 6 + i); rr(-30, -40, 60, 80, 4, '#fffaf0', DARK, 3); ctx.restore(); } }
-  });
-  topT('JUVE REPLIED:', (u - 0.0) / 0.2, 200, 72, '#ffd60a');
-  if (u > 1.45 && u < 2.2) burst(560, 980, 130, 'SLAM!', (u - 1.45) / 0.12, 56, '#fff59d');
-  if (close) { topT('OOOOOH', (u - 2.4) / 0.15, 360, 130, '#ffd60a'); speedLines(u, 30); }
+  const zoomPage = u > 1.0 && u < 2.0;
+  cam(zoomPage ? 430 : 540, zoomPage ? 1100 : 960, zoomPage ? 1.6 : 1, () => {
+    room(u);
+    // giant dictionary slams onto the floor and opens on "GOAT" = a picture of Ronaldo
+    const drop = clamp((u - 0.1) / 0.3);
+    ctx.save(); ctx.translate(0, (1 - easeOut(drop)) * -1400);
+    rr(150, 920, 560, 360, 18, '#7a1f1f', DARK, 8); rr(170, 940, 250, 320, 6, '#fffaf0', DARK, 4); rr(440, 940, 250, 320, 6, '#fffaf0', DARK, 4);
+    txt('GOAT', 295, 990, 58, DARK, null);
+    ctx.save(); ctx.beginPath(); ctx.rect(440, 940, 250, 320); ctx.clip(); CR('siu', 'grin', 565, 1300, 0.26); ctx.restore();
+    ctx.fillStyle = '#c9c4b5'; for (let i = 0; i < 5; i++) ctx.fillRect(195, 1050 + i * 34, 190 - i * 18, 10);
+    // Messi photo in the dictionary gets a red cross
+    ctx.save(); ctx.beginPath(); ctx.rect(190, 1080, 120, 140); ctx.clip(); LM('sky', 'happy', 250, 1250, 0.13); ctx.restore();
+    if (u > 1.3) { ctx.strokeStyle = '#e11d2a'; ctx.lineWidth = 12; ctx.beginPath(); ctx.moveTo(190, 1080); ctx.lineTo(310, 1220); ctx.moveTo(310, 1080); ctx.lineTo(190, 1220); ctx.stroke(); }
+    ctx.restore();
+    const pointing = u > 0.9 && u < 2.0;
+    breathe(850, 1760, u, 0.015, () => CR(pointing ? toon2.mix('hips', 'shock', 0.5) : 'hips', 'grin', 850, 1760, 0.68, HOODIE));
+    // pack into a suitcase -> plane takes off
+    if (u > 2.2) { const k = clamp((u - 2.2) / 1.1); plane(lerp(300, 1300, k), lerp(700, 200, k), -0.3, 1.1); txt('→ CAMP NOU', lerp(300, 1300, k), lerp(820, 320, k), 44, '#ffd60a', DARK); }
+  }, u > 0.4 && u < 0.6 ? 16 : 0, u);
+  if (u > 0.4 && u < 1.0) burst(430, 860, 120, 'SLAM!', (u - 0.4) / 0.1, 52, '#fff59d');
+  if (zoomPage) topT('WRONG DICTIONARY', (u - 1.0) / 0.2, 300, 70, '#ffd60a');
 }
 function s_cal(u) {
   ctx.fillStyle = '#ffd60a'; ctx.fillRect(0, 0, W, H); speedLines(u, 50, 'rgba(0,0,0,.18)');
@@ -173,28 +196,34 @@ function s_match(u) {
   }, kk > 0.35 && kk < 0.7 ? 14 : 0, u);
   confetti(u, kicks[1] + 0.4);
   scoreboard(0, Math.min(3, score));
-  const goals = [[kicks[0] + 0.35, "13' PEN · RONALDO"], [2.6, "20' · McKENNIE"], [kicks[1] + 0.35, "52' PEN · RONALDO"]];
+  const goals = [[kicks[0] + 0.35, "13' PEN"], [2.6, "20' McKENNIE"], [kicks[1] + 0.35, "52' PEN"]];
   let last = null; for (const g of goals) if (u > g[0]) last = g;
   if (last && !react) { rr(240, 420, 600, 84, 42, 'rgba(255,255,255,.95)', DARK, 5); txt(last[1], 540, 463, 44, last[1].includes('McK') ? '#0b4f9c' : '#c1121f', null); }
   for (const k of kicks) if (u > k - 0.9 && u < k - 0.1) burst(560, 1500, 120, 'PENALTY', 1, 40, '#ffffff');
   for (const k of kicks) if (u > k + 0.4 && u < k + 1.4) burst(380, 640, 170, 'SIUUU!', (u - k - 0.4) / 0.2, 66, '#ffd60a', -0.05);
   if (react) topT('...', 1, 520, 160, '#fff');
-  if (u > 5.3) topT("Ronaldo: 2 penalties (13', 52')", (u - 5.3) / 0.2, 560, 52, '#ffd60a');
+  
 }
 function s_kept(u) {
   cam(540, 960, 1, () => {
     stadium(u, 'barca'); campNouSign();
-    // crate parachutes in, lands, goat chases Messi
-    const fall = clamp(u / 1.1), landed = u > 1.1;
-    const cy = landed ? 1500 : lerp(-200, 1500, fall);
-    if (!landed) { ctx.strokeStyle = DARK; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(330 - 150, cy - 160); ctx.lineTo(330, cy - 480); ctx.lineTo(330 + 150, cy - 160); ctx.stroke(); ctx.beginPath(); ctx.ellipse(330, cy - 520, 220, 110, 0, Math.PI, TAU); ctx.fillStyle = '#ffd60a'; ctx.fill(); ctx.stroke(); }
-    crate(330, cy, 1, u);
-    if (u > 1.5) { const k = (u - 1.5) / 1.7; const gx = lerp(300, 820, k), mxp = lerp(700, 1080, k); LM(Math.floor(u * 10) % 2 ? 'run1' : 'run2', 'cry', mxp, 1760, 0.55); goatChar(gx, 1700, 1.2, u, false); }
-    else LM('shock', 'shock', 800, 1760, 0.55);
-  }, u > 1.1 && u < 1.3 ? 16 : 0, u);
-  post(70, 420, 860, 'Juventus', '#151515', ['We kept our word.', 'We brought it!'], (u - 0.2) / 0.25);
-  topT('AFTER THE 3-0:', 1, 230, 72, '#ffd60a');
-  if (u > 1.1 && u < 1.5) burst(330, 1250, 110, 'THUD', (u - 1.1) / 0.1, 46, '#fff59d');
+    // Messi's flag stands on the pitch; Ronaldo yanks it out and plants his own
+    const yank = clamp((u - 0.35) / 0.4);
+    if (u < 0.35) flag(520, 1600, '10', '#a50044', '#0b4f9c', 1.3);
+    else if (yank < 1) flag(lerp(520, 1300, yank), lerp(1600, 600, yank) + Math.pow(yank, 2) * 500, '10', '#a50044', '#0b4f9c', 1.3, yank * 6);
+    if (u > 0.75) flag(520, 1600 + (1 - clamp((u - 0.75) / 0.12)) * -300, '7', '#ffffff', '#151515', 1.3);
+    const rx = u < 0.35 ? lerp(-150, 380, u / 0.35) : 380;
+    CR(u < 0.35 ? (Math.floor(u * 12) % 2 ? 'run1' : 'run2') : u < 1.2 ? 'shock' : 'siu', 'grin', rx, 1760, 0.62);
+    // crate parachutes in, goat chases Messi
+    const fall = clamp((u - 1.0) / 0.8), landed = u > 1.8, cy = landed ? 1500 : lerp(-300, 1500, fall);
+    if (u > 1.0) { if (!landed) { ctx.strokeStyle = DARK; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(820 - 150, cy - 160); ctx.lineTo(820, cy - 480); ctx.lineTo(820 + 150, cy - 160); ctx.stroke(); ctx.beginPath(); ctx.ellipse(820, cy - 520, 220, 110, 0, Math.PI, TAU); ctx.fillStyle = '#ffd60a'; ctx.fill(); ctx.stroke(); }
+      if (u < 2.1) crate(820, cy, 1, u); }
+    if (u > 2.1) { const k = (u - 2.1) / 1.2; LM(Math.floor(u * 10) % 2 ? 'run1' : 'run2', 'cry', lerp(820, 1250, k), 1760, 0.52); goatChar(lerp(560, 1100, k), 1700, 1.2, u, false); }
+    else LM('shock', 'shock', 900, 1760, 0.52);
+  }, (u > 0.75 && u < 0.95) || (u > 1.8 && u < 2.0) ? 16 : 0, u);
+  topT('Dec 8, 2020 · 0-3', 1, 230, 60, '#ffd60a');
+  if (u > 0.75 && u < 1.1) burst(520, 1300, 110, 'THUD', (u - 0.75) / 0.1, 46, '#fff59d');
+  if (u > 2.1 && u < 2.5) burst(820, 1250, 130, 'POP!', (u - 2.1) / 0.1, 56, '#fff59d');
 }
 function s_end(u) {
   cam(540, lerp(900, 980, u / 3.4), lerp(1.08, 1, u / 3.4), () => {
@@ -205,9 +234,8 @@ function s_end(u) {
     LM('sad', 'sad', 880, 1700, 0.55);
     sparkles(330, 1000 - j, u, 260);
   });
-  topT('FARMING AURA:', (u - 0.0) / 0.25, 220, 80, '#fff'); topT('LEGENDARY', (u - 0.25) / 0.25, 330, 110, '#ffd60a');
-  topT('Best club troll ever? Comment below', (u - 0.7) / 0.25, 460, 44, '#fff');
-  rr(110, 1440, 860, 80, 40, 'rgba(10,14,30,.88)', null); txt('Real 2020 facts · posts paraphrased · parody', W / 2, 1481, 36, '#fff', null, 'center', 800);
+  topT('AURA: LEGENDARY', (u - 0.0) / 0.25, 260, 92, '#ffd60a'); topT('10 or 7?', (u - 0.6) / 0.25, 400, 110, '#fff');
+  rr(110, 1440, 860, 80, 40, 'rgba(10,14,30,.88)', null); txt('Real 2020 facts · parody', W / 2, 1481, 40, '#fff', null, 'center', 800);
 }
 const SEG = [[0, 2.6, s_hook], [2.6, 5.2, s_isolate], [5.2, 8.6, s_reply], [8.6, 9.6, s_cal], [9.6, 15.4, s_match], [15.4, 18.6, s_kept], [18.6, 22, s_end]];
 function render(t) {
