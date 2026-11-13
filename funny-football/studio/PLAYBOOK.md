@@ -36,6 +36,8 @@ Every rule here comes from either (U) user feedback, (R) the review room, or (W)
 - **Show, don't tell** (U, 2026-11-13): the story must be understood from images and actions alone. Max about 3 words of on-screen text per scene (scores, dates, one punchline). No screenshots-of-text or long post cards; turn each statement into an action (planting a flag, a dictionary with a picture, swapping the flag back).
 - **Voices make it funny** (U): every episode gets crowd cheers/"ooh", laughs, a SIUUU-style shout and meaningless gibberish "cursing" on reactions. All voices are synthesized (espeak-ng + pitch shifts, `toon2/sfx/make_voices.py`), never real recordings or real players' voices.
 
+- **Happy accidents** (U, Ep2): a layering "bug" put Ronaldo's SIUUU burst on Messi's head during his shocked close-up, and it read as a joke. Before "fixing" a visual glitch, ask: is it funny? Keep it if yes. Next time, try deliberate versions (a rival's catchphrase hitting the other player, captions bumping into characters).
+
 ## 3. Anti-patterns (things we got wrong)
 - Static scene with tiny text (the Messi desk in v2) means swipe-away (R).
 - A joke that contradicts the facts ("2030? my knees" after he had already retired) reads as an error, not irony (R).
