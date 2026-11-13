@@ -1,0 +1,5 @@
+<!doctype html><html><body style="margin:0"><canvas id="c" width="1800" height="900"></canvas><script src="toon2.js"></script><script src="cast.js"></script><script>
+const ctx=document.getElementById('c').getContext('2d');ctx.fillStyle='#ffe9b8';ctx.fillRect(0,0,1800,900);
+const L=[['gk','shock','shock'],['tourist','hips','grin'],['auntie','sky','happy'],['kid','kick','grin'],['presenter','hips','grin'],['fanCry','cry','cry'],['fanAfro','siu','grin'],['grandpa','sad','sad']];
+L.forEach(([k,p,e],i)=>toon2.draw(ctx,CAST[k],p,e,120+i*220,880,k==='kid'?0.5:0.62));
+</script></body></html>

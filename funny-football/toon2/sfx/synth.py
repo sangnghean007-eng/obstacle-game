@@ -164,8 +164,8 @@ class Mix:
         wet = np.stack([fftconvolve(self.wet[:, c], ir[:, c])[:self.N] for c in (0, 1)], 1); wet = lp(wet.T, 5000).T
         wet *= .25 / (np.abs(wet).max() + 1e-9) * max(np.abs(bed).max(), 1e-9)
         out = bed + wet
-        out = out / (np.abs(out).max() + 1e-9) * .55 + v / (np.abs(v).max() + 1e-9) * .5
-        out = np.tanh(out * 1.3) / np.tanh(1.3)  # soft clip / glue
+        out = out / (np.abs(out).max() + 1e-9); out = np.tanh(out * 1.3) / np.tanh(1.3) * .5   # glue the bed only
+        out = out + v / (np.abs(v).max() + 1e-9) * .55   # voices stay clean on top
         out /= np.abs(out).max() * 1.02
         with wave.open(path, 'wb') as w:
             w.setnchannels(2); w.setsampwidth(2); w.setframerate(SR); w.writeframes((out * 32767).astype('<i2').tobytes())

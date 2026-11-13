@@ -90,3 +90,14 @@ Real numbers go in `performance.csv`. Decide with retention data (average watch 
 - **Art:** the rig has two-tone shading, rim light, iris and catchlight eyes, hair and beard texture, folds and trims.
   - Use the expressions `sleep`, `angry` and `smug` for acting, not only `grin`.
 - **Story:** a rule-of-three escalation, plus one absurd twist and a character contrast (here: lazy vs restless).
+
+## Clarity and variety standard (from the Ep3 v4 feedback: "too noisy, hard to follow, monotonous")
+- **Voices:** 5 short lines at most per video, using SVOX Pico (`toon2/sfx/make_pico.py`), clean with no reverb or distortion. No gibberish.
+- **Story:**
+  - Tell it in chronological chapters, each with a dated tag (e.g. AUG 2026 → THE PLAN → 2026 SEASON → NOV 2026 → MEANWHILE).
+  - Each chapter has one action and one line of text.
+  - The hook shows the ending as a question, then rewinds.
+- **Cast:** every video uses supporting characters from `toon2/cast.js`: fans, kids, goalkeeper, presenter, tourists, grandpa, animals.
+  - Vary body types, skin tones, hair, hats and outfits.
+  - Repeated actions get different reactions (dive, face-plant, white flag).
+- **Locations:** at least 3 different settings per video (stadium, beach, gym, ...), each with its own palette and music.
