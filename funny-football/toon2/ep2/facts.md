@@ -11,3 +11,7 @@
 | 7 | Juve then posted "We kept our word: we brought it!" | VERIFIED (PARAPHRASED) | [All Football](https://www.allfootballapp.com/articles/2505588-juventus-troll-barcelona-over-goat-tweet), [Sporf](https://www.sporf.com/juventus-fire-back-at-barcelona-over-messi-goat-tweet/) |
 | 8 | "6 weeks later" (Oct 28 to Dec 8 = 41 days) | CORRECTED: the viral lead said "one week later" | dates above |
 | 9 | "Ronaldo scored a brace" | CORRECTED: specified as 2 penalties | #6 |
+
+## Independent fact check (2026-11-13)
+All 9 claims PASS (sources: theScore, Bleacher Report, Goal, Yahoo, SI, Sports Mole, GiveMeSport).
+One on-screen issue fixed: the 0-2 frame implied Ronaldo scored McKennie's goal. Each goal is now captioned ("13' PEN · RONALDO", "20' · McKENNIE", "52' PEN · RONALDO"), penalty kicks are tagged "PENALTY" with a penalty spot, and the summary reads "Ronaldo: 2 penalties (13', 52')".
