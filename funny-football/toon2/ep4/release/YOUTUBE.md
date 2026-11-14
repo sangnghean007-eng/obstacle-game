@@ -39,7 +39,7 @@ adama traore, traore strength, strongest footballer, cucurella, traore vs cucure
 
 **Pinned comment:**
 ```
-Attempt 4 should be ___ 👇 (best idea goes in the next episode 😤)
+Attempt 6 should be ___ 👇 (best idea goes in the next episode 😤)
 ```
 
 **Retention hooks:** the 5-heart HUD ("will he do it on the last heart?") and the follow end card with a next-episode teaser. Watch "Viewed vs swiped" in Studio after 24 h.

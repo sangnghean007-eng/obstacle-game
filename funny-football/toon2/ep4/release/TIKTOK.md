@@ -27,4 +27,4 @@ What should Cucurella try next? 🚜➡️❓ Best comment = next episode
 - "He was sipping juice the whole time 😭"
 - "The corner flag lives at his house now 🏠"
 
-**Series hook:** collect the best "Attempt 4" comments, then make a follow-up and reply to that comment with the video.
+**Series hook:** collect the best "Attempt 6" comments, then make a follow-up and reply to that comment with the video.
