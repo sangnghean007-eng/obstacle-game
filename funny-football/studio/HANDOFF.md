@@ -1,6 +1,6 @@
 # HANDOFF: read this first in any new or continued session
 
-This channel makes funny satirical football cartoon Shorts (YouTube channel **Soccer 365 – @Soccer365days**, plus TikTok, Instagram, Facebook).
+This channel makes funny satirical football cartoon Shorts (YouTube channel **Soccer 365 – @Soccer365days**, plus TikTok, Instagram, Facebook and X).
 
 ## Who you work for and how
 - Talk to the user **in Vietnamese**. Every deliverable (video text, titles, posts) is in **English**.
@@ -19,7 +19,7 @@ This channel makes funny satirical football cartoon Shorts (YouTube channel **So
   - `toon2/chibi.js` + `toon2/chibi_cast.js`: the **current style**, big-head chibi.
   - `toon2/toon2.js` + `cast.js`: the older style.
 - Sound: `toon2/sfx/synth.py` (music and foley kit). Voices are not used by default. If one is ever needed, use `make_pico.py`.
-- **Approved template:** `toon2/ep4/scene.html` (Ep4 v4 "CAN'T MOVE HIM") + `toon2/ep4/audio.py` + `toon2/ep4/release/*` (posts).
+- **Approved template:** `toon2/ep4/scene.html` (Ep4 v4 "CAN'T MOVE HIM") + `toon2/ep4/audio.py` + `toon2/ep4/release/*` (posts: YOUTUBE, TIKTOK, INSTAGRAM, FACEBOOK, X).
 - Render: `node toon2/epN/render.js <outdir> 30` → ffmpeg H.264 1080x1920 30 fps + `python3 audio.py out.wav`.
 
 ## Episodes so far

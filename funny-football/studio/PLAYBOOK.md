@@ -172,3 +172,19 @@ This section **replaces** the "Approved template (Ep4 v4)" as a rule. That templ
   - a courtroom scene
   - a game level (only when it truly fits)
 - Keep these from the house style: chibi rig, a strong 0–2 s hook, names on shirts, ≤35 words, no TTS, comment bait, and the thanks + follow end card.
+
+## X (Twitter) is the 5th platform (user instruction, Nov 14 2026)
+Every release ships `X.md` next to the other 4 dossiers.
+
+**Main post:**
+- Native video upload, never a link.
+- A hook line, then 3–5 short lines that tell the story, then one question.
+- 280 characters or fewer, with at most 2 hashtags.
+
+**Thread under the main post:**
+- **Reply 1:** the real facts and date, plus the parody label.
+- **Reply 2:** an engagement question or the easter egg (for example, the hidden 🐐).
+
+**Rules:**
+- Do not @ players or clubs.
+- Quote-post the video after 24 h with a fresh angle.
