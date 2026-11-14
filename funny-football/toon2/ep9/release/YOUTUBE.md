@@ -42,7 +42,9 @@ ronaldo, cristiano ronaldo, portugal, denmark, portugal vs denmark, portugal 1-4
 | Field | Value |
 |---|---|
 | Playlist | Soccer 365 Cartoons |
-| Category | Comedy |
+| Category | Comedy (Hài kịch), not Sports |
+| License | Standard YouTube License (Giấy phép chuẩn của YouTube) |
+| Allow embedding | On (Cho phép nhúng) |
 | Audience | Not made for kids |
 | AI use / altered content | No |
 | Subtitles | None (no dialogue) |

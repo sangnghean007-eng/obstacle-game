@@ -209,3 +209,9 @@ This section replaces the multi-agent rooms above where they conflict.
 - **Each goal gets its own shot design.** Never repeat the same wide shot. Options: a split-screen stare-down, slow motion with a freeze-frame impact, a whip pan, a tracking shot, a view from inside the net, a tilt up to the sky for crosses and corners, a low-angle leap.
 - **Each goal gets a big celebration beat** (SIUUU-style or signature), escalating across the video: solo → bigger with a shockwave → team chorus → giant whole-team. Label celebrations that did not happen as parody in the facts sheet.
 - **Names under the shirt numbers** for every real player, auto-fitted to the shirt (`nm()` helper in `ep9/scene.html`). Show numbers only when a lineup source confirms them; otherwise show the name only.
+
+## YouTube upload settings (standard for every episode, Nov 14 2026)
+- **Category:** Comedy (Hài kịch). The channel is cartoon parody, so not Sports. Keep it the same on every video for consistency.
+- **License:** Standard YouTube License (Giấy phép chuẩn). Never Creative Commons, which would let others re-upload the videos.
+- **Allow embedding:** on.
+- **Audience:** not made for kids. **AI / altered content:** No.
