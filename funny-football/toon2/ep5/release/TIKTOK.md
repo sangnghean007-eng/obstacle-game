@@ -2,7 +2,7 @@
 
 **Caption:**
 ```
-Ronaldo: SPY MODE 🕵️ He finally read the secret plan… and STILL lost 2-1 😭 Best attempt: 1–5? + 3 hidden 🐐 👀 (real story, cartoon parody)
+Ronaldo: SPY MODE 🕵️ He finally read the secret plan… and STILL lost 2-1 😭 Would YOU have read it? 👀 + 3 hidden 🐐 (real story, cartoon parody)
 
 #ronaldo #cr7 #alnassr #alittihad #saudiproleague #siuuu #football #footballtiktok #animation
 ```

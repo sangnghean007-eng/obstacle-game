@@ -19,3 +19,8 @@ Applied fixes:
 - a big "7?!" bubble
 - the club post appears earlier and bigger
 - a bouncing end card
+
+## Story version (v2, Nov 14 2026)
+- On-screen goal minutes 4' and 22' (Al-Ittihad) and 36' (Al-Nassr) come from the match reports listed above (The National, Ummid, 101 Great Goals).
+- The exchange "Are you going to play like this?" / "We'll play like this" is shown as "(as Danilo told it later)". Source: World Soccer Talk, Africa Soccer.
+- The parody parts are the paper plane, hiding behind the ref, the rain cloud and the faint.

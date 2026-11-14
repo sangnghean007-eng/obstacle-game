@@ -8,11 +8,11 @@ Backup titles: `Ronaldo: SPY MODE 🕵️ (it didn't help)` · `Ronaldo Read The
 
 **Description:**
 ```
-Mission: read the secret plan 📄 Tiptoe ❌ Disguise ❌ Binoculars ❌ Giraffe neck ❌ Fishing rod ✅ SIUUU!… then FULL TIME 😭
+Ronaldo went full spy mode 🕵️ He sneaked past the ref, read the opponent's secret note… and STILL lost 2-1 😭
 Real story: on Sept 5, 2026 Ronaldo read Danilo Pereira's tactical note during Al-Ittihad 2-1 Al-Nassr. Danilo confirmed it ("only about tactics"), and Al-Ittihad posted: "Cheating and still losing!"
 
-Which attempt was the best: 1, 2, 3, 4 or 5? 👇
-There are 3 hidden 🐐 in the video. Can you find them? 👀
+Would YOU have read it? 👀 Comment below 👇
+There are 3 hidden 🐐 in the video. Can you find them?
 Parody cartoon with original characters, drawings and synthesized audio. Not affiliated with any club or league.
 
 #Ronaldo #CR7 #AlNassr #AlIttihad #SaudiProLeague
@@ -40,5 +40,5 @@ ronaldo, cristiano ronaldo, cr7, ronaldo spy, ronaldo reads tactics, danilo pere
 
 **Pinned comment:**
 ```
-Found all 3 hidden 🐐? Drop the timestamps 👀 (and your best attempt: 1–5)
+"We'll play like this" 😂 Would you have read the note? 👀 And did you find all 3 hidden 🐐? Drop the timestamps!
 ```

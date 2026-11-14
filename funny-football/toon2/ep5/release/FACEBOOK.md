@@ -3,10 +3,10 @@
 **Caption:**
 ```
 Ronaldo read the opponent's secret plan… and STILL lost 😭📄
-Tiptoe ❌ Disguise ❌ Binoculars ❌ Giraffe neck ❌ Fishing rod ✅ SIUUU!… FULL TIME 2-1 😂
+He sneaked past the ref, asked "Are you going to play like this?"… "We'll play like this." 😏 FULL TIME 2-1 😂
 
 Real story: Sept 5, 2026, Al-Ittihad 2-1 Al-Nassr. Al-Ittihad posted "Cheating and still losing!"
-Which attempt made you laugh most: the disguise or the giraffe neck? 😂 And did you spot the hidden goats? 🐐 (parody cartoon)
+Would you have read the note too? 👀 And did you spot the hidden goats? 🐐 (parody cartoon)
 
 #Ronaldo #CR7 #AlNassr #AlIttihad #SaudiProLeague
 ```
@@ -18,7 +18,7 @@ Which attempt made you laugh most: the disguise or the giraffe neck? 😂 And di
 
 **First comment** (from the Page):
 ```
-The 7 on his shirt ruined the whole disguise 😂👀 Did anyone else spot the goat in the stands? 🐐
+"We'll play like this" is the coldest reply ever 😂 Did anyone else spot the goat in the stands? 🐐
 ```
 
 After 24 h, log the "3-second viewers" share and the average watch time in `../../../studio/performance.csv`.

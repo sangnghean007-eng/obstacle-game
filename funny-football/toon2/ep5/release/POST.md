@@ -10,16 +10,20 @@
 
 **Tone:** playful. Ronaldo and Danilo are Portugal teammates, so the video ends with a friendly pat. Never call it real cheating in our own words. Quote the club post as the club's.
 
+**Format (story-first, no game template):** a spy mini-movie that follows the real match story.
+
 | Time | Beat |
 |---|---|
-| 0 s | Hook: caught peeking, "?!" |
-| 1.8 s | MISSION: READ THE SECRET PLAN 📄 + real match line + 5 hearts |
-| 3.8 s | ① Tiptoe → paper folded into his sock |
-| 6.2 s | ② Waiter disguise → "7?! 👀" |
-| 8.6 s | ③ Binoculars → "NOT THE PLAN 😜" |
-| 11 s | ④ Giraffe neck → BOING |
-| 13.4 s | ⑤ Fishing rod → SIUUU! MISSION COMPLETE ✅ |
-| 16.2 s | FULL TIME 2-1, GAME OVER, "Cheating and still losing!" |
-| 19 s | Thanks for watching ❤️ + FOLLOW + "Best attempt? Comment 1–5 👇" + "Spot the hidden 🐐? 👀" |
+| 0 s | Cold open: caught peeking, "Ronaldo… what are you doing? 👀" |
+| 2 s | Saudi Clásico, Sept 5, 2026: Al-Ittihad scores at 4' and 22', Al-Nassr pull one back at 36' |
+| 5.2 s | A note from the bench (paper plane), then an extreme zoom on Ronaldo's eyes |
+| 8 s | He sneaks past the ref, tiptoes and reads over the shoulder: "TOP SECRET 👀" |
+| 12.8 s | The real exchange (as Danilo told it): "Are you going to play like this?" / "We'll play like this. 😏👍", then Ronaldo's shocked face |
+| 16.4 s | FULL TIME 2-1, Al-Nassr's first defeat of the season, a rain cloud |
+| 19.4 s | Meanwhile, online: "Cheating and still losing!" and Danilo's "only about tactics", then Ronaldo faints |
+| 22.4 s | Thanks for watching ❤️ + FOLLOW + "Would YOU have read it? 👀" + "Spot the 3 hidden 🐐" |
 
-**Comment bait:** 3 hidden 🐐 are in the stands, at about 7 s (disguise), 12 s (giraffe neck) and 17 s (full time). The end card asks "Best attempt? 1–5" and "Spot the hidden 🐐?". Reply to every comment in the first hour, and pin the first correct goat hunter.
+**Comment bait:**
+- 3 hidden 🐐: about 4 s (stands, left), about 10 s (stands, right) and about 18 s (full time).
+- The end card asks "Would YOU have read it?".
+- Reply to every comment in the first hour.
