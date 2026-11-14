@@ -129,3 +129,23 @@ For every new video, run this pipeline automatically. Do not stop to ask the use
   - Use spoken lines only when the joke is the line itself.
 - **Facts:** keep them in the caption and in a small footer ("Inspired by … · parody"), not in scenes.
 - **CTA:** a small FOLLOW button overlay in the second-to-last beat, instead of a separate end card, so the loop survives.
+
+## Approved template (user approved Ep4 v4 on Nov 14 2026: "keep it up like this")
+Use Ep4 v4 (`toon2/ep4/scene.html`) as the starting template for every new episode:
+
+| Time | Beat |
+|---|---|
+| 0–2 s | The impact hook |
+| 2 s | MISSION card plus a "Real match / real fact" line |
+| 3–16 s | A 5-heart HUD and 5 different attempts. Each attempt has its own idea and its own reaction from the "boss". |
+| ~16 s | Topper, then GAME OVER |
+| ~18 s | Twist |
+| last 2.5 s | "Thanks for watching ❤️" + FOLLOW + next-episode teaser |
+
+The full v3 house style also applies:
+- names under the shirt numbers
+- chibi rig
+- no TTS
+- about 35 on-screen words, with one main line at a time
+
+Talk to the user in Vietnamese; all video and post deliverables stay in English.
