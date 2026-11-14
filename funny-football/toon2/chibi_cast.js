@@ -10,5 +10,11 @@ window.CH = {
   mate2: { skin: '#5c3a24', shade: '#432818', shoulderW: 74, waistW: 58, torsoH: 135, leg: 110, legW: 34, arm: 135, armW: 30, num: '8', numSize: 52, blinkSeed: 0.9, head: { R: 100, hair: 'bald', hairCol: '#111', iris: '#3a2416' }, kit: null },
   mate3: { skin: '#f1c7a5', shade: '#d9a583', shoulderW: 74, waistW: 58, torsoH: 135, leg: 110, legW: 34, arm: 135, armW: 30, num: '11', numSize: 48, blinkSeed: 3.1, head: { R: 100, hair: 'spiky', hairCol: '#e0a030', iris: '#3f6b9a' }, kit: null },
   mate4: { skin: '#8d5a3b', shade: '#6e432a', shoulderW: 74, waistW: 58, torsoH: 135, leg: 110, legW: 34, arm: 135, armW: 30, num: '20', numSize: 48, blinkSeed: 1.2, head: { R: 100, hair: 'short', hairCol: '#111', iris: '#3a2416' }, kit: null },
+  ronaldo: { skin: '#c98a5e', shade: '#a96d45', shoulderW: 118, waistW: 68, torsoH: 160, leg: 120, legW: 44, arm: 170, armW: 44, pecs: true, num: '7', numSize: 66, name: 'RONALDO', nameSize: 20, blinkSeed: 0.6,
+    head: { R: 112, hair: 'quiff', hairCol: '#1a120c', jaw: 0.55, iris: '#4a2c16', nose: 0.4, browW: 0.13 },
+    kit: { shirt: '#ffd400', sleeve: '#ffd400', cuff: '#1e3a8a', collar: '#1e3a8a', shorts: '#1e3a8a', sock: '#ffd400', sockShade: '#d4b000', sockBand: '#1e3a8a', boot: '#ffffff', num: '#1e3a8a' } },
+  danilo: { skin: '#e2b48e', shade: '#c4906a', shoulderW: 122, waistW: 74, torsoH: 172, leg: 126, legW: 46, arm: 176, armW: 46, num: '', name: 'DANILO', nameSize: 30, blinkSeed: 2.1,
+    head: { R: 110, hair: 'bald', hairCol: '#2a1a10', beard: true, beardCol: '#2a1a10', jaw: 0.5, iris: '#3a2416', nose: 0.5, browW: 0.15 },
+    kit: { shirt: '#ffd60a', stripes: '#111111', sleeve: '#111111', cuff: '#ffd60a', collar: '#111111', shorts: '#111111', sock: '#111111', sockShade: '#000000', sockBand: '#ffd60a', boot: '#111111', num: '#ffffff' } },
 };
 for (const k of ['mate1', 'mate2', 'mate3', 'mate4']) window.CH[k].kit = window.CH.cucu.kit;

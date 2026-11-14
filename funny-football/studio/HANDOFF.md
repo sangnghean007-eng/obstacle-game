@@ -38,6 +38,6 @@ apt-get install -y -q libttspico-utils espeak-ng mbrola mbrola-us2 mbrola-us3
 Playwright, Chromium, ffmpeg, numpy and scipy are already available.
 
 ## Next
-- Ep5: choose a recent, verified, funny real football moment.
+- Ep5 "SECRET PLAN" (Ronaldo reads Danilo's tactics) is done (`toon2/ep5/`). Next: Ep6.
 - Use the Ep4 v4 template: hook, MISSION card, 5 hearts and 5 attempts, GAME OVER, twist, thanks + FOLLOW.
 - Ask the user for platform stats after each release, and log them in `performance.csv`.
