@@ -2,7 +2,7 @@
 
 **Caption:**
 ```
-Ronaldo: SPY MODE 🕵️ He finally read the secret plan… and STILL lost 2-1 😭 Real story, cartoon parody
+Ronaldo: SPY MODE 🕵️ He finally read the secret plan… and STILL lost 2-1 😭 Best attempt: 1–5? + 3 hidden 🐐 👀 (real story, cartoon parody)
 
 #ronaldo #cr7 #alnassr #alittihad #saudiproleague #siuuu #football #footballtiktok #animation
 ```
@@ -15,7 +15,7 @@ Ronaldo: SPY MODE 🕵️ He finally read the secret plan… and STILL lost 2-1 
 
 **Pinned comment:**
 ```
-The paper was "only about tactics" according to Danilo 😂 What should CR7 try next?
+3 goats are hiding in this video 🐐👀 First to find all 3 gets pinned 📌
 ```
 
 **Reply ideas:**

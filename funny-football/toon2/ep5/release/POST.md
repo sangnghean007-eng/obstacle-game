@@ -20,4 +20,6 @@
 | 11 s | ④ Giraffe neck → BOING |
 | 13.4 s | ⑤ Fishing rod → SIUUU! MISSION COMPLETE ✅ |
 | 16.2 s | FULL TIME 2-1, GAME OVER, "Cheating and still losing!" |
-| 19 s | Thanks for watching ❤️ + FOLLOW + "Next mission: you choose 👇" |
+| 19 s | Thanks for watching ❤️ + FOLLOW + "Best attempt? Comment 1–5 👇" + "Spot the hidden 🐐? 👀" |
+
+**Comment bait:** 3 hidden 🐐 are in the stands, at about 7 s (disguise), 12 s (giraffe neck) and 17 s (full time). The end card asks "Best attempt? 1–5" and "Spot the hidden 🐐?". Reply to every comment in the first hour, and pin the first correct goat hunter.

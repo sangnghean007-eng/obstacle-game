@@ -6,7 +6,7 @@ Ronaldo read the opponent's secret plan… and STILL lost 😭📄
 Tiptoe ❌ Disguise ❌ Binoculars ❌ Giraffe neck ❌ Fishing rod ✅ SIUUU!… FULL TIME 2-1 😂
 
 Real story: Sept 5, 2026, Al-Ittihad 2-1 Al-Nassr. Al-Ittihad posted "Cheating and still losing!"
-What should Ronaldo try next? Comment below 👇 (parody cartoon)
+Which attempt made you laugh most: the disguise or the giraffe neck? 😂 And did you spot the hidden goats? 🐐 (parody cartoon)
 
 #Ronaldo #CR7 #AlNassr #AlIttihad #SaudiProLeague
 ```
@@ -18,7 +18,7 @@ What should Ronaldo try next? Comment below 👇 (parody cartoon)
 
 **First comment** (from the Page):
 ```
-The 7 on his shirt ruined the whole disguise 😂👀
+The 7 on his shirt ruined the whole disguise 😂👀 Did anyone else spot the goat in the stands? 🐐
 ```
 
 After 24 h, log the "3-second viewers" share and the average watch time in `../../../studio/performance.csv`.

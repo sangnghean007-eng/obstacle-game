@@ -149,3 +149,14 @@ The full v3 house style also applies:
 - about 35 on-screen words, with one main line at a time
 
 Talk to the user in Vietnamese; all video and post deliverables stay in English.
+
+## Comment bait standard (user feedback Nov 14 2026: "nobody comments")
+Every video carries at least 2 of these 4 hooks.
+1. **Numbered vote on the end card.** For example, "Best attempt? Comment 1–5 👇" with icons. A number is the easiest comment to leave.
+2. **Hidden easter egg.** For example, 3 hidden 🐐 in the background. The end card asks "Spot the hidden 🐐? 👀", which also drives rewatches.
+3. **Pick a side.** For example, "Team 10 or Team 7?" or "Who wins: X or Y?".
+4. **Viewers choose the next episode.** For example, "What should attempt 6 be?". Then actually use a viewer's idea and credit them in the pinned comment.
+
+On YouTube, TikTok and Instagram, the caption's first line is the hook plus a question. The pinned comment asks a different question from the caption. Reply to every comment in the first hour, since replies count as comments too.
+
+**Facebook:** never write "comment YES / tag a friend if…". Meta demotes engagement bait. Ask genuine questions instead.

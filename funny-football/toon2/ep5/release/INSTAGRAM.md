@@ -13,7 +13,8 @@ Mission: read the secret plan
 …FULL TIME: Al-Ittihad 2-1 Al-Nassr 😭
 
 Real story (Sept 5, 2026): Ronaldo read Danilo's tactical note, and Al-Ittihad posted "Cheating and still losing!"
-What's his next mission? 👇
+Best attempt? Comment 1–5 👇
+And find the 3 hidden 🐐 👀
 Cartoon parody · original characters & audio
 .
 #ronaldo #cr7 #alnassr #alittihad #saudiproleague #siuuu #football #footballmemes #animation #parody
