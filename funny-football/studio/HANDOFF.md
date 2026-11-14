@@ -1,6 +1,6 @@
 # HANDOFF: read this first in any new or continued session
 
-This channel makes funny satirical football cartoon Shorts (YouTube @pipipfootball, TikTok, Instagram, Facebook).
+This channel makes funny satirical football cartoon Shorts (YouTube channel **Soccer 365 – @Soccer365days**, plus TikTok, Instagram, Facebook).
 
 ## Who you work for and how
 - Talk to the user **in Vietnamese**. Every deliverable (video text, titles, posts) is in **English**.
