@@ -160,3 +160,15 @@ Every video carries at least 2 of these 4 hooks.
 On YouTube, TikTok and Instagram, the caption's first line is the hook plus a question. The pinned comment asks a different question from the caption. Reply to every comment in the first hour, since replies count as comments too.
 
 **Facebook:** never write "comment YES / tag a friend if…". Meta demotes engagement bait. Ask genuine questions instead.
+
+## STORY FIRST, no fixed format (user feedback Nov 14 2026: "make it gripping by following the story; don't fix the 5-hearts format")
+This section **replaces** the "Approved template (Ep4 v4)" as a rule. That template is now one option among many.
+- Every episode's structure follows the **real story's own arc**: setup, then the incident, then escalation, then the real outcome, then the real aftermath or twist (quotes, club posts). Use the real moments and real lines (as speech bubbles), exaggerated visually.
+- Pick the format that fits the story. Never use the same format two episodes in a row. Options:
+  - a mini-movie (spy, heist, horror or romance parody)
+  - a nature documentary
+  - sports-commentary chaos
+  - a "how it started / how it's going" piece
+  - a courtroom scene
+  - a game level (only when it truly fits)
+- Keep these from the house style: chibi rig, a strong 0–2 s hook, names on shirts, ≤35 words, no TTS, comment bait, and the thanks + follow end card.
