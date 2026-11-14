@@ -16,5 +16,14 @@ window.CH = {
   danilo: { skin: '#e2b48e', shade: '#c4906a', shoulderW: 122, waistW: 74, torsoH: 172, leg: 126, legW: 46, arm: 176, armW: 46, num: '', name: 'DANILO', nameSize: 30, blinkSeed: 2.1,
     head: { R: 110, hair: 'bald', hairCol: '#2a1a10', beard: true, beardCol: '#2a1a10', jaw: 0.5, iris: '#3a2416', nose: 0.5, browW: 0.15 },
     kit: { shirt: '#ffd60a', stripes: '#111111', sleeve: '#111111', cuff: '#ffd60a', collar: '#111111', shorts: '#111111', sock: '#111111', sockShade: '#000000', sockBand: '#ffd60a', boot: '#111111', num: '#ffffff' } },
+  casemiro: { skin: '#a8724b', shade: '#8a5a38', shoulderW: 116, waistW: 70, torsoH: 160, leg: 118, legW: 44, arm: 168, armW: 44, num: '', numSize: 64, name: '', nameSize: 34, blinkSeed: 0.8,
+    head: { R: 110, hair: 'short', hairCol: '#1a120c', beard: true, beardCol: '#1f1510', jaw: 0.6, iris: '#3a2416', nose: 0.5, browW: 0.15 },
+    kit: { shirt: '#f5a3c7', sleeve: '#f5a3c7', cuff: '#111', collar: '#111', shorts: '#111111', sock: '#f5a3c7', sockShade: '#d985a3', sockBand: '#111', boot: '#ffffff', num: '#111' } },
+  messi: { skin: '#e6b38d', shade: '#c8916b', shoulderW: 92, waistW: 60, torsoH: 140, leg: 108, legW: 36, arm: 140, armW: 32, num: '10', numSize: 56, name: 'MESSI', nameSize: 18, blinkSeed: 2.7,
+    head: { R: 104, hair: 'short', hairCol: '#3b2416', beard: true, beardCol: '#5b3a24', jaw: 0.3, iris: '#3a2416', nose: 0.4 },
+    kit: { shirt: '#f5a3c7', sleeve: '#f5a3c7', cuff: '#111', collar: '#111', shorts: '#111111', sock: '#f5a3c7', sockShade: '#d985a3', sockBand: '#111', boot: '#ffd21f', num: '#111' } },
+  galaxy: { skin: '#f1c7a5', shade: '#d9a583', shoulderW: 100, waistW: 66, torsoH: 150, leg: 116, legW: 40, arm: 160, armW: 38, num: '', name: '', blinkSeed: 1.4,
+    head: { R: 104, hair: 'spiky', hairCol: '#c58b3a', iris: '#3f6b9a', nose: 0.5 },
+    kit: { shirt: '#ffffff', sleeve: '#0b2c5a', cuff: '#d4a017', collar: '#d4a017', shorts: '#0b2c5a', sock: '#ffffff', sockShade: '#ddd', sockBand: '#d4a017', boot: '#0b2c5a', num: '#0b2c5a' } },
 };
 for (const k of ['mate1', 'mate2', 'mate3', 'mate4']) window.CH[k].kit = window.CH.cucu.kit;

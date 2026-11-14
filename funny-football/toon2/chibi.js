@@ -118,6 +118,9 @@
     const T = torsoPath(C), K = C.kit, sw = C.shoulderW, sy = C.shoulderY, hy = C.hipY;
     blob(T, K.shirt);
     if (K.stripes) shade(T, K.stripes, () => { for (let x = -sw; x < sw; x += 48) ctx.rect(x, sy - 20, 22, hy - sy + 40); });
+    if (K.hstripe) shade(T, K.hstripe, () => { ctx.rect(-sw - 20, sy + (hy - sy) * 0.42, sw * 2 + 40, (hy - sy) * 0.22); });
+    if (K.hstripe2) shade(T, K.hstripe2, () => { ctx.rect(-sw - 20, sy + (hy - sy) * 0.5, sw * 2 + 40, (hy - sy) * 0.07); });
+    if (K.pattern === 'hawaii') shade(T, K.flower || '#ffd60a', () => { for (let i = 0; i < 14; i++) { const fx = -sw + ((i * 71) % (sw * 2)), fy = sy + ((i * 53) % (hy - sy)); for (let p = 0; p < 5; p++) { ctx.moveTo(fx + Math.cos(p * 1.256) * 12 + 9, fy + Math.sin(p * 1.256) * 12); ctx.arc(fx + Math.cos(p * 1.256) * 12, fy + Math.sin(p * 1.256) * 12, 9, 0, Math.PI * 2); } } });
     shade(T, 'rgba(0,0,0,.16)', () => { ctx.moveTo(sw * 0.35, sy - 20); ctx.quadraticCurveTo(sw * 0.15, (sy + hy) / 2, sw * 0.3, hy + 20); ctx.lineTo(sw + 20, hy + 20); ctx.lineTo(sw + 20, sy - 20); ctx.closePath(); });
     shade(T, 'rgba(255,255,255,.16)', () => ctx.ellipse(-sw * 0.45, sy + (hy - sy) * 0.25, sw * 0.3, (hy - sy) * 0.2, -0.3, 0, Math.PI * 2));
     if (C.pecs) { stroke([[-sw * 0.6, sy + (hy - sy) * 0.38], [-sw * 0.1, sy + (hy - sy) * 0.45], [sw * 0.05, sy + (hy - sy) * 0.3]], 4, 'rgba(0,0,0,.25)'); stroke([[sw * 0.15, sy + (hy - sy) * 0.42], [sw * 0.55, sy + (hy - sy) * 0.36]], 4, 'rgba(0,0,0,.2)'); }

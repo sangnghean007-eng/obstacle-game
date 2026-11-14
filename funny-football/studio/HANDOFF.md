@@ -38,7 +38,7 @@ apt-get install -y -q libttspico-utils espeak-ng mbrola mbrola-us2 mbrola-us3
 Playwright, Chromium, ffmpeg, numpy and scipy are already available.
 
 ## Next
-- Ep5 "SECRET PLAN" (Ronaldo reads Danilo's tactics) is done (`toon2/ep5/`). Next: Ep6.
+- Ep5 "SECRET PLAN" (story-first spy mini-movie) and Ep6 "WORST DISGUISE IN MIAMI" (Guess the Player #1, Casemiro) are done. Next: Guess the Player #2 or a new story format.
 - Use the Ep4 v4 template: hook, MISSION card, 5 hearts and 5 attempts, GAME OVER, twist, thanks + FOLLOW.
 - Ask the user for platform stats after each release, and log them in `performance.csv`.
 
