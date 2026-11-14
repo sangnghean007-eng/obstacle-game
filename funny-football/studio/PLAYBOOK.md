@@ -215,3 +215,6 @@ This section replaces the multi-agent rooms above where they conflict.
 - **License:** Standard YouTube License (Giấy phép chuẩn). Never Creative Commons, which would let others re-upload the videos.
 - **Allow embedding:** on.
 - **Audience:** not made for kids. **AI / altered content:** No.
+
+## Social copy (user instruction, Nov 14 2026)
+Before writing the 5 platform dossiers, read `studio/SOCIAL_COPY.md` and run its pre-ship checklist. In chat, give the user the ready-to-paste text for all 5 platforms, including the YouTube **tags**.

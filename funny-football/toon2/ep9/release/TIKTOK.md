@@ -2,9 +2,9 @@
 
 **Caption:**
 ```
-No Ronaldo, no problem?! 😬 How it started: 4-2. How it's going: 1-4 on his farewell night… and Denmark SIUUU'd every goal 💀 Does Portugal need him back? YES 7 or NO 👇
+No Ronaldo, no problem?! 😬 Portugal lost 1-4 to Denmark. How it started: 4-2. How it's going: 1-4 on his farewell night… and Denmark SIUUU'd every goal 💀 Does Portugal need him back? YES 7 or NO 👇
 
-#ronaldo #portugal #siuuu #nationsleague #howitstarted #football #footballtiktok #animation
+#ronaldo #portugal #siuuu #nationsleague #footballtiktok
 ```
 
 **Settings:**

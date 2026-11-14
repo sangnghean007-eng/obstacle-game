@@ -2,7 +2,7 @@
 
 **Caption:**
 ```
-No Ronaldo, no problem?! 😬 YES 7 or NO, does Portugal need him back? 👇
+Ronaldo gone, Portugal lose 1-4 😬 Do they need him back? YES 7 or NO 👇
 
 📈 Oct 1: Denmark 2-4 Portugal, without Ronaldo
 📉 Nov 14: Portugal 1-4 Denmark, in Braga, on his farewell night
@@ -12,7 +12,7 @@ Spot the 3 hidden 🐐 👀
 
 Real results · celebrations are cartoon parody, original characters.
 
-#ronaldo #cr7 #portugal #siuuu #nationsleague #howitstarted #footballmemes #animation
+#ronaldo #portugal #siuuu #nationsleague #footballmemes
 ```
 
 **Settings:**

@@ -29,7 +29,7 @@ Spot the 3 hidden 🐐 👀
 
 Real results (Oct 1 & Nov 14, 2026). The SIUUU celebrations and camera tricks are cartoon parody. Original characters, synthesized audio, no club/federation logos. Not affiliated with any player, club, federation or league.
 
-#Ronaldo #Portugal #NationsLeague #SIUUU #Football
+#Ronaldo #Portugal #NationsLeague
 ```
 
 **Tags:**
