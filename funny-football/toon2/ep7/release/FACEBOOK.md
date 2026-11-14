@@ -4,7 +4,7 @@
 ```
 Messi vs Ronaldo went to court 🐐⚖️
 Ballon d'Or 8-5, Champions League 4-5, World Cup 1-0, international goals 125-146…
-The goat judge couldn't decide, so he ate the evidence 😂
+It finished 3–3, so the goat judge ate the evidence 😂
 
 Who do you think is the GOAT, and why? 👇 (stats as of Nov 2026 · cartoon parody)
 

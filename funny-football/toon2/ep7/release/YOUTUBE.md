@@ -16,7 +16,7 @@ Order in the court! 🐐⚖️ Messi and Ronaldo present their evidence:
 🌍 World Cup 1 vs 0
 ⚽ International goals 125 vs 146 (world record)
 🎯 Most assists ever (Messi) | 🏆 League champion in 4 countries (Ronaldo)
-…and then the judge ate the evidence 😂
+It ends 3–3… so the goat judge ate the evidence 😂
 
 YOU are the judge: comment 10 or 7 👇
 

@@ -1,4 +1,4 @@
-# Release index: Episode 7 "GOAT COURT" (Messi vs Ronaldo, 29.5 s, no dialogue)
+# Release index: Episode 7 "GOAT COURT" (Messi vs Ronaldo, 43.8 s, no dialogue)
 
 | File | Purpose |
 |---|---|
@@ -8,17 +8,16 @@
 
 **Format:** a courtroom trial (story-first). Facts are in `../facts.md`, current as of Nov 14, 2026.
 
-**Review room:** round 1 scored funny 7, polish 6, sound-off 8, fairness 8, facts 9. Round 2 scored funny 8, polish 9, sound-off 9, fairness 9, facts 10: "SHIP IT".
+**v3** (user feedback: wins not emphasised enough, characters too gentle, sound bland, too fast):
+- Each exhibit gets 5.6 s: present (the opponent reacts), then a drumroll, then a WIN slam.
+  - The slam has a colour flash, a "X WINS!" banner, the winner card with 👑, confetti, a punch-in and a signature celebration (Messi points to the sky; Ronaldo does the SIUUU spin).
+  - The loser gets a big reaction.
+- A running tally goes 1-0 … 3-3.
+- Audio: trap courtroom beat, airhorn + crowd roar on every win, wah-wah for the loser.
+- Total 43.8 s.
 
-| Time | Beat |
-|---|---|
-| 0 s | BAM! "WHO IS THE GOAT? 🐐"; Messi and Ronaldo run in, sparks fly |
-| 2.4 s | Exhibit 1, Ballon d'Or 8 vs 5: Ronaldo climbs his tower and falls |
-| 6.6 s | Exhibit 2, Champions League 4 vs 5 (+140 UCL goals): cup curls, SIUUU |
-| 10.8 s | Exhibit 3, World Cup 1 vs 0 (2022): light rays, Ronaldo's sunglasses 😎 |
-| 14.8 s | Exhibit 4, international goals 125 vs 146 (world record): ball flood |
-| 19 s | Exhibit 5, assists (#1 all-time); Exhibit 6, league champion in 3 vs 4 countries; OBJECTION! |
-| 22.8 s | The goat eats both evidence folders, *BURP*, "VERDICT: YOU DECIDE 👇" |
-| 26.7 s | Thanks + FOLLOW + "YOU are the judge ⚖️" with 10 / 7 buttons |
+**Review room:**
+- v2 scores: funny 8, polish 9, facts 10.
+- v3: all 4 owner points fixed (sound judged on paper); energy 9. The tally bump bug was fixed before shipping.
 
 **Tone:** neutral. Each player wins exhibits. No age, crying or family jokes. Moderate insults between fan groups in the comments.

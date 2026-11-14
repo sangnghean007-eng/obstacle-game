@@ -2,7 +2,7 @@
 
 **Caption:**
 ```
-Messi vs Ronaldo in GOAT Court 🐐⚖️ The judge ate the evidence… so YOU decide: 10 or 7? 👇
+Messi vs Ronaldo in GOAT Court 🐐⚖️ 6 exhibits, 3–3… the judge ate the evidence. YOU decide: 10 or 7? 👇
 
 #messi #ronaldo #goat #messivsronaldo #football #footballtiktok #animation #cartoon
 ```

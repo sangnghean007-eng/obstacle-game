@@ -9,7 +9,7 @@ UCL: 4-5
 World Cup: 1-0
 Intl goals: 125-146
 
-The judge ate the evidence. YOU decide: 10 or 7? 👇 #Messi #Ronaldo
+It's 3–3. The judge ate the evidence 🐐 YOU decide: 10 or 7? 👇 #Messi #Ronaldo
 ```
 
 **Reply 1** (facts):

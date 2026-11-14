@@ -191,3 +191,9 @@ Every release ships `X.md` next to the other 4 dossiers.
 
 ## Rejected formats log
 - **Ep6 "Worst Disguise in Miami"** (guess-the-player, with shirt layers peeling off as clues) was **rejected** by the user on Nov 14 2026: "not good, drop it". Do not reuse this concept.
+
+## Emphasis standard (Ep7 v3 feedback, Nov 14 2026)
+- **Every "point" or win gets a beat:** drumroll, then a slam banner, a colour flash, confetti, a punch-in, and a running tally on screen.
+- **Characters always act:** the winner does a signature celebration, the loser gives a big reaction, and the idle character keeps moving. No standing still.
+- **Audio hits on every key moment:** airhorn/crash + crowd roar for wins, wah-wah for losses, a driving beat under the whole video.
+- **Pacing:** give each beat 5+ s; a 40–45 s total is fine when every section pays off.

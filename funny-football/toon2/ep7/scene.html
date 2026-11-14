@@ -151,91 +151,143 @@ const GY7 = 1600;
 function duo(u, mPose, mExpr, rPose, rExpr, mo = {}, ro = {}) { shadowAt(MX + (mo.dx || 0), 150); shadowAt(RXX + (ro.dx || 0), 160); MEp(mPose, mExpr, MX + (mo.dx || 0), GY7 - (mo.dy || 0), MS, mo); ROp(rPose, rExpr, RXX + (ro.dx || 0), GY7 - (ro.dy || 0), RSC, ro); }
 function shadowAt(x, w) { ctx.fillStyle = 'rgba(0,0,0,.2)'; ctx.beginPath(); ctx.ellipse(x, GY7 + 6, w, w * 0.15, 0, 0, TAU); ctx.fill(); }
 
-function s_open(u) { // court in session
-  const bang = [0.25, 0.6], hit = bang.some(b => u > b && u < b + 0.12);
-  const C = camK([[0, 540, 900, 1.25, 0], [0.9, 540, 1000, 1.05, 0], [2.4, 540, 1050, 1.0, 0]], u);
-  cam(C, () => { court(u);
-    bench(u, () => goatJudge(540, 640, 1.15, u, { gavel: hit ? 0.5 : -0.6, angry: true }));
+
+// ---------- v3: emphasised wins, livelier acting, slower pacing ----------
+const PINK = '#f5a3c7', YEL = '#ffd400';
+function tally(m, r, who, k) { pop(1, W / 2, 165, () => { rr(-300, -42, 600, 84, 42, 'rgba(10,14,30,.92)', '#fff', 4); txt('MESSI', -200, 3, 30, PINK, null); txt('RONALDO', 185, 3, 30, YEL, null);
+  const bump = k >= 0 && k < 0.34 ? 1 + 0.5 * (1 - k * 3) : 1, bm = who === 'M' ? bump : 1, br = who === 'R' ? bump : 1;
+  ctx.save(); ctx.translate(-60, 3); ctx.scale(bm, bm); txt(String(m), 0, 0, 52, '#fff', null); ctx.restore(); txt('–', 0, 3, 44, '#fff', null); ctx.save(); ctx.translate(60, 3); ctx.scale(br, br); txt(String(r), 0, 0, 52, '#fff', null); ctx.restore(); }); }
+function card(n, title, mv, rv, k, sub, win, wk) { // evidence card with the winner highlighted after the reveal
+  pop(k, W / 2, 390, () => { rr(-470, -150, 940, 300, 30, 'rgba(10,14,30,.94)', '#ffd60a', 7); txt(`EXHIBIT ${n}`, 0, -105, 34, '#ffd60a', null); txt(title, 0, -50, 52, '#fff', null);
+    const pill = (side, col, name, v) => { const isW = win === side && wk > 0, isL = win && win !== side && wk > 0; ctx.save(); ctx.translate(side === 'M' ? -230 : 230, 55); const sc = isW ? 1 + 0.12 * Math.min(1, wk * 4) : 1; ctx.scale(sc, sc); ctx.globalAlpha = isL ? 0.4 : 1;
+      if (isW) { ctx.shadowColor = col; ctx.shadowBlur = 40; } rr(-200, -55, 400, 110, 24, col, DARK, 5); ctx.shadowBlur = 0; txt(name, -100, 0, 32, DARK, null); fitTxt(v, 90, 0, 64, side === 'M' ? 200 : 170); if (isW) txt('👑', 160, -70, 56, '#fff', null); ctx.restore(); ctx.globalAlpha = 1; };
+    pill('M', PINK, 'MESSI', mv); pill('R', YEL, 'RONALDO', rv); });
+  if (sub) pop(eOB((k - 0.3) / 0.3), W / 2, 590, () => { ctx.font = `900 32px ${F}`; const w = Math.min(1040, ctx.measureText(sub).width + 60); rr(-w / 2, -34, w, 68, 34, 'rgba(255,255,255,.92)', DARK, 4); fitTxt(sub, 0, 2, 32, w - 40); });
+}
+function winSlam(who, k) { if (k <= 0) return; const col = who === 'M' ? PINK : YEL, name = who === 'M' ? 'MESSI' : 'RONALDO';
+  if (k < 0.1) { ctx.fillStyle = who === 'M' ? 'rgba(245,163,199,.45)' : 'rgba(255,212,0,.4)'; ctx.fillRect(0, 0, W, H); }
+  const out = k > 1.0 ? clamp((k - 1.0) / 0.25) : 0; pop(eOB(k / 0.12) * (1 - out), W / 2, 700, () => { ctx.rotate(-0.06); if (k < 0.6) { ctx.save(); ctx.rotate(k * 0.8); ctx.globalAlpha = 1 - k / 0.6; for (let i = 0; i < 16; i++) { ctx.rotate(TAU / 16); ctx.fillStyle = i % 2 ? col : 'rgba(255,255,255,.85)'; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(340, -30); ctx.lineTo(340, 30); ctx.fill(); } ctx.restore(); ctx.globalAlpha = 1; }
+    rr(-400, -80, 800, 160, 40, col, DARK, 9); txt(`${name} WINS!`, 0, 4, 88, DARK, '#fff'); }); }
+function confettiCol(k, col) { if (k <= 0 || k > 2.4) return; const R = rng(21); for (let i = 0; i < 80; i++) { const x = R() * 1300 - 110, y = -60 + (380 + R() * 520) * k, sw = Math.sin(k * 7 + i) * 30; ctx.save(); ctx.translate(x + sw, y); ctx.rotate(k * 9 + i); ctx.fillStyle = i % 3 ? col : '#fff'; ctx.fillRect(-10, -5, 20, 10); ctx.restore(); } }
+const P_CROSS = { bArm: [70, -110], fArm: [-70, 110], bLeg: [-8, -4], fLeg: [8, 4] }, P_SKY = { bArm: [-145, -165], fArm: [125, 150], bLeg: [-10, -6], fLeg: [10, 6] }, P_SIU = { bArm: [-70, -50], fArm: [70, 50], bLeg: [-28, -18], fLeg: [28, 18] };
+const P_PRESENT = { bArm: [-20, -10], fArm: [100, 130], bLeg: [-8, -4], fLeg: [8, 4] }, P_STOMP = { bArm: [-40, -10], fArm: [40, 10], bLeg: [-10, -4], fLeg: [40, 60] }, P_FACEPALM = { bArm: [-20, -10], fArm: [160, 120], bLeg: [-8, -4], fLeg: [8, 4] };
+function steam2(x, y, t) { for (const d of [-1, 1]) for (let i = 0; i < 4; i++) { const k = (t * 2 + i / 4) % 1; ell(x + d * (40 + k * 90), y - k * 140, 18 + k * 30, 18 + k * 30, `rgba(255,255,255,${0.85 * (1 - k)})`); } }
+function headPos(who, dx = 0, dy = 0) { const C = who === 'M' ? CH.messi : CH.ronaldo, s = who === 'M' ? MS : RSC, x = (who === 'M' ? MX : RXX) + dx; return [x + (who === 'M' ? 1 : -1) * C.head.R * 0.22 * s, GY7 - dy - (C.leg * 0.95 + C.torsoH + C.head.R * 0.72) * s, C.head.R * s]; }
+// winner celebration + loser reaction (after the reveal at time w)
+function actors(u, w, win, loserStyle, presM, presR, mo = {}, ro = {}) {
+  const after = u - w, idle = Math.sin(u * 5);
+  let mP = presM[0], mE = presM[1], rP = presR[0], rE = presR[1], mY = 0, rY = 0, mSq = 0, rSq = 0, mF = 1, rF = -1;
+  if (after > 0) {
+    if (win === 'M') { const j = Math.abs(Math.sin(after * 6)); mP = P_SKY; mE = 'happy'; mY = j * 90; mSq = after < 0.1 ? 0.15 : -0.06 * j; }
+    else { const sp = clamp(after / 0.5), j = Math.sin(clamp(after / 0.7) * Math.PI); rP = after < 0.7 ? P_SIU : P_SIU; rE = { mouth: 'grin', brow: 0.6, eyes: after < 0.7 ? 'happy' : undefined }; rY = j * 220; rF = after < 0.5 ? (Math.cos(sp * Math.PI * 2) > 0 ? -1 : 1) : -1; rSq = after > 0.7 && after < 0.8 ? 0.15 : 0; }
+    const ls = loserStyle;
+    if (win === 'M') { if (ls === 'stomp') { rP = Math.floor(after * 8) % 2 ? P_STOMP : 'stand'; rE = { lidTilt: 0.45, browTilt: 0.8, mouth: 'grit', noBlink: true }; } else if (ls === 'shock') { rP = 'flail'; rE = 'shock'; } else { rP = P_CROSS; rE = { lid: 0.5, mouth: 'flat', look: [0.8, -0.8], browTilt: -0.2 }; } }
+    else { if (ls === 'stomp') { mP = Math.floor(after * 8) % 2 ? { bArm: [-40, -10], fArm: [40, 10], bLeg: [-40, -60], fLeg: [10, 4] } : 'stand'; mE = { lidTilt: 0.45, browTilt: 0.8, mouth: 'grit', noBlink: true }; } else if (ls === 'shock') { mP = 'flail'; mE = 'shock'; } else { mP = P_CROSS; mE = { lid: 0.5, mouth: 'flat', look: [-0.8, -0.8], browTilt: -0.2 }; } }
+  }
+  shadowAt(MX + (mo.dx || 0), 150 - mY * 0.2); shadowAt(RXX + (ro.dx || 0), 160 - rY * 0.2);
+  MEp(mP, mE, MX + (mo.dx || 0), GY7 - mY - (mo.dy || 0) + (after > 0 ? 0 : Math.abs(idle) * 6), MS, Object.assign({ sq: mSq, headTilt: after > 0 ? 0 : idle * 0.05 }, mo));
+  ROp(rP, rE, RXX + (ro.dx || 0), GY7 - rY - (ro.dy || 0) + (after > 0 ? 0 : Math.abs(Math.sin(u * 5 + 1)) * 6), RSC, Object.assign({ sq: rSq, f: rF, headTilt: after > 0 ? 0 : -idle * 0.05 }, ro));
+  if (after > 0) { if (loserStyle === 'stomp') { const [hx, hy] = win === 'M' ? headPos('R') : headPos('M'); steam2(hx, hy - 120, u); } }
+  if (after > 0 && win === 'R' && after < 1.6) pop(eOB(after / 0.12), RXX - 40, 1330, () => { ctx.rotate(-0.08); txt('SIUUU!', 0, 0, 96, YEL); });
+}
+function drumroll(u, w) { if (u > w - 0.6 && u < w) { const k = (u - (w - 0.6)) / 0.6; ctx.fillStyle = `rgba(0,0,0,${0.35 * k})`; ctx.fillRect(0, 0, W, H); txt('🥁 ...', W / 2, 1180, 90 + k * 30, '#fff'); } }
+function camEx(u, w, win, base = [540, 1080, 1.0]) { // slow push during the drumroll, punch to the winner, back out
+  const wx = win === 'M' ? MX + 90 : RXX - 90; return camK([[0, base[0], base[1], base[2], 0], [w - 0.6, base[0], base[1], base[2], 0], [w, 540, 1060, 1.08, 0], [w + 0.25, wx, 1120, 1.32, win === 'M' ? -0.03 : 0.03], [w + 1.6, wx, 1110, 1.28, 0], [w + 2.3, base[0], base[1], base[2], 0]], u); }
+
+const EX = 5.6, WIN = 2.6;
+function s_open(u) {
+  const bang = [0.25, 0.65], hit = bang.some(b => u > b && u < b + 0.12);
+  const C = camK([[0, 540, 900, 1.25, 0], [0.9, 540, 1000, 1.05, 0], [2.6, 540, 1050, 1.0, 0]], u);
+  cam(C, () => { court(u); bench(u, () => goatJudge(540, 640, 1.15, u, { gavel: hit ? 0.5 : -0.6, angry: true }));
     const enter = clamp((u - 0.8) / 0.6);
-    duo(u, enter < 1 ? (Math.floor(u * 10) % 2 ? 'run1' : 'run2') : 'stand', enter < 1 ? 'grin' : { mouth: 'smirk', browTilt: 0.5, look: [1, 0] }, enter < 1 ? (Math.floor(u * 10) % 2 ? 'run2' : 'run1') : 'stand', enter < 1 ? 'grin' : { mouth: 'smirk', browTilt: 0.5, look: [1, 0] }, { dx: lerp(-500, 0, easeOut(enter)) }, { dx: lerp(500, 0, easeOut(enter)) });
-    if (u > 1.5) spark(540, 1000, u);
+    actors(u, 99, null, null, [enter < 1 ? (Math.floor(u * 10) % 2 ? 'run1' : 'run2') : P_PRESENT, enter < 1 ? 'grin' : { mouth: 'smirk', browTilt: 0.6, look: [1, 0] }], [enter < 1 ? (Math.floor(u * 10) % 2 ? 'run2' : 'run1') : P_PRESENT, enter < 1 ? 'grin' : { mouth: 'smirk', browTilt: 0.6, look: [1, 0] }], { dx: lerp(-500, 0, easeOut(enter)) }, { dx: lerp(500, 0, easeOut(enter)) });
+    if (u > 1.5) { spark(540, 1000, u); spark(540, 1060, u + 0.3); }
   }, hit ? 14 : 0, u);
   if (hit) burst(760, 520, 110, 'BAM!', 1, 52, '#ffd60a', 0.1);
-  pop(1, W / 2, 230, () => txt('WHO IS THE GOAT? 🐐', 0, 0, 92, '#ffd60a'));
+  pop(1, W / 2, 260, () => txt('WHO IS THE GOAT? 🐐', 0, 0, 92, '#ffd60a'));
+  if (u > 1.7) tally(0, 0, null, 1);
 }
-function s_ballon(u) { // exhibit 1: Ballon d'Or towers
-  const C = camK([[0, 540, 1080, 1.0, 0], [3.0, 540, 1060, 1.04, 0], [4.2, 540, 1080, 1.0, 0]], u);
-  const nM = Math.min(8, Math.floor(u / 0.18) + 1), nR = Math.min(5, Math.floor(Math.max(0, u - 0.3) / 0.25) + (u > 0.3 ? 1 : 0)), climb = clamp((u - 2.0) / 0.5), wob = u > 2.6 ? Math.sin(u * 14) * 0.08 * Math.min(1, (u - 2.6) * 2) : 0, fall = clamp((u - 3.4) / 0.4);
+function s_e1(u) { // Ballon d'Or 8-5 -> MESSI
+  const C = camEx(u, WIN, 'M'); const nM = Math.min(8, Math.floor(u / 0.16) + 1), nR = Math.min(5, u > 0.4 ? Math.floor((u - 0.4) / 0.22) + 1 : 0), climb = clamp((u - 1.4) / 0.5), fall = clamp((u - WIN - 0.2) / 0.5), wob = u > 1.9 && fall === 0 ? Math.sin(u * 16) * 0.08 : 0;
   cam(C, () => { court(u + 2); bench(u, () => goatJudge(540, 640, 1.15, u, { look: Math.sin(u * 3) }));
-    for (let i = 0; i < nM; i++) ballonDor(470, GY7 - i * 76, 1.05, i === nM - 1 ? 1 : 0);
+    for (let i = 0; i < nM; i++) ballonDor(470, GY7 - i * 76, 1.05, i === nM - 1 || u > WIN ? 1 : 0);
     ctx.save(); ctx.translate(620, GY7); ctx.rotate(wob + fall * 0.9); for (let i = 0; i < nR; i++) ballonDor(0, -i * 76, 1.05); ctx.restore();
     const ry = climb * nR * 76 * (1 - fall);
-    duo(u, 'stand', u > 2.6 ? 'smug' : 'grin', climb > 0 && fall < 1 ? 'flex' : 'stand', fall > 0.5 ? 'dizzy' : climb > 0 ? { lidTilt: 0.5, lid: 0.25, browTilt: 0.7, mouth: 'grit', sweat: true, noBlink: true } : 'grin', {}, { dx: lerp(0, -170, climb) - fall * 60, dy: ry, lean: wob + fall * 1.2 });
-    if (fall > 0.5) stars(RXX - 220, GY7 - 600, u, 90);
-  }, fall > 0 && fall < 0.6 ? 12 : 0, u);
-  evidence(1, "BALLON D'OR", '8', '5', eOB(u / 0.2));
+    actors(u, WIN, 'M', 'shock', [P_PRESENT, { mouth: 'smirk', lid: 0.3, look: [1, -0.5] }], [climb > 0 ? 'flex' : P_CROSS, climb > 0 ? { lidTilt: 0.5, browTilt: 0.7, mouth: 'grit', sweat: true } : { mouth: 'flat', look: [-1, -0.6], lid: 0.4 }], {}, { dx: lerp(0, -170, climb) - fall * 60, dy: ry, lean: wob + fall * 1.2 });
+    if (fall > 0.6) stars(RXX - 230, GY7 - 560, u, 90);
+  }, fall > 0 && fall < 0.5 ? 10 : (u > WIN && u < WIN + 0.2 ? 16 : 0), u);
+  card(1, "BALLON D'OR", '8', '5', eOB(u / 0.2), null, 'M', u - WIN);
+  drumroll(u, WIN); winSlam('M', u > WIN && u < WIN + 1.3 ? u - WIN : 0); confettiCol(u - WIN, PINK);
+  tally(u > WIN ? 1 : 0, 0, 'M', u - WIN);
 }
-function s_ucl(u) { // exhibit 2: Champions League cups as dumbbells
-  const C = camK([[0, 540, 1080, 1.0, 0], [4.2, 560, 1060, 1.06, 0]], u);
-  const curl = 0.5 + 0.5 * Math.sin(u * 8), siu = u > 2.8;
+function s_e2(u) { // Champions League 4-5 -> RONALDO
+  const C = camEx(u, WIN, 'R'); const curl = 0.5 + 0.5 * Math.sin(u * 8);
   cam(C, () => { court(u + 5); bench(u, () => goatJudge(540, 640, 1.15, u, { look: 1 }));
-    // Messi holds 4 cups in a stack
-    for (let i = 0; i < 4; i++) uclCup(MX + 170, GY7 - 230 - i * 120, 0.75, Math.sin(u * 3 + i) * 0.04);
-    duo(u, { bArm: [-20, -10], fArm: [80, 160], bLeg: [-8, -4], fLeg: [8, 4] }, u > 2.0 ? { mouth: 'flat', look: [1, 0], lid: 0.3 } : 'smile',
-      siu ? { bArm: [-60, -40], fArm: [60, 40], bLeg: [-25, -15], fLeg: [25, 15] } : chibi.mix({ bArm: [-60, -20], fArm: [60, 20], bLeg: [-12, -6], fLeg: [12, 6] }, { bArm: [-60, -170], fArm: [60, 170], bLeg: [-12, -6], fLeg: [12, 6] }, curl), siu ? 'happy' : { lidTilt: 0.5, lid: 0.25, browTilt: 0.7, mouth: 'grit', sweat: true, noBlink: true }, {}, { dy: siu ? Math.sin(clamp((u - 2.8) / 0.6) * Math.PI) * 180 : 0 });
-    // Ronaldo's 5 cups: 2 in hands (curl), 3 balanced on head
-    const hy = siu ? 0 : (1 - curl) * 140, ry = siu ? Math.sin(clamp((u - 2.8) / 0.6) * Math.PI) * 180 : 0;
-    uclCup(RXX - 200, GY7 - 260 - hy - ry, 0.7, -0.2); uclCup(RXX + 200, GY7 - 260 - hy - ry, 0.7, 0.2);
-    for (let i = 0; i < 3; i++) uclCup(RXX + Math.sin(u * 5 + i) * 10 * (i + 1), GY7 - 760 - i * 110 - ry, 0.62, Math.sin(u * 5 + i) * 0.05);
-  }, 0, u);
-  evidence(2, 'CHAMPIONS LEAGUE', '4', '5', eOB(u / 0.2), '+ Ronaldo: 140 UCL goals (record)');
-  if (siu) pop(eOB((u - 2.8) / 0.12), W / 2, 1460, () => { ctx.rotate(-0.06); txt('SIUUU!', 0, 0, 110, '#ffd400'); });
+    for (let i = 0; i < 4; i++) uclCup(MX + 175, GY7 - 230 - i * 120, 0.75, Math.sin(u * 3 + i) * 0.04);
+    const pre = u < WIN; actors(u, WIN, 'R', 'cross', [{ bArm: [-20, -10], fArm: [80, 160], bLeg: [-8, -4], fLeg: [8, 4] }, { mouth: 'smile', look: [1, 0] }], [chibi.mix({ bArm: [-60, -20], fArm: [60, 20], bLeg: [-12, -6], fLeg: [12, 6] }, { bArm: [-60, -170], fArm: [60, 170], bLeg: [-12, -6], fLeg: [12, 6] }, curl), { lidTilt: 0.5, lid: 0.25, browTilt: 0.7, mouth: 'grit', sweat: true }]);
+    if (pre) { const hy = (1 - curl) * 140; uclCup(RXX - 200, GY7 - 260 - hy, 0.7, -0.2); uclCup(RXX + 200, GY7 - 260 - hy, 0.7, 0.2); }
+    const j = u > WIN ? Math.sin(clamp((u - WIN) / 0.7) * Math.PI) * 220 : 0; for (let i = 0; i < 3; i++) uclCup(RXX + Math.sin(u * 5 + i) * 10 * (i + 1), GY7 - 760 - i * 110 - j, 0.62, Math.sin(u * 5 + i) * 0.05);
+  }, u > WIN && u < WIN + 0.2 ? 16 : 0, u);
+  card(2, 'CHAMPIONS LEAGUE', '4', '5', eOB(u / 0.2), '+ Ronaldo: 140 UCL goals (record)', 'R', u - WIN);
+  drumroll(u, WIN); winSlam('R', u > WIN && u < WIN + 1.3 ? u - WIN : 0); confettiCol(u - WIN, YEL);
+  tally(1, u > WIN ? 1 : 0, 'R', u - WIN);
 }
-function s_wc(u) { // exhibit 3: the World Cup
-  const C = camK([[0, 540, 1080, 1.0, 0], [1.2, MX + 200, 1060, 1.15, 0], [4.2, MX + 210, 1050, 1.2, 0]], u);
-  const lift = easeOut(clamp((u - 0.4) / 0.6));
+function s_e3(u) { // World Cup 1-0 -> MESSI (Ronaldo's sunglasses)
+  const C = camEx(u, WIN, 'M'); const lift = easeOut(clamp((u - 0.4) / 0.7));
   cam(C, () => { court(u + 9); bench(u, () => goatJudge(540, 640, 1.15, u, { eyes: u > 1.6 ? 'spin' : 'normal' }));
-    const [hx, hy] = [MX, GY7 - 560], cy = lerp(GY7 - 250, hy, lift); if (u > 0.9) { ctx.save(); ctx.translate(hx, cy - 210 * 0.85); for (let i = 0; i < 12; i++) { const a = i / 12 * TAU + u * 2; ctx.fillStyle = 'rgba(255,240,150,.3)'; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(Math.cos(a) * 700, Math.sin(a) * 700); ctx.lineTo(Math.cos(a + 0.12) * 700, Math.sin(a + 0.12) * 700); ctx.fill(); } ctx.restore(); }
-    duo(u, u > 0.4 ? { bArm: [-160, -175], fArm: [160, 175], bLeg: [-8, -4], fLeg: [8, 4] } : 'stand', u > 0.9 ? 'happy' : 'smile', u > 1.0 ? { bArm: [-20, -10], fArm: [150, 120], bLeg: [-8, -4], fLeg: [8, 4] } : 'stand', u > 1.0 ? { mouth: 'flat', browTilt: 0.3, look: [-1, 0] } : 'neutral');
-    worldCup(hx, cy, 0.85, 0);
-    if (u > 1.1) { const C = CH.ronaldo, Rr = C.head.R * RSC, hy2 = GY7 - (C.leg * 0.95 + C.torsoH + C.head.R * 0.72) * RSC, hx2 = RXX - Rr * 0.22, k = eOB((u - 1.1) / 0.2); ctx.save(); ctx.translate(hx2, hy2 - Rr * 0.08 - (1 - Math.min(1, k)) * 200); for (const dx of [-0.34, 0.3]) { ell(dx * Rr, 0, Rr * 0.3, Rr * 0.22, '#111', 6); ell(dx * Rr - Rr * 0.1, -Rr * 0.06, Rr * 0.08, Rr * 0.04, 'rgba(255,255,255,.6)'); } ctx.strokeStyle = DARK; ctx.lineWidth = 7; ctx.beginPath(); ctx.moveTo(-0.06 * Rr, -4); ctx.lineTo(0.02 * Rr, -4); ctx.stroke(); ctx.restore(); if (u > 1.4) txt('😎', hx2 + 160, hy2 - 160, 70, '#fff', null); }
-  }, 0, u);
-  evidence(3, 'WORLD CUP', '1 🏆', '0', eOB(u / 0.2), 'Messi: champion 2022');
+    const cy = lerp(GY7 - 250, GY7 - 560, lift); if (u > 1.0) { ctx.save(); ctx.translate(MX, cy - 180); for (let i = 0; i < 12; i++) { const a = i / 12 * TAU + u * 2; ctx.fillStyle = 'rgba(255,240,150,.3)'; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(Math.cos(a) * 750, Math.sin(a) * 750); ctx.lineTo(Math.cos(a + 0.12) * 750, Math.sin(a + 0.12) * 750); ctx.fill(); } ctx.restore(); }
+    actors(u, WIN, 'M', 'cross', [u > 0.4 ? P_SKY : P_PRESENT, u > 0.9 ? 'happy' : 'smile'], [u > 1.2 ? { bArm: [-20, -10], fArm: [150, 120], bLeg: [-8, -4], fLeg: [8, 4] } : P_CROSS, { mouth: 'flat', browTilt: 0.3, look: [-1, 0] }]);
+    const [mhx, mhy] = headPos('M', 0, u > WIN ? Math.abs(Math.sin((u - WIN) * 6)) * 90 : 0); worldCup(MX, u > WIN ? mhy - 140 : cy, 0.85, 0);
+    if (u > 1.2) { const [hx2, hy2, Rr] = headPos('R'), k = eOB((u - 1.2) / 0.2); ctx.save(); ctx.translate(hx2, hy2 - Rr * 0.08 - (1 - Math.min(1, k)) * 200); for (const dx of [-0.34, 0.3]) { ell(dx * Rr, 0, Rr * 0.3, Rr * 0.22, '#111', 6); ell(dx * Rr - Rr * 0.1, -Rr * 0.06, Rr * 0.08, Rr * 0.04, 'rgba(255,255,255,.6)'); } ctx.restore(); if (u > 1.5) txt('😎', hx2 + 170, hy2 - 170, 70, '#fff', null); }
+  }, u > WIN && u < WIN + 0.2 ? 16 : 0, u);
+  card(3, 'WORLD CUP', '1 🏆', '0', eOB(u / 0.2), 'Messi: champion 2022', 'M', u - WIN);
+  drumroll(u, WIN); winSlam('M', u > WIN && u < WIN + 1.3 ? u - WIN : 0); confettiCol(u - WIN, PINK);
+  tally(u > WIN ? 2 : 1, 1, 'M', u - WIN);
 }
-function s_intl(u) { // exhibit 4: international goals — the ball machine floods the court
-  const C = camK([[0, 540, 1080, 1.0, 0], [4.2, 540, 1080, 1.02, 0]], u);
-  const k = clamp((u - 0.5) / 2.6), flood = easeIO(clamp((u - 1.0) / 2.4));
+function s_e4(u) { // international goals 125-146 -> RONALDO (ball flood)
+  const C = camEx(u, WIN, 'R'); const k = clamp((u - 0.4) / 2.0), flood = easeIO(clamp((u - 0.8) / 2.0));
   cam(C, () => { court(u + 13); bench(u, () => goatJudge(540, 640, 1.15, u, { look: -1 }));
-    ballMachine(RXX + 140, GY7 - 20, k);
-    duo(u, 'stand', flood > 0.3 ? 'shock' : 'neutral', { bArm: [-20, -10], fArm: [100, 60], bLeg: [-8, -4], fLeg: [8, 4] }, 'grin', { dy: flood * 300, lean: Math.sin(u * 4) * 0.1 * flood }, { dx: -60 });
-    const lvl = GY7 + 40 - flood * 360, R = rng(3);
+    ballMachine(RXX + 150, GY7 - 20, k);
+    actors(u, WIN, 'R', 'shock', [P_CROSS, flood > 0.3 ? 'shock' : { mouth: 'flat', look: [1, 0] }], [{ bArm: [-20, -10], fArm: [100, 60], bLeg: [-8, -4], fLeg: [8, 4] }, 'grin'], { dy: flood * 280, lean: Math.sin(u * 4) * 0.1 * flood }, { dx: -60 });
+    const lvl = GY7 + 40 - flood * 340, R = rng(3);
     for (let i = 0; i < 70; i++) { const x = -60 + R() * 1200, y = lvl + R() * 400 + Math.sin(u * 6 + i) * 6; if (y < GY7 + 60) fball(x, y, 32, i + u); }
-    for (let i = 0; i < 6; i++) { const q = ((u * 2.5 + i / 6) % 1); if (u > 0.5) fball(RXX + 140 - q * 600, GY7 - 80 - Math.sin(q * Math.PI) * 400, 30, q * 10); }
-  }, 0, u);
-  evidence(4, 'INTERNATIONAL GOALS', '125', '146', eOB(u / 0.2), 'Ronaldo: world record (146 goals, 234 games)');
+    for (let i = 0; i < 6; i++) { const q = ((u * 2.5 + i / 6) % 1); if (u > 0.4 && u < WIN) fball(RXX + 150 - q * 600, GY7 - 80 - Math.sin(q * Math.PI) * 400, 30, q * 10); }
+  }, u > WIN && u < WIN + 0.2 ? 16 : 0, u);
+  card(4, 'INTERNATIONAL GOALS', '125', '146', eOB(u / 0.2), 'Ronaldo: world record (146 goals, 234 games)', 'R', u - WIN);
+  drumroll(u, WIN); winSlam('R', u > WIN && u < WIN + 1.3 ? u - WIN : 0); confettiCol(u - WIN, YEL);
+  tally(2, u > WIN ? 2 : 1, 'R', u - WIN);
 }
-function s_assist(u) { // exhibit 5: assists scroll vs titles in 4 countries -> OBJECTION
-  const C = camK([[0, 540, 1080, 1.0, 0], [3.6, 540, 1070, 1.04, 0]], u);
-  const unroll = easeOut(clamp(u / 1.4));
+function s_e5(u) { // assists record -> MESSI
+  const C = camEx(u, WIN, 'M'); const unroll = easeOut(clamp(u / 1.6));
   cam(C, () => { court(u + 17); bench(u, () => goatJudge(540, 640, 1.15, u, { look: Math.sin(u * 6) }));
     scroll(MX + 80, GY7 - 120, 80 + unroll * 1300);
-    duo(u, { bArm: [-20, -10], fArm: [80, 90], bLeg: [-8, -4], fLeg: [8, 4] }, 'smug', u > 1.4 ? { bArm: [-150, -170], fArm: [150, 170], bLeg: [-8, -4], fLeg: [8, 4] } : 'stand', u > 1.4 ? 'grin' : 'shock');
-    if (u > 1.4) { const k = eOB((u - 1.4) / 0.3); const P = [['ENG', ['#fff', '#ef4444']], ['ESP', ['#facc15', '#ef4444']], ['ITA', ['#16a34a', '#fff']], ['KSA', ['#16a34a', '#fff']]]; P.forEach(([c, cols], i) => { ctx.save(); ctx.translate(RXX - 170 + i * 110, GY7 - 760); ctx.scale(k, k); pennant(0, 0, c, cols, (i - 1.5) * 0.12); ctx.restore(); }); }
-  }, 0, u);
-  if (u < 1.4) evidence(5, 'ALL-TIME ASSISTS', '#1 🎯', '🤔', eOB(u / 0.2), 'Messi: most assists in football history');
-  else evidence(6, 'LEAGUE CHAMPION IN', '3 🌍', '4 🌍', eOB((u - 1.4) / 0.2), 'Messi: ESP · FRA · USA   |   Ronaldo: ENG · ESP · ITA · KSA');
-  if (u > 2.6) { objection(290, 1240, eOB((u - 2.6) / 0.12), 0); objection(790, 1300, eOB((u - 2.8) / 0.12), 1); }
+    actors(u, WIN, 'M', 'stomp', [{ bArm: [-20, -10], fArm: [80, 90], bLeg: [-8, -4], fLeg: [8, 4] }, 'smug'], [P_CROSS, { mouth: 'o', look: [-1, 0.6], brow: 0.5 }]);
+  }, u > WIN && u < WIN + 0.2 ? 16 : 0, u);
+  card(5, 'ALL-TIME ASSISTS', '#1 🎯', '🤔', eOB(u / 0.2), 'Messi: most assists in football history', 'M', u - WIN);
+  drumroll(u, WIN); winSlam('M', u > WIN && u < WIN + 1.3 ? u - WIN : 0); confettiCol(u - WIN, PINK);
+  tally(u > WIN ? 3 : 2, 2, 'M', u - WIN);
 }
-function s_verdict(u) { // the goat eats the evidence
-  const C = camK([[0, 540, 820, 1.35, 0], [1.6, 540, 800, 1.45, 0], [3.4, 540, 900, 1.2, 0]], u);
-  const eat = clamp((u - 0.5) / 1.2), stamp = u > 2.1;
-  cam(C, () => { court(u + 20); bench(u, () => goatJudge(540, 640, 1.15, u, { chew: u > 0.5 && u < 2.0, eyes: 'normal' }));
-    if (eat < 1) { folder(450, 700 - eat * 40, '#f5a3c7', 1.1, -0.2, eat); folder(630, 700 - eat * 40, '#ffd400', 1.1, 0.2, eat); }
-    duo(u, 'stand', u > 0.6 ? 'shock' : 'neutral', 'stand', u > 0.6 ? 'shock' : 'neutral');
-  }, stamp && u < 2.35 ? 14 : 0, u);
-  if (u > 1.7 && u < 2.3) pop(eOB((u - 1.7) / 0.12), 780, 470, () => txt('*BURP*', 0, 0, 80, '#fff'));
-  if (stamp) pop(eOB((u - 2.1) / 0.12), W / 2, 760, () => { ctx.rotate(-0.1); rr(-480, -150, 960, 300, 26, 'rgba(255,255,255,.92)', '#c1121f', 16); txt('VERDICT:', 0, -62, 80, '#c1121f', null); txt('YOU DECIDE 👇', 0, 60, 110, '#c1121f', null); });
-  pop(eOB(u / 0.2), W / 2, 230, () => txt('THE VERDICT IS…', 0, 0, 80, '#fff'));
+function s_e6(u) { // league champion in 3 vs 4 countries -> RONALDO, then 3-3
+  const C = camEx(u, WIN, 'R');
+  cam(C, () => { court(u + 21); bench(u, () => goatJudge(540, 640, 1.15, u, { look: 1 }));
+    actors(u, WIN, 'R', 'stomp', [P_CROSS, { mouth: 'flat', look: [1, -0.5], lid: 0.3 }], [{ bArm: [-150, -170], fArm: [150, 170], bLeg: [-8, -4], fLeg: [8, 4] }, 'grin']);
+    if (u > 0.3) { const k = eOB((u - 0.3) / 0.3), j = u > WIN ? Math.sin(clamp((u - WIN) / 0.7) * Math.PI) * 220 : 0; const P = [['ENG', ['#fff', '#ef4444']], ['ESP', ['#facc15', '#ef4444']], ['ITA', ['#16a34a', '#fff']], ['KSA', ['#16a34a', '#fff']]]; P.forEach(([c, cols], i) => { ctx.save(); ctx.translate(RXX - 170 + i * 110, GY7 - 760 - j); ctx.scale(k, k); pennant(0, 0, c, cols, (i - 1.5) * 0.12); ctx.restore(); }); }
+  }, u > WIN && u < WIN + 0.2 ? 16 : 0, u);
+  card(6, 'LEAGUE CHAMPION IN', '3 🌍', '4 🌍', eOB(u / 0.2), 'Messi: ESP · FRA · USA   |   Ronaldo: ENG · ESP · ITA · KSA', 'R', u - WIN);
+  drumroll(u, WIN); winSlam('R', u > WIN && u < WIN + 1.3 ? u - WIN : 0); confettiCol(u - WIN, YEL);
+  tally(3, u > WIN ? 3 : 2, 'R', u - WIN);
+}
+function s_verdict(u) { // 3-3!? the goat can't decide... so he eats the evidence
+  const C = camK([[0, 540, 1000, 1.05, 0], [1.2, 540, 820, 1.35, 0], [2.4, 540, 800, 1.45, 0], [4.6, 540, 880, 1.25, 0]], u);
+  const eat = clamp((u - 1.3) / 1.2), stamp = u > 2.9;
+  cam(C, () => { court(u + 26); bench(u, () => goatJudge(540, 640, 1.15, u, { chew: u > 1.3 && u < 2.8, eyes: u < 1.2 ? 'spin' : 'normal' }));
+    if (eat < 1) { folder(450, 700 - eat * 40, PINK, 1.1, -0.2, eat); folder(630, 700 - eat * 40, YEL, 1.1, 0.2, eat); }
+    actors(u, 99, null, null, [u < 1.2 ? 'flail' : 'stand', 'shock'], [u < 1.2 ? 'flail' : 'stand', 'shock']);
+  }, (u < 0.3 ? 12 : 0) || (stamp && u < 3.05 ? 14 : 0), u);
+  if (u < 1.3) pop(eOB(u / 0.15), W / 2, 420, () => { ctx.rotate(Math.sin(u * 30) * 0.04); rr(-380, -100, 760, 200, 40, '#111', '#fff', 8); txt('3 – 3 ?!', 0, 0, 130, '#fff', null); });
+  if (u > 2.5 && u < 3.1) pop(eOB((u - 2.5) / 0.12), 780, 470, () => txt('*BURP*', 0, 0, 90, '#fff'));
+  if (stamp) pop(eOB((u - 2.9) / 0.12), W / 2, 760, () => { ctx.rotate(-0.1); rr(-480, -150, 960, 300, 26, 'rgba(255,255,255,.95)', '#c1121f', 16); txt('VERDICT:', 0, -62, 80, '#c1121f', null); txt('YOU DECIDE 👇', 0, 60, 110, '#c1121f', null); });
+  tally(3, 3, null, 1);
 }
 function s_thanks(u) {
   const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#13204a'); g.addColorStop(1, '#3b1530'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
@@ -244,14 +296,14 @@ function s_thanks(u) {
   const tap = u > 1.2, pulse = 1 + 0.06 * Math.sin(u * 10);
   pop(eOB((u - 0.3) / 0.2) * pulse, W / 2, 420, () => { rr(-230, -62, 460, 124, 62, tap ? '#22c55e' : '#e11d2a', DARK, 7); txt(tap ? 'FOLLOWING ✓' : '+ FOLLOW', 0, 4, 58, '#fff', null); });
   if (u > 0.6 && u < 1.4) { const k = clamp((u - 0.6) / 0.6); ell(W / 2 + 140 - 60 * k, 490 + 40 * (1 - k), 34, 40, '#ffd9b8', 6); }
-  pop(eOB((u - 0.5) / 0.2), W / 2, 620, () => txt('YOU are the judge ⚖️', 0, 0, 64, '#ffd60a'));
-  pop(eOB((u - 0.7) / 0.2), W / 2 - 220, 790, () => { rr(-170, -80, 340, 160, 36, '#f5a3c7', DARK, 7); txt('10', 0, 4, 96, DARK, null); });
-  pop(eOB((u - 0.85) / 0.2), W / 2 + 220, 790, () => { rr(-170, -80, 340, 160, 36, '#ffd400', DARK, 7); txt('7', 0, 4, 96, DARK, null); });
+  pop(eOB((u - 0.5) / 0.2), W / 2, 620, () => txt('It\'s 3–3. YOU are the judge ⚖️', 0, 0, 56, '#ffd60a'));
+  pop(eOB((u - 0.7) / 0.2), W / 2 - 220, 790, () => { ctx.scale(1 + 0.05 * Math.sin(u * 8), 1 + 0.05 * Math.sin(u * 8)); rr(-170, -80, 340, 160, 36, PINK, DARK, 7); txt('10', 0, 4, 96, DARK, null); });
+  pop(eOB((u - 0.85) / 0.2), W / 2 + 220, 790, () => { ctx.scale(1 + 0.05 * Math.sin(u * 8 + 1.5), 1 + 0.05 * Math.sin(u * 8 + 1.5)); rr(-170, -80, 340, 160, 36, YEL, DARK, 7); txt('7', 0, 4, 96, DARK, null); });
   pop(eOB((u - 1.0) / 0.2), W / 2, 930, () => txt('Comment 10 or 7 👇', 0, 0, 52, '#fff'));
-  MEp('wave', 'happy', 300, 1420 - Math.abs(Math.sin(u * 6)) * 30, 0.72); ROp('wave', 'happy', 780, 1420 - Math.abs(Math.sin(u * 6 + 1.5)) * 30, 0.72); goatJudge(540, 1300, 0.45, u, {});
+  MEp(P_SKY, 'happy', 300, 1420 - Math.abs(Math.sin(u * 6)) * 40, 0.72); ROp(P_SIU, 'grin', 780, 1420 - Math.abs(Math.sin(u * 6 + 1.5)) * 40, 0.72); goatJudge(540, 1300, 0.45, u, { chew: true });
   rr(90, 1470, 900, 64, 32, 'rgba(0,0,0,.45)', null); txt('Real stats as of Nov 2026 · cartoon parody', W / 2, 1503, 28, '#fff', null, 'center', 800);
 }
-const LEN = [['open', 2.4, s_open], ['ballon', 4.2, s_ballon], ['ucl', 4.2, s_ucl], ['wc', 4.0, s_wc], ['intl', 4.2, s_intl], ['assist', 3.8, s_assist], ['verdict', 3.9, s_verdict], ['thanks', 2.8, s_thanks]];
+const LEN = [['open', 2.6, s_open], ['e1', EX, s_e1], ['e2', EX, s_e2], ['e3', EX, s_e3], ['e4', EX, s_e4], ['e5', EX, s_e5], ['e6', EX, s_e6], ['verdict', 4.6, s_verdict], ['thanks', 3.0, s_thanks]];
 const SEG = []; { let t = 0; for (const [n, d, f] of LEN) { SEG.push([t, t + d, f, n]); t += d; } }
 const DURATION = SEG[SEG.length - 1][1];
 window.SEGS = SEG.map(s => [s[3], +s[0].toFixed(2)]);

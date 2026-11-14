@@ -9,7 +9,7 @@ Exhibit 2: Champions League 4 vs 5
 Exhibit 3: World Cup 1 vs 0
 Exhibit 4: International goals 125 vs 146
 Exhibit 5 & 6: assists record vs champion in 4 countries
-Verdict: the judge ate the evidence 😂
+Final score 3–3… so the judge ate the evidence 😂
 
 YOU are the judge: 10 or 7? 👇
 Stats as of Nov 2026 · cartoon parody
