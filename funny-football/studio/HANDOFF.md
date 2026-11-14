@@ -30,6 +30,10 @@ This channel makes funny satirical football cartoon Shorts (YouTube channel **So
 | Ep2 | "The GOAT Dictionary" (`toon2/ep2/`) | About 2k views on YouTube |
 | Ep3 | "RETIRED?!" v4 (`toon2/ep3/`): Messi Golden Boot | Older style |
 | Ep4 | v4 "CAN'T MOVE HIM" (`toon2/ep4/`): Traoré vs Cucurella | **User approved: "keep it up like this"** |
+| Ep5 | "SECRET PLAN" spy mini-movie (`toon2/ep5/`) | Done |
+| Ep6 | "WORST DISGUISE IN MIAMI" (`toon2/ep6/`) | REJECTED, do not reuse |
+| Ep7 | "GOAT COURT" courtroom (`toon2/ep7/`) | Done (v3) |
+| Ep8 | "ROAD TO 1000" mountain mini-movie (`toon2/ep8/`): Ronaldo 985 goals, 15-min hat-trick | Done, awaiting user feedback |
 
 ## Environment setup for a fresh container
 ```
@@ -38,9 +42,11 @@ apt-get install -y -q libttspico-utils espeak-ng mbrola mbrola-us2 mbrola-us3
 Playwright, Chromium, ffmpeg, numpy and scipy are already available.
 
 ## Next
-- Ep5 "SECRET PLAN" (story-first spy mini-movie) is done; Ep6 "WORST DISGUISE IN MIAMI" was REJECTED by the user (do not publish or reuse). Ep7 "GOAT COURT" (Messi vs Ronaldo courtroom) done, review room SHIP IT. Next: GOAT Court Part 2 (boxing weigh-in or trophy room) or a new topic.
-- Use the Ep4 v4 template: hook, MISSION card, 5 hearts and 5 attempts, GAME OVER, twist, thanks + FOLLOW.
+- Ep8 "ROAD TO 1000" is done (Ronaldo 985 career goals as of Nov 12, 2026; mountain-expedition format; lean review FIX FIRST → 5 fixes → shipped). Waiting for user feedback.
+- Before posting Ep8, re-check the goal count; if he has scored again, say "as of Nov 12" in captions.
+- Ep8 sets up a **Road to 1000 series**: every few goals, a new climb episode (the goat keeps stealing the flag). Episode 9 should use a different format (rule: never the same format twice in a row), e.g. nature documentary or GOAT Court Part 2.
 - Ask the user for platform stats after each release, and log them in `performance.csv`.
+- Tool note: a fresh container may need `pip install scipy` for the audio scripts.
 
 ## Daily learning (scheduled task, 6:44 am Australia/Sydney)
 - **What it does:** a fresh session runs every morning. It hunts 3 verified topic ideas (appended to `IDEAS.md`), learns one skill on the rotation (appended to `LEARNING_LOG.md`) and pushes to this branch.
