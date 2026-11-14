@@ -1,39 +1,25 @@
-# YouTube Shorts: Episode 4 "THE HUMAN WALL"
+# YouTube Shorts: Ep4 v3 "IMMOVABLE"
 
 **Title:**
 ```
-Nobody Can Move Adama Traoré 😂🧱
+Nobody Can Move Adama Traoré 😂💪
 ```
-Backup titles:
-- `Cucurella vs Adama Traoré at the Corner Flag 💀`
-- `"João Pedro Saved My Life" 😂 Traoré vs Chelsea`
+Backup titles: `Cucurella Tried EVERYTHING vs Traoré 🚜😂` · `When Traoré Doesn't Want to Move 💀`
 
 **Description:**
 ```
-Remember this man? 💪 Adama Traoré's West Ham debut at Chelsea (Jan 31, 2026)…
-Cucurella tried to push him. Then climbed on him. Then Traoré flexed 😂
-It ended in a mass brawl, a red card for Todibo (not Traoré) and £625,000 in FA fines 💸
-Cucurella after the game: "João Pedro saved my life."
+Push ❌ Piggyback ❌ Bulldozer ❌ …and then Traoré used ONE finger 😂💪
+Who can stop him? 👇
 
-Who could stop him? 👇
-
-📌 Real facts:
-• Chelsea 3-2 West Ham, Premier League, Jan 31, 2026 (West Ham led 0-2; Enzo won it in stoppage time)
-• Traoré came on for his West Ham debut; corner-flag clash with Cucurella, then a mass confrontation
-• Todibo was sent off (VAR) · FA fines: Chelsea £325,000, West Ham £300,000
-Sources:
-https://www.espn.in/football/report/_/gameId/740835
-https://www.sportsmole.co.uk/football/chelsea/news/aware-of-his-actions-disproportionate-duo-singled-out-as-chelsea-west-ham-hit-with-fines_592670.html
-https://www.aol.com/news/marc-cucurella-speaks-adama-traore-142831732.html
-
-Parody cartoon: the bounce, piggyback and "bye bye" flight are jokes 😄 Original characters, drawings and synthesized audio. Not affiliated with any club.
+Inspired by a real moment: Adama Traoré's West Ham debut at Chelsea (Jan 31, 2026, Chelsea 3-2 West Ham), when he and Marc Cucurella clashed at the corner flag.
+Parody cartoon: the bulldozer, the juice box and the flick are jokes 😄 Original characters, drawings and synthesized audio. Not affiliated with any club.
 
 #AdamaTraore #Cucurella #WestHam #Chelsea #PremierLeague
 ```
 
 **Tags:**
 ```
-adama traore, traore strength, cucurella, cucurella traore, chelsea vs west ham, west ham, chelsea, premier league fight, joao pedro, todibo red card, football cartoon, football memes, strongest footballer
+adama traore, traore strength, strongest footballer, cucurella, traore vs cucurella, chelsea vs west ham, west ham, chelsea, premier league, football cartoon, football animation, football memes
 ```
 
 **Settings:**
@@ -45,16 +31,15 @@ adama traore, traore strength, cucurella, cucurella traore, chelsea vs west ham,
 | Audience | Not made for kids |
 | Altered or synthetic content | No (stylized 2D cartoon) |
 | Language | English |
-| Subtitles | `subtitles-en.srt` |
-| Thumbnail | `cover-9x16.jpg`, or the frame at about 0.2 s |
+| Subtitles | None (no dialogue) |
+| Thumbnail | `cover-9x16.jpg`, or frame 0 |
 | Remixing | Allowed |
 | Comments | On; hold potentially inappropriate |
 | Related video | Ep3 "RETIRED?!" |
 
 **Pinned comment:**
 ```
-Attempt 2 (piggyback 🐨) at 6s 😂 Who could stop him? Tag a defender 👇
+Attempt 4 should be ___ 👇 (best idea goes in the next episode 😤)
 ```
 
-**First 2 hours:**
-- Reply with jokes about strength (gym, wall, tank). Remove insults against either club's fans.
+**Why this should loop:** the last second runs back into frame 0, so a rewatch looks seamless. Watch "Viewed vs swiped" in Studio after 24 h.

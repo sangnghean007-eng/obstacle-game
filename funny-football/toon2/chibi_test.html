@@ -1,0 +1,5 @@
+<!doctype html><html><body style="margin:0"><canvas id="c" width="1800" height="1000"></canvas><script src="chibi.js"></script><script src="chibi_cast.js"></script><script>
+const ctx=document.getElementById('c').getContext('2d');ctx.fillStyle='#4caf50';ctx.fillRect(0,0,1800,1000);
+const L=[['traore','shield','smug',-1],['traore','flex','grin',-1],['traore','sip','sip',-1],['traore','phone','phone',-1],['cucu','push','strain',1],['cucu','run1','angry',1],['cucu','stand','dizzy',1],['cucu','flail','shock',1]];
+L.forEach(([w,p,e,f],i)=>chibi.draw(ctx,CH[w],p,e,130+i*220,960,w==='traore'?0.62:0.62,{f,t:1}));
+</script></body></html>

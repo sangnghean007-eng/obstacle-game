@@ -1,32 +1,28 @@
-# Instagram Reels: Episode 4 "THE HUMAN WALL"
+# Instagram Reels: Ep4 v3 "IMMOVABLE"
 
 **Caption:**
 ```
-Nobody can move Adama Traoré 😂🧱
+Nobody can move Adama Traoré 😂💪
 
-Jan 31, 2026: Chelsea 3-2 West Ham
 Attempt 1: push ❌
-Attempt 2: piggyback mode ❌
-Attempt 3: Traoré flexes 💪
-Then: mass brawl, a red card for Todibo (not Traoré) and £625k in FA fines 💸
-Cucurella: "João Pedro saved my life" 😂
+Attempt 2: piggyback ❌
+Attempt 3: bulldozer ❌
+Traoré: *one finger* ☝️
 
-Who could stop him? 👇
-Real facts · parody cartoon · original characters & audio
+What's attempt 4? 👇
+Inspired by Chelsea 3-2 West Ham (Jan 31, 2026) · parody cartoon · original characters & audio
 .
-#adamatraore #cucurella #chelsea #westham #premierleague #football #footballmemes #soccer #cartoon #parody
+#adamatraore #cucurella #westham #chelsea #premierleague #football #footballmemes #animation #cartoon #parody
 ```
 
 **Settings:**
-- Cover: `cover-9x16.jpg` (check the 1:1 crop).
-- Original audio, renamed "The Human Wall – Football Roasts". No added music.
+- Cover: `cover-9x16.jpg` (check the 1:1 crop keeps both faces).
+- Original audio, renamed "Immovable – Football Roasts".
 - Share to Facebook: off. AI label: off. No tags.
 
 **Alt text:**
 ```
-Cartoon parody. A very muscular West Ham player, number 17, guards the ball at the corner flag. A Chelsea player with long curly hair bounces off him, pushes him, climbs on his back and is blown back by a flex, then is flicked off the pitch. A cartoon brawl cloud follows, the referee shows a red card, the curly-haired player says "João Pedro saved my life", and a receipt shows FA fines of £325,000 and £300,000.
+Cartoon parody. A huge, calm footballer in a claret number 17 shirt stands by the corner flag. A smaller player with big curly hair in a blue number 3 shirt bounces off him, pushes with all his strength while the big player sips a juice box, climbs on his back while he scrolls his phone, and drives a bulldozer into him that crumples while he yawns. The big player flicks him into the sky with one finger and walks away whistling, carrying the ball and the corner flag.
 ```
 
-**Story (24 h):** quiz sticker "Who was sent off?" with the options Traoré / Cucurella / Todibo ✅.
-
-**First comment:** `Leg day: optional. Arm day: every day 💪`
+**Story (24 h):** question sticker "What's attempt 4?". Repost the best answers.

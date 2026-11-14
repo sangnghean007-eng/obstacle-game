@@ -113,3 +113,19 @@ For every new video, run this pipeline automatically. Do not stop to ask the use
    - Re-render, and log the scores in `scorecard.csv`.
 4. **Ship:** the video, cover, subtitles, the 4 platform dossiers and the facts sheet.
    - Send the video to the user with a short summary of what the room decided and changed.
+
+## v3 house style (from the Ep4 "terrible" teardown, Nov 14 2026)
+- **Characters:** use `toon2/chibi.js`.
+  - Big heads (about 40% of height), no neck, seamless limbs.
+  - Expressive eyes with lids, blinking and looking around.
+  - 12 mouth shapes.
+  - Characters face each other; use squash and stretch on every hit.
+  - Caricature the real person affectionately, never crudely.
+- **Story:**
+  - One gag, escalated 3 times, then a topper; 12–16 s that loop.
+  - The cartoon must show what a camera can't. Never just re-label the real clip.
+- **Text:** 15 words or fewer, and one text layer at a time. No chapter tags, receipts or scrolling banners.
+- **Sound:** no TTS by default. Use synthesized grunts, hums and yawns, strong foley, one music bed and a crowd.
+  - Use spoken lines only when the joke is the line itself.
+- **Facts:** keep them in the caption and in a small footer ("Inspired by … · parody"), not in scenes.
+- **CTA:** a small FOLLOW button overlay in the second-to-last beat, instead of a separate end card, so the loop survives.

@@ -1,18 +1,18 @@
-# TikTok: Episode 4 "THE HUMAN WALL"
+# TikTok: Ep4 v3 "IMMOVABLE"
 
 **Caption:**
 ```
-Nobody can move Adama Traoré 😂🧱 Cucurella tried 3 times… then "João Pedro saved my life" 💀 Who could stop him? (parody)
+Push ❌ Piggyback ❌ Bulldozer ❌ Traoré: *one finger* 😂💪 Who can stop him? (parody)
 
-#adamatraore #cucurella #chelsea #westham #premierleague #football #footballtiktok #cartoon
+#adamatraore #cucurella #westham #chelsea #premierleague #football #footballtiktok #animation
 ```
 
 **Settings:**
 
 | Setting | Value |
 |---|---|
-| Sound | Keep the original (the march and the boings carry the jokes) |
-| Cover | Frame at about 0.2 s (Traoré + "Remember this MAN?") |
+| Sound | Keep the original (the tuba march and the CRASH are part of the jokes) |
+| Cover | Frame 0 (the BOING) |
 | Interaction | Duet and Stitch on |
 | AI-generated content label | Off (2D cartoon, not a realistic person) |
 | Tags | No @ of players or clubs |
@@ -20,11 +20,11 @@ Nobody can move Adama Traoré 😂🧱 Cucurella tried 3 times… then "João Pe
 
 **Pinned comment:**
 ```
-Piggyback mode at 6s 😭 rate Cucurella's attempts 1–10
+What should Cucurella try next? 🚜➡️❓ Best comment = next episode
 ```
 
 **Reply ideas:**
-- "Traoré skipped arm day? Never heard of it 💪"
-- "The corner flag survived. Cucurella didn't 😂"
+- "He was sipping juice the whole time 😭"
+- "The corner flag lives at his house now 🏠"
 
-**Trend tie-in:** stitch the original real clip only if you own the rights to it. Otherwise use your own reaction voiceover.
+**Series hook:** collect the best "Attempt 4" comments, then make a follow-up and reply to that comment with the video.
