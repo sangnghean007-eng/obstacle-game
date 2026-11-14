@@ -1,3 +1,5 @@
+> **REJECTED by the user (Nov 14, 2026): "not good, drop it". Do not publish.**
+
 # Release index: Episode 6 "THE WORST DISGUISE IN MIAMI" (Guess the Player #1, 27.6 s, no dialogue)
 
 | File | Purpose |

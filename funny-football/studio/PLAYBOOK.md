@@ -188,3 +188,6 @@ Every release ships `X.md` next to the other 4 dossiers.
 **Rules:**
 - Do not @ players or clubs.
 - Quote-post the video after 24 h with a fresh angle.
+
+## Rejected formats log
+- **Ep6 "Worst Disguise in Miami"** (guess-the-player, with shirt layers peeling off as clues) was **rejected** by the user on Nov 14 2026: "not good, drop it". Do not reuse this concept.
