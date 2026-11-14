@@ -1,8 +1,8 @@
-# Facebook Reels: Ep4 v3 "IMMOVABLE"
+# Facebook Reels: Ep4 v4 "CAN'T MOVE HIM"
 
 **Caption** (the first 2 lines matter):
 ```
-Remember this man? 💪 Push ❌ Piggyback ❌ BULLDOZER ❌
+Remember this man? 💪 Mission: steal the ball ⚽ Push ❌ Tickle ❌ BULLDOZER ❌ Whole team ❌
 Adama Traoré: *one finger* 😂☝️
 
 What should Cucurella try next? Comment below 👇
@@ -24,7 +24,7 @@ The juice box survived. The bulldozer didn't 😂🧃
 
 **Why this should work on Facebook:**
 - Frame 0 is the impact.
-- The video is 14 s and loops, so the average watch time can exceed 100%.
+- The mission card at 2 s explains the story, and the hearts give a reason to keep watching.
 - It still works with the sound off.
 
 After 24 h, log the "3-second viewers" share and the average watch time in `../../../studio/performance.csv`.

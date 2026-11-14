@@ -1,8 +1,8 @@
-# TikTok: Ep4 v3 "IMMOVABLE"
+# TikTok: Ep4 v4 "CAN'T MOVE HIM"
 
 **Caption:**
 ```
-Push ❌ Piggyback ❌ Bulldozer ❌ Traoré: *one finger* 😂💪 Who can stop him? (parody)
+Mission: steal the ball ⚽ Push ❌ Tickle ❌ Bulldozer ❌ Whole team ❌ Traoré: *one finger* 😂💪 Who can stop him? (parody)
 
 #adamatraore #cucurella #westham #chelsea #premierleague #football #footballtiktok #animation
 ```

@@ -1,12 +1,15 @@
-# Instagram Reels: Ep4 v3 "IMMOVABLE"
+# Instagram Reels: Ep4 v4 "CAN'T MOVE HIM"
 
 **Caption:**
 ```
 Nobody can move Adama Traoré 😂💪
 
-Attempt 1: push ❌
-Attempt 2: piggyback ❌
-Attempt 3: bulldozer ❌
+Mission: steal the ball ⚽
+① push ❌
+② tickle ❌
+③ decoy ❌
+④ bulldozer ❌
+⑤ the whole team ❌
 Traoré: *one finger* ☝️
 
 What's attempt 4? 👇
@@ -22,7 +25,7 @@ Inspired by Chelsea 3-2 West Ham (Jan 31, 2026) · parody cartoon · original ch
 
 **Alt text:**
 ```
-Cartoon parody. A huge, calm footballer in a claret number 17 shirt stands by the corner flag. A smaller player with big curly hair in a blue number 3 shirt bounces off him, pushes with all his strength while the big player sips a juice box, climbs on his back while he scrolls his phone, and drives a bulldozer into him that crumples while he yawns. The big player flicks him into the sky with one finger and walks away whistling, carrying the ball and the corner flag.
+Cartoon parody. A huge, calm footballer in a claret number 17 shirt stands by the corner flag. A smaller player with big curly hair in a blue number 3 shirt bounces off him, pushes with all his strength while the big player sips a juice box, tickles him with a feather while he scrolls his phone, holds up a fake "free juice" sign, drives a bulldozer into him that crumples while he yawns, and brings his whole team, who bounce off like bowling pins. The big player flicks him into the sky with one finger, catches him, and walks away whistling, carrying the ball, the corner flag and him. A thank-you card asks viewers to follow.
 ```
 
 **Story (24 h):** question sticker "What's attempt 4?". Repost the best answers.

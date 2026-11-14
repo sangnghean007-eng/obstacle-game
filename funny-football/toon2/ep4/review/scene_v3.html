@@ -1,0 +1,163 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Immovable</title>
+<style>html,body{margin:0;background:#000}canvas{display:block;max-height:100vh;margin:auto}</style></head>
+<body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../chibi.js"></script>
+<script src="../chibi_cast.js"></script>
+<script>
+// Episode 4 v3 "IMMOVABLE": one gag, three escalations, a topper, loop. Inspired by Chelsea 3-2 West Ham (Jan 31, 2026). Parody.
+const W = 1080, H = 1920, ctx = document.getElementById('c').getContext('2d');
+const F = 'Inter, "DejaVu Sans", sans-serif', DARK = '#1a0f08', TAU = Math.PI * 2;
+const lerp = (a, b, k) => a + (b - a) * k, clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const easeIO = k => (k = clamp(k), k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2), easeOut = k => (k = clamp(k), 1 - Math.pow(1 - k, 3));
+const eOB = k => { k = clamp(k); const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(k - 1, 3) + c1 * Math.pow(k - 1, 2); };
+function rng(seed) { return () => (seed = (seed * 16807) % 2147483647, (seed - 1) / 2147483646); }
+function rr(x, y, w, h, r, fill, stroke, lw = 5) { ctx.beginPath(); ctx.roundRect(x, y, w, h, r); if (fill) { ctx.fillStyle = fill; ctx.fill(); } if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = lw; ctx.stroke(); } }
+function txt(s, x, y, size, fill = '#fff', stroke = DARK, align = 'center', weight = 900) { ctx.font = `${weight} ${size}px ${F}`; ctx.textAlign = align; ctx.textBaseline = 'middle'; ctx.lineJoin = 'round'; if (stroke) { ctx.lineWidth = Math.max(6, size * 0.22); ctx.strokeStyle = stroke; ctx.strokeText(s, x, y); } ctx.fillStyle = fill; ctx.fillText(s, x, y); }
+function pop(k, x, y, fn) { if (k <= 0) return; ctx.save(); ctx.translate(x, y); const s = eOB(k); ctx.scale(s, s); fn(); ctx.restore(); }
+function camK(keys, u) { let i = 0; while (i < keys.length - 1 && u > keys[i + 1][0]) i++; const a = keys[i], b = keys[Math.min(i + 1, keys.length - 1)]; const k = b[0] > a[0] ? easeIO((u - a[0]) / (b[0] - a[0])) : 0; return [1, 2, 3, 4].map(j => lerp(a[j] || 0, b[j] || 0, k)); }
+function cam(C, fn, shake = 0, t = 0) { ctx.save(); ctx.translate(W / 2 + Math.sin(t * 91) * shake, H / 2 + Math.cos(t * 77) * shake); ctx.rotate(C[3] || 0); ctx.scale(C[2], C[2]); ctx.translate(-C[0], -C[1]); fn(); ctx.restore(); }
+function burst(x, y, r, s, k, size, fill = '#ffd60a', rot = 0) { pop(k, x, y, () => { ctx.rotate(rot); ctx.beginPath(); for (let i = 0; i < 24; i++) { const a = i / 24 * TAU, q = i % 2 ? r * 0.68 : r; ctx.lineTo(Math.cos(a) * q, Math.sin(a) * q * 0.75); } ctx.closePath(); ctx.fillStyle = fill; ctx.fill(); ctx.lineWidth = 8; ctx.strokeStyle = DARK; ctx.stroke(); if (s) txt(s, 0, 2, size, '#c1121f', '#fff'); }); }
+function ell(x, y, rx, ry, fill, lw = 0) { ctx.beginPath(); ctx.ellipse(x, y, rx, ry, 0, 0, TAU); if (fill) { ctx.fillStyle = fill; ctx.fill(); } if (lw) { ctx.lineWidth = lw; ctx.strokeStyle = DARK; ctx.stroke(); } }
+const TR = (p, e, x, y, s, o = {}) => chibi.draw(ctx, CH.traore, p, e, x, y, s, Object.assign({ f: -1 }, o));
+const CU = (p, e, x, y, s, o = {}) => chibi.draw(ctx, CH.cucu, p, e, x, y, s, Object.assign({ f: 1 }, o));
+
+// ---------- world ----------
+const GY = 1500, TX = 640, TS = 1.6, CS = 1.38;
+let crowdCanvas = null;
+function makeCrowd() { const c = document.createElement('canvas'); c.width = 2600; c.height = 900; const g = c.getContext('2d'); const gr = g.createLinearGradient(0, 0, 0, 900); gr.addColorStop(0, '#0e1838'); gr.addColorStop(1, '#2b4677'); g.fillStyle = gr; g.fillRect(0, 0, 2600, 900);
+  const R = rng(7), cols = ['#034694', '#ffffff', '#7a263a', '#8fd0f0', '#ffd60a']; for (let r = 0; r < 26; r++) for (let x = 0; x < 2600; x += 26 + R() * 10) { g.fillStyle = cols[Math.floor(R() * cols.length)]; g.beginPath(); g.arc(x, 260 + r * 24, 10, 0, TAU); g.fill(); }
+  for (const x of [300, 2200]) { const gl = g.createRadialGradient(x, 120, 5, x, 120, 380); gl.addColorStop(0, 'rgba(255,255,230,.9)'); gl.addColorStop(1, 'rgba(255,255,230,0)'); g.fillStyle = gl; g.fillRect(x - 380, 0, 760, 600); }
+  const b = document.createElement('canvas'); b.width = 2600; b.height = 900; const bg = b.getContext('2d'); bg.filter = 'blur(7px) saturate(70%)'; bg.drawImage(c, 0, 0); return b; }
+function world(t) {
+  if (!crowdCanvas) crowdCanvas = makeCrowd();
+  ctx.drawImage(crowdCanvas, -800, -100);
+  for (let i = -3; i < 8; i++) rr(i * 300, 780, 296, 90, 4, i % 2 ? '#1e3a8a' : '#7a263a', null);
+  const g = ctx.createLinearGradient(0, 870, 0, 2400); g.addColorStop(0, '#3a9d4a'); g.addColorStop(1, '#2e8a3d'); ctx.fillStyle = g; ctx.fillRect(-900, 870, 3000, 1800);
+  for (let i = -6; i < 14; i++) { ctx.fillStyle = 'rgba(255,255,255,.055)'; ctx.beginPath(); ctx.moveTo(i * 200, 870); ctx.lineTo(i * 200 + 100, 870); ctx.lineTo(i * 320 + 160, 2600); ctx.lineTo(i * 320, 2600); ctx.fill(); }
+  ctx.strokeStyle = 'rgba(255,255,255,.92)'; ctx.lineWidth = 12; ctx.beginPath(); ctx.moveTo(-900, 1000); ctx.lineTo(1000, 1000); ctx.lineTo(1250, 2600); ctx.stroke(); ctx.beginPath(); ctx.ellipse(1000, 1000, 90, 50, 0, Math.PI * 0.5, Math.PI); ctx.stroke();
+}
+function cornerFlag(x, y, t, bend = 0) { ctx.save(); ctx.translate(x, y); ctx.rotate(bend); ctx.fillStyle = '#f5f5f5'; ctx.strokeStyle = DARK; ctx.lineWidth = 5; ctx.beginPath(); ctx.roundRect(-8, -460, 16, 460, 6); ctx.fill(); ctx.stroke();
+  const w = Math.sin(t * 7) * 14; ctx.beginPath(); ctx.moveTo(8, -460); ctx.quadraticCurveTo(70, -475 + w, 140, -450); ctx.lineTo(140, -360); ctx.quadraticCurveTo(70, -385 - w, 8, -370); ctx.closePath(); ctx.fillStyle = '#ffd60a'; ctx.fill(); ctx.lineWidth = 6; ctx.stroke(); ctx.restore(); }
+function ball(x, y, r = 34, a = 0) { ctx.save(); ctx.translate(x, y); ctx.rotate(a); ell(0, 0, r, r, '#fff', 6); ctx.beginPath(); for (let i = 0; i < 5; i++) { const q = i / 5 * TAU - 1.57; ctx.lineTo(Math.cos(q) * r * .4, Math.sin(q) * r * .4); } ctx.fillStyle = DARK; ctx.fill(); ctx.restore(); }
+function shadow(x, w, k = 1) { ctx.fillStyle = `rgba(0,0,0,${0.22 * k})`; ctx.beginPath(); ctx.ellipse(x, GY + 6, w, w * 0.15, 0, 0, TAU); ctx.fill(); }
+function puff(x, y, k, n = 8, R0 = 160, col = '235,225,200') { if (k <= 0 || k >= 1) return; for (let i = 0; i < n; i++) { const a = Math.PI + i / (n - 1) * Math.PI, d = R0 * easeOut(k); ell(x + Math.cos(a) * d, y + Math.sin(a) * d * 0.45, 46 * (1 - k * 0.6), 40 * (1 - k * 0.6), `rgba(${col},${0.95 * (1 - k)})`); } }
+function stars(x, y, t, r = 120) { for (let i = 0; i < 4; i++) { const a = t * 7 + i * TAU / 4; ctx.save(); ctx.translate(x + Math.cos(a) * r, y + Math.sin(a) * r * 0.3); ctx.rotate(t * 5); ctx.beginPath(); for (let j = 0; j < 10; j++) { const q = j % 2 ? 11 : 28; ctx.lineTo(Math.cos(j / 10 * TAU - 1.57) * q, Math.sin(j / 10 * TAU - 1.57) * q); } ctx.closePath(); ctx.fillStyle = '#ffe14d'; ctx.fill(); ctx.lineWidth = 5; ctx.strokeStyle = DARK; ctx.stroke(); ctx.restore(); } }
+function speed(x, y, dir, t, n = 8, len = 300) { const R = rng(Math.floor(t * 30) + 3); ctx.strokeStyle = 'rgba(255,255,255,.85)'; ctx.lineCap = 'round'; for (let i = 0; i < n; i++) { const yy = y + (R() - 0.5) * 500; ctx.lineWidth = 6 + R() * 6; ctx.beginPath(); ctx.moveTo(x, yy); ctx.lineTo(x - dir * (len + R() * 200), yy); ctx.stroke(); } }
+function badge(n, k, x = W / 2) { pop(k, x, 290, () => { ell(0, 0, 80, 80, '#ffd60a', 8); txt(String(n), 0, 6, 96, DARK, null); }); }
+function flash(k) { if (k > 0 && k < 1) { ctx.fillStyle = `rgba(255,255,255,${0.75 * (1 - k)})`; ctx.fillRect(0, 0, W, H); } }
+const juice = (x, y) => { rr(x - 30, y - 70, 60, 90, 8, '#ff8fab', DARK, 6); rr(x - 30, y - 40, 60, 30, 0, '#fff', null); ctx.strokeStyle = '#ffd60a'; ctx.lineWidth = 9; ctx.beginPath(); ctx.moveTo(x + 8, y - 70); ctx.lineTo(x + 30, y - 140); ctx.lineTo(x + 70, y - 150); ctx.stroke(); };
+const phone = (x, y) => { rr(x - 34, y - 110, 68, 120, 14, '#111', DARK, 6); const g = ctx.createLinearGradient(0, y - 100, 0, y); g.addColorStop(0, '#7fd3ff'); g.addColorStop(1, '#c084fc'); rr(x - 26, y - 100, 52, 100, 8, g, null); };
+function bulldozer(x, y, s, crumple, t) { ctx.save(); ctx.translate(x, y); ctx.scale(s, s); const c = 1 - crumple * 0.45;
+  ctx.save(); ctx.translate(260, 0); ctx.scale(c, 1); ctx.translate(-260, 0);
+  for (const wx of [-170, 60]) { ell(wx, -50, 70, 70, '#2b2b2b', 7); ell(wx, -50, 28, 28, '#9ca3af', 5); }
+  rr(-260, -280, 520, 200, 26, '#ffc300', DARK, 8); rr(-230, -260, 180, 60, 10, 'rgba(255,255,255,.35)', null);
+  if (crumple > 0) { ctx.strokeStyle = DARK; ctx.lineWidth = 6; for (let i = 0; i < 6; i++) { ctx.beginPath(); ctx.moveTo(-200 + i * 80, -280); ctx.lineTo(-170 + i * 80, -180); ctx.lineTo(-200 + i * 80, -90); ctx.stroke(); } }
+  ctx.restore();
+  rr(260 * c - 40, -330, 90, 320, 14, '#9ca3af', DARK, 8); ctx.fillStyle = '#7a8088'; for (let i = 0; i < 4; i++) ctx.fillRect(260 * c - 30, -300 + i * 80, 70, 10);
+  ctx.strokeStyle = DARK; ctx.lineWidth = 8; ctx.beginPath(); ctx.moveTo(-120 * c, -280); ctx.lineTo(-120 * c, -470); ctx.stroke(); ctx.fillStyle = '#034694'; ctx.beginPath(); ctx.moveTo(-120 * c, -470); ctx.lineTo(-20 * c, -440 + Math.sin(t * 12) * 10); ctx.lineTo(-120 * c, -410); ctx.fill(); ctx.stroke();
+  ctx.restore(); }
+const notes = (x, y, t) => { for (let i = 0; i < 3; i++) { const k = (t * 0.9 + i / 3) % 1; ctx.globalAlpha = 1 - k; txt('♪', x + k * 80 + Math.sin(k * 9) * 20, y - k * 220, 60, '#fff', DARK); } ctx.globalAlpha = 1; };
+
+// ---------- scenes ----------
+function s_impact(u) { // frame 0: Cucurella flattened on Traoré's chest
+  const C = camK([[0, 500, 1190, 1.3, -0.03], [0.5, 480, 1200, 1.2, 0.02], [1.4, 480, 1210, 1.18, 0]], u);
+  cam(C, () => {
+    world(u); cornerFlag(900, GY, u); shadow(TX, 230);
+    const jig = u < 0.3 ? Math.sin(u * 60) * 0.015 * (1 - u / 0.3) : 0;
+    TR('shield', u < 0.5 ? 'bored' : 'smug', TX, GY, TS, { sq: jig }); ball(470, GY - 34);
+    if (u < 0.35) { const y = lerp(GY - 120, GY - 40, easeIO(u / 0.35)); CU('flail', 'shock', 395, y, CS, { sq: -0.42, lean: 0.08 }); }
+    else { const k = clamp((u - 0.35) / 0.35), x = lerp(395, 230, easeOut(k)), y = GY + 10 - Math.sin(k * Math.PI) * 120; CU('flail', 'dizzy', x, y, CS, { lean: lerp(0.1, -1.45, easeOut(k)), sq: u > 0.7 && u < 0.85 ? 0.2 : 0 }); if (u > 0.7) { puff(230, GY, (u - 0.7) / 0.45); stars(120, GY - 120, u, 100); } }
+  }, u < 0.2 || (u > 0.7 && u < 0.8) ? 18 : 0, u);
+  if (u < 0.45) burst(330, 900, 150, 'BOING!', 1, 70, '#ffd60a', -0.12);
+  pop(1, W / 2, 215, () => txt('IMMOVABLE 💪', 0, 0, 118, '#ffd60a'));
+  pop(eOB((u - 0.4) / 0.2), W / 2, 380, () => { rr(-140, -40, 280, 80, 40, '#7a263a', DARK, 6); txt('Traoré', 0, 3, 52, '#fff', null); });
+}
+function s_push(u) { // 1: push with everything; Traoré sips a drink
+  const C = camK([[0, 460, 1200, 1.2, 0], [2.6, 440, 1200, 1.3, 0.02]], u);
+  cam(C, () => {
+    world(u + 2); cornerFlag(900, GY, u); shadow(TX, 230); shadow(360, 140);
+    const sipping = u > 0.6; TR(sipping ? 'sip' : 'shield', sipping ? 'sip' : 'bored', TX, GY, TS, { prop: sipping ? { hand: 'f', draw: juice } : null });
+    ball(470, GY - 34);
+    const ph = Math.floor(u * 22) % 2, x = 290 - Math.min(30, u * 20);
+    CU(chibi.mix('push', ph ? { bArm: [80, 95], fArm: [70, 88], bLeg: [-55, -10], fLeg: [10, 60] } : { bArm: [80, 95], fArm: [70, 88], bLeg: [10, 60], fLeg: [-55, -10] }, 1), 'strain', x, GY, CS, { lean: 0.3 + Math.sin(u * 30) * 0.02 });
+    puff(x - 100, GY, (u * 3) % 1, 5, 90);
+    if (u > 1.2) { ctx.strokeStyle = 'rgba(255,255,255,.8)'; ctx.lineWidth = 6; for (let i = 0; i < 3; i++) { const k = (u * 2 + i / 3) % 1; ctx.globalAlpha = 1 - k; ctx.beginPath(); ctx.arc(TX - 90, 820, 40 + k * 60, -0.6, 0.6); ctx.stroke(); } ctx.globalAlpha = 1; }
+  }, 3, u);
+  badge(1, u / 0.2);
+}
+function s_piggy(u) { // 2: jumps on his back; Traoré scrolls his phone
+  const C = camK([[0, 520, 1190, 1.18, 0], [2.6, 560, 1170, 1.26, -0.02]], u);
+  cam(C, () => {
+    world(u + 5); cornerFlag(900, GY, u); shadow(TX, 230);
+    const jump = clamp(u / 0.45), cx = lerp(330, 790, easeIO(jump)), cy = lerp(GY, 1000, easeIO(jump)) - Math.sin(jump * Math.PI) * 300;
+    if (u > 0.45) { const fl = Math.sin(u * 14) * 0.12; CU('cling', 'angry', 790, 1090, CS * 0.95, { lean: -0.55 + fl, f: -1 }); }
+    TR('phone', 'phone', TX, GY, TS, { prop: { hand: 'f', draw: phone } }); ball(470, GY - 34);
+    if (u <= 0.45) CU('flail', 'angry', cx, cy, CS, { lean: jump * 0.6 });
+    if (u > 1.2 && u < 2.0) burst(TX - 260, 760, 70, '', 1, 10, '#fff');
+  }, 0, u);
+  if (u > 1.2 && u < 2.0) txt('scroll', 330, 860, 40, '#fff', DARK);
+  badge(2, u / 0.2, 170);
+}
+function s_dozer(u) { // 3: bulldozer -> crumples; Traoré yawns
+  const hit = 1.0;
+  const C = camK([[0, 150, 1180, 0.95, 0], [hit, 280, 1180, 0.98, 0], [1.4, 320, 1180, 1.02, 0.02], [2.8, 360, 1190, 1.08, 0]], u);
+  cam(C, () => {
+    world(u + 8); cornerFlag(900, GY, u); shadow(TX, 230);
+    TR('shield', u > hit + 0.2 ? 'yawn' : 'bored', TX, GY, TS, { sq: u > hit && u < hit + 0.15 ? 0.02 : 0 }); ball(470, GY - 34);
+    const x = u < hit ? lerp(-700, 200, easeIO(u / hit)) : 200, cr = u < hit ? 0 : easeOut((u - hit) / 0.2);
+    if (u < hit + 0.3) CU('stand', u < hit ? 'angry' : 'shock', x - 200, GY - 400, 1.05, { lean: u < hit ? 0.1 : 0 });
+    bulldozer(x - 260, GY, 1.5, cr, u);
+    if (u < hit) { speed(x - 700, 1250, 1, u); puff(x - 700, GY, (u * 3) % 1, 6, 140, '120,120,120'); }
+    if (u > hit) { for (let i = 0; i < 6; i++) { const k = clamp((u - hit) / 1.2), a = -2.6 + i * 0.35; ell(x - 100 + Math.cos(a) * 600 * k, GY - 250 + Math.sin(a) * 500 * k + 900 * k * k, 18, 18, i % 2 ? '#ffc300' : '#9ca3af', 5); } puff(x - 60, GY - 100, (u - hit) / 0.8, 10, 260, '90,90,90');
+      if (u > hit + 0.3) { const k = clamp((u - hit - 0.3) / 0.3); CU('flail', 'dizzy', x - 200, lerp(GY - 400, GY - 420, k), 1.05); stars(x - 200, GY - 420 - 560 * 1.05, u, 90); } }
+  }, u > hit && u < hit + 0.3 ? 22 : 0, u);
+  if (u > hit && u < hit + 0.6) burst(380, 900, 170, 'CRASH!', (u - hit) / 0.06, 70, '#ffd60a', 0.08);
+  if (u > hit) flash((u - hit) / 0.15); badge(3, u / 0.2);
+}
+function s_flick(u) { // topper: finally he reacts — one finger
+  const tf = 0.75;
+  const C = camK([[0, 470, 1100, 1.35, 0], [tf, 480, 1080, 1.45, 0.02], [tf + 0.15, 420, 900, 1.0, -0.04], [2.0, 380, 820, 0.95, 0]], u);
+  cam(C, () => {
+    world(u + 11); cornerFlag(900, GY, u); shadow(TX, 230);
+    const pose = u < 0.35 ? 'shield' : u < tf ? chibi.mix('shield', 'flick', easeOut((u - 0.35) / 0.3)) : chibi.mix('flick', 'flickOut', easeOut((u - tf) / 0.06));
+    TR(pose, u < 0.35 ? { lid: 0.3, mouth: 'flat', look: [-0.8, 0.6] } : 'smug', TX, GY, TS); ball(470, GY - 34);
+    if (u < tf) { CU('stand', 'dizzy', 330, GY, CS); stars(330, GY - 640, u, 100); }
+    else { const k = clamp((u - tf) / 0.9); for (let g = 3; g >= 0; g--) { const q = Math.max(0, k - g * 0.05); const x = lerp(330, -300, q), y = lerp(GY, -500, easeOut(q)); ctx.globalAlpha = g ? 0.18 : 1; CU('flail', 'shock', x, y, CS * (g ? 1 : 1), { lean: -q * 10, sq: g === 0 && q < 0.15 ? -0.35 : 0 }); } ctx.globalAlpha = 1; }
+    if (u > tf && u < tf + 0.25) { ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.lineWidth = 14; ctx.beginPath(); ctx.arc(TX - 120, 900, 260, Math.PI * 0.85, Math.PI * 1.35); ctx.stroke(); }
+  }, u > tf && u < tf + 0.25 ? 20 : 0, u);
+  if (u > tf && u < tf + 0.4) burst(400, 760, 110, 'FLICK', (u - tf) / 0.05, 46, '#fff59d');
+  if (u > 1.35) { const k = (u - 1.35) / 0.5; ctx.save(); ctx.translate(170, 260); ctx.rotate(u * 4); ctx.scale(1 + Math.sin(k * Math.PI) * 1.5, 1 + Math.sin(k * Math.PI) * 1.5); ctx.beginPath(); for (let j = 0; j < 8; j++) { const q = j % 2 ? 8 : 34; ctx.lineTo(Math.cos(j / 8 * TAU) * q, Math.sin(j / 8 * TAU) * q); } ctx.closePath(); ctx.fillStyle = '#fff'; ctx.fill(); ctx.restore(); }
+}
+function s_walk(u) { // walks off with the ball and the corner flag
+  const C = camK([[0, 540, 1150, 1.1, 0], [2.0, 620, 1160, 1.1, 0]], u);
+  cam(C, () => {
+    world(u + 13); const x = lerp(TX, 1250, easeIO(clamp((u - 0.3) / 1.7))), b = Math.abs(Math.sin(u * 9)) * 16;
+    shadow(x, 230);
+    ctx.save(); ctx.translate(x + 90, GY - 650 - b); ctx.rotate(-1.25); ctx.translate(-0, 0); cornerFlag(0, 300, u); ctx.restore();
+    TR(chibi.mix('carry', 'carry', 1), 'smile', x, GY - b, TS, { f: 1 }); ball(x - 140, GY - 470 - b);
+    notes(x - 120, 820, u);
+  }, 0, u);
+  pop(eOB((u - 0.4) / 0.2), W / 2, 260, () => { rr(-420, -70, 840, 140, 40, 'rgba(10,14,30,.88)', null); txt('Who can stop him? 👇', 0, 3, 70, '#ffd60a', null); });
+  pop(eOB((u - 0.9) / 0.2), W / 2, 1350, () => { const tap = u > 1.4; rr(-170, -50, 340, 100, 50, tap ? '#22c55e' : '#e11d2a', DARK, 6); txt(tap ? 'FOLLOWING ✓' : '+ FOLLOW', 0, 3, 46, '#fff', null); });
+  rr(110, 1430, 860, 72, 36, 'rgba(10,14,30,.8)', null); txt('Inspired by Chelsea 3-2 West Ham, Jan 31 2026 · parody', W / 2, 1467, 30, '#fff', null, 'center', 800);
+}
+function s_loop(u) { // tiny revenge run back in -> loops to frame 0
+  const C = camK([[0, 500, 1170, 1.12, 0], [1.0, 510, 1160, 1.22, -0.02]], u);
+  cam(C, () => {
+    world(u + 15); cornerFlag(900, GY, u); shadow(TX, 230); TR('shield', 'bored', TX, GY, TS); ball(470, GY - 34);
+    const x = lerp(-300, 330, easeIO(u / 1.0)); CU(Math.floor(u * 14) % 2 ? 'run1' : 'run2', 'angry', x, GY - Math.abs(Math.sin(u * 22)) * 30, CS, { lean: 0.25 }); speed(x - 150, 1200, 1, u, 6, 220);
+    rr(x + 20, GY - 560, 70, 26, 12, '#f2c79a', DARK, 4);
+  }, 0, u);
+}
+const LEN = [['impact', 1.4, s_impact], ['push', 2.6, s_push], ['piggy', 2.6, s_piggy], ['dozer', 2.8, s_dozer], ['flick', 2.0, s_flick], ['walk', 2.0, s_walk], ['loop', 1.0, s_loop]];
+const SEG = []; { let t = 0; for (const [n, d, f] of LEN) { SEG.push([t, t + d, f, n]); t += d; } }
+const DURATION = SEG[SEG.length - 1][1];
+window.SEGS = SEG.map(s => [s[3], +s[0].toFixed(2)]);
+function render(t) {
+  ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, W, H); window.T2T = t;
+  for (const [a, b, fn] of SEG) if (t >= a && t < b) { fn(t - a); break; }
+}
+window.render = render; window.DURATION = DURATION;
+if (!location.search.includes('render')) { const t0 = performance.now(); (function loop() { render(((performance.now() - t0) / 1000) % DURATION); requestAnimationFrame(loop); })(); }
+</script></body></html>

@@ -1,4 +1,4 @@
-# YouTube Shorts: Ep4 v3 "IMMOVABLE"
+# YouTube Shorts: Ep4 v4 "CAN'T MOVE HIM"
 
 **Title:**
 ```
@@ -8,7 +8,7 @@ Backup titles: `Cucurella Tried EVERYTHING vs Traoré 🚜😂` · `When Traoré
 
 **Description:**
 ```
-Push ❌ Piggyback ❌ Bulldozer ❌ …and then Traoré used ONE finger 😂💪
+Mission: steal the ball ⚽ Push ❌ Tickle ❌ Decoy ❌ Bulldozer ❌ The whole team ❌ …then Traoré used ONE finger 😂💪
 Who can stop him? 👇
 
 Inspired by a real moment: Adama Traoré's West Ham debut at Chelsea (Jan 31, 2026, Chelsea 3-2 West Ham), when he and Marc Cucurella clashed at the corner flag.
@@ -42,4 +42,4 @@ adama traore, traore strength, strongest footballer, cucurella, traore vs cucure
 Attempt 4 should be ___ 👇 (best idea goes in the next episode 😤)
 ```
 
-**Why this should loop:** the last second runs back into frame 0, so a rewatch looks seamless. Watch "Viewed vs swiped" in Studio after 24 h.
+**Retention hooks:** the 5-heart HUD ("will he do it on the last heart?") and the follow end card with a next-episode teaser. Watch "Viewed vs swiped" in Studio after 24 h.
