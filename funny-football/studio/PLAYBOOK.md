@@ -197,3 +197,10 @@ Every release ships `X.md` next to the other 4 dossiers.
 - **Characters always act:** the winner does a signature celebration, the loser gives a big reaction, and the idle character keeps moving. No standing still.
 - **Audio hits on every key moment:** airhorn/crash + crowd roar for wins, wah-wah for losses, a driving beat under the whole video.
 - **Pacing:** give each beat 5+ s; a 40–45 s total is fine when every section pays off.
+
+## Lean review mode (user choice, Nov 14 2026, to save usage)
+This section replaces the multi-agent rooms above where they conflict.
+- **Pre-production:** the producer drafts the script alone. At most **1 combined agent** (writer + researcher) is used, and only if the topic needs fresh research.
+- **Post-production:** **1 combined reviewer agent** (comedy + art + audience + fact check) runs on a contact sheet.
+- **At most 1 fix round** after the review. Then ship. No second review unless the user asks.
+- Keep check renders small: a few key frames, not full renders, until the final export.

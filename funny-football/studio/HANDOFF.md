@@ -4,7 +4,7 @@ This channel makes funny satirical football cartoon Shorts (YouTube channel **So
 
 ## Who you work for and how
 - Talk to the user **in Vietnamese**. Every deliverable (video text, titles, posts) is in **English**.
-- Standing order: **the team decides, then builds.**
+- Standing order: **the team decides, then builds** (LEAN mode: 1 combined reviewer, at most 1 fix round; see the PLAYBOOK "Lean review mode" section).
   - For every video, run the pre-production room (parallel agents), merge the best ideas, build the video, run the post-production review room, fix, and ship.
   - Do not stop to ask the user to approve a script.
 - Facts must be real and checked against 2 or more sources (`toon2/epN/facts.md`). Everything else is labelled "parody".
