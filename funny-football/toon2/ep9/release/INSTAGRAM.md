@@ -1,4 +1,4 @@
-# Instagram Reels: Ep9 "NO RONALDO, NO PROBLEM?"
+# Instagram Reels: Ep9 "NO RONALDO, NO PROBLEM?" (v2)
 
 **Caption:**
 ```
@@ -7,15 +7,20 @@ No Ronaldo, no problem?! 😬 YES 7 or NO, does Portugal need him back? 👇
 📈 Oct 1: Denmark 2-4 Portugal, without Ronaldo
 📉 Nov 14: Portugal 1-4 Denmark, in Braga, on his farewell night
 
+4 goals. 4 SIUUUs. 1 white flag 🏳️
 Spot the 3 hidden 🐐 👀
-Real results · cartoon parody, original characters.
 
-#ronaldo #cr7 #portugal #nationsleague #howitstarted #footballmemes #animation
+Real results · celebrations are cartoon parody, original characters.
+
+#ronaldo #cr7 #portugal #siuuu #nationsleague #howitstarted #footballmemes #animation
 ```
 
-**Settings:** cover is frame 0 (centre crop on the scoreboard and the hook). Share to Feed: on.
+**Settings:**
+- Cover: frame 0, centre crop on the scoreboard and the hook.
+- Share to Feed: on.
+- Audio name: "No Ronaldo No Problem – Soccer 365 (original)".
 
 **Pinned comment:**
 ```
-Best Portugal reaction: 1 shrug, 2 hands on head, 3 argument, 4 white flag 🏳️ Comment a number 👇
+Best shot: 1 split-screen penalty, 2 slow-mo volley, 3 the view from inside the net, 4 the header from the sky ⭐ Comment a number 👇
 ```

@@ -1,19 +1,19 @@
-# TikTok: Ep9 "NO RONALDO, NO PROBLEM?"
+# TikTok: Ep9 "NO RONALDO, NO PROBLEM?" (v2)
 
 **Caption:**
 ```
-No Ronaldo, no problem?! 😬 How it started: 4-2. How it's going: 1-4 on his farewell night. Does Portugal need him back? YES 7 or NO 👇
+No Ronaldo, no problem?! 😬 How it started: 4-2. How it's going: 1-4 on his farewell night… and Denmark SIUUU'd every goal 💀 Does Portugal need him back? YES 7 or NO 👇
 
-#ronaldo #portugal #cr7 #nationsleague #howitstarted #football #footballtiktok #animation
+#ronaldo #portugal #siuuu #nationsleague #howitstarted #football #footballtiktok #animation
 ```
 
 **Settings:**
 - Keep the original sound.
-- Cover: frame 0.
+- Cover: frame 0 (1-4 board + hook).
 - Allow Duet and Stitch.
-- Post today: the match was Nov 14.
+- Post today.
 
 **Pinned comment:**
 ```
-Found the 3 hidden 🐐? 👀
+Rate the SIUUUs 1-4 👇 and did you find the 3 hidden 🐐? 👀
 ```
