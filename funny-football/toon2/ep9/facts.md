@@ -11,6 +11,16 @@
 | 7 | Goal order: Højbjerg pen, Højlund, Højlund, Andersen, then Bernardo Silva in stoppage time (so 0-1, 0-2, 0-3, 0-4, 1-4 are all real scores) | VERIFIED | Goal; VAVEL; fvn.no |
 | 8 | Tribute: Portugal players in number-7 shirts before kick-off | VERIFIED | Goal ("everyone wears the number 7 shirt"); beIN Sports and The Daily Star (tribute plan) |
 
+| 9 | Shirt names and numbers: D. COSTA 1, DIAS 3, VEIGA 13, FÉLIX 11, FERNANDES 8 (Nov 14 XI) | PARTLY VERIFIED: names are in two lineup reports (WhoScored confirmed XI, World Soccer Talk); the numbers come from WhoScored only | WhoScored; World Soccer Talk |
+| 10 | Rebound goal: Félix's shot saved, Bernardo Silva taps in (90+3) | VERIFIED (scorer); rebound detail from one match report | Goal; VAVEL; fvn.no |
+| 11 | Oct 1 scorers shown on shirts: CANCELO, RAMOS, VITINHA, FÉLIX | VERIFIED | ESPN; beIN Sports |
+
+**Parody, not claims:**
+- the SIUUU celebrations after each Danish goal on Nov 14 (Højlund said before the match he probably wouldn't do it again)
+- the shot designs (split screen, slow motion, view from inside the net)
+- the corner before Andersen's header
+- Danish players carry names only (no numbers), because their numbers could not be verified.
+
 **Dropped:**
 - Danish fans chanting "Messi": only one source (Goal). Not used.
 - Whether Ronaldo was at the stadium: unclear, so he is not shown there. His sofa scene at the end is labelled "parody" and makes no claim.

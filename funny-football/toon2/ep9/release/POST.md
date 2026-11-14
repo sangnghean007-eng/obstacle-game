@@ -1,4 +1,4 @@
-# Release index: Episode 9 "NO RONALDO, NO PROBLEM?" (Portugal 1-4 Denmark, 45.0 s, no dialogue)
+# Release index: Episode 9 "NO RONALDO, NO PROBLEM?" (Portugal 1-4 Denmark, 51.3 s, no dialogue)
 
 | File | Purpose |
 |---|---|
@@ -27,3 +27,11 @@
 - Ronaldo on the sofa with open eyes, looking at the TV, and a big 🤨
 
 **Publish ASAP:** the match was today, so the topic is hottest in the next 24-48 h.
+
+**v2 (user feedback, Nov 14):** "each Danish goal needs a SIUUU-style celebration; more varied, exciting shots; names under the shirt numbers".
+- **Goal 1, Højbjerg pen:** a split-screen stare-down (taker vs keeper), a side shot, the keeper dives the wrong way, a solo SIUUU.
+- **Goal 2, Højlund volley:** a lob, then a slow-motion close-up, a freeze-frame BOOM, a whip pan into the net, and a bigger SIUUU with a shockwave that knocks the defenders over.
+- **Goal 3, Højlund:** a tracking shot where a step-over spins VEIGA around, a view from inside the net as the ball flies at the camera, then a 3-man team SIUUU with fireworks.
+- **Goal 4, Andersen header:** a corner, the camera tilts up to the night sky and stadium lights, a low-angle leap above DIAS and VEIGA with a BONK, then a giant "SIUUUUU!!!" with the whole team and a white flag.
+- **90+3:** FÉLIX's shot is saved and B. SILVA taps in the rebound.
+- **Names on shirts:** Portugal players get name + number (WhoScored lineup); Danish players get names only.

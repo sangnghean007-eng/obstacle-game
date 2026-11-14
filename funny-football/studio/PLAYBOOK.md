@@ -204,3 +204,8 @@ This section replaces the multi-agent rooms above where they conflict.
 - **Post-production:** **1 combined reviewer agent** (comedy + art + audience + fact check) runs on a contact sheet.
 - **At most 1 fix round** after the review. Then ship. No second review unless the user asks.
 - Keep check renders small: a few key frames, not full renders, until the final export.
+
+## Goal-scene standard (Ep9 v2 feedback, Nov 14 2026)
+- **Each goal gets its own shot design.** Never repeat the same wide shot. Options: a split-screen stare-down, slow motion with a freeze-frame impact, a whip pan, a tracking shot, a view from inside the net, a tilt up to the sky for crosses and corners, a low-angle leap.
+- **Each goal gets a big celebration beat** (SIUUU-style or signature), escalating across the video: solo → bigger with a shockwave → team chorus → giant whole-team. Label celebrations that did not happen as parody in the facts sheet.
+- **Names under the shirt numbers** for every real player, auto-fitted to the shirt (`nm()` helper in `ep9/scene.html`). Show numbers only when a lineup source confirms them; otherwise show the name only.
