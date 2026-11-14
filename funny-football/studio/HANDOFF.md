@@ -34,6 +34,7 @@ This channel makes funny satirical football cartoon Shorts (YouTube channel **So
 | Ep6 | "WORST DISGUISE IN MIAMI" (`toon2/ep6/`) | REJECTED, do not reuse |
 | Ep7 | "GOAT COURT" courtroom (`toon2/ep7/`) | Done (v3) |
 | Ep8 | "ROAD TO 1000" mountain mini-movie (`toon2/ep8/`): Ronaldo 985 goals, 15-min hat-trick | Done, awaiting user feedback |
+| Ep9 | "NO RONALDO, NO PROBLEM?" how it started/how it's going (`toon2/ep9/`): Portugal 4-2 Denmark without him → 1-4 on his farewell night | Done (user-requested topic), awaiting feedback |
 
 ## Environment setup for a fresh container
 ```
@@ -42,9 +43,10 @@ apt-get install -y -q libttspico-utils espeak-ng mbrola mbrola-us2 mbrola-us3
 Playwright, Chromium, ffmpeg, numpy and scipy are already available.
 
 ## Next
+- Ep9 "NO RONALDO, NO PROBLEM?" is done (user asked for Portugal's latest match, Nov 14 2026). Post it within 24-48 h.
 - Ep8 "ROAD TO 1000" is done (Ronaldo 985 career goals as of Nov 12, 2026; mountain-expedition format; lean review FIX FIRST → 5 fixes → shipped). Waiting for user feedback.
 - Before posting Ep8, re-check the goal count; if he has scored again, say "as of Nov 12" in captions.
-- Ep8 sets up a **Road to 1000 series**: every few goals, a new climb episode (the goat keeps stealing the flag). Episode 9 should use a different format (rule: never the same format twice in a row), e.g. nature documentary or GOAT Court Part 2.
+- Ep8 sets up a **Road to 1000 series**: every few goals, a new climb episode (the goat keeps stealing the flag). The next episode should use a format different from Ep9's how-it-started/how-it's-going (rule: never the same format twice in a row), e.g. nature documentary or GOAT Court Part 2.
 - Ask the user for platform stats after each release, and log them in `performance.csv`.
 - Tool note: a fresh container may need `pip install scipy` for the audio scripts.
 
