@@ -41,3 +41,7 @@ Playwright, Chromium, ffmpeg, numpy and scipy are already available.
 - Ep5 "SECRET PLAN" (Ronaldo reads Danilo's tactics) is done (`toon2/ep5/`). Next: Ep6.
 - Use the Ep4 v4 template: hook, MISSION card, 5 hearts and 5 attempts, GAME OVER, twist, thanks + FOLLOW.
 - Ask the user for platform stats after each release, and log them in `performance.csv`.
+
+## Daily learning (scheduled task, 6:44 am Australia/Sydney)
+- **What it does:** a fresh session runs every morning. It hunts 3 verified topic ideas (appended to `IDEAS.md`), learns one skill on the rotation (appended to `LEARNING_LOG.md`) and pushes to this branch.
+- **Limits:** it never posts, never makes videos and never edits `PLAYBOOK.md` directly. Proposed playbook changes go in the log entry for the producer to apply.
