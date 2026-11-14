@@ -38,7 +38,7 @@ apt-get install -y -q libttspico-utils espeak-ng mbrola mbrola-us2 mbrola-us3
 Playwright, Chromium, ffmpeg, numpy and scipy are already available.
 
 ## Next
-- Ep5 "SECRET PLAN" (story-first spy mini-movie) is done; Ep6 "WORST DISGUISE IN MIAMI" was REJECTED by the user (do not publish or reuse). Next: Guess the Player #2 or a new story format.
+- Ep5 "SECRET PLAN" (story-first spy mini-movie) is done; Ep6 "WORST DISGUISE IN MIAMI" was REJECTED by the user (do not publish or reuse). Ep7 "GOAT COURT" (Messi vs Ronaldo courtroom) done, review room SHIP IT. Next: GOAT Court Part 2 (boxing weigh-in or trophy room) or a new topic.
 - Use the Ep4 v4 template: hook, MISSION card, 5 hearts and 5 attempts, GAME OVER, twist, thanks + FOLLOW.
 - Ask the user for platform stats after each release, and log them in `performance.csv`.
 

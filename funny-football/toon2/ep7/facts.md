@@ -9,6 +9,7 @@ Researcher pass. Each line has 2+ sources unless it is marked UNVERIFIED. Re-che
 | Other international titles | Copa América 2021, 2024; Finalissima 2022; Olympic gold 2008 | Euro 2016; Nations League 2019, 2025 | khelnow; si.com |
 | Career goals | 900th in Mar 2026 | 976 after the Croatia goal (Jul 2026) | espn; foxsports; beinsports (later totals are UNVERIFIED) |
 | International goals / caps | 125 / 207 (retired Aug 31, 2026) | 146 / 234, world record (retired Nov 5, 2026) | outlookindia; africanews; kuwaittimes; aljazeera |
+| Countries with a league title | Spain, France, USA (Supporters' Shield 2024 + MLS Cup 2025) | England, Spain, Italy, Saudi Arabia (Saudi Pro League won May 21, 2026) | cbsnews.com MLS Cup 2025; aljazeera.com 2025-12-07; foxsports/abcnews (Al-Nassr title) |
 | Records | Most Ballon d'Ors; all-time assists record (passed Puskás's 404 on Nov 29, 2025) | Most UCL goals (140); most men's international goals and caps; league titles in 4 countries | footballtransfers; worldsoccertalk; aljazeera; portugoal |
 | Golden Boots | 6 European + MLS Golden Boot 2025 and 2026 | 4 European | mlssoccer; tsn; planetfootball |
 
