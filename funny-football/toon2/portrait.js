@@ -180,6 +180,8 @@
     for (const l of (S.strands || [])) line(l, 3, S.strandCol || 'rgba(255,255,255,.3)');
     if (S.hairTex) clipTo(S.hair, () => { for (let i = 0; i < 160; i++) { const x = 130 + (i * 37) % 350, y = 20 + (i * 53) % 260; ctx.strokeStyle = 'rgba(255,255,255,.08)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI * 1.4); ctx.stroke(); } });
     if (S.goatee) { shape(S.goatee, '#2a1a10', 0); }
+    if (o.cascao) { shape([[200, 22], [262, 12], [300, 40], [280, 80], [236, 96], [196, 70], [186, 40]], '#1a120c', 4); for (let i = 0; i < 5; i++) line([[206 + i * 18, 34], [214 + i * 18, 78]], 2.5, 'rgba(255,255,255,.25)'); } // R9's famous 2002 'Cascão' fringe
+    if (o.young) { ctx.save(); ctx.globalAlpha = 0.35; ctx.fillStyle = S.skin; ctx.beginPath(); ctx.ellipse(220, 520, 90, 40, 0, 0, Math.PI * 2); ctx.fill(); ctx.restore(); }
     // brows / eyes / nose / mouth
     brow(browE(S.browL, E, true), S.browCol); brow(browE(S.browR, E, false), S.browCol);
     const lk = o.look ?? E.look ?? 0, ld = E.lid ?? (S.lid || 0.12);

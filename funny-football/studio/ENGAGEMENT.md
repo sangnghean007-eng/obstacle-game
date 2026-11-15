@@ -85,3 +85,12 @@ Rotating backgrounds and gimmicks inside ONE format is still monotonous; the vie
 - **The rival always reacts:** jealousy escalation (🙄 → 😤 → steam), a deadpan signature prop (Messi's mate), both staring at each other across the split.
 - **Physical collision gags** when both lives cross (suitcases BONK at the divider).
 - **End on an open loop:** a "TO BE CONTINUED ➡️" freeze makes people follow for part 2.
+
+## 9. Creative-first, proactive (user, Nov 15 2026: "think creatively, why so simple? don't wait for me to guide you")
+A direct remake of a meme/list is NOT a video. Before scripting:
+- **Write 3+ bold concepts** in different frames (personify an object, a fake genre: dating show/documentary/heist, a "what if", a POV of a non-human narrator) and pick the boldest one that still keeps the facts true.
+- **Self-critique as a viewer:** "Is this just the meme in motion?" If yes, throw it away.
+- **Give the story a narrator or a want** (Ep12: the trophy remembers its "exes"; the CR7 beat becomes a flirt, not an insult).
+- **Every era/segment gets its own look AND sound world** (film crackle 1958, VHS 1994, samba 2002, fireworks + choir 2022, smooth jazz for the CR7 "date").
+- **Hunt for the little-known true detail** that makes the joke (R9 played 0 minutes in 1994; the Cascão haircut; the bisht).
+- **Decide and ship.** Don't ask the user to choose between bland options; show the bold version, keep the safe one as a backup in `review/`.

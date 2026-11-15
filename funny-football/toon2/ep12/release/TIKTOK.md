@@ -1,8 +1,9 @@
-# TikTok: Ep12 "= WORLD CUPS"
+# TikTok: Ep12 v2
 **Caption:**
 ```
-World Cups: Pelé 3, R9 2, Messi 1, Cristiano 0… BUT 😏 Is the World Cup everything? YES or NO 👇 Send this to a CR7 fan
-
-#worldcup #ronaldo #messi #pele #footballtiktok
+The World Cup's EXES 💘 Pelé 3 times, R9 with 0 minutes (then the haircut), Messi finally in a bisht… and Cristiano saved it a spot 😏 Does the GOAT need the World Cup? YES 🏆 or NO 🐐 👇
+#worldcup #messi #ronaldo #football #footballtiktok
 ```
-**Settings:** original sound · cover = frame 0 · Duet/Stitch on. **Pinned:** `What's missing from the bag? 👀`
+**Cover:** frame 1 s ("THE WORLD CUP'S EXES 💘"). Keep the original sound.
+**Pinned comment:** `Who's the World Cup's next ex? 👀 Wrong answers only`
+**Reply plan:** reply-with-video to the best "next ex" comment.

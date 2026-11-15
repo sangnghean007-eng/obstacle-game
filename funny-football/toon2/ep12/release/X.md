@@ -1,14 +1,15 @@
-# X (Twitter): Ep12 "= WORLD CUPS"
+# X: Ep12 v2 (native video upload)
 **Main post:**
 ```
-World Cups 🏆
+The World Cup's exes 💘
 
-Pelé = 3
-R9 = 2
-Messi = 1
-Cristiano = 0… BUT 😏
+1958-70: Pelé ×3
+1994: R9, 0 minutes, still champion
+2002: R9, 2 goals in the final + that haircut
+2022: Messi, finally (in a bisht)
+CR7: 0… but a spot is reserved 😏
 
-Is the World Cup everything? 👇 #WorldCup #Ronaldo
+Does the GOAT need the World Cup? 👇 #WorldCup
 ```
-**Reply 1:** `Real: Pelé 1958/62/70 · R9 1994/2002 · Messi 2022. CR7: Euro 2016, 5 UCL, 5 Ballon d'Or, 146 intl goals (record), scored in 6 World Cups. Cartoon parody 🎨`
-**Reply 2:** `What would you add to the bag? 👀`
+**Reply 1:** `Real history: Pelé won 1958/62/70; R9 was an unused 17-year-old in 1994 and scored both goals in the 2002 final; Messi won in Qatar 2022. Cartoon parody, original characters.`
+**Reply 2:** `Who's the trophy's next ex in 2026? 👀`

@@ -1,9 +1,8 @@
-# Facebook Reels: Ep12 "= WORLD CUPS"
+# Facebook Reels: Ep12 v2 (no engagement bait)
 **Caption:**
 ```
-Pelé won 3 World Cups, Ronaldo Nazário 2, Messi 1, and Cristiano Ronaldo none… but look at what else he won 😏
-
-Should the World Cup decide who the greatest is, or does a whole career count more?
-
-Real World Cup history · cartoon parody with original characters.
+If the World Cup trophy could talk about its exes 💘 Pelé three times, R9 twice (once without playing a minute), Messi finally in 2022… and Cristiano still has a spot reserved. Does a player need the World Cup to be the greatest?
+Real World Cup history · cartoon parody
 ```
+**Hashtags:** #WorldCup
+**Pinned comment:** `Which era did the trophy look happiest in: the 1958 film, the 2002 samba or the 2022 night in Qatar?`

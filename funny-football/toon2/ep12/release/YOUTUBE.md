@@ -1,25 +1,26 @@
-# YouTube Shorts: Ep12 "= WORLD CUPS"
-**Title:**
+# YouTube Shorts: Ep12 v2 "THE WORLD CUP'S EXES 💘"
+**Title** (54 characters):
 ```
-Pelé 3, Ronaldo 2, Messi 1, Cristiano 0… BUT 😏 World Cups
+The World Cup's EXES 💘 Pelé, R9, Messi… and Cristiano?
 ```
 **Description:**
 ```
-Who has the most World Cups? 🏆
-Pelé = 3 (1958, 1962, 1970)
-Ronaldo "R9" = 2 (1994, 2002)
-Messi = 1 (2022)
-Cristiano = 0… but open the bag 😏 Euro 2016, 5 Champions Leagues, 5 Ballon d'Ors, 146 international goals (record), scored in 6 World Cups, 985 career goals.
+The World Cup trophy tells the story of its exes 💘 Pelé, Ronaldo R9, Messi and Cristiano Ronaldo.
+🎞️ Pelé: 1958, 1962, 1970 (3 times!)
+📼 R9 1994: 0 minutes played… still champion
+💇 R9 2002: 2 goals in the final (and THAT haircut)
+✨ Messi 2022: finally, in a bisht
+😏 Cristiano: 0 World Cups… but he saved it a spot next to the Euro, 5 Champions Leagues and 5 Ballon d'Ors
 
-Is the World Cup everything? Comment YES or NO 👇
+Does the GOAT need the World Cup? YES 🏆 or NO 🐐 👇
 
-Real World Cup history. Cartoon parody with original characters and synthesized audio. No logos. Not affiliated with FIFA or any player, club or federation.
+Real World Cup history · cartoon parody with original characters and synthesized audio. No logos. Not affiliated with FIFA or any player, club or federation.
 
-#WorldCup #Ronaldo #Messi
+#WorldCup #Messi #Ronaldo
 ```
-**Tags:**
+**Tags** (counted ≤500):
 ```
-world cup, world cup winners, pele, ronaldo nazario, r9, messi, cristiano ronaldo, cr7, goat debate, messi vs ronaldo, world cup 2022, euro 2016, football cartoon, football animation, soccer 365
+world cup, world cup winners, world cup exes, pele, ronaldo nazario, r9, r9 haircut 2002, messi, messi bisht, cristiano ronaldo, cr7, goat debate, messi vs ronaldo, football cartoon, football animation, soccer 365
 ```
-**Settings:** Comedy · Standard YouTube License · embedding on · not made for kids · altered/AI content: No · playlist "Soccer 365 Cartoons".
-**Pinned comment:** `Who should be #1 on this list if it counted EVERYTHING? 👇`
+**Settings:** Comedy · Standard YouTube License · embedding on · not made for kids · altered/AI content: No · playlist "Soccer 365 Cartoons" · related video = Ep11 TWO LIVES.
+**Pinned comment:** `Which "ex" did the World Cup love MOST? 1 Pelé · 2 R9 · 3 Messi 👇`
