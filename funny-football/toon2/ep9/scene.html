@@ -75,6 +75,10 @@ CH.coach = clone('mate2', { kit: KIT_SUIT, num: '', name: '', head: { hair: 'sho
 CH.hoj = clone('mate3', Object.assign({ kit: KIT_DEN, num: '', shoulderW: 96, torsoH: 150, leg: 120, head: { hair: 'short', hairCol: '#b98a4a', R: 104 } }, nm('HØJLUND', 96)));
 CH.d1 = clone('mate1', Object.assign({ kit: KIT_DEN, num: '', head: { hair: 'bald' } }, nm('HØJBJERG'))); CH.d2 = clone('mate4', Object.assign({ kit: KIT_DEN, num: '', head: { hair: 'spiky', hairCol: '#e0b060' } }, nm('ANDERSEN')));
 CH.d3 = clone('mate1', { kit: KIT_DEN, num: '', name: '', head: { hair: 'curls', hairCol: '#c58b3a' } }); CH.dk = clone('mate2', { kit: Object.assign({}, KIT_GK, { shirt: '#111', sleeve: '#111', sock: '#111', sockShade: '#000', num: '#fff' }), num: '', name: '', head: { hair: 'short', hairCol: '#e0b060' } });
+// likeness v2 (Nov 15): merge caricature specs from chibi_cast.js LIKE
+const likeIt = (k, spec) => { const C = CH[k]; CH[k] = Object.assign({}, C, spec, { head: Object.assign({}, C.head, spec.head || {}) }); };
+CH.ronaldo = Object.assign({}, CH.ronaldo, LIKE.ronaldo, { head: Object.assign({}, CH.ronaldo.head, LIKE.ronaldo.head) }); CH.ronP = Object.assign({}, CH.ronaldo, { kit: KIT_POR, num: '7' });
+likeIt('hoj', LIKE.hoj); likeIt('d1', LIKE.d1); likeIt('p1', LIKE.p1); likeIt('p2', LIKE.p2); likeIt('o4', LIKE.p2);
 const DR = (k, p, e, x, y, s = 1, o = {}) => chibi.draw(ctx, CH[k], p, e, x, y, s, Object.assign({ f: 1 }, o));
 const P_KICK = { bArm: [-70, -40], fArm: [70, 40], bLeg: [-12, -6], fLeg: [80, 85] }, P_ARMS = { bArm: [-120, -140], fArm: [120, 140], bLeg: [-14, -8], fLeg: [14, 8] };
 const P_HEAD = { bArm: [-20, -10], fArm: [170, 120], bLeg: [-8, -4], fLeg: [8, 4] }, P_HANDS_HEAD = { bArm: [-160, -100], fArm: [160, 100], bLeg: [-8, -4], fLeg: [8, 4] };
