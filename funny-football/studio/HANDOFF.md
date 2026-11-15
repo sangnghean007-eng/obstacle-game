@@ -41,6 +41,7 @@ This channel makes funny satirical football cartoon Shorts (YouTube channel **So
 | Ep6 | "WORST DISGUISE IN MIAMI" (`toon2/ep6/`) | REJECTED, do not reuse |
 | Ep7 | "GOAT COURT" courtroom (`toon2/ep7/`) | Done (v3) |
 | Ep8 | "ROAD TO 1000" mountain mini-movie (`toon2/ep8/`): Ronaldo 985 goals, 15-min hat-trick | Done, awaiting user feedback |
+| Ep12 | "= WORLD CUPS" (Pelé 3, R9 2, Messi 1, CR7 0… BUT twist) (`toon2/ep12/`) | Done, awaiting user feedback |
 | Ep9 | "NO RONALDO, NO PROBLEM?" how it started/how it's going (`toon2/ep9/`): Portugal 4-2 Denmark without him → 1-4 on his farewell night | Done (user-requested topic), awaiting feedback |
 | Ep10 | "MESSI vs RONALDO: FINAL FIGHT" fighting-game remake of Ep7 (`toon2/ep10/`), viral-first, portraits | Done, awaiting feedback |
 | Ep11 | "TWO LIVES" Ronaldo vs Messi split-screen timeline 2002→2026 (`toon2/ep11/`) | Done, awaiting user feedback |

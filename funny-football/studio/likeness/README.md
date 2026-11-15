@@ -40,4 +40,8 @@ User rule (Nov 15 2026): "make sure everyone from now on also looks alike".
 | Cristiano Ronaldo | `ronaldo` (custom) | yes | "Cristiano Ronaldo, 2023.jpg"; "Cristiano_Ronaldo_2018.jpg" | PASS (user: "ổn") |
 | Lionel Messi | `messi` (custom) | yes | "Lionel_Messi_20180626.jpg" | PASS (beard v2 approved) |
 | Rasmus Højlund | `hojlund` (generic) | yes (spiky honey-blond) | "Rasmus Højlund with a fan.jpg" | round 3, awaiting user check |
+| Pelé | `pele` (generic) | no | "Pele photo 1962.jpg" | round 2, awaiting user check |
+| Ronaldo Nazário (R9) | `r9` (generic) | no | "Ronaldo.jpeg" (2000s, shaved head) | round 2, awaiting user check |
 | Højbjerg, Dias, Félix, B. Silva, D. Costa, Andersen, Veiga | — | rough | none yet | TODO before the next use |
+
+**Download tip (Nov 15):** `Special:FilePath` can redirect to thumb.wikimedia.org, which is blocked here, or return "Too many requests". Use the API (`prop=imageinfo&iiprop=url&iiurlwidth=500`), then rewrite the host to `upload.wikimedia.org/wikipedia/commons/thumb/...` and use a standard width (500px).

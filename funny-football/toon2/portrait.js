@@ -10,6 +10,7 @@
     if (smooth && pts.length > 2) { for (let i = 1; i < pts.length - (close ? 0 : 1); i++) { const a = pts[i], b = pts[(i + 1) % pts.length]; ctx.quadraticCurveTo(a[0], a[1], (a[0] + b[0]) / 2, (a[1] + b[1]) / 2); } if (!close) ctx.lineTo(pts[pts.length - 1][0], pts[pts.length - 1][1]); }
     else for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1]);
     if (close) ctx.closePath(); if (fill) { ctx.fillStyle = fill; ctx.fill(); } if (lw) { ctx.lineWidth = lw; ctx.strokeStyle = INK; ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.stroke(); } }
+  function rr2(x, y, w, h) { ctx.beginPath(); ctx.roundRect(x, y, w, h, [2, 2, 8, 8]); ctx.fillStyle = '#fff'; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = INK; ctx.stroke(); }
   function ell2(x, y, rx, ry, col) { ctx.beginPath(); ctx.ellipse(x, y, rx, ry, 0, 0, Math.PI * 2); ctx.fillStyle = col; ctx.fill(); }
   function line(pts, w, col = INK, smooth = true) { shape(pts, null, 0, false, smooth); ctx.lineWidth = w; ctx.strokeStyle = col; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.stroke(); }
   function soft(x, y, rx, ry, col) { ctx.save(); ctx.translate(x, y); ctx.scale(1, ry / rx); const g = ctx.createRadialGradient(0, 0, 1, 0, 0, rx); g.addColorStop(0, col); g.addColorStop(1, 'rgba(0,0,0,0)'); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, rx, 0, Math.PI * 2); ctx.fill(); ctx.restore(); }
@@ -175,8 +176,10 @@
       if (S.jawLines) for (const l of S.jawLines) line(l, 10, 'rgba(120,70,45,.22)'); });
     if (S.cheekLines) for (const l of S.cheekLines) line(l, 3, 'rgba(110,60,40,.4)');
     // hair (front) + strands
-    shape(S.hair, S.hairCol, 5, true, !S.hairSharp); if (S.hairShade) shape(S.hairShade, 'rgba(0,0,0,.18)', 0);
+    shape(S.hair, S.hairCol, S.hairLw ?? 5, true, !S.hairSharp); if (S.hairShade) shape(S.hairShade, 'rgba(0,0,0,.18)', 0);
     for (const l of (S.strands || [])) line(l, 3, S.strandCol || 'rgba(255,255,255,.3)');
+    if (S.hairTex) clipTo(S.hair, () => { for (let i = 0; i < 160; i++) { const x = 130 + (i * 37) % 350, y = 20 + (i * 53) % 260; ctx.strokeStyle = 'rgba(255,255,255,.08)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI * 1.4); ctx.stroke(); } });
+    if (S.goatee) { shape(S.goatee, '#2a1a10', 0); }
     // brows / eyes / nose / mouth
     brow(browE(S.browL, E, true), S.browCol); brow(browE(S.browR, E, false), S.browCol);
     const lk = o.look ?? E.look ?? 0, ld = E.lid ?? (S.lid || 0.12);
@@ -184,7 +187,8 @@
     const N = S.nose; line(N.bridge, 3, 'rgba(110,60,40,.45)'); shape(N.nostrilL, '#3a1d12', 0); shape(N.nostrilR, '#3a1d12', 0); line(N.wingL, 4); line(N.wingR, 4); soft(N.tip[0], N.tip[1], 16, 10, HL);
     if (S.folds) for (const l of S.folds) line(l, 3, 'rgba(110,60,40,.4)');
     mouthAt(S.mouth, E.mouth || o.mouth || S.mouth.rest || 'smile', S.lips || '#c47a66');
-    if (S.chinLine) line(S.chinLine, 3, 'rgba(110,60,40,.4)');
+    if (S.buck && (E.mouth || o.mouth || S.mouth.rest) === 'smile') { const { x, y } = S.mouth; rr2(x - 25, y - 18, 23, 28); rr2(x + 2, y - 18, 23, 28); }
+    if (S.chinLine && S.chinLine.length) line(S.chinLine, 3, 'rgba(110,60,40,.4)');
   }
   // ---------- HØJLUND (Commons "Rasmus Højlund with a fan": frontal; wide cheekbones, low messy honey-blond fringe, big grin, blue-grey eyes, light brows) ----------
   const HOJ = { hairSharp: true, skin: '#f0c9ae', shade: '#d6a487', hairCol: '#d9b56a', browCol: '#a88650', iris: '#6f8fa8', lips: '#d08a7a', lid: 0.1,
@@ -200,6 +204,33 @@
     eyeL: [265, 243, 64, 19], eyeR: [405, 245, 62, 19],
     nose: { bridge: [[330, 245], [328, 280], [326, 305]], tip: [335, 318], nostrilL: [[300, 326], [316, 322], [322, 334], [306, 338]], nostrilR: [[350, 334], [358, 322], [374, 326], [366, 338]], wingL: [[296, 312], [288, 326], [302, 338], [318, 336]], wingR: [[352, 336], [370, 338], [382, 326], [374, 312]] },
     folds: [[[280, 330], [252, 350], [242, 372]], [[392, 332], [416, 352], [420, 372]]], mouth: { x: 325, y: 368, w: 150, rest: 'smile' }, chinLine: [[300, 440], [322, 448], [344, 440]] };
-  const FACES = { ronaldo, messi, hojlund: o => generic(HOJ, o) };
+  // ---------- PELÉ (Commons "Pele photo 1962": short tight-curl hair, wide nose, big warm smile, dark skin) ----------
+  const PELE = { skin: '#6b4430', shade: '#4e2f1f', hairCol: '#1a120c', browCol: '#1a120c', iris: '#2a1a10', lips: '#8a4a3a', lid: 0.15, hairLw: 5,
+    neck: [[200, 520], [410, 510], [430, 640], [560, 660], [60, 660], [180, 640]], underJaw: [[215, 540], [400, 530], [405, 580], [300, 600], [220, 580]],
+    face: [[150, 230], [132, 300], [138, 400], [165, 480], [210, 540], [280, 568], [350, 548], [400, 492], [430, 400], [446, 300], [440, 220], [400, 170], [300, 160], [200, 172]],
+    earL: [[148, 300], [122, 295], [118, 350], [135, 395], [152, 400]], earR: [[444, 270], [478, 262], [492, 310], [478, 360], [448, 368]],
+    sideShade: [[520, 150], [440, 220], [446, 330], [400, 500], [520, 560]], sockets: [[205, 318, 46, 20], [345, 318, 46, 20]], blush: [],
+    jawLines: [[[165, 480], [210, 540], [280, 568]], [[400, 492], [350, 548]]], cheekLines: [[[170, 360], [182, 400]], [[425, 360], [412, 400]]],
+    hair: [[140, 290], [132, 220], [146, 150], [190, 82], [255, 34], [330, 22], [400, 40], [452, 100], [470, 175], [466, 250], [446, 228], [430, 195], [395, 178], [340, 172], [290, 168], [240, 176], [196, 192], [170, 220], [158, 262]],
+    strands: [], hairTex: true,
+    browL: [[160, 300], [205, 284], [252, 296], [250, 306], [205, 296], [162, 310]], browR: [[392, 296], [345, 282], [300, 294], [302, 304], [345, 294], [390, 306]],
+    eyeL: [205, 322, 70, 17], eyeR: [345, 322, 70, 17],
+    nose: { bridge: [[272, 330], [268, 370], [266, 395]], tip: [270, 408], nostrilL: [[226, 418], [246, 410], [256, 424], [236, 430]], nostrilR: [[288, 424], [298, 410], [318, 418], [308, 430]], wingL: [[222, 398], [210, 418], [228, 434], [252, 430]], wingR: [[290, 430], [314, 434], [332, 418], [320, 398]] },
+    folds: [[[220, 440], [196, 470], [198, 495]], [[330, 440], [356, 468], [352, 495]]], mouth: { x: 272, y: 478, w: 165, rest: 'smile' }, chinLine: [[255, 548], [278, 556], [300, 548]] };
+  // ---------- RONALDO NAZÁRIO "R9" (Commons "Ronaldo.jpeg", 2000s: round shaved head, prominent front teeth, small chin goatee) ----------
+  const R9 = { skin: '#c48a62', shade: '#a26a45', hairCol: 'rgba(40,28,20,.28)', browCol: '#2a1a10', iris: '#3a2416', lips: '#a8625a', lid: 0.12, hairLw: 0,
+    neck: [[190, 500], [380, 500], [400, 640], [560, 660], [60, 660], [170, 640]], underJaw: [[195, 520], [370, 515], [375, 560], [280, 580], [200, 560]],
+    face: [[120, 200], [104, 260], [108, 340], [128, 420], [165, 488], [222, 532], [268, 542], [330, 522], [385, 470], [420, 400], [440, 300], [432, 200], [400, 100], [320, 30], [230, 20], [160, 70]],
+    earL: [[110, 260], [86, 255], [80, 300], [92, 345], [112, 350]], earR: [[430, 250], [462, 240], [478, 300], [462, 360], [430, 372]],
+    sideShade: [[520, 100], [420, 160], [440, 320], [385, 480], [520, 560]], sockets: [[150, 258, 40, 18], [262, 258, 44, 18]], blush: [[150, 360, 34, 16, .2], [300, 360, 34, 16, .2]],
+    jawLines: [[[128, 420], [165, 492], [222, 540]], [[385, 470], [330, 530]]], cheekLines: [],
+    hair: [[118, 205], [140, 110], [200, 40], [270, 18], [350, 34], [410, 92], [438, 190], [430, 215], [400, 140], [340, 80], [270, 66], [200, 84], [150, 140], [126, 210]],
+    strands: [],
+    browL: [[112, 236], [148, 224], [186, 236], [184, 244], [148, 234], [114, 246]], browR: [[300, 234], [262, 222], [222, 234], [224, 242], [262, 232], [298, 244]],
+    eyeL: [152, 262, 56, 15], eyeR: [264, 262, 60, 15],
+    nose: { bridge: [[208, 270], [204, 310], [202, 335]], tip: [208, 346], nostrilL: [[172, 354], [188, 346], [198, 358], [182, 364]], nostrilR: [[222, 358], [232, 346], [248, 354], [238, 364]], wingL: [[168, 336], [158, 352], [174, 366], [192, 364]], wingR: [[226, 366], [244, 366], [258, 352], [248, 336]] },
+    folds: [[[160, 368], [142, 398], [146, 426]], [[262, 366], [282, 396], [278, 424]]], mouth: { x: 214, y: 430, w: 140, rest: 'smile' }, buck: true,
+    goatee: [[198, 486], [222, 478], [246, 486], [242, 522], [222, 534], [202, 522]], chinLine: [] };
+  const FACES = { ronaldo, messi, hojlund: o => generic(HOJ, o), pele: o => generic(PELE, o), r9: o => generic(R9, o) };
   window.portrait = { draw(c2d, name, x, y, s, o = {}) { ctx = c2d; ctx.save(); ctx.translate(x, y); ctx.scale(s * (o.f || 1), s); ctx.translate(-330, -300); FACES[name](o); ctx.restore(); } };
 })();
