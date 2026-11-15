@@ -5,6 +5,7 @@ Ronaldo vs Messi: two lives, one timeline ⏳
 
 2008: both win big
 2009: Madrid vs Barça begins
+2017: Ballon d'Or tied 5-5 😱
 2023: both leave Europe
 2026: both say bye to their countries
 

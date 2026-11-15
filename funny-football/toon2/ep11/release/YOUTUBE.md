@@ -1,12 +1,13 @@
 # YouTube Shorts: Ep11 "TWO LIVES"
 **Title:**
 ```
-Ronaldo vs Messi: Two Lives, One Timeline ⏳ 2002 → 2026
+Ronaldo vs Messi: Who Had the Better Life? 🤔 (Wait for 2017 😱)
 ```
 **Description:**
 ```
 Ronaldo (left) and Messi (right), side by side from 2002 to 2026 ⏳
 ⚽ Debuts, transfers, every Ballon d'Or, every Champions League, Euro 2016, World Cup 2022, Copas, 900 goals…
+😱 2017: Ballon d'Or race tied 5-5
 🔥 2009: Madrid vs Barça begins · 2021: same summer, new clubs · 2023: both leave Europe · 2026: both say bye to their countries
 Now: Ronaldo 985, Messi 937. Who reaches 1000 first?
 

@@ -78,3 +78,10 @@ Rotating backgrounds and gimmicks inside ONE format is still monotonous; the vie
 - **Each genre brings its own camera, UI, physics, palette and sound world**, so every segment feels like a new video.
 - **Keep one thread** (a running score pill, the same two characters, the mascot) so the story still connects.
 - Ask before scripting: **"Could a viewer predict the next segment's look?"** If yes, change the genre.
+
+## 8. Drama toolkit (learned on Ep11, Nov 15 2026)
+- **A live race counter with lead changes and ties** (e.g. a Ballon d'Or race 1-1 → 4-1 → 5-5 😱) creates real suspense even in a timeline. Tease the tie in the hook ("wait for 2017 😱").
+- **Build-ups before the biggest beats:** heartbeat, drumroll, blackout, then an explosion of rays and confetti.
+- **The rival always reacts:** jealousy escalation (🙄 → 😤 → steam), a deadpan signature prop (Messi's mate), both staring at each other across the split.
+- **Physical collision gags** when both lives cross (suitcases BONK at the divider).
+- **End on an open loop:** a "TO BE CONTINUED ➡️" freeze makes people follow for part 2.

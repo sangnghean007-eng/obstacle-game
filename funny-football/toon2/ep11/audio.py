@@ -25,10 +25,14 @@ for y, ys, yd in Y:
         elif e[3] == 'move': m.whoosh(tt, .4, .3, True, pan)
         elif e[3] == 'goal': m.sparkle(tt, .6, .12)
         elif e[3] == 'bye': m.music_box(tt, ['E5', 'D5', 'C5'], .15, .12)
+    if y in (2016, 2022): m.heartbeat(ys + .05, .55); m.heartbeat(ys + .35, .6); [m.snare(ys + .2 + k * .016, .1 + .2 * k / 22) for k in range(22)]; ys = ys + .57 * yd
+    if y == 2017: m.brass_hit([hz('D3'), hz('G#3'), hz('D4')], ys + .4, .7, .32); m.f(m.wav('ooh_crowd'), ys + .5, .45, 0, .3)
+    if y == 2012: m.kettle(ys + .4, .7, .14); m.f(m.wav('grumble_angry'), ys + .45, .3, -.4, .1)
+    if y == 2021: m.bonk(ys + .55, .5)
     if y in (2016, 2022): m.brass_hit([hz('D3'), hz('A3'), hz('D4'), hz('F#4')], ys + .2, .9, .32); m.cheer_burst(ys + .25, .4); m.firework(ys + .5, .3, -.5 if y == 2016 else .5)
     if y in (2008, 2009, 2021, 2023, 2026): m.f(m.wav('ooh_crowd' if y != 2008 else 'cheer_crowd'), ys + .4, .3, 0, .3)
 # end + thanks
-t = TL_END; m.whoosh(t, .6, .4, True); m.brass_hit([hz('D3'), hz('A3'), hz('D4')], t + .6, .8, .3); m.f(m.wav('bleat'), t + 1.0, .3, 0, .1); m.ding(t + 1.8, 2093, .3)
+t = TL_END; m.whoosh(t, .6, .4, True); m.brass_hit([hz('D3'), hz('A3'), hz('D4')], t + .6, .8, .3); m.f(m.wav('bleat'), t + 1.0, .3, 0, .1); m.ding(t + 1.8, 2093, .3); m.scratch(t + 2.6, .5); m.brass_hit([hz('D3'), hz('F3'), hz('A3')], t + 2.7, .9, .3)
 t = END - 2.8
 for i, n in enumerate(['D5', 'F#5', 'A5', 'D6', 'A5', 'F#5', 'D6']): m.pluck(hz(n), t + .1 + i * .16, .6, .22, -.3 + i * .1, .5, .4)
 m.ding(t + 1.0, 2093, .35); m.pop(t + 1.0, .3)
