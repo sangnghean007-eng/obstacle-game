@@ -19,6 +19,7 @@
     if (pass === 'ink') { stroke(P, w + 2 * OL, INK); ell(P[2][0], P[2][1], hr + OL / 2, hr + OL / 2, INK, 0); stroke(P.slice(0, 2).map((p, i) => i ? [P[0][0] + (P[1][0] - P[0][0]) * 0.55, P[0][1] + (P[1][1] - P[0][1]) * 0.55] : p), w * 1.25 + 2 * OL, INK); }
     else {
       stroke(P, w, C.skin);
+      if (C.tattoo && C.tattoo.arm === side) { ctx.save(); ctx.globalAlpha = 0.55; stroke(P.slice(1), w * 0.8, C.tattoo.col || '#2b3a55'); ctx.globalAlpha = 1; for (let i = 0; i < 5; i++) { const q = 0.15 + i * 0.17, px = P[1][0] + (P[2][0] - P[1][0]) * q, py = P[1][1] + (P[2][1] - P[1][1]) * q; ell(px, py, w * 0.18, w * 0.18, null, 0); stroke([[px - w * 0.25, py], [px + w * 0.25, py + w * 0.1]], 2.5, '#1b2235'); } ctx.restore(); }
       // muscle shading along the lower side of the limb
       ctx.save(); ctx.globalAlpha = 0.22; stroke(P.map(p => [p[0] + w * 0.18, p[1] + w * 0.12]), w * 0.45, '#000'); ctx.restore();
       const sl = [P[0], [P[0][0] + (P[1][0] - P[0][0]) * 0.55, P[0][1] + (P[1][1] - P[0][1]) * 0.55]]; stroke(sl, w * 1.25, C.kit.sleeve || C.kit.shirt); stroke([sl[1], sl[1]], w * 1.25, C.kit.cuff || C.kit.shirt);
@@ -79,38 +80,60 @@
     if (h.hair === 'curls') { const pts = [[-1.0, -0.3], [-0.85, -0.7], [-0.5, -0.98], [-0.08, -1.1], [0.36, -1.04], [0.72, -0.85], [1.0, -0.5], [-0.3, -0.86], [0.15, -0.9], [0.55, -0.78]]; for (const [px, py] of pts) { ell(px * R, py * R, R * 0.3, R * 0.27, hc, OL * 0.8); stroke([[px * R - R * 0.14, py * R + R * 0.05], [px * R, py * R - R * 0.1], [px * R + R * 0.14, py * R + R * 0.04]], 3, 'rgba(255,255,255,.3)'); } }
     if (h.hair === 'quiff') { blob(() => { ctx.moveTo(-R * 0.98, -R * 0.1); ctx.bezierCurveTo(-R * 1.05, -R * 0.95, -R * 0.2, -R * 1.2, R * 0.2, -R * 1.12); ctx.bezierCurveTo(R * 0.55, -R * 1.5, R * 1.15, -R * 1.25, R * 1.0, -R * 0.75); ctx.quadraticCurveTo(R * 0.92, -R * 0.55, R * 1.0, -R * 0.3); ctx.quadraticCurveTo(R * 0.7, -R * 0.68, R * 0.15, -R * 0.7); ctx.quadraticCurveTo(-R * 0.45, -R * 0.68, -R * 0.78, -R * 0.3); ctx.closePath(); }, hc); ell(R * 0.45, -R * 1.12, R * 0.35, R * 0.09, 'rgba(255,255,255,.4)', 0, -0.4); stroke([[-R * 0.5, -R * 0.95], [R * 0.1, -R * 1.08], [R * 0.6, -R * 1.25]], 4, 'rgba(255,255,255,.25)'); }
     if (h.hair === 'bald') ell(-R * 0.15, -R * 0.75, R * 0.3, R * 0.1, 'rgba(255,255,255,.4)', 0, -0.3);
+    if (h.hair === 'fade' || h.hair === 'buzz' || h.hair === 'swept' || h.hair === 'styled' || h.hair === 'sidepart') {
+      // short faded sides (all of these)
+      ctx.save(); ctx.lineCap = 'round'; ctx.lineWidth = R * 0.16; ctx.strokeStyle = h.fadeCol || 'rgba(40,28,20,.38)'; for (const [a1, a2] of [[Math.PI * 1.02, Math.PI * 1.24], [Math.PI * 1.8, Math.PI * 1.95]]) { ctx.beginPath(); ctx.ellipse(0, -R * 0.12, R * 0.93, R * 0.95, 0, a1, a2); ctx.stroke(); } ctx.restore();
+      if (h.hair === 'buzz') { blob(() => { ctx.moveTo(-R * 0.96, -R * 0.3); ctx.bezierCurveTo(-R * 1.0, -R * 1.18, R * 0.95, -R * 1.25, R * 1.0, -R * 0.3); ctx.quadraticCurveTo(R * 0.6, -R * 0.78, 0, -R * 0.8); ctx.quadraticCurveTo(-R * 0.6, -R * 0.78, -R * 0.96, -R * 0.3); ctx.closePath(); }, hc, OL * 0.6); for (let i = 0; i < 24; i++) ell(-R * 0.5 + (i * 37 % 100) / 100 * R, -R * 0.82 - (i * 23 % 14) / 100 * R, 2, 2, 'rgba(0,0,0,.22)', 0); }
+      if (h.hair === 'fade') { // textured top swept up and back (crisp line-up at the front)
+        blob(() => { ctx.moveTo(-R * 0.88, -R * 0.5); ctx.bezierCurveTo(-R * 0.95, -R * 1.05, -R * 0.3, -R * 1.38, R * 0.2, -R * 1.36); ctx.bezierCurveTo(R * 0.55, -R * (1.36 + (h.quiff || 0) * 0.3), R * 1.15, -R * (1.2 + (h.quiff || 0) * 0.2), R * 0.98, -R * 0.6); ctx.lineTo(R * 0.86, -R * 0.62); ctx.quadraticCurveTo(R * 0.5, -R * 0.82, R * 0.1, -R * 0.78); ctx.quadraticCurveTo(-R * 0.45, -R * 0.76, -R * 0.88, -R * 0.5); ctx.closePath(); }, hc);
+        for (let i = 0; i < 5; i++) stroke([[-R * 0.55 + i * R * 0.3, -R * 0.85], [-R * 0.42 + i * R * 0.3, -R * 1.12 - i * R * 0.04]], 3.5, 'rgba(255,255,255,.28)'); }
+      if (h.hair === 'swept') { // longer top swept back, light colour
+        blob(() => { ctx.moveTo(-R * 0.95, -R * 0.35); ctx.bezierCurveTo(-R * 1.05, -R * 1.2, R * 0.2, -R * 1.5, R * 0.75, -R * 1.2); ctx.quadraticCurveTo(R * 1.1, -R * 0.95, R * 1.0, -R * 0.45); ctx.quadraticCurveTo(R * 0.75, -R * 0.75, R * 0.3, -R * 0.8); ctx.quadraticCurveTo(-R * 0.35, -R * 0.85, -R * 0.95, -R * 0.35); ctx.closePath(); }, hc);
+        for (let i = 0; i < 4; i++) stroke([[R * 0.55 - i * R * 0.3, -R * 0.88], [R * 0.2 - i * R * 0.3, -R * 1.15 + i * R * 0.06]], 4, 'rgba(255,255,255,.35)'); }
+      if (h.hair === 'styled') { // voluminous wavy top
+        blob(() => { ctx.moveTo(-R * 0.95, -R * 0.35); ctx.bezierCurveTo(-R * 1.1, -R * 1.1, -R * 0.6, -R * 1.45, -R * 0.2, -R * 1.32); ctx.quadraticCurveTo(R * 0.1, -R * 1.5, R * 0.4, -R * 1.33); ctx.quadraticCurveTo(R * 0.8, -R * 1.4, R * 0.95, -R * 1.05); ctx.quadraticCurveTo(R * 1.12, -R * 0.75, R * 1.0, -R * 0.4); ctx.quadraticCurveTo(R * 0.7, -R * 0.62, R * 0.45, -R * 0.55); ctx.quadraticCurveTo(R * 0.1, -R * 0.82, -R * 0.35, -R * 0.68); ctx.quadraticCurveTo(-R * 0.7, -R * 0.6, -R * 0.95, -R * 0.35); ctx.closePath(); }, hc);
+        for (const [x1, y1, x2, y2] of [[-0.6, -0.75, -0.35, -1.2], [-0.1, -0.8, 0.15, -1.3], [0.4, -0.65, 0.65, -1.15]]) stroke([[x1 * R, y1 * R], [(x1 + x2) / 2 * R + R * 0.1, (y1 + y2) / 2 * R], [x2 * R, y2 * R]], 3.5, 'rgba(255,255,255,.28)'); }
+      if (h.hair === 'sidepart') { // neat, combed to one side with a part line
+        blob(() => { ctx.moveTo(-R * 0.98, -R * 0.2); ctx.bezierCurveTo(-R * 1.05, -R * 1.15, R * 0.85, -R * 1.3, R * 1.0, -R * 0.35); ctx.quadraticCurveTo(R * 0.7, -R * 0.7, R * 0.05, -R * 0.72); ctx.quadraticCurveTo(-R * 0.55, -R * 0.66, -R * 0.98, -R * 0.2); ctx.closePath(); }, hc);
+        stroke([[-R * 0.35, -R * 0.75], [-R * 0.42, -R * 1.08]], 4, 'rgba(0,0,0,.35)'); for (let i = 0; i < 3; i++) stroke([[-R * 0.15 + i * R * 0.25, -R * 0.8], [R * 0.05 + i * R * 0.25, -R * 0.98]], 3, 'rgba(255,255,255,.25)'); }
+    }
     if (h.hair === 'spiky') { blob(() => { ctx.moveTo(-R, -R * 0.2); for (let i = 0; i <= 8; i++) { const x = -R + i * R * 0.25; ctx.lineTo(x, -R * (i % 2 ? 1.35 : 0.7)); } ctx.lineTo(R, -R * 0.2); ctx.closePath(); }, hc); }
   }
   function head(C, e, t) {
     const R = C.head.R, h = C.head, sq = h.jaw || 0, fx = R * 0.22; // features shifted toward the facing side (3/4 view)
+    ctx.save(); ctx.scale(h.faceW || 1, h.faceH || 1);
     hairBack(C, R);
     // ear on the near side
-    ell(-R * 0.92, R * 0.08, R * 0.2, R * 0.26, C.skin, OL); ell(-R * 0.92, R * 0.08, R * 0.09, R * 0.14, C.shade, 0);
-    const F = () => { ctx.moveTo(-R, 0); ctx.bezierCurveTo(-R, -R * 1.35, R * 1.05, -R * 1.35, R * 1.02, 0); ctx.bezierCurveTo(R * (1.0 + sq * 0.05), R * (0.7 + sq * 0.1), R * (0.45 + sq * 0.25), R * 1.0, 0, R * 1.0); ctx.bezierCurveTo(-R * (0.45 + sq * 0.25), R * 1.0, -R * (1.0 + sq * 0.05), R * (0.7 + sq * 0.1), -R, 0); ctx.closePath(); };
+    const es = h.earSize || 1; ell(-R * 0.92, R * 0.08, R * 0.2 * es, R * 0.26 * es, C.skin, OL); ell(-R * 0.92, R * 0.08, R * 0.09 * es, R * 0.14 * es, C.shade, 0);
+    if (h.earring) { ell(-R * 0.94, R * 0.3 * es, R * 0.055, R * 0.055, h.earring, OL * 0.5); ell(-R * 0.955, R * 0.285 * es, R * 0.02, R * 0.02, '#fff', 0); }
+    const cl = 1 + (h.chin || 0) * 0.18, cp = h.chinPoint || 0; const F = () => { ctx.moveTo(-R, 0); ctx.bezierCurveTo(-R, -R * 1.35, R * 1.05, -R * 1.35, R * 1.02, 0); ctx.bezierCurveTo(R * (1.0 + sq * 0.05), R * (0.7 + sq * 0.1) * cl, R * (0.45 + sq * 0.25 - cp * 0.25), R * 1.0 * cl, 0, R * 1.0 * cl); ctx.bezierCurveTo(-R * (0.45 + sq * 0.25 - cp * 0.25), R * 1.0 * cl, -R * (1.0 + sq * 0.05), R * (0.7 + sq * 0.1) * cl, -R, 0); ctx.closePath(); };
     blob(F, C.skin);
     shade(F, C.shade, () => { ctx.moveTo(R * 0.55, -R * 1.2); ctx.bezierCurveTo(R * 0.95, -R * 0.4, R * 0.9, R * 0.5, R * 0.3, R * 1.1); ctx.lineTo(R * 1.3, R * 1.2); ctx.lineTo(R * 1.3, -R * 1.3); ctx.closePath(); });
     shade(F, 'rgba(255,255,255,.18)', () => ctx.ellipse(-R * 0.35, -R * 0.45, R * 0.35, R * 0.25, -0.5, 0, Math.PI * 2));
     blob(F, null);
-    if (h.beard) { const B = () => { ctx.moveTo(-R * 0.98, R * 0.05); ctx.bezierCurveTo(-R * 0.95, R * 0.8, -R * 0.3, R * 1.12, R * 0.15, R * 1.1); ctx.bezierCurveTo(R * 0.75, R * 1.05, R * 1.02, R * 0.6, R * 1.0, R * 0.05); ctx.quadraticCurveTo(R * 0.85, R * 0.45, R * 0.45, R * 0.5); ctx.quadraticCurveTo(fx, R * 0.32, R * 0.0, R * 0.5); ctx.quadraticCurveTo(-R * 0.5, R * 0.5, -R * 0.98, R * 0.05); ctx.closePath(); }; blob(B, h.beardCol || h.hairCol); }
+    if (h.cheekbones) { stroke([[fx - R * 0.75, R * 0.15], [fx - R * 0.45, R * 0.42]], 4, 'rgba(0,0,0,.18)'); stroke([[fx + R * 0.8, R * 0.12], [fx + R * 0.6, R * 0.4]], 4, 'rgba(0,0,0,.18)'); }
+    if (h.beard === 'trim') { const B = () => { ctx.moveTo(-R * 0.98, R * 0.05); ctx.bezierCurveTo(-R * 0.95, R * 0.75, -R * 0.3, R * 1.02 * cl, R * 0.1, R * 1.0 * cl); ctx.bezierCurveTo(R * 0.7, R * 0.98, R * 1.0, R * 0.55, R * 1.0, R * 0.05); ctx.quadraticCurveTo(R * 0.85, R * 0.6, R * 0.45, R * 0.72); ctx.quadraticCurveTo(fx, R * 0.42, R * 0.0, R * 0.72); ctx.quadraticCurveTo(-R * 0.6, R * 0.65, -R * 0.98, R * 0.05); ctx.closePath(); }; blob(B, h.beardCol || h.hairCol, OL * 0.6); blob(() => ctx.ellipse(fx + R * 0.02, R * 0.44, R * 0.34 * (h.mouthW || 1), R * 0.07, 0, 0, Math.PI * 2), h.beardCol || h.hairCol, 0); }
+    else if (h.beard) { const B = () => { ctx.moveTo(-R * 0.98, R * 0.05); ctx.bezierCurveTo(-R * 0.95, R * 0.8, -R * 0.3, R * 1.12, R * 0.15, R * 1.1); ctx.bezierCurveTo(R * 0.75, R * 1.05, R * 1.02, R * 0.6, R * 1.0, R * 0.05); ctx.quadraticCurveTo(R * 0.85, R * 0.45, R * 0.45, R * 0.5); ctx.quadraticCurveTo(fx, R * 0.32, R * 0.0, R * 0.5); ctx.quadraticCurveTo(-R * 0.5, R * 0.5, -R * 0.98, R * 0.05); ctx.closePath(); }; blob(B, h.beardCol || h.hairCol); }
     if (h.stubble) shade(F, 'rgba(60,40,30,.18)', () => { ctx.ellipse(fx * 0.5, R * 0.75, R * 0.85, R * 0.4, 0, 0, Math.PI * 2); });
     // cheeks
     ell(fx - R * 0.42, R * 0.32, R * 0.16, R * 0.09, 'rgba(240,110,100,.35)', 0); ell(fx + R * 0.55, R * 0.32, R * 0.12, R * 0.08, 'rgba(240,110,100,.3)', 0);
     // eyes
-    const blink = e.blink ?? ((Math.floor((t + (C.blinkSeed || 0)) * 10) % 37) < 2), ex = R * 0.34, ey = -R * 0.08, rx = R * 0.2, ry = R * 0.26;
-    const ee = Object.assign({ lidCol: C.skin }, e, blink && !e.noBlink ? { lid: 1 } : {});
+    const blink = e.blink ?? ((Math.floor((t + (C.blinkSeed || 0)) * 10) % 37) < 2), ex = R * 0.34 * (h.eyeGap || 1), ey = -R * 0.08, rx = R * 0.2 * (h.eyeSize || 1), ry = R * 0.26 * (h.eyeSize || 1) * (h.eyeShape === 'almond' ? 0.72 : h.eyeShape === 'round' ? 1.08 : 1);
+    const ee = Object.assign({ lidCol: C.skin }, e, blink && !e.noBlink ? { lid: 1 } : {}); if (h.lidBase && !(ee.lid >= 0.95) && ee.eyes !== 'happy') ee.lid = Math.max(ee.lid || 0, h.lidBase);
     eye(fx - ex, ey, rx, ry, ee, h.iris || '#5a3a1e', -1); eye(fx + ex * 0.92, ey, rx * 0.88, ry, ee, h.iris || '#5a3a1e', 1);
     // brows
     const by = ey - ry - R * 0.12 - (e.brow || 0) * R * 0.15, bt = (e.browTilt || 0);
-    for (const [bx, sd] of [[fx - ex, -1], [fx + ex * 0.92, 1]]) { ctx.save(); ctx.translate(bx, by); ctx.rotate(bt * sd * 0.45); blob(() => ctx.roundRect(-R * 0.22, -R * 0.07, R * 0.44, R * (h.browW || 0.13), R * 0.07), h.browCol || h.hairCol, OL * 0.6); ctx.restore(); }
+    for (const [bx, sd] of [[fx - ex, -1], [fx + ex * 0.92, 1]]) { ctx.save(); ctx.translate(bx, by); ctx.rotate(bt * sd * 0.45); const bw = R * (h.browW || 0.13), bl = R * 0.22 * (h.browLen || 1), ba = R * (h.browArch || 0); if (ba) blob(() => { ctx.moveTo(-bl, bw * 0.4); ctx.quadraticCurveTo(-bl * 0.2 * sd, -ba - bw * 0.3, bl, bw * 0.2 - ba * 0.2); ctx.lineTo(bl, bw * 0.2 - ba * 0.2 + bw * 0.6); ctx.quadraticCurveTo(-bl * 0.2 * sd, -ba + bw * 0.7, -bl, bw * 0.4 + bw * 0.8); ctx.closePath(); }, h.browCol || h.hairCol, OL * 0.5); else blob(() => ctx.roundRect(-bl, -R * 0.07, bl * 2, bw, R * 0.07), h.browCol || h.hairCol, OL * 0.6); ctx.restore(); }
     // nose
     blob(() => { ctx.moveTo(fx + R * 0.02, R * 0.08); ctx.quadraticCurveTo(fx + R * (0.28 + (h.nose || 0) * 0.1), R * 0.3, fx + R * 0.05, R * 0.34); }, null, OL * 0.8);
     ell(fx + R * 0.1, R * 0.3, R * 0.06 * (1 + (h.nose || 0)), R * 0.04, 'rgba(0,0,0,.18)', 0);
-    if (h.beard) ell(fx + R * 0.02, R * 0.6, R * 0.38 * (h.mouthW || 1), R * 0.2, C.skin, 0);
+    if (h.beard && h.beard !== 'trim') ell(fx + R * 0.02, R * 0.6, R * 0.38 * (h.mouthW || 1), R * 0.2, C.skin, 0);
     mouth(fx + R * 0.02, R * 0.56, R * 0.3 * (h.mouthW || 1), e.mouth || 'smile', C);
     hairFront(C, R);
     if (e.sweat) { const k = (t * 1.3) % 1; ctx.save(); ctx.globalAlpha = 1 - k * 0.5; blob(() => { const sx = R * 1.0, sy = -R * 0.55 + k * R * 0.5; ctx.moveTo(sx, sy - R * 0.2); ctx.quadraticCurveTo(sx + R * 0.14, sy, sx, sy + R * 0.1); ctx.quadraticCurveTo(sx - R * 0.14, sy, sx, sy - R * 0.2); }, '#9be3ff', OL * 0.6); ctx.restore(); }
     if (e.vein) { ctx.save(); ctx.translate(-R * 0.45, -R * 0.7); ctx.strokeStyle = '#e11d2a'; ctx.lineWidth = OL; ctx.lineCap = 'round'; for (const a of [0, 1.57, 3.14, 4.71]) { ctx.beginPath(); ctx.arc(Math.cos(a) * R * 0.1, Math.sin(a) * R * 0.1, R * 0.08, a + 0.8, a + 2.3); ctx.stroke(); } ctx.restore(); }
     if (e.red) shade(F, 'rgba(230,40,40,.25)', () => ctx.ellipse(0, 0, R * 1.2, R * 1.2, 0, 0, Math.PI * 2));
+    ctx.restore();
   }
   // ---------- body ----------
   function torsoPath(C) { const sw = C.shoulderW, ww = C.waistW, sy = C.shoulderY, hy = C.hipY; return () => { ctx.moveTo(-sw, sy + 40); ctx.quadraticCurveTo(-sw, sy - 6, -sw + 50, sy - 8); ctx.lineTo(sw - 50, sy - 8); ctx.quadraticCurveTo(sw, sy - 6, sw, sy + 40); ctx.quadraticCurveTo(sw * 0.9, (sy + hy) / 2, ww, hy + 6); ctx.lineTo(-ww, hy + 6); ctx.quadraticCurveTo(-sw * 0.9, (sy + hy) / 2, -sw, sy + 40); ctx.closePath(); }; }

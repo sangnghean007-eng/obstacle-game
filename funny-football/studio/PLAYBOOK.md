@@ -218,3 +218,19 @@ This section replaces the multi-agent rooms above where they conflict.
 
 ## Social copy (user instruction, Nov 14 2026)
 Before writing the 5 platform dossiers, read `studio/SOCIAL_COPY.md` and run its pre-ship checklist. In chat, give the user the ready-to-paste text for all 5 platforms, including the YouTube **tags**.
+
+## Likeness (user feedback Nov 15 2026: "videos not well received, mainly because the players don't look like the real ones")
+**Research (caricature basics):** people recognise a face by the traits that differ from average. So:
+1. Write a checklist of each player's 2–3 most distinctive traits (hair shape, jaw/chin, brows, beard, skin, build, one accessory or tattoo).
+2. Exaggerate those traits and keep everything else plain. Exaggerating too many traits turns it into a generic cartoon.
+3. Start from simple shapes, and check the silhouette (hair + head + build).
+
+Sources: [Proko: Caricature 101](https://www.proko.com/course-lesson/caricature-101-how-to-exaggerate), [Proko: exaggeration checklist](https://proko.com/course-lesson/solving-the-exaggeration-with-a-checklist/notes), [Adobe: how to draw a caricature](https://www.adobe.com/in/creativecloud/illustration/discover/how-to-draw-caricature.html).
+
+**Rig v2 (`chibi.js`):**
+- New head params (all optional, backward compatible): `faceW`, `faceH`, `chin`, `chinPoint`, `cheekbones`, `eyeSize`, `eyeGap`, `eyeShape` ('almond'|'round'), `lidBase`, `browArch`, `browLen`, `earSize`, `earring`, `quiff`.
+- New hair styles: `fade`, `buzz`, `swept`, `styled`, `sidepart`. New beard style: `beard: 'trim'`.
+- New arm tattoo: `C.tattoo = {arm, col}`.
+- Per-player specs live in `window.LIKE` in `chibi_cast.js`. Comparison sheet: `toon2/likeness_sheet.html` → `toon2/likeness_v2_sheet.jpg`.
+
+**Known limit:** likeness from code-drawn shapes tops out around 6/10 (noted earlier). Strong signifiers still carry recognition: name and number, kit, the hook text naming the player, and signature moves (SIUUU, pointing to the sky).
