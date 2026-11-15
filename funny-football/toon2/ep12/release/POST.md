@@ -1,8 +1,8 @@
-# Release index: Episode 12 v3 "THE 20-YEAR CHASE 🏆" (31.9 s, no dialogue)
+# Release index: Episode 12 v4 "THE 20-YEAR CHASE 🏆" (31.9 s, no dialogue)
 | File | Purpose |
 |---|---|
-| `world-cup-chase-9x16.mp4` | Final video (v3) |
-| `cover-9x16.jpg` | Frame 0.33 s: "MESSI vs RONALDO · 20 YEARS CHASING 1 TROPHY 🏆", both at the start line, the trophy in shades |
+| `world-cup-chase-9x16.mp4` | Final video (v4 = v3 + camera) |
+| `cover-9x16.jpg` | Frame 0.1 s (zoomed on both angry faces): "MESSI vs RONALDO · 20 YEARS CHASING 1 TROPHY 🏆", both at the start line, the trophy in shades |
 | `YOUTUBE.md` `TIKTOK.md` `INSTAGRAM.md` `FACEBOOK.md` `X.md` | Platform dossiers (SOCIAL_COPY.md) |
 
 **Why v3:** the user called v1 and v2 monotonous and bland. Root cause: every beat used the same template (a character standing in the middle + a cup + a caption), there was no action and no interaction, and the jokes lived in the text. v3 is ONE continuous side-scrolling chase full of slapstick, where both rivals are on screen together the whole time.
@@ -20,3 +20,5 @@
 
 **Scorecard:** 20/22 (see `studio/scorecard.csv`). **Likeness:** Pelé and R9 portraits are awaiting the user's check. **Review:** self-check of contact sheets; audio checked for loudness only (-14 LUFS target).
 **Earlier versions:** v1 (list) and v2 (trophy's exes) are kept in `review/`.
+
+**v4 upgrade (user: "is there a more dominant version?"):** a camera that punches in on every big moment (both faces at frame 0, the glove swat, the bonk, Messi's face on the glass, the holes, the catch, Ronaldo's shocked face on the bench, SIUUU, the stampede), screen shake on every impact, a fixed HUD on top, and an open loop in the hook: "(wait for 2026 😭)". v3 is kept as `review/scene_v3.html`.

@@ -104,3 +104,4 @@ What works instead (Ep12 v3):
 - **Slapstick > captions:** each fact becomes a physical gag (out on penalties = a giant glove swats him; group-stage exit = he clangs into a barrier; the same-day exit = two holes open at once). The caption only confirms it.
 - **Running threads + callbacks:** a live scoreboard, a reaction box (Pelé/R9 in VIP), and a callback (the Spain runners in 2010 come back in 2026).
 - **Real-but-surprising facts** are the best gags: dig for coincidences (same day, same rival twice, walked past the trophy).
+- **Camera = impact (Ep12 v4):** never film the punchline from far away. Punch in (1.3–1.7×) on each peak (impact, reaction face, catch), shake the screen on every hit, then pull back to show the context. Keep the HUD (score, era, captions) fixed outside the camera. Clamp the camera so the frame edge never shows.

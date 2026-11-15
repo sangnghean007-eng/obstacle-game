@@ -200,8 +200,9 @@ function z_hook(z, t) { bg('start', 0, t); const go = z > 1.15; streak(t, go);
   else { const bonk = z > 1.55 && z < 2.0; runner('messi', bonk ? 470 : 360 + Math.min(110, (z - 1.15) * 300), GM, t, bonk ? P_HIT : runPose(t), bonk ? 'shock' : 'angry', { run: !bonk, rot: bonk ? -0.25 : 0 }); runner('ronaldo', bonk ? 520 : 600 - Math.min(80, (z - 1.15) * 200), GR, t, bonk ? P_HIT : runPose(t + 0.3), bonk ? 'shock' : 'angry', { run: !bonk, rot: bonk ? 0.25 : 0 }); if (bonk) { burst(500, 1100, 110, 'BONK!', (z - 1.55) / 0.12, 44); stars(500, 1020, t, 110); } }
   if (z > 1.15 && z < 1.6) burst(760, 900, 150, 'GO!', (z - 1.15) / 0.12, 80, '#fff');
   vip(t, { pele: z > 1.6 ? 'siuuu' : 'smug', r9: 'smug' }, z > 1.6 ? ['😂', z - 1.6] : null);
-  pop(1, W / 2, 330, () => { rr(-460, -80, 920, 160, 30, '#ffd60a', DARK, 8); txt('MESSI vs RONALDO', 0, -22, 74, DARK, null); txt('20 YEARS CHASING 1 TROPHY 🏆', 0, 46, 42, '#c1121f', null); });
-  pop(1, W / 2, 190, () => { rr(-330, -46, 660, 92, 46, 'rgba(10,14,30,.88)', '#ffd60a', 5); txt('MESSI 🏆0  ·  RONALDO 🏆0', 0, 3, 42, '#ffd60a', null); }); }
+  HUD(pop, eOB((z + 0.2) / 0.15), 720, 520, () => { ctx.rotate(-0.04); txt('(wait for 2026 😭)', 0, 0, 40, '#fff', DARK); });
+  HUD(pop, 1, W / 2, 330, () => { rr(-460, -80, 920, 160, 30, '#ffd60a', DARK, 8); txt('MESSI vs RONALDO', 0, -22, 74, DARK, null); txt('20 YEARS CHASING 1 TROPHY 🏆', 0, 46, 42, '#c1121f', null); });
+  HUD(pop, 1, W / 2, 190, () => { rr(-330, -46, 660, 92, 46, 'rgba(10,14,30,.88)', '#ffd60a', 5); txt('MESSI 🏆0  ·  RONALDO 🏆0', 0, 3, 42, '#ffd60a', null); }); }
 
 function z2006(z, t) { if (z < RUNIN) runIn('start', '2006', z, t); else bg('2006', 0, t); const ri = z < RUNIN; streak(t, ri || z < 1.6);
   // Messi: swatted by a giant goalkeeper glove (out on penalties, QF)
@@ -230,7 +231,7 @@ function z2010(z, t) { if (z < RUNIN) runIn('2006', '2010', z, t); else bg('2010
   else if (gone) { runner('messi', 420, GM, t, SIT, 'shock', {}); runner('ronaldo', 640, GR, t, SIT, 'angry', {}); stars(420, 980, t, 70); stars(640, 1090, t + 1, 70); }
   else { runner('messi', 360 - ex, GM, t, z < 0.8 ? runPose(t) : FLAIL(t), z < 0.8 ? 'angry' : 'shock', { run: z < 0.8, lean: z > 0.8 ? -0.3 : 0 }); runner('ronaldo', 600 - ex * 0.8, GR, t, z < 0.8 ? runPose(t + 0.3) : FLAIL(t), z < 0.8 ? 'angry' : 'shock', { run: z < 0.8, lean: z > 0.8 ? -0.3 : 0 }); }
   if (ring) caption('TIKI-TAKA 🔴🟡', z - 1.9, 790, '#fff', '#c60b1e', 54);
-  if (gone) { caption('SPAIN TAKES IT 🏆', z - 3.3, 790, '#111', '#ffc400', 56); pop(eOB((z - 3.6) / 0.15), W / 2, 880, () => txt('(knocked Portugal out on the way)', 0, 0, 34, '#fff', DARK)); }
+  if (gone) { caption('SPAIN TAKES IT 🏆', z - 3.3, 790, '#111', '#ffc400', 56); HUD(pop, eOB((z - 3.6) / 0.15), W / 2, 880, () => txt('(knocked Portugal out on the way)', 0, 0, 34, '#fff', DARK)); }
   vip(t, { pele: ring ? 'shock' : 'smug', r9: gone ? 'siuuu' : 'smug' }, blow ? ['🙉', z - 0.9] : gone ? ['😂', z - 3.3] : null); header('2010', 'SOUTH AFRICA', z - 0.1, 0, 0); }
 
 function z2014(z, t) { if (z < RUNIN) runIn('2010', '2014', z, t); else bg('2014', 0, t); streak(t, z < 1.9);
@@ -279,7 +280,7 @@ function z2022(z, t) { if (z < RUNIN) runIn('2018', '2022', z, t); else bg('2022
   if (caught) bisht(mx, GM, clamp((z - 2.25) / 0.35));
   runner('messi', mx, GM, t, mp, me, mo); if (caught) { bishtTrim(mx, GM, clamp((z - 2.25) / 0.35)); cup(mx, GM - 420 + Math.sin(t * 6) * 6, 0.5, t, { mood: 'love', legs: true }); hearts(mx, GM - 640, t, 4); confettiCol((z - 2.05) * 1.2, '#74acdf'); }
   flash((z - 2.0) / 0.3);
-  if (z > 2.3) caption('FINALLY ✨ (in a bisht)', z - 2.3, 750, '#111', '#74acdf', 54);
+  if (z > 2.3 && z < 3.15) caption('FINALLY ✨ (in a bisht)', z - 2.3, 750, '#111', '#74acdf', 54);
   vip(t, { pele: caught ? 'smug' : 'neutral', r9: caught ? 'siuuu' : 'smug' }, caught ? ['👏', z - 2.1] : null); header('2022', 'QATAR', z - 0.1, caught ? 1 : 0, 0, z - 2.05); }
 
 function z2026(z, t) { if (z < RUNIN) runIn('2022', '2026', z, t); else bg('2026', 0, t); streak(t, z < 0.9);
@@ -298,25 +299,41 @@ function z2026(z, t) { if (z < RUNIN) runIn('2022', '2026', z, t); else bg('2026
   if (trample) { const fk = clamp((z - 2.6) / 0.5); runner('messi', 560, GM, t, P_HIT, 'shock', { sq: 0.45 * fk, dy: 0 }); runner('ronaldo', 640, GR, t, P_HIT, 'shock', { sq: 0.45 * fk });
     const px = lerp(1400, -500, clamp((z - 2.6) / 1.2)); minis(px, 1440, t, 10, 'pack'); if (z > 2.9) cup(px + 60, 1290, 0.55, t * 2, { legs: true, walk: true, f: -1, mood: 'love' });
     for (let i = 0; i < 6; i++) if (px < 500 + i * 60) ell(500 + i * 60, 1440 + (i % 2) * 40, 22, 10, 'rgba(60,20,10,.5)'); if (z > 3.4) { stars(560, 1150, t, 80); stars(640, 1260, t + 1, 80); } }
-  if (z > 2.9) { caption('SPAIN AGAIN?! 😭', z - 2.9, 790, '#111', '#ffc400', 60); pop(eOB((z - 3.2) / 0.15), W / 2, 880, () => txt('(knocked out Portugal AND Argentina)', 0, 0, 34, '#fff', DARK)); }
+  if (z > 2.9) { caption('SPAIN AGAIN?! 😭', z - 2.9, 790, '#111', '#ffc400', 60); HUD(pop, eOB((z - 3.2) / 0.15), W / 2, 880, () => txt('(knocked out Portugal AND Argentina)', 0, 0, 34, '#fff', DARK)); }
   vip(t, { pele: trample ? 'shock' : 'smug', r9: trample ? 'siuuu' : siu ? 'shock' : 'smug' }, siu ? ['😮', z - 1.5] : trample ? ['😂', z - 2.9] : null); header('2026', 'USA·CAN·MEX', z - 0.1, 1, 0); }
 
 function z_end(z, t) { if (z < RUNIN) runIn('2026', 'end', z, t); else bg('end', 0, t);
   bench(540, 1460, 1); runner('messi', 390, 1390, t, SIT, z > 1.6 ? 'smug' : 'deadpan', { noTag: false }); runner('ronaldo', 700, 1390, t, z > 1.3 && z < 2.6 ? PUNCH : SIT, z > 1.3 ? 'smug' : 'deadpan', {});
   if (z > 0.6) cup(lerp(1000, 1250, clamp((z - 0.6) / 2)), 1240, 0.35, t * 2, { legs: true, walk: true });
   caption('2026: BOTH RETIRE 👋', z - 0.4, 330, '#111', '#fff', 60);
-  pop(eOB((z - 0.7) / 0.15), W / 2, 190, () => { rr(-330, -46, 660, 92, 46, 'rgba(10,14,30,.88)', '#ffd60a', 5); txt('MESSI 🏆1  ·  RONALDO 🏆0', 0, 3, 42, '#ffd60a', null); });
+  HUD(pop, eOB((z - 0.7) / 0.15), W / 2, 190, () => { rr(-330, -46, 660, 92, 46, 'rgba(10,14,30,.88)', '#ffd60a', 5); txt('MESSI 🏆1  ·  RONALDO 🏆0', 0, 3, 42, '#ffd60a', null); });
   if (z > 1.3) bubble('but I scored at 6 World Cups ☝️', 620, 860, z - 1.3, 40);
   if (z > 2.0) bubble('🧉', 330, 930, z - 2.0, 44);
-  if (z > 2.5) { pop(eOB((z - 2.5) / 0.15), W / 2, 560, () => { ctx.rotate(-0.02); rr(-470, -110, 940, 220, 36, '#fff', DARK, 8); txt('WHO HAD THE BETTER', 0, -36, 60, DARK, null); txt('WORLD CUP CAREER? 🤔', 0, 44, 64, '#c1121f', null); });
-    pop(eOB((z - 2.8) / 0.15), W / 2 - 200, 780, () => { rr(-170, -70, 340, 140, 36, '#74acdf', DARK, 7); txt('10 🐐', 0, 4, 66, DARK, null); }); pop(eOB((z - 2.95) / 0.15), W / 2 + 200, 780, () => { rr(-170, -70, 340, 140, 36, '#c8102e', DARK, 7); txt('7 🐐', 0, 4, 66, '#fff', null); }); }
+  if (z > 2.5) { HUD(pop, eOB((z - 2.5) / 0.15), W / 2, 500, () => { ctx.rotate(-0.02); rr(-470, -110, 940, 220, 36, '#fff', DARK, 8); txt('WHO HAD THE BETTER', 0, -36, 60, DARK, null); txt('WORLD CUP CAREER? 🤔', 0, 44, 64, '#c1121f', null); });
+    HUD(pop, eOB((z - 2.8) / 0.15), W / 2 - 200, 690, () => { rr(-170, -70, 340, 140, 36, '#74acdf', DARK, 7); txt('10 🐐', 0, 4, 66, DARK, null); }); HUD(pop, eOB((z - 2.95) / 0.15), W / 2 + 200, 690, () => { rr(-170, -70, 340, 140, 36, '#c8102e', DARK, 7); txt('7 🐐', 0, 4, 66, '#fff', null); }); }
   if (z < 2.5) vip(t, { pele: 'smug', r9: 'smug' }, z > 1.0 ? ['😎', z - 1.0] : null); }
 
+
+// ---------- v4 camera: punch-ins on the big moments + impact shake; HUD (header, VIP, captions) stays fixed on top ----------
+let HUDQ = []; const HUD = (f, ...a) => HUDQ.push(() => f(...a));
+const _hdr = header, _vip = vip, _cap = caption; header = (...a) => HUD(_hdr, ...a); vip = (...a) => HUD(_vip, ...a); caption = (...a) => HUD(_cap, ...a);
+const N = (t) => [t, 540, 960, 1];
+const CAMS = {
+  hook: [[0, 500, 1180, 1.45], [1.0, 500, 1180, 1.45], [1.25, 540, 960, 1], N(2.4)],
+  '2006': [N(0), N(0.9), [1.05, 430, 1150, 1.35], [1.5, 430, 1150, 1.35], N(1.7), N(2.2), [2.3, 720, 1180, 1.45], [2.75, 720, 1180, 1.45], N(3.0)],
+  '2010': [N(0), N(0.8), [0.9, 520, 1150, 1.2], [1.7, 520, 1150, 1.2], N(1.85)],
+  '2014': [N(0), N(1.9), [2.05, 700, 1060, 1.7], [2.8, 700, 1060, 1.7], [3.0, 600, 1100, 1.3], [3.4, 600, 1100, 1.3], N(3.7)],
+  '2018': [N(0), N(1.4), [1.55, 560, 1250, 1.4], [2.4, 560, 1250, 1.4], N(2.7)],
+  '2022': [N(0), N(1.9), [2.05, 480, 900, 1.3], [3.0, 480, 900, 1.3], [3.25, 800, 1080, 1.55], [3.9, 800, 1080, 1.55], N(4.2)],
+  '2026': [N(0), N(1.35), [1.5, 700, 960, 1.15], [2.4, 700, 960, 1.15], N(2.6), [2.75, 600, 1250, 1.35], [3.6, 600, 1250, 1.35], N(3.9)],
+  end: [N(0)] };
+const SHK = { hook: [[1.55, 0.2, 14]], '2006': [[1.0, 0.25, 12], [2.3, 0.25, 16]], '2010': [[0.8, 1.0, 7]], '2014': [[1.0, 0.2, 12], [2.05, 0.25, 14]], '2018': [[1.5, 0.25, 12]], '2022': [[2.0, 0.3, 14]], '2026': [[1.4, 0.25, 10], [2.6, 0.8, 14]], end: [] };
+const shakeAt = (n, z) => SHK[n].reduce((m, [a, d, A]) => z >= a && z < a + d ? Math.max(m, A * (1 - (z - a) / d)) : m, 0);
 const LEN = [['hook', 2.4, z_hook], ['2006', 3.6, z2006], ['2010', 4.2, z2010], ['2014', 4.6, z2014], ['2018', 3.3, z2018], ['2022', 4.6, z2022], ['2026', 4.6, z2026], ['end', 4.6, z_end]];
 const SEG = []; { let t = 0; for (const [n, d, f] of LEN) { SEG.push([t, t + d, f, n]); t += d; } }
 const DURATION = SEG[SEG.length - 1][1];
 window.SEGS = SEG.map(s => [s[3], +s[0].toFixed(2)]);
-function render(t) { ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, W, H); window.T2T = t; for (const [a, b, fn] of SEG) if (t >= a && t < b) { fn(t - a, t); break; } }
+function render(t) { ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, W, H); window.T2T = t; for (const [a, b, fn, n] of SEG) if (t >= a && t < b) { const z = t - a; HUDQ = []; const sh = shakeAt(n, z), C = camK(CAMS[n], z); C[2] *= 1 + sh / 350; const hw = W / (2 * C[2]), hh = H / (2 * C[2]); C[0] = clamp(C[0], hw, W - hw); C[1] = clamp(C[1], hh, H - hh); cam(C, () => fn(z, t), sh, t); ctx.setTransform(1, 0, 0, 1, 0, 0); HUDQ.forEach(f => f()); break; } }
 window.render = render; window.DURATION = DURATION;
 if (!location.search.includes('render')) { const t0 = performance.now(); (function loop() { render(((performance.now() - t0) / 1000) % DURATION); requestAnimationFrame(loop); })(); }
 </script></body></html>
