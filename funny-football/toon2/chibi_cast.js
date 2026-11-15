@@ -42,7 +42,7 @@ window.LIKE = {
   messi: { head: { R: 104, hair: 'long', hairCol: '#4a2e1c', beard: true, beardCol: '#8a5230', faceW: 0.94, faceH: 1.08, jaw: 0.5,
     eyeSize: 0.8, eyeShape: 'almond', lidBase: 0.15, deepEyes: true, browW: 0.14, browY: 0.07, browBase: -0.12, browCol: '#3b2416', iris: '#3a2416', nose: 0.4, noseLen: 0.9, mouthW: 0.9 }, tattoo: { arm: 'f', col: '#2b3a55' } },
   // HØJLUND: very light platinum-blond short hair, pale skin, slim young face, light brows.
-  hoj: { skin: '#f3d3bd', shade: '#dcb39a', head: { R: 102, hair: 'swept', hairCol: '#eadba8', faceH: 1.1, faceW: 0.92, jaw: 0.6, chin: 0.4, eyeSize: 0.85, eyeShape: 'almond', browW: 0.1, browCol: '#c9b07a', iris: '#5b7fb0', nose: 0.3, noseLen: 0.6 } },
+  hoj: { skin: '#f0c9ae', shade: '#d6a487', head: { R: 102, hair: 'spiky', hairCol: '#d9b56a', faceH: 1.1, faceW: 0.92, jaw: 0.6, chin: 0.4, eyeSize: 0.85, eyeShape: 'almond', browW: 0.1, browCol: '#c9b07a', iris: '#5b7fb0', nose: 0.3, noseLen: 0.6 } },
   // Others: medium/low confidence (no reference photo yet).
   d1: { head: { R: 104, hair: 'buzz', hairCol: '#7a5a3a', beard: 'trim', beardCol: '#7a5a3a', jaw: 0.7, eyeSize: 0.85, eyeShape: 'almond', browW: 0.13, lidBase: 0.18, iris: '#4a6fa5' } },
   p1: { skin: '#e8c2a0', shade: '#c99f7d', head: { R: 102, hair: 'fade', hairCol: '#1d1410', beard: 'trim', beardCol: '#1d1410', jaw: 0.7, eyeSize: 0.85, eyeShape: 'almond', browW: 0.16, lidBase: 0.15, iris: '#3a2416' } },

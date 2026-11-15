@@ -275,3 +275,6 @@ Sources: [Proko: Caricature 101](https://www.proko.com/course-lesson/caricature-
   - Do this instead: no ink on the top edge; short strands feathering up over the skin; a few stubble dots above the line; thin sideburns in the HAIR colour joining the hair; the beard darkens toward the jaw (gradient + two-tone strand texture); a soft, unoutlined moustache with strands over the upper lip.
   - Only the bottom contour gets ink, and only slightly tufted (big zigzags look cartoonish).
   - Keep the beard starting below the cheekbone.
+
+## Likeness gate (user rule, Nov 15 2026: "make sure everyone looks alike from now on")
+No real player appears in a video until they pass `studio/likeness/README.md` (reference photo → grid → measured spec → 3+ overlay rounds → expressions → chibi match → PASS logged).
