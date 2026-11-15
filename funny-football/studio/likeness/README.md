@@ -42,6 +42,10 @@ User rule (Nov 15 2026): "make sure everyone from now on also looks alike".
 | Rasmus Højlund | `hojlund` (generic) | yes (spiky honey-blond) | "Rasmus Højlund with a fan.jpg" | round 3, awaiting user check |
 | Pelé | `pele` (generic) | no | "Pele photo 1962.jpg" | round 2, awaiting user check |
 | Ronaldo Nazário (R9) | `r9` (generic) | no | "Ronaldo.jpeg" (2000s, shaved head) | round 2, awaiting user check |
+| Harry Kane | `kane` (generic + new feathered `beard`/`beardGrad`/`stache`) | via `KC` in ep13 (white kit, pale skin) | "Harry Kane 2023.jpg" (padded to fit the box) | round 4, awaiting user check |
 | Højbjerg, Dias, Félix, B. Silva, D. Costa, Andersen, Veiga | — | rough | none yet | TODO before the next use |
+
+**Beard tip (Kane, Nov 15):** a full beard = `beard` polygon + `beardGrad` (transparent at the cheek top → full at the chin) + a darker `stache`; blur 4px. Keep the cheek top edge low (about nose-tip height) so it never reads as a mask.
+**Download tip 2:** when the API says "too many requests", build the thumb URL yourself: `upload.wikimedia.org/wikipedia/commons/thumb/<md5[0]>/<md5[0:2]>/<File_name>/500px-<File_name>` (md5 of the underscored file name).
 
 **Download tip (Nov 15):** `Special:FilePath` can redirect to thumb.wikimedia.org, which is blocked here, or return "Too many requests". Use the API (`prop=imageinfo&iiprop=url&iiurlwidth=500`), then rewrite the host to `upload.wikimedia.org/wikipedia/commons/thumb/...` and use a standard width (500px).

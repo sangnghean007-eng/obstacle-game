@@ -175,6 +175,7 @@
       if (S.freckles) for (let i = 0; i < 26; i++) { const x = S.freckles[0] + (i * 37) % S.freckles[2], y = S.freckles[1] + (i * 23) % 40; ctx.fillStyle = 'rgba(170,90,60,.35)'; ctx.beginPath(); ctx.arc(x, y, 2.2, 0, 7); ctx.fill(); }
       if (S.jawLines) for (const l of S.jawLines) line(l, 10, 'rgba(120,70,45,.22)'); });
     if (S.cheekLines) for (const l of S.cheekLines) line(l, 3, 'rgba(110,60,40,.4)');
+    if (S.beard) clipTo(S.face, () => { ctx.save(); ctx.filter = 'blur(4px)'; let bf = S.beardCol; if (S.beardGrad) { bf = ctx.createLinearGradient(0, S.beardGrad[0], 0, S.beardGrad[1]); bf.addColorStop(0, S.beardGrad[2]); bf.addColorStop(1, S.beardCol); } shape(S.beard, bf, 0); ctx.filter = 'none'; ctx.restore(); clipTo(S.beard, () => { for (let i = 0; i < 420; i++) { const x = 150 + (i * 47) % 320, y = 320 + (i * 29) % 260; ctx.fillStyle = i % 3 ? 'rgba(60,32,18,.22)' : 'rgba(200,140,90,.18)'; ctx.fillRect(x, y, 3, 6); } }); if (S.stache) { ctx.save(); ctx.filter = 'blur(1.5px)'; shape(S.stache, 'rgba(78,44,24,.92)', 0); ctx.restore(); } });
     // hair (front) + strands
     shape(S.hair, S.hairCol, S.hairLw ?? 5, true, !S.hairSharp); if (S.hairShade) shape(S.hairShade, 'rgba(0,0,0,.18)', 0);
     for (const l of (S.strands || [])) line(l, 3, S.strandCol || 'rgba(255,255,255,.3)');
@@ -233,6 +234,21 @@
     nose: { bridge: [[208, 270], [204, 310], [202, 335]], tip: [208, 346], nostrilL: [[172, 354], [188, 346], [198, 358], [182, 364]], nostrilR: [[222, 358], [232, 346], [248, 354], [238, 364]], wingL: [[168, 336], [158, 352], [174, 366], [192, 364]], wingR: [[226, 366], [244, 366], [258, 352], [248, 336]] },
     folds: [[[160, 368], [142, 398], [146, 426]], [[262, 366], [282, 396], [278, 424]]], mouth: { x: 214, y: 430, w: 140, rest: 'smile' }, buck: true,
     goatee: [[198, 486], [222, 478], [246, 486], [242, 522], [222, 534], [202, 522]], chinLine: [] };
-  const FACES = { ronaldo, messi, hojlund: o => generic(HOJ, o), pele: o => generic(PELE, o), r9: o => generic(R9, o) };
+  // ---------- HARRY KANE (Commons "Harry Kane 2023": frontal; swept-back light-brown quiff over a HIGH forehead with receding temples, short ginger-brown full beard, blue eyes that squint when he smiles) ----------
+  const KANE = { skin: '#e8b592', shade: '#c98f6c', hairCol: '#7b5a3c', browCol: '#6b4a30', iris: '#6f8fae', lips: '#c8806e', lid: 0.3, beardCol: 'rgba(104,64,38,.96)',
+    neck: [[220, 500], [420, 500], [430, 600], [560, 640], [60, 640], [210, 600]], underJaw: [[225, 520], [410, 510], [400, 545], [310, 560], [235, 545]],
+    face: [[180, 230], [172, 300], [172, 360], [178, 420], [196, 480], [230, 524], [275, 548], [312, 554], [352, 545], [395, 514], [425, 466], [440, 400], [446, 330], [446, 260], [438, 200], [420, 160], [380, 136], [320, 128], [260, 134], [215, 156], [192, 192]],
+    earL: [[176, 292], [134, 270], [118, 328], [132, 388], [172, 400]], earR: [[444, 300], [478, 290], [486, 345], [468, 396], [438, 404]],
+    sideShade: [[540, 150], [440, 200], [448, 330], [425, 466], [540, 560]], sockets: [[258, 302, 42, 18], [372, 308, 42, 18]], blush: [[230, 365, 30, 14, .18], [400, 368, 28, 14, .16]],
+    beardGrad: [345, 460, 'rgba(104,64,38,.3)'], beard: [[180, 348], [192, 390], [214, 418], [246, 432], [272, 420], [292, 413], [312, 411], [334, 413], [356, 420], [382, 432], [414, 418], [436, 390], [446, 354], [470, 420], [440, 520], [380, 580], [310, 600], [240, 580], [180, 520], [160, 420]],
+    cheekLines: [[[212, 318], [200, 326]], [[214, 328], [204, 340]], [[420, 324], [432, 332]], [[418, 334], [428, 346]]], stache: [[258, 432], [286, 418], [312, 421], [338, 418], [366, 432], [352, 437], [312, 430], [272, 437]],
+    hair: [[180, 296], [168, 250], [164, 195], [172, 145], [198, 98], [240, 60], [292, 42], [350, 46], [404, 70], [444, 110], [464, 162], [466, 230], [458, 298], [448, 302], [446, 240], [440, 196], [424, 160], [398, 146], [368, 136], [338, 132], [312, 128], [288, 130], [260, 134], [234, 146], [214, 160], [198, 196], [190, 240], [182, 292]],
+    hairShade: [[200, 190], [215, 160], [260, 134], [320, 126], [380, 134], [425, 160], [440, 196], [425, 150], [380, 120], [320, 112], [260, 120], [215, 145]],
+    strands: [[[222, 148], [250, 98], [298, 66]], [[268, 134], [306, 86], [362, 62]], [[322, 128], [364, 86], [416, 92]], [[376, 136], [414, 112], [452, 140]], [[196, 200], [196, 150], [222, 108]]], strandCol: 'rgba(255,225,180,.38)',
+    browL: [[202, 298], [244, 280], [290, 280], [290, 292], [244, 291], [204, 308]], browR: [[332, 284], [374, 281], [416, 300], [413, 310], [374, 292], [334, 295]],
+    eyeL: [258, 307, 54, 15], eyeR: [372, 313, 52, 15],
+    nose: { bridge: [[312, 302], [314, 345], [316, 372]], tip: [318, 383], nostrilL: [[294, 393], [306, 387], [312, 397], [300, 401]], nostrilR: [[326, 397], [332, 387], [344, 393], [338, 401]], wingL: [[288, 376], [282, 391], [296, 403], [312, 401]], wingR: [[326, 401], [342, 403], [352, 391], [346, 376]] },
+    folds: [[[276, 398], [258, 425], [256, 448]], [[360, 400], [378, 425], [378, 448]]], mouth: { x: 312, y: 448, w: 112, rest: 'smile' }, chinLine: [] };
+  const FACES = { ronaldo, messi, hojlund: o => generic(HOJ, o), pele: o => generic(PELE, o), r9: o => generic(R9, o), kane: o => generic(KANE, o) };
   window.portrait = { draw(c2d, name, x, y, s, o = {}) { ctx = c2d; ctx.save(); ctx.translate(x, y); ctx.scale(s * (o.f || 1), s); ctx.translate(-330, -300); FACES[name](o); ctx.restore(); } };
 })();
