@@ -1,68 +1,65 @@
-"""Ep12 v2 = THE WORLD CUP'S EXES sound: each era its own sound world. No TTS.
-hook 0 · pele 2.2 · r94 8.2 · r02 11.2 · messi 14.8 · cr7 18.8 · question 25.8 · thanks 28.4 · end 30.8"""
+"""Ep12 v3 = THE 20-YEAR CHASE sound: a driving chase beat + one slapstick sound set per World Cup. No TTS.
+hook 0 · 2006 2.4 · 2010 6.0 · 2014 10.2 · 2018 14.8 · 2022 18.1 · 2026 22.7 · end 27.3 · out 31.9"""
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'sfx'))
 from synth import *
-END = 30.8; m = Mix(END)
+END = 31.9; m = Mix(END)
 def k808(t, g=.9): d = .5; m.m(osc(glide(110, 42, d, .3), d) * dec(d, 5) + .2 * lp(noise(d), 1500) * dec(d, 60), t, g, 0, .02)
-def samba(t0, t1, g=1.0, bpm=110):
-    b = 60 / bpm; t = t0; i = 0; prog = [['D3', 'F#3', 'A3'], ['G2', 'B2', 'D3'], ['A2', 'C#3', 'E3'], ['D3', 'F#3', 'A3']]
-    while t < t1 - .05:
-        m.saw_chord([hz(n) for n in prog[i % 4]], t, min(4 * b * .95, t1 - t), .045 * g, 1600, 0, .2, .3, .4)
-        for k in range(16):
-            if t + k * b / 4 < t1: m.hat(t + k * b / 4, .05 * g if k % 4 else .09 * g)
-        for k in (0, 1.5, 2.5):
-            if t + k * b < t1: k808(t + k * b, .55 * g)
-        for k in (0.75, 1.75, 2.75, 3.5):
-            if t + k * b < t1: m.rim(t + k * b, .22 * g)
-        t += 4 * b; i += 1
-def crackle(t0, t1, g=.12):  # old film projector: hiss + random pops + 24fps flutter
-    d = t1 - t0; x = hp(noise(d), 3000) * .15; n = len(x); idx = np.random.default_rng(3).integers(0, n, int(d * 18)); x[idx] += np.random.default_rng(4).standard_normal(len(idx)) * 3
-    x *= (1 + .3 * np.sin(2 * np.pi * 24 * T(d))); m.f(x, t0, g, 0, .05)
-def romance(t, notes, step=.32, g=.16):  # soft rhodes-ish love theme
-    for i, n in enumerate(notes): m.pluck(hz(n), t + i * step, .9, g, -.2 + .1 * (i % 4), .4, .5)
-# HOOK: record scratch-in, love sting, heartbeat
-m.brass_hit([hz('D4'), hz('F#4'), hz('A4')], 0, .7, .25); m.crash(0, .3); m.sparkle(0.1, .8, .15)
-romance(.4, ['A5', 'F#5', 'D5', 'E5', 'F#5'], .28, .14)
-for i in range(4): m.pop(.5 + i * .3, .3, 700 + i * 150, -.4 + i * .27)
-m.heartbeat(1.7, .5)
-# PELÉ 1958/62/70: projector crackle + music box waltz; three dings; colour burst in 1970
-t = 2.2; m.tape_rewind(t - .05, .3, .25); crackle(t, t + 4.4, .5)
-m.music_box(t + .1, ['D5', 'F#5', 'A5', 'F#5', 'G5', 'B5', 'D6', 'B5', 'A5', 'F#5', 'E5', 'D5', 'E5', 'F#5', 'A5', 'D6'], .27, .12)
-for b in (0.3, 1.9, 3.5): m.whoosh(t + b, .35, .2, True, .3); m.ding(t + b + .5, 1568 + b * 60, .3); m.f(m.wav('cheer_crowd'), t + b + .55, .12, 0, .3)
-c = t + 4.4; m.brass_hit([hz('D3'), hz('A3'), hz('D4'), hz('F#4')], c, .9, .35); m.crash(c, .4); samba(c, 8.2, .8); m.cheer_burst(c + .1, .3)
-# R9 1994: VHS hiss + clunk, bench whistle, polite clap, "0 minutes" sad tuba
-t = 8.2; m.f(hp(noise(.08), 1000) * dec(.08, 30), t, .5); m.f(lp(hp(noise(3.0), 2000), 7000) * .2, t, .25)
-m.drone(hz('D3'), t, 3.0, .06); m.tweet(t + .6, 3, .1)
-for i in range(6): m.clap(t + .9 + i * .18, .12)
-m.ding(t + 1.6, 1568, .25)
-for i, (n, d) in enumerate([('F3', .25), ('E3', .25), ('D3', .5)]): tt = T(d); m.m(lp(osc(hz(n) * (1 + .02 * np.sin(2 * np.pi * 6 * tt)), d, 'saw'), 800) * env(len(tt), .02, .08), t + 1.8 + i * .26, .25, .2, .3)
-# R9 2002: hair "boing", samba carnival, two goals, crowd
-t = 11.2; m.boing(t + .1, .35); samba(t, 14.8, 1.0, 120)
-for g in (0.5, 1.2): m.thwack(t + g - .3, .7); m.net(t + g, .5); m.cheer_burst(t + g + .05, .3); m.ding(t + g + .1, 1760 + g * 200, .25)
-m.ding(t + 1.9, 2093, .3); m.f(m.wav('cheer_crowd'), t + 1.9, .3, 0, .3)
-m.scratch(t + 2.35, .3); m.badumtss(t + 2.45, .45)
-# MESSI 2022: desert night pad, cape whoosh, choir lift, fireworks
-t = 14.8; m.choir([hz('D3'), hz('A3'), hz('F#4')], t, 1.0, .1); m.whoosh(t + .5, .4, .35, True)
-m.drone(hz('D2'), t, 1.0, .08); m.heartbeat(t + .3, .4); m.heartbeat(t + .75, .45)
-c = t + 1.0; m.brass_hit([hz('D3'), hz('A3'), hz('D4'), hz('F#4'), hz('A4')], c, 1.2, .4); m.crash(c, .5); m.choir([hz('D4'), hz('F#4'), hz('A4'), hz('D5')], c, 2.9, .12)
-for i in range(6): m.firework(c + .2 + i * .45, .3, -.5 + i * .2)
-m.cheer_burst(c + .1, .4); m.harp_gliss(c + .3, ['D5', 'E5', 'F#5', 'A5', 'B5', 'D6', 'E6'], .05, .12)
-# CR7: walking footsteps, door creak, smooth "romantic" jazz, sparkle, shy squeak
-t = 18.8
-for i in range(5): m.footstep(t + i * .2, .25, .3)
-cr = bp(osc(glide(220, 520, .6, .5), .6, 'saw'), 300, 2500) * (1 + .6 * np.sin(2 * np.pi * 23 * T(.6))) * env(int(.6 * SR), .02, .1)
-m.f(cr, t + 1.2, .25, -.2, .2); m.boing(t + 1.5, .2, .4, 300, 200)
-a = t + 2.2; m.sparkle(a, 1.2, .18); m.choir([hz('F#3'), hz('A3'), hz('C#4'), hz('E4')], a, 1.2, .08)
-for i, n in enumerate(['F#3', 'B2', 'E3', 'A2', 'D3', 'G2']): m.bass(hz(n), a + i * .8, .7, .25)
-for k in range(10): m.hat(a + k * .4, .06); m.rim(a + .4 + k * .8, .12) if k < 5 else None
-romance(a + .2, ['A4', 'C#5', 'E5', 'G#5', 'F#5', 'E5', 'C#5', 'B4', 'A4', 'G#4', 'A4', 'B4', 'C#5', 'E5'], .32, .13)
-m.pop(a + .9, .4, 1100); m.f(m.wav('chuckle'), a + 1.25, .35, -.3, .2)
-m.boing(a + 1.6, .25, .3, 600, 900); m.f(m.wav('ooh_crowd'), a + 1.7, .35, 0, .3)
-m.scratch(a + 2.35, .25); m.f(m.wav('laugh_crowd'), a + 2.5, .3, 0, .3)
-# QUESTION + THANKS
-t = 25.8; m.ding(t, 1318, .3); m.pop(t + .3, .3); m.pop(t + .45, .3); m.f(m.wav('ooh_crowd'), t + .2, .3, 0, .3); m.heartbeat(t + 1.0, .4); m.heartbeat(t + 1.6, .4)
-t = 28.4
-for i, n in enumerate(['D5', 'F#5', 'A5', 'D6', 'A5', 'F#5', 'D6']): m.pluck(hz(n), t + .1 + i * .16, .6, .22, -.3 + i * .1, .5, .4)
-m.ding(t + 1.0, 2093, .35); m.pop(t + 1.0, .3)
+def chase(t0, t1, g=1.0, bpm=150, root='E2'):
+    b = 60 / bpm; t = t0; i = 0; f = hz(root); riff = [1, 1, 1.5, 1, 1.335, 1, 1.5, 1.78]
+    while t < t1 - .02:
+        if i % 2 == 0: m.kick(t, .55 * g)
+        else: m.snare(t, .3 * g)
+        m.hat(t + b / 2, .07 * g)
+        m.bass(f * riff[i % 8], t, b * .9, .22 * g)
+        t += b; i += 1
+def slide(t, f0, f1, d=.5, g=.3): tt = T(d); m.f(osc(glide(f0, f1, d), d) * env(len(tt), .01, .05), t, g, 0, .15)
+def trombone(t, g=.28):
+    for i, (n, d) in enumerate([('D3', .25), ('C#3', .25), ('C3', .25), ('B2', .7)]): tt = T(d); m.m(lp(osc(hz(n) * (1 + .02 * np.sin(2 * np.pi * 6 * tt)), d, 'saw'), 900) * env(len(tt), .02, .08), t + i * .27, g, .2, .3)
+def stampfx(t): m.thud(t, .5); m.f(bp(noise(.08), 800, 3000) * dec(.08, 40), t, .4)
+def runin(t): m.whoosh(t, .5, .3, True, .3); [m.footstep(t + .1 + k * .12, .2, (-1) ** k * .3) for k in range(5)]
+def vuvu(t, d):
+    tt = T(d); f = 233 * (1 + .01 * np.sin(2 * np.pi * 5 * tt)); x = osc(f, d, 'saw') + .5 * osc(f * 2.01, d, 'saw'); m.f(bp(x, 200, 3000) * env(len(tt), .05, .2), t, .35, -.3, .1)
+# HOOK
+m.brass_hit([hz('E3'), hz('B3'), hz('E4')], 0, .7, .3); m.crash(0, .3); m.tick(.6); m.tick(.85, False)
+m.f(lp(noise(.25), 3000) * dec(.25, 25) * 2, 1.15, .7); k808(1.15, 1.0); m.crash(1.15, .4)  # starter pistol
+chase(1.15, 20.1, .9)
+m.bonk(1.58, .8); m.f(m.wav('laugh_crowd'), 1.65, .25, 0, .3)
+# 2006: glove swat, Messi flies, ball bonk on Ronaldo
+t = 2.4; runin(t); m.whoosh(t + .7, .3, .3, True); m.thwack(t + 1.0, .8); m.boing(t + 1.05, .35, .6, 200, 700); slide(t + 1.1, 900, 2200, .5, .15)
+m.f(m.wav('laugh_m'), t + 1.2, .3, -.4, .2); stampfx(t + 1.6)
+m.whoosh(t + 2.05, .25, .3, False, .5); m.bonk(t + 2.3, .9); m.tweet(t + 2.45, 4, .15); stampfx(t + 2.6); m.f(m.wav('laugh_crowd'), t + 2.6, .3, 0, .3)
+for k in range(5): m.footstep(t + 2.85 + k * .1, .2, .5)
+# 2010: vuvuzela, tiki-taka passes, Spain takes it
+t = 6.0; runin(t); vuvu(t + .8, 1.0)
+for k in range(10): m.pop(t + 1.9 + k / 7, .25, 700 + (k % 4) * 150, (-1) ** k * .4); m.thwack(t + 1.9 + k / 7, .15, (-1) ** k * .4)
+m.boing(t + 2.5, .25, .5, 300, 150); m.tweet(t + 2.7, 4, .12)
+m.cheer_burst(t + 3.3, .3); m.f(m.wav('laugh_crowd'), t + 3.4, .25, 0, .3)
+for k in range(8): m.footstep(t + 3.3 + k * .08, .15, .4)
+# 2014: barrier clang, poof to VIP, glass clonk, sad trombone, golden ball, walk past
+t = 10.2; runin(t); m.whoosh(t + .75, .2, .25, False); x = sum(a * osc(f, .6) for f, a in [(310, 1), (777, .6), (1450, .4)]) * dec(.6, 7); m.f(x, t + 1.0, .5); m.pop(t + 1.45, .4, 500); m.sparkle(t + 1.5, .5, .1)
+m.whoosh(t + 2.0, .25, .3, False); m.ding(t + 2.06, 2637, .35); m.f(hp(noise(.2), 3000) * dec(.2, 20), t + 2.06, .3)
+trombone(t + 2.3); m.sparkle(t + 2.9, .6, .15); m.ding(t + 2.95, 1760, .25)
+m.music_box(t + 3.4, ['E5', 'D5', 'C5', 'B4', 'A4'], .25, .1)
+# 2018: holes, slide-whistle drop, pop-up boing, calendar
+t = 14.8; runin(t); m.pop(t + 1.35, .4, 400); slide(t + 1.5, 1600, 300, .45, .3); m.thud(t + 1.9, .5)
+m.boing(t + 2.1, .3, .4, 200, 500); m.tweet(t + 2.2, 4, .12); m.f(bp(noise(.15), 1000, 4000) * dec(.15, 15), t + 1.9, .3); m.f(m.wav('laugh_crowd'), t + 1.7, .3, 0, .3)
+for k in range(5): m.footstep(t + 2.5 + k * .1, .2, .5)
+# 2022: bench slides in, trophy runs past, dive, CATCH, bisht, fireworks
+t = 18.1; runin(t); m.whoosh(t + .75, .3, .3, True, -.5); m.thud(t + 1.0, .5); stampfx(t + 1.05)
+for k in range(7): m.footstep(t + 1.2 + k * .11, .2, .5 - k * .15)
+m.whoosh(t + 1.6, .4, .35, True); m.heartbeat(t + 1.5, .3)
+c = t + 2.0; m.brass_hit([hz('E3'), hz('B3'), hz('E4'), hz('G#4'), hz('B4')], c, 1.2, .45); m.crash(c, .5); m.cheer_burst(c, .4); m.whoosh(c + .25, .4, .25, False)
+m.choir([hz('E4'), hz('G#4'), hz('B4'), hz('E5')], c + .2, 2.4, .12)
+for i in range(5): m.firework(c + .3 + i * .45, .3, -.5 + i * .25)
+m.harp_gliss(c + .4, ['E5', 'F#5', 'G#5', 'B5', 'C#6', 'E6'], .05, .12); m.f(m.wav('gasp'), c + .3, .3, .4, .2)
+# 2026: last chance, penalty, SIUUU, Spain stampede
+t = 22.7; runin(t); chase(t + .3, t + 2.6, .7, 160, 'F2'); m.heartbeat(t + .7, .35)
+m.thwack(t + 1.15, .8); m.net(t + 1.4, .6); m.cheer_burst(t + 1.45, .4); m.f(m.wav('siu'), t + 1.55, .9, 0, .25); m.f(m.wav('siu_crowd'), t + 1.75, .5, 0, .3)
+for k in range(22): m.footstep(t + 2.6 + k * .045, .3, .5 - k * .045)
+m.bonk(t + 2.75, .7); m.f(lp(noise(.3), 400) * dec(.3, 10), t + 2.75, .5); m.f(m.wav('laugh_crowd'), t + 3.0, .35, 0, .3); trombone(t + 3.2, .22)
+# END: sunset, bubbles, mate slurp, question
+t = 27.3; runin(t)
+for i, n in enumerate(['E4', 'G#4', 'B4', 'E5', 'D#5', 'B4', 'G#4', 'E4', 'F#4', 'A4', 'C#5', 'E5']): m.pluck(hz(n), t + .5 + i * .3, .7, .14, -.3 + .05 * i, .4, .4)
+m.pop(t + 1.3, .3); m.slurp(t + 2.0, .7, .3); m.ding(t + 2.5, 1318, .3); m.pop(t + 2.8, .3, 900); m.pop(t + 2.95, .3, 1100); m.f(m.wav('ooh_crowd'), t + 2.6, .3, 0, .3)
 m.write(sys.argv[1])

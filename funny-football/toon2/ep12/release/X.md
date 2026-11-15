@@ -1,15 +1,15 @@
-# X: Ep12 v2 (native video upload)
+# X: Ep12 v3 (native video upload)
 **Main post:**
 ```
-The World Cup's exes 💘
+Messi vs Ronaldo: 20 years chasing the World Cup 🏆
 
-1958-70: Pelé ×3
-1994: R9, 0 minutes, still champion
-2002: R9, 2 goals in the final + that haircut
-2022: Messi, finally (in a bisht)
-CR7: 0… but a spot is reserved 😏
+2006: both out
+2014: Messi walks past it
+2018: both out the SAME day
+2022: Messi finally, Ronaldo benched
+2026: Spain knocks out both
 
-Does the GOAT need the World Cup? 👇 #WorldCup
+Who had the better World Cup career? 👇 #WorldCup
 ```
-**Reply 1:** `Real history: Pelé won 1958/62/70; R9 was an unused 17-year-old in 1994 and scored both goals in the 2002 final; Messi won in Qatar 2022. Cartoon parody, original characters.`
-**Reply 2:** `Who's the trophy's next ex in 2026? 👀`
+**Reply 1:** `Real history: 2018 R16 exits both on June 30; Messi won Qatar 2022; Ronaldo scored his 1st WC knockout goal vs Croatia in 2026 before Spain beat Portugal 1-0. Cartoon parody, original characters.`
+**Reply 2:** `Pelé (3) and R9 (2) watching all of this from the VIP box 😎`

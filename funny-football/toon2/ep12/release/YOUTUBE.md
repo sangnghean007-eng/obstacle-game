@@ -1,26 +1,27 @@
-# YouTube Shorts: Ep12 v2 "THE WORLD CUP'S EXES 💘"
-**Title** (54 characters):
+# YouTube Shorts: Ep12 v3 "THE 20-YEAR CHASE 🏆"
+**Title** (50 characters):
 ```
-The World Cup's EXES 💘 Pelé, R9, Messi… and Cristiano?
+Messi vs Ronaldo: 20 Years Chasing the World Cup 🏆
 ```
 **Description:**
 ```
-The World Cup trophy tells the story of its exes 💘 Pelé, Ronaldo R9, Messi and Cristiano Ronaldo.
-🎞️ Pelé: 1958, 1962, 1970 (3 times!)
-📼 R9 1994: 0 minutes played… still champion
-💇 R9 2002: 2 goals in the final (and THAT haircut)
-✨ Messi 2022: finally, in a bisht
-😏 Cristiano: 0 World Cups… but he saved it a spot next to the Euro, 5 Champions Leagues and 5 Ballon d'Ors
+Messi and Ronaldo chased the World Cup for 20 years, 2006 to 2026. Only one caught it 🏆
+🧤 2006: out on penalties / out in the semi
+📯 2010: Spain takes it (and knocks Portugal out)
+💔 2014: Messi loses the final, walks past the trophy
+🤝 2018: both knocked out on the SAME DAY (June 30)
+✨ 2022: Ronaldo benched, Messi finally lifts it
+😭 2026: Ronaldo's first knockout goal… then Spain knocks out both
 
-Does the GOAT need the World Cup? YES 🏆 or NO 🐐 👇
+Who had the better World Cup career? Comment 10 or 7 👇
 
 Real World Cup history · cartoon parody with original characters and synthesized audio. No logos. Not affiliated with FIFA or any player, club or federation.
 
-#WorldCup #Messi #Ronaldo
+#Messi #Ronaldo #WorldCup
 ```
-**Tags** (counted ≤500):
+**Tags:**
 ```
-world cup, world cup winners, world cup exes, pele, ronaldo nazario, r9, r9 haircut 2002, messi, messi bisht, cristiano ronaldo, cr7, goat debate, messi vs ronaldo, football cartoon, football animation, soccer 365
+messi, ronaldo, cristiano ronaldo, cr7, messi vs ronaldo, world cup, world cup 2026, world cup 2022, messi world cup, ronaldo world cup, goat debate, pele, r9, football cartoon, football animation, soccer 365
 ```
 **Settings:** Comedy · Standard YouTube License · embedding on · not made for kids · altered/AI content: No · playlist "Soccer 365 Cartoons" · related video = Ep11 TWO LIVES.
-**Pinned comment:** `Which "ex" did the World Cup love MOST? 1 Pelé · 2 R9 · 3 Messi 👇`
+**Pinned comment:** `Which World Cup hurt the most? 2006 · 2010 · 2014 · 2018 · 2022 · 2026 👇`

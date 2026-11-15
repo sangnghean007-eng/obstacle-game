@@ -1,8 +1,8 @@
-# Facebook Reels: Ep12 v2 (no engagement bait)
+# Facebook Reels: Ep12 v3 (no engagement bait)
 **Caption:**
 ```
-If the World Cup trophy could talk about its exes 💘 Pelé three times, R9 twice (once without playing a minute), Messi finally in 2022… and Cristiano still has a spot reserved. Does a player need the World Cup to be the greatest?
+20 years. 6 World Cups each. One trophy. Messi and Ronaldo chased it from 2006 to 2026: knocked out on the same day in 2018, Messi finally in 2022, and Spain stopped both of them in 2026. Who had the better World Cup career?
 Real World Cup history · cartoon parody
 ```
 **Hashtags:** #WorldCup
-**Pinned comment:** `Which era did the trophy look happiest in: the 1958 film, the 2002 samba or the 2022 night in Qatar?`
+**Pinned comment:** `Which exit was the most painful to watch: 2014 for Messi, or 2026 for Ronaldo?`

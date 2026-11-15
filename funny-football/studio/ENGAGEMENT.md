@@ -94,3 +94,13 @@ A direct remake of a meme/list is NOT a video. Before scripting:
 - **Every era/segment gets its own look AND sound world** (film crackle 1958, VHS 1994, samba 2002, fireworks + choir 2022, smooth jazz for the CR7 "date").
 - **Hunt for the little-known true detail** that makes the joke (R9 played 0 minutes in 1994; the Cascão haircut; the bisht).
 - **Decide and ship.** Don't ask the user to choose between bland options; show the bold version, keep the safe one as a backup in `review/`.
+
+## 10. Kill the "standing template" (user, Nov 15 2026: "you keep making the same old mistake: monotonous and bland")
+Ep12 v1 and v2 both failed for the same root cause, even though the backgrounds changed: **every beat = one character standing in the middle + a prop appears + a caption pill**. The viewer sees the same shot 5 times, and the joke lives in the text, not in the action.
+Before rendering, check the contact sheet. If 3+ frames have the same composition (one figure centered, standing, caption above), rebuild.
+What works instead (Ep12 v3):
+- **Continuous action:** one camera move or one chase that carries through the whole video (side-scroller, race, escape, heist). Something is always running, falling, flying or crashing.
+- **Rivals on screen TOGETHER** and physically interacting (bonk, both fall in holes, one benched while the other dives).
+- **Slapstick > captions:** each fact becomes a physical gag (out on penalties = a giant glove swats him; group-stage exit = he clangs into a barrier; the same-day exit = two holes open at once). The caption only confirms it.
+- **Running threads + callbacks:** a live scoreboard, a reaction box (Pelé/R9 in VIP), and a callback (the Spain runners in 2010 come back in 2026).
+- **Real-but-surprising facts** are the best gags: dig for coincidences (same day, same rival twice, walked past the trophy).

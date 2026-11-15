@@ -1,13 +1,13 @@
-# Instagram Reels: Ep12 v2
-**Caption** (line 1 = 96 characters):
+# Instagram Reels: Ep12 v3
+**Caption** (line 1 = 98 characters):
 ```
-The World Cup's EXES 💘 Pelé, R9, Messi… and Cristiano? Does the GOAT need it? YES 🏆 / NO 🐐 👇
-🎞️ Pelé: 1958 · 1962 · 1970
-📼 R9: 0 minutes in 1994, 2 goals in the 2002 final
-✨ Messi: 2022, in a bisht
-😏 CR7: 0… but a RESERVED spot next to 5 UCL & 5 Ballon d'Or
+Messi vs Ronaldo: 20 years chasing ONE World Cup 🏆 Who had the better World Cup career? 10 or 7? 👇
+🤝 2018: both out on the same day
+💔 2014: Messi walks past the trophy
+✨ 2022: finally (Ronaldo on the bench)
+😭 2026: Spain knocks out both
 Real World Cup history · cartoon parody, original characters
-#worldcup #messi #ronaldo #pele #football
+#messi #ronaldo #worldcup #football #goat
 ```
-**Settings:** cover = frame 1 s (1:1 crop keeps the title and faces) · Share to Feed on · audio name "The World Cup's Exes – Soccer 365 (original)" · alt text: "Cartoon World Cup trophy remembers Pelé, Ronaldo R9, Messi and Cristiano Ronaldo".
-**Pinned comment:** `Best era? 1 film-Pelé · 2 VHS-R9 · 3 haircut-R9 · 4 bisht-Messi 👇`
+**Settings:** cover = frame 0 (the 1:1 crop keeps the title) · Share to Feed on · audio name "The 20-Year Chase – Soccer 365 (original)" · alt text: "Cartoon Messi and Ronaldo chase a running World Cup trophy from 2006 to 2026".
+**Pinned comment:** `Funniest moment? 1 glove 🧤 · 2 vuvuzela 📯 · 3 glass box 💔 · 4 same-day holes 🕳️ · 5 Spain stampede 😭 👇`
