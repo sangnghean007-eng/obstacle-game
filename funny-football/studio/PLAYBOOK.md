@@ -248,3 +248,18 @@ Sources: [Proko: Caricature 101](https://www.proko.com/course-lesson/caricature-
    - Messi needed hair swept back off the forehead (not a bowl) plus a big ginger-brown beard.
    - Brow angle sets the mood: inner ends raised = sad, a strong V = cartoon-angry. A slight inward dip (`browBase` about −0.15) reads "intense".
 5. New rig params from this round: `browY`, `browBase`, `noseLen`, `deepEyes`, and hair styles `cr7` and `long`.
+
+### Portrait mode (Nov 15 2026): a higher likeness ceiling for close-ups
+- The user's verdict on chibi v3 was "still not similar; can't you do better?". The chibi style itself caps likeness.
+- **`toon2/portrait.js`** draws semi-realistic caricature heads from measured landmarks of a reference photo (hairline, brows, eyes, nose, mouth, chin, jaw corners and ears, on a 600x620 grid), with planes/shading, tapered brows, almond eyes with creases, nose bridge + nostrils, lips and folds. Caricature = stretch the chin/jaw ~15%.
+- Done: `ronaldo` (mouth: open/smile/flat), `messi`. Sheet: `toon2/portrait_v1_sheet.jpg`.
+- **Use it for:** the hook frame, reaction close-ups, the end card and the cover (where likeness matters most). Keep chibi bodies for action and wide shots.
+- **To add a player:**
+  1. Get a reference photo.
+  2. Overlay a 50 px grid with PIL and read off the landmark coordinates.
+  3. Write a new face function.
+  4. Compare side by side, and iterate 2–3 times.
+- **Mistakes to avoid:**
+  - Big soft blotches read as bruises; keep the shading subtle.
+  - Thin brows and small eyes lose the intensity.
+  - The neck must be as wide as the jaw for athletes.

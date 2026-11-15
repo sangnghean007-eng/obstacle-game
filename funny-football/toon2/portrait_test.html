@@ -1,0 +1,9 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Portrait test</title><style>html,body{margin:0}</style></head><body><canvas id="c" width="1800" height="700"></canvas>
+<script src="portrait.js"></script><script>
+const ctx = document.getElementById('c').getContext('2d'); ctx.fillStyle = '#2b2f3a'; ctx.fillRect(0, 0, 1800, 700);
+const g = (x, c) => { const gr = ctx.createLinearGradient(0, 0, 0, 700); gr.addColorStop(0, c); gr.addColorStop(1, '#111'); ctx.fillStyle = gr; ctx.fillRect(x, 0, 600, 700); };
+g(0, '#7a2e3a'); g(600, '#7a2e3a'); g(1200, '#3a5a7a');
+portrait.draw(ctx, 'ronaldo', 300, 330, 1.0, { kit: '#1e3a8a', trim: '#ffd400', mouth: 'open' });
+portrait.draw(ctx, 'ronaldo', 900, 330, 1.0, { kit: '#c8102e', trim: '#046a38', mouth: 'smile' });
+portrait.draw(ctx, 'messi', 1500, 330, 1.0, { kit: '#9fd3f5', trim: '#111' });
+</script></body></html>
