@@ -19,3 +19,12 @@
 | 11 | Evergreen: the "teeth check" celebration (Hakimi + El Aynaoui) | Clumsy goal celebration, Mar 2026 (Mozzart Sport, one source) | Slapstick replay with a dentist | Hakimi, El Aynaoui portraits | Needs a 2nd source |
 
 **Recommended order:** #7 Yamal (no waiting, big audience) → #6 Portugal after Nov 17 (series follow-up) → #9 Messi after Nov 21. Keep #10 as a recurring filler.
+
+## Viral re-rank (Nov 15, 2026, after the user's "focus on viral")
+| Rank | Idea | Why it can go viral | Length | Status |
+|---|---|---|---|---|
+| **1** | **"RACE TO 1000": Ronaldo 985 vs Messi 937** (as of Nov 12, 2026; messixronaldo.com + messi.fyi trackers, beIN had Messi at 927 on Aug 30; get 2 solid sources before the build) | The #1 rivalry in football and a pick-a-side by design ("Team 7 or Team 10: who hits 1000 first?"). Mashup: kart-racing-game spoof (item boxes, a turbo SIUUU, Messi's free-kick "shell"). Twist: Yamal zooms past on a scooter ("the future"). Fans of all three comment. | 25 s, loop | **Recommended next** |
+| 2 | "TOO YOUNG FOR THIS": Yamal at 50 goals | Generational rivalry (Yamal vs Messi/Haaland/Mbappé) + homework/scooter gag | 20 s | Needs portraits + date |
+| 3 | Portugal vs Wales (Nov 17) sequel | Rides Ep9's story; Portugal and Ronaldo fans argue | 25 s | Wait for the result |
+| 4 | Messi playoffs (Nov 21) | Timely, but the audience is mostly MLS fans unless something dramatic happens | 25 s | Wait |
+| 5 | "ZIDANE: THE MOVIE" | Movie-trailer mashup, but less tribal | 25 s | Backup |

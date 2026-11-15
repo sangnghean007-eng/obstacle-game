@@ -278,3 +278,21 @@ Sources: [Proko: Caricature 101](https://www.proko.com/course-lesson/caricature-
 
 ## Likeness gate (user rule, Nov 15 2026: "make sure everyone looks alike from now on")
 No real player appears in a video until they pass `studio/likeness/README.md` (reference photo → grid → measured spec → 3+ overlay rounds → expressions → chibi match → PASS logged).
+
+## Viral-first standard (user: "focus on going viral", Nov 15 2026)
+Research summary (mostly creator-tool blogs, so the numbers are unverified; the patterns are consistent):
+1. **Pick tribal topics.** Rivalries drive comments and shares because fans defend their side: Messi vs Ronaldo, El Clásico, club vs club, a star vs his critics. VAR/controversy is a reliable meme engine. Every viral episode needs a **side to pick**.
+2. **Mash up with pop culture.** The biggest 2026 football Shorts trend was mashups: anime ("Dictator Mbappé"), gaming, movie trailers. Combining two high-traffic categories multiplies reach. Our formats should borrow a known template: a racing game, an anime power-up, a movie trailer, a nature documentary, a boss fight.
+3. **Hook in 1.3–1.5 s, layered:** a big visual, hook text and a loud sound all at frame 0 (we already do this; keep it).
+4. **Completion beats length.** Aim for 60%+ watched (80%+ is ideal). For viral attempts target **20–30 s**, with a seamless loop to the start. Ep9 at 51 s is fine for FB (45–60 s tip) but too long for a Shorts/TikTok viral push. Cut a 25 s version when in doubt.
+5. **Rewatch triggers:** hidden 🐐 easter eggs, fast gags, a twist that changes the meaning of the opening.
+6. **Share trigger:** something a fan sends to a rival fan ("send this to a Messi fan"). Write the caption for that.
+7. **Timeliness:** post within 24 h of the real event. For evergreen rivalry topics, tie the episode to a fresh number (e.g. current goal counts).
+8. **Likeness:** viewers must recognise the stars instantly. Use the portraits (likeness gate) in the hook frame.
+
+Sources:
+- [ClipSpeed: Shorts algorithm 2026](https://www.clipspeed.ai/blog/youtube-shorts-algorithm-decoded.html)
+- [easyviral: 500 faceless Shorts](https://easyviral.ai/api/blog-md/we-analyzed-500-viral-faceless-shorts)
+- [Tubefilter: soccer on Shorts in 2026](https://www.tubefilter.com/2026/07/13/top-50-most-viewed-youtube-channels-week-of-07-12-2026/)
+- [Complex: Mbappé anime meme](https://www.complex.com/sports/a/markelibert/ishowspeed-mbappe-dictator-meme-world-cup-2026)
+- [Outlook India: World Cup 2026 memes](https://www.outlookindia.com/sports/football/fifa-world-cup-2026-top-ten-memes-erling-haaland-lionel-messi)
