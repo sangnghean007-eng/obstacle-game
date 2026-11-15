@@ -11,3 +11,14 @@
 **Parody (invented):** the trailer framing, Spain's throne/drinks/fans, England shaking in the tunnel, the keeper's "slip again? 😏", the "NO SLIP ✅" stamp, "HOLD ON!", the trophy's shades cracking. The World Cup trophy is our own mascot (Ep12), not a real person.
 **Real players drawn:** only Kane (likeness gate). Everyone else is a generic mini player; Konsa, White, Anderson, Oyarzabal and Nico Williams are only named in text. The real coaches are not named.
 **Sensitivity:** rivalry, not hate. No national stereotypes (no bulls/flamenco dancers drawn; the guitar is music only).
+
+## v2 additions (the full story)
+| Claim | Status | Sources |
+|---|---|---|
+| Euro 2024 final, Jul 14 2024, Berlin: Spain 2-1 England; Nico Williams 47' (assist Yamal), Palmer 73', Oyarzabal 86' (cross by Cucurella) | VERIFIED | [NBC News](https://www.nbcnews.com/news/sports/spain-england-euro-final-recap-rcna161803); [ESPN](https://www.espn.co.uk/football/report/_/gameId/703945); [Gulf News](https://gulfnews.com/sport/football/spain-beat-england-to-win-euro-2024-final-with-late-goal-from-super-sub-oyarzabal-1.103503602) |
+| Wembley Sep 26 2026: Oyarzabal scored Spain's winner (74'), "haunts England again" | VERIFIED | [101greatgoals](https://www.101greatgoals.com/football/internationals/england-spain-report/); Al Jazeera liveblog |
+| Kane beat Mbappé and Yamal to the 2026 Ballon d'Or | VERIFIED | [The National](https://www.thenationalnews.com/sport/football/2026/10/27/ballon-dor-2026-harry-kane-beats-kylian-mbappe-and-lamine-yamal-to-claim-top-prize/); [Heavy](https://heavy.com/sports/soccer/harry-kane-wins-2026-ballon-dor/) |
+| Nov 15: Simón in goal for Kane's pen; Cubarsí fouled Kane; Rice's corner for Konsa; Anderson's red was for a last-man foul on Yamal; Yamal set up Nico Williams | VERIFIED | Sofascore; 101greatgoals; All Football |
+
+**Parody (v2):** Yamal standing up early at the Ballon d'Or ("it's me 😏"), the ghost 👻 on Oyarzabal, England shaking in the tunnel, Simón's "slip again? 😏", Yamal on the throne. These are jokes, not claims; the video footer says "cartoon parody".
+**Not claimed:** Yamal's exact Ballon d'Or ranking (only that Kane beat him); who scored Spain's 2026 World Cup final goal.

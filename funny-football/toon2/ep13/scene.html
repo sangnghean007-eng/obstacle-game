@@ -238,134 +238,157 @@ function tunnel(open, t) { const g = ctx.createLinearGradient(0, 0, 0, H); g.add
   rr(330, 640, 420, 820, 16, '#2a2d3d', DARK, 8); if (open > 0) { const gl = ctx.createRadialGradient(540, 1050, 20, 540, 1050, 600 * open); gl.addColorStop(0, 'rgba(255,240,190,.95)'); gl.addColorStop(1, 'rgba(255,240,190,0)'); ctx.fillStyle = gl; ctx.fillRect(0, 300, W, 1300); ctx.fillStyle = `rgba(255,248,220,${open})`; ctx.fillRect(345, 655, 390, 790); }
   if (open < 1) { const d = 195 * (1 - open); rr(345, 655, d, 790, 6, '#3d4256', DARK, 5); rr(735 - d, 655, d, 790, 6, '#3d4256', DARK, 5); } }
 
+// ---------- v2 cast: every real player in the story is a gate-checked portrait on a chibi body ----------
+const ESPK = { shirt: '#c60b1e', sleeve: '#c60b1e', cuff: '#ffc400', collar: '#ffc400', shorts: '#14213d', sock: '#14213d', sockShade: '#0b1530', sockBand: '#ffc400', boot: '#ffffff', num: '#ffc400' };
+const GKK = { shirt: '#16a34a', sleeve: '#16a34a', cuff: '#111', collar: '#111', shorts: '#111', sock: '#16a34a', sockShade: '#11823b', sockBand: '#111', boot: '#fff', num: '#111' };
+const CAST = { // face, kit, number, shirt name, skin
+  yamal: ['yamal', ESPK, '19', 'YAMAL', '#b9825c'], oyarzabal: ['oyarzabal', ESPK, '21', 'OYARZABAL', '#e2ad88'], simon: ['simon', GKK, '1', 'SIMÓN', '#e6b592'],
+  cubarsi: ['cubarsi', ESPK, '5', 'CUBARSÍ', '#e8b892'], nico: ['nico', ESPK, '17', 'N. WILLIAMS', '#5c3a24'],
+  rice: ['rice', ENG, '4', 'RICE', '#e8b592'], konsa: ['konsa', ENG, '5', 'KONSA', '#5c3a24'], white: ['white', ENG, '2', 'WHITE', '#8d5a3b'], anderson: ['anderson', ENG, '8', 'ANDERSON', '#e8b592'] };
+function face(name, x, y, s, expr, kit) { try { portrait.draw(ctx, name, x, y, s, { headOnly: true, expr, kit }); } catch (e) { ell(x, y, 300 * s, 330 * s, '#d9a07a', 5); txt(name.toUpperCase(), x, y, 60 * s * 3, DARK, null); } }
+function PL(who, x, y, s, pose, expr, o = {}) { const [fc, kit, num, nm, skin] = CAST[who]; const C = Object.assign({}, CH.mate1, { skin, shade: skin, kit, num, name: nm, nameSize: nm.length > 7 ? 14 : 18 });
+  ctx.save(); if (o.rot) { ctx.translate(x, y - 160 * s); ctx.rotate(o.rot); ctx.translate(-x, -(y - 160 * s)); }
+  chibi.draw(ctx, C, pose, 'neutral', x, y + (o.dy || 0), s, Object.assign({ f: 1, headFn: (R) => face(fc, 0, -R * 0.28, R * 2.1 / 330, expr, kit.shirt) }, o)); ctx.restore(); }
+function ghost(x, y, t, k = 1) { if (k <= 0) return; const g = ctx.createRadialGradient(x, y, 20, x, y, 260); g.addColorStop(0, `rgba(150,200,255,${0.45 * k})`); g.addColorStop(1, 'rgba(150,200,255,0)'); ctx.fillStyle = g; ctx.fillRect(x - 260, y - 260, 520, 520); txt('👻', x + 120, y - 150 + Math.sin(t * 4) * 10, 70, '#fff', null); }
+function cutIn(name, side, k, expr, kit, label, col = '#ffd60a') { if (k <= 0 || k > 1.3) return; const a = k < 0.15 ? easeOut(k / 0.15) : k > 1.1 ? 1 - (k - 1.1) / 0.2 : 1; ctx.save(); ctx.globalAlpha = clamp(a); const x = side < 0 ? 250 : 830;
+  ctx.translate(x + (1 - clamp(a)) * side * 300, 700); ctx.rotate(side * 0.05); rr(-200, -200, 400, 420, 30, col, DARK, 8); ctx.save(); ctx.beginPath(); ctx.roundRect(-190, -190, 380, 400, 24); ctx.clip(); ctx.fillStyle = '#0f1a3a'; ctx.fillRect(-190, -190, 380, 400); face(name, 0, 40, 0.62, expr, kit); ctx.restore(); rr(-180, 160, 360, 60, 14, DARK, null); txt(label, 0, 192, 34, col, null); ctx.restore(); }
+const P_SLIDE = { bArm: [-120, -100], fArm: [60, 80], bLeg: [80, 90], fLeg: [95, 100] }, P_HEAD = { bArm: [-120, -140], fArm: [120, 140], bLeg: [-20, -40], fLeg: [20, 40] }, P_FALL = { bArm: [-160, -120], fArm: [150, 120], bLeg: [-60, -20], fLeg: [60, 30] }, P_FACEP = P_FACEPALM, P_SIT2 = { bArm: [-30, -10], fArm: [30, 10], bLeg: [80, 0], fLeg: [90, 0] }, P_KNEEL = { bArm: [-20, -10], fArm: [20, 10], bLeg: [80, -10], fLeg: [-10, -100] };
+function stage(t) { const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#120a24'); g.addColorStop(1, '#2a1240'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); for (let i = 0; i < 5; i++) { ctx.fillStyle = 'rgba(255,214,10,.08)'; ctx.beginPath(); ctx.moveTo(140 + i * 200, 0); ctx.lineTo(60 + i * 200, 1300); ctx.lineTo(240 + i * 200, 1300); ctx.fill(); }
+  rr(80, 1150, 920, 70, 10, '#3a1d5c', '#ffd60a', 5); ctx.fillStyle = '#1a0d2c'; ctx.fillRect(0, 1220, W, 700); for (let i = 0; i < 9; i++) rr(30 + i * 120, 1480, 100, 60, 10, '#6b1d3a', DARK, 4); }
+function bigPitch(t, cols) { stadium(t, cols || ['#c60b1e', '#ffc400', '#fff'], 9); }
+
 // ---------- shots ----------
-function s_hook(z, t) { // VS card: the smug champions vs the Ballon d'Or
-  ctx.fillStyle = '#7a0a14'; ctx.fillRect(0, 0, W, H); ctx.fillStyle = '#0f1a3a'; ctx.beginPath(); ctx.moveTo(620, 0); ctx.lineTo(W, 0); ctx.lineTo(W, H); ctx.lineTo(420, H); ctx.fill();
-  throne(270, 1430, 43, 0, t); cup(270, 1220, 0.95, t, { legs: true, shades: true, look: 1 }); juice(150, 1230); mini(90, 1460, t, 'ESP', { arms: 'fan', e: 'smug', s: 0.9 }); mini(450, 1470, t, 'ESP', { arms: 'fan', e: 'smug', s: 0.9, f: -1 });
-  aura(760, 1050, t, 1); KANE(760, 1460, 0.95, { bArm: [-30, -10], fArm: [100, 150], bLeg: [-12, -6], fLeg: [12, 6] }, 'angry'); ballonDor(880, 1150, 1.4, 1);
-  burst(540, 1000, 120, 'VS', 1, 76, '#ffd60a');
-  HUD(() => { pill('🏆 WORLD CHAMPIONS 😎', 1, 600, 'rgba(122,10,20,.9)', '#ffd60a', 34); });
-  HUD(() => { ctx.save(); ctx.translate(0, 0); pop(1, 760, 700, () => { rr(-210, -38, 420, 76, 38, 'rgba(15,26,58,.9)', '#ffd60a', 4); txt("BALLON D'OR 2026 ✨", 0, 3, 32, '#ffd60a', null); }); ctx.restore(); });
-  HUD(() => { title('THE REVENGE 😤', 1, 330, 96, '#ffd60a'); title('Spain vs England · Nov 15', 1, 440, 40); });
-  if (z > 1.7) HUD(() => { ctx.fillStyle = `rgba(0,0,0,${clamp((z - 1.7) / 0.5) * 0.6})`; ctx.fillRect(0, 0, W, H); title('⏪ 7 WEEKS EARLIER…', z - 1.8, 900, 66); }); }
+function v_hook(z, t) { ctx.fillStyle = '#7a0a14'; ctx.fillRect(0, 0, W, H); ctx.fillStyle = '#0f1a3a'; ctx.beginPath(); ctx.moveTo(620, 0); ctx.lineTo(W, 0); ctx.lineTo(W, H); ctx.lineTo(420, H); ctx.fill();
+  cup(120, 1450, 0.7, t, { legs: true, shades: true, look: 1 });
+  PL('yamal', 300, 1460, 1.0, { bArm: [-20, -10], fArm: [60, 120], bLeg: [-12, -6], fLeg: [12, 6] }, 'smug'); shades(300, 1460 - 375, 1.0);
+  aura(780, 1050, t, 1); KANE(780, 1460, 1.0, { bArm: [-30, -10], fArm: [100, 150], bLeg: [-12, -6], fLeg: [12, 6] }, 'angry'); ballonDor(900, 1140, 1.4, 1);
+  burst(540, 980, 120, 'VS', 1, 76, '#ffd60a');
+  HUD(() => { pill('WORLD CHAMPIONS 🏆😎', 1, 600, 'rgba(122,10,20,.92)', '#ffd60a', 32); pop(1, 790, 700, () => { rr(-200, -36, 400, 72, 36, 'rgba(15,26,58,.92)', '#ffd60a', 4); txt("BALLON D'OR 2026 ✨", 0, 3, 30, '#ffd60a', null); });
+    title('THE REVENGE 😤', 1, 330, 96, '#ffd60a'); title('England vs the World Champions', 1, 440, 40); });
+  if (z > 2.2) HUD(() => { ctx.fillStyle = `rgba(0,0,0,${clamp((z - 2.2) / 0.5) * 0.65})`; ctx.fillRect(0, 0, W, H); title("⏪ England's nightmares…", z - 2.3, 900, 60); }); }
 
-function s_flash(z, t) { // Sep 26, Wembley: the slip
-  nightPitch(t, ['#fff', '#c8102e', '#1b2a5c']); sideGoal(820, 1400, 190, 300); mini(900, 1400, t, 'GK', { s: 1.4, arms: z > 1.5 && z < 2.1 ? 'up' : 'down', e: z > 1.7 ? 'happy' : 'neutral', gloves: true });
-  const slip = z > 1.15, sk = clamp((z - 1.15) / 0.35);
-  if (!slip) KANE(lerp(160, 430, clamp((z - 0.2) / 0.95)), 1450, 0.95, runPose(t), 'angry', {});
-  else if (z < 2.3) KANE(450, 1450, 0.95, FLAIL(t), 'shock', { rot: -sk * 1.5, dy: -Math.sin(sk * Math.PI) * 120 + sk * 40 });
-  else KANE(460, 1500, 0.95, SIT, 'shock', {});
-  // the ball: loops onto the crossbar, bounces back
-  const bk = clamp((z - 1.2) / 0.5); if (z < 1.2) fball(520, 1440, 22, 0); else if (z < 1.7) fball(lerp(520, 905, bk), lerp(1440, 1105, bk) - Math.sin(bk * Math.PI) * 180, 22, z * 20); else if (z < 2.3) { const b2 = clamp((z - 1.7) / 0.6); fball(lerp(905, 700, b2), lerp(1105, 1440, b2) - Math.sin(b2 * Math.PI) * 120, 22, z * 20); }
-  if (z > 1.7 && z < 2.1) burst(880, 1000, 120, 'BOINNG!', (z - 1.7) / 0.12, 44);
-  if (z > 2.4) { const k = clamp((z - 2.4) / 1.2); for (let i = 0; i < 5; i++) mini(lerp(1150 + i * 90, -200 + i * 90, k), 1480 + (i % 2) * 40, t, 'ESP', { run: true, f: -1, e: 'happy' }); }
-  if (z > 3.4) { cup(780, 1430, 0.8, t, { legs: true, mood: 'love' }); bubble('HAHA 😂', 780, 1080, z - 3.5, 44); }
-  if (z > 2.3) stars(460, 1170, t, 90);
-  filmFx(z); HUD(() => { pill('SEP 26 · WEMBLEY 📼', 1, 330, 'rgba(0,0,0,.8)', '#e8dcc0', 36); });
-  HUD(() => { ctx.save(); ctx.globalAlpha = 1; if (z < 2.8) { pop(1, W / 2, 190, () => { rr(-300, -48, 600, 96, 48, 'rgba(10,14,30,.95)', '#ffd60a', 5); txt("53'  ENGLAND 2 - 1 SPAIN", 0, 3, 40, '#fff', null); }); } else { pop(z < 3.0 ? 1 + 0.3 * (1 - (z - 2.8) / 0.2) : 1, W / 2, 190, () => { rr(-300, -48, 600, 96, 48, 'rgba(10,14,30,.95)', '#ffd60a', 5); txt(`FT  ENGLAND 2 - ${z < 3.4 ? 2 : 3} SPAIN`, 0, 3, 40, '#fff', null); }); } ctx.restore(); });
-  if (z > 1.3 && z < 2.6) caption('KANE SLIPS 😬', z - 1.3, 450, '#111', '#ffd60a', 60);
-  if (z > 2.6) caption('…then Spain score twice', z - 2.6, 450, '#fff', '#c60b1e', 48); }
+function v_euro(z, t) { // Jul 14 2024, Berlin: Oyarzabal 86'
+  bigPitch(t, ['#c60b1e', '#ffc400', '#fff', '#1b2a5c']); sideGoal(-40, 1420, 170, 300);
+  const sl = clamp((z - 0.6) / 0.6); PL('oyarzabal', lerp(700, 250, sl), 1460, 0.95, z < 1.2 ? runPose(t) : P_SLIDE, z > 1.3 ? 'smug' : 'angry', { f: -1 });
+  if (z > 0.3 && z < 1.25) { const k = clamp((z - 0.3) / 0.9); fball(lerp(1000, 230, k), lerp(1150, 1400, k) - Math.sin(k * Math.PI) * 120, 22, z * 20); } if (z >= 1.25 && z < 1.5) fball(lerp(230, 40, (z - 1.25) / 0.25), 1350, 22, z * 20);
+  if (z > 1.5) { ghost(250, 1120, t, clamp((z - 1.5) / 0.3)); burst(300, 900, 120, 'GOAL', (z - 1.45) / 0.12, 48, '#c60b1e'); }
+  KANE(800, 1480, 0.9, z > 1.6 ? P_KNEEL : runPose(t, 8), z > 1.6 ? 'shock' : 'angry', { f: -1 });
+  filmFx(z); HUD(() => { pill('JULY 14, 2024 · EURO FINAL', 1, 330, 'rgba(0,0,0,.8)', '#e8dcc0', 34); pop(z > 1.5 && z < 1.8 ? 1.25 : 1, W / 2, 190, () => { rr(-300, -48, 600, 96, 48, 'rgba(10,14,30,.95)', '#ffd60a', 5); txt(z < 1.5 ? "86'  SPAIN 1 - 1 ENGLAND" : 'FT  SPAIN 2 - 1 ENGLAND', 0, 3, 40, '#fff', null); });
+    if (z > 1.7) caption('OYARZABAL 👻', z - 1.7, 450, '#fff', '#3b82f6', 56); }); }
 
-function s_lounge(z, t) { // Madrid: the champions relax… England shake in the tunnel
-  const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#3a0610'); g.addColorStop(1, '#7a0a14'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
-  for (let i = 0; i < 6; i++) { ctx.fillStyle = 'rgba(255,214,10,.08)'; ctx.fillRect(40 + i * 170, 300, 90, 1300); }
-  ctx.fillStyle = '#4a0a12'; ctx.fillRect(0, 1460, W, 500);
-  const n = z < 0.4 ? 41 : z < 0.9 ? 42 : 43; throne(330, 1460, n, 0, t);
-  cup(330, 1250, 0.95, t, { legs: true, shades: true, look: 1 }); juice(450, 1250); mini(130, 1480, t, 'ESP', { arms: 'fan', e: 'smug' }); mini(520, 1490, t, 'ESP', { arms: 'fan', e: 'smug', f: -1 });
-  // England tunnel (right)
-  ctx.fillStyle = '#05060a'; ctx.fillRect(700, 820, 380, 660); rr(690, 810, 400, 40, 8, '#222', DARK, 5); txt('ENGLAND', 890, 832, 28, '#fff', null);
-  for (const [x, y, o] of [[780, 1460, {}], [870, 1490, { arms: 'cover' }], [800, 1390, { s: 1.0 }], [900, 1400, { s: 1.0 }]]) mini(x, y, t, 'ENG', Object.assign({ shake: true, e: 'scared', s: 1.25 }, o));
-  HUD(() => { caption('WORLD CHAMPIONS · 43 UNBEATEN 😎', z - 0.3, 330, '#111', '#ffd60a', 44); if (z > 1.9) caption('meanwhile, England… 😰', z - 1.9, 440, '#fff', '#1b2a5c', 46); }); }
+function v_wembley(z, t) { // Sep 26 2026: the slip, then Oyarzabal AGAIN
+  bigPitch(t, ['#fff', '#c8102e', '#1b2a5c']); sideGoal(820, 1400, 190, 300); PL('simon', 900, 1420, 0.75, z > 0.5 && z < 1.1 ? RAISE : 'stand', z > 0.9 ? 'smug' : 'neutral');
+  const slip = z > 0.55, sk = clamp((z - 0.55) / 0.35);
+  if (!slip) KANE(lerp(250, 430, clamp(z / 0.55)), 1450, 0.95, runPose(t), 'angry', {}); else if (z < 1.6) KANE(450, 1450, 0.95, FLAIL(t), 'shock', { rot: -sk * 1.5, dy: -Math.sin(sk * Math.PI) * 120 + sk * 40 }); else KANE(460, 1500, 0.95, SIT, 'shock', {});
+  const bk = clamp((z - 0.6) / 0.45); if (z < 0.6) fball(520, 1440, 22, 0); else if (z < 1.05) fball(lerp(520, 905, bk), lerp(1440, 1105, bk) - Math.sin(bk * Math.PI) * 180, 22, z * 20);
+  if (z > 1.05 && z < 1.4) burst(880, 1000, 120, 'BOINNG!', (z - 1.05) / 0.12, 44); if (z > 1.6) stars(460, 1170, t, 90);
+  if (z > 2.2) { const k = clamp((z - 2.2) / 0.6); PL('oyarzabal', lerp(1150, 700, k), 1480, 0.85, k < 1 ? runPose(t) : RAISE, 'smug', { f: -1 }); if (k >= 1) ghost(700, 1150, t); }
+  filmFx(z); HUD(() => { pill('SEP 26, 2026 · WEMBLEY', 1, 330, 'rgba(0,0,0,.8)', '#e8dcc0', 34); pop(1, W / 2, 190, () => { rr(-300, -48, 600, 96, 48, 'rgba(10,14,30,.95)', '#ffd60a', 5); txt(z < 2.2 ? "53'  ENGLAND 2 - 1 SPAIN" : 'FT  ENGLAND 2 - 3 SPAIN', 0, 3, 40, '#fff', null); });
+    if (z > 0.7 && z < 2.2) caption('KANE SLIPS 😬 (pen hits the bar)', z - 0.7, 450, '#111', '#ffd60a', 46); if (z > 2.8) caption('OYARZABAL. AGAIN. 👻', z - 2.8, 450, '#fff', '#3b82f6', 54); }); }
 
-function s_arrive(z, t) { // the door bursts: the Ballon d'Or walks in
-  if (z < 2.7) { const open = clamp((z - 0.8) / 0.3); tunnel(open, t);
-    if (open > 0) { const w = clamp((z - 1.0) / 1.5); aura(540, 1020, t, open); KANE(540, 1450 + w * 40, 0.85 + w * 0.3, { bArm: [-20, -10], fArm: [110, 160], bLeg: [-10 + Math.sin(t * 5) * 10, -5], fLeg: [10 - Math.sin(t * 5) * 10, 5] }, 'angry'); ballonDor(540 + (0.85 + w * 0.3) * 150, 1450 + w * 40 - (0.85 + w * 0.3) * 420, 1.3, 1); }
+function v_champs(z, t) { // Spain on top: world champions → the 43-game throne
+  if (z < 1.6) { const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#0b1a3a'); g.addColorStop(1, '#3a0a14'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); confettiCol(z * 0.9, '#ffc400'); confettiCol(z * 0.9 + 0.3, '#c60b1e');
+    PL('yamal', 540, 1470, 1.1, HOLD, 'siuuu'); cup(540, 1470 - 1.1 * 560, 0.75, t, { legs: true, mood: 'love' }); for (const x of [180, 900]) mini(x, 1500, t, 'ESP', { jump: true, arms: 'up', e: 'happy' });
+    HUD(() => caption('JULY 2026: WORLD CHAMPIONS 🏆', z - 0.1, 330, '#111', '#ffc400', 50)); return; }
+  const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#3a0610'); g.addColorStop(1, '#7a0a14'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); ctx.fillStyle = '#4a0a12'; ctx.fillRect(0, 1460, W, 500);
+  const n = z < 2.0 ? 41 : z < 2.4 ? 42 : 43; throne(540, 1470, n, 0, t); PL('yamal', 540, 1260, 0.85, P_SIT2, 'smug'); shades(540, 1260 - 0.85 * 375, 0.85); juice(690, 1270);
+  cup(240, 1480, 0.7, t, { legs: true, shades: true }); mini(150, 1500, t, 'ESP', { arms: 'fan', e: 'smug' });
+  PL('simon', 860, 1480, 0.8, { bArm: [-20, -10], fArm: [70, 130], bLeg: [-8, -4], fLeg: [8, 4] }, 'smug');
+  HUD(() => caption('43 GAMES UNBEATEN 😎', z - 1.7, 330, '#111', '#ffd60a', 54)); }
+
+function v_tunnel(z, t) { // meanwhile, England…
+  const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#05060a'); g.addColorStop(1, '#151826'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); ctx.fillStyle = '#0d0f18'; ctx.fillRect(0, 1460, W, 500);
+  const sh = (i) => ({ dy: Math.sin(t * 60 + i) * 3, rot: Math.sin(t * 50 + i) * 0.03 });
+  PL('rice', 230, 1470, 0.85, P_GUARD, 'shock', sh(1)); PL('konsa', 440, 1480, 0.85, { bArm: [60, 150], fArm: [-60, -150], bLeg: [-14, -8], fLeg: [14, 8] }, 'shock', sh(2)); PL('white', 650, 1470, 0.85, P_GUARD, 'shock', sh(3)); PL('anderson', 860, 1480, 0.85, { bArm: [-20, -10], fArm: [150, 120], bLeg: [-8, -4], fLeg: [8, 4] }, 'shock', sh(4));
+  for (const x of [230, 440, 650, 860]) ell(x + 70, 1000 + ((t * 2 + x) % 1) * 40, 8, 13, '#8fd3ff');
+  HUD(() => { caption('meanwhile, England… 😰', z - 0.1, 330, '#fff', '#1b2a5c', 54); if (z > 1.4) caption('*teeth chattering*', z - 1.4, 440, '#111', '#fff', 40); }); }
+
+function v_ballon(z, t) { // Oct 26, London: Yamal stands up… it's Kane
+  stage(t); const rev = z > 2.1;
+  // envelope on the stage
+  pop(1, 540, 900, () => { rr(-170, -100, 340, 200, 14, '#f5ecd6', DARK, 6); ctx.strokeStyle = DARK; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(-170, -100); ctx.lineTo(0, 20); ctx.lineTo(170, -100); ctx.stroke(); if (rev) { rr(-150, -160 - clamp((z - 2.1) / 0.3) * 60, 300, 110, 10, '#fff', DARK, 4); txt('HARRY KANE', 0, -105 - clamp((z - 2.1) / 0.3) * 60, 40, DARK, null); } });
+  ballonDor(540, 1150, 1.6, 1);
+  // Yamal in the front row: stands up early, then sits back down
+  const up = z > 0.8 && z < 2.3; PL('yamal', 250, 1520, 0.85, up ? { bArm: [-20, -10], fArm: [110, 160], bLeg: [-8, -4], fLeg: [8, 4] } : P_SIT2, rev ? 'shock' : 'smug', { dy: up ? 0 : 70 }); if (z > 0.9 && z < 2.1) bubble("it's me 😏", 300, 1010, z - 0.9, 40);
+  if (rev && z > 2.5) { KANE(800, 1460, 0.9, HOLD, 'siuuu'); aura(800, 900, t, 1); confettiCol((z - 2.4), '#ffd60a'); }
+  HUD(() => { pill("OCT 26 · BALLON D'OR · LONDON", 1, 330, 'rgba(0,0,0,.8)', '#ffd60a', 34); if (z < 2.1) caption('And the winner is…', z - 0.3, 450, '#fff', 'rgba(0,0,0,.7)', 48); else caption('KANE ✨ (beat Mbappé & Yamal)', z - 2.2, 450, '#111', '#ffd60a', 48); }); }
+
+function v_arrive(z, t) { // Madrid: the door bursts
+  if (z < 2.2) { const open = clamp((z - 0.6) / 0.3); tunnel(open, t);
+    if (open > 0) { const w = clamp((z - 0.8) / 1.2); aura(540, 1020, t, open); KANE(540, 1450 + w * 30, 0.85 + w * 0.25, { bArm: [-20, -10], fArm: [110, 160], bLeg: [-10 + Math.sin(t * 5) * 10, -5], fLeg: [10 - Math.sin(t * 5) * 10, 5] }, 'angry'); ballonDor(540 + (0.85 + w * 0.25) * 150, 1450 + w * 30 - (0.85 + w * 0.25) * 420, 1.3, 1); }
     else { ctx.fillStyle = 'rgba(0,0,0,.6)'; ctx.fillRect(0, 0, W, H); }
-    for (const [x, d] of [[180, 1], [300, 1], [800, 1], [920, 1]]) mini(x, 1500, t, 'ENG', { shake: open < 1, e: open < 1 ? 'scared' : 'happy', arms: open >= 1 && z > 1.6 ? 'up' : 'down', jump: z > 1.9 });
-    HUD(() => { if (z < 0.8) title('…then HE arrived', z - 0.05, 400, 66); if (z > 1.3) caption("OCT 26: BALLON D'OR 2026 ✨", z - 1.3, 330, '#111', '#ffd60a', 50); }); }
-  else { // the champions' reaction: shades slide down
-    const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#3a0610'); g.addColorStop(1, '#7a0a14'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); throne(540, 1500, 43, 0, t);
-    const k = clamp((z - 2.8) / 0.5); cup(540, 1290, 1.5, t, { legs: true, look: -1, mood: k > 0.6 ? 'shy' : null }); shades(540, 1290 - 1.5 * 239 + k * 60, 1.5);
-    if (k > 0.6) { ell(600, 860 + ((t * 2) % 1) * 40, 12, 18, '#8fd3ff'); }
-    HUD(() => caption('uh oh 😳', z - 3.0, 330, '#111', '#fff', 60)); } }
+    PL('rice', 150, 1520, 0.7, open < 1 ? P_GUARD : RAISE, open < 1 ? 'shock' : 'siuuu'); PL('konsa', 930, 1520, 0.7, open < 1 ? P_GUARD : RAISE, open < 1 ? 'shock' : 'siuuu', { f: -1 });
+    HUD(() => { if (z < 0.6) title('NOV 15 · MADRID', z, 400, 70); else caption('…then HE walked in 😤', z - 0.7, 330, '#111', '#ffd60a', 54); }); }
+  else { const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#3a0610'); g.addColorStop(1, '#7a0a14'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); throne(540, 1560, 43, 0, t);
+    const k = clamp((z - 2.3) / 0.5); PL('yamal', 540, 1350, 1.3, P_SIT2, k > 0.5 ? 'shock' : 'smug'); shades(540, 1350 - 1.3 * 375 + k * 70, 1.3); if (k > 0.6) ell(640, 700 + ((t * 2) % 1) * 40, 12, 18, '#8fd3ff'); juice(760, 1360);
+    HUD(() => caption('uh oh 😳', z - 2.5, 330, '#111', '#fff', 64)); } }
 
-function s_pen(z, t) { // 45': the penalty. Not again…?
-  nightPitch(t); sideGoal(800, 1400, 200, 320);
-  const kick = z > 2.8, gk = z > 2.9; mini(gk ? lerp(900, 830, clamp((z - 2.9) / 0.3)) : 900, gk ? 1430 : 1400, t, 'GK', { s: 1.5, arms: gk ? 'up' : 'wave', e: z > 3.05 ? 'shock' : 'smug', gloves: true, rot: gk ? -0.9 * clamp((z - 2.9) / 0.3) : 0 });
-  if (z > 1.0 && z < 2.6) bubble('slip again? 😏', 860, 980, z - 1.0, 38);
-  // England fans covering their eyes
-  for (const x of [90, 190]) mini(x, 1500, t, 'ENG', { arms: z < 2.7 ? 'cover' : z > 3.1 ? 'up' : 'down', e: z > 3.1 ? 'happy' : 'scared', jump: z > 3.1, shake: z < 2.7 });
-  const wob = z > 2.0 && z < 2.6; const kx = z < 1.8 ? lerp(250, 400, clamp((z - 0.2) / 1.6)) : 420;
-  aura(kx, 1200, t, z > 2.6 ? 1 : 0.3);
-  KANE(kx, 1460, 0.95, kick && z < 3.3 ? KICK : z > 3.3 ? RAISE : z < 1.8 ? runPose(t, 8) : { bArm: [-40, -20], fArm: [40, 20], bLeg: [-12, -6], fLeg: [wob ? 20 + Math.sin(t * 50) * 18 : 12, 6] }, z > 3.3 ? 'siuuu' : 'angry', { rot: wob ? Math.sin(t * 30) * 0.06 : 0 });
-  if (!kick) fball(500, 1445, 22, 0); else if (z < 3.05) { const k = clamp((z - 2.8) / 0.25); fireball(lerp(500, 960, k), lerp(1440, 1120, k), t); }
-  bigNet(960, 1150, z - 3.05); if (z > 3.05 && z < 3.6) burst(780, 980, 150, 'GOAL!', (z - 3.05) / 0.12, 64); flash((z - 3.05) / 0.3);
-  if (z > 2.6) stamp('NO SLIP ✅', 380, 900, z - 2.6, -0.1, '#15803d');
-  HUD(() => { score(0, z > 3.05 ? 1 : 0, z - 3.05, "45'"); if (z < 0.9) caption('MADRID · NOV 15', z, 330, '#fff', 'rgba(0,0,0,.75)', 46); else if (z < 2.0) caption('PENALTY! 😱', z - 0.9, 330, '#fff', '#c60b1e', 60); else if (z < 2.6) caption('not again…? 😬', z - 2.0, 330, '#111', '#fff', 56); else if (z > 3.3) caption('KANE ⚽ (no slip this time)', z - 3.3, 330, '#111', '#ffd60a', 50); }); }
+function v_pen(z, t) { // 45': Cubarsí fouls Kane → Simón: "slip again?" → NO SLIP
+  bigPitch(t); sideGoal(800, 1400, 200, 320);
+  if (z < 1.0) { const k = clamp(z / 0.5); KANE(lerp(250, 520, clamp(z / 0.6)), 1460, 0.9, z < 0.55 ? runPose(t) : P_FALL, z < 0.55 ? 'angry' : 'shock', { rot: z > 0.55 ? clamp((z - 0.55) / 0.3) * 1.2 : 0 }); PL('cubarsi', lerp(900, 560, k), 1480, 0.85, P_SLIDE, 'angry', { f: -1 }); if (z > 0.55) burst(560, 1050, 120, 'FOUL!', (z - 0.55) / 0.12, 46, '#fff'); }
+  else {
+    const kick = z > 3.3, gk = z > 3.4; PL('simon', gk ? lerp(900, 830, clamp((z - 3.4) / 0.3)) : 900, 1420, 0.9, gk ? P_FALL : { bArm: [-120, -160], fArm: [120, 160], bLeg: [-20, -10], fLeg: [20, 10] }, z > 3.55 ? 'shock' : 'smug', { rot: gk ? -0.9 * clamp((z - 3.4) / 0.3) : 0 });
+    if (z > 1.3 && z < 3.1) bubble('slip again? 😏', 860, 900, z - 1.3, 38);
+    for (const x of [90, 190]) mini(x, 1500, t, 'ENG', { arms: z < 3.2 ? 'cover' : z > 3.6 ? 'up' : 'down', e: z > 3.6 ? 'happy' : 'scared', jump: z > 3.6, shake: z < 3.2 });
+    const wob = z > 2.5 && z < 3.1; aura(420, 1200, t, z > 3.1 ? 1 : 0.3);
+    KANE(420, 1460, 0.95, kick && z < 3.8 ? KICK : z > 3.8 ? RAISE : { bArm: [-40, -20], fArm: [40, 20], bLeg: [-12, -6], fLeg: [wob ? 20 + Math.sin(t * 50) * 18 : 12, 6] }, z > 3.8 ? 'siuuu' : 'angry', { rot: wob ? Math.sin(t * 30) * 0.06 : 0 });
+    if (!kick) fball(500, 1445, 22, 0); else if (z < 3.55) { const k = clamp((z - 3.3) / 0.25); fireball(lerp(500, 960, k), lerp(1440, 1120, k), t); }
+    bigNet(960, 1150, z - 3.55); if (z > 3.55 && z < 4.1) burst(780, 980, 150, 'GOAL!', (z - 3.55) / 0.12, 64); flash((z - 3.55) / 0.3);
+    if (z > 3.1) stamp('NO SLIP ✅', 380, 900, z - 3.1, -0.1, '#15803d'); }
+  HUD(() => { score(0, z > 3.55 ? 1 : 0, z - 3.55, "45'"); if (z < 1.0) caption('CUBARSÍ… 😬', z - 0.5, 330, '#fff', '#c60b1e', 54); else if (z < 2.5) caption('PENALTY! vs SIMÓN 🧤', z - 1.0, 330, '#fff', '#c60b1e', 52); else if (z < 3.1) caption('not again…? 😬', z - 2.5, 330, '#111', '#fff', 56); else if (z > 3.8) caption('KANE ⚽ no slip this time', z - 3.8, 330, '#111', '#ffd60a', 48); }); }
 
-function s_rush(z, t) { // 53' + 57': the jumbotron slams, the champions' shades crack
-  nightPitch(t); rr(130, 560, 820, 420, 24, '#0b0f1e', '#555', 10);
-  const g1 = z > 0.6, g2 = z > 1.7; ctx.save(); ctx.beginPath(); ctx.rect(150, 580, 780, 380); ctx.clip();
-  txt(g2 ? '0 - 3' : g1 ? '0 - 2' : '0 - 1', 540, 720, 170, '#ffd60a', null); txt(g2 ? "57' WHITE ⚽" : g1 ? "53' KONSA (header) ⚽" : "45' KANE ⚽", 540, 880, 52, '#fff', null); ctx.restore();
-  if (z > 0.1 && z < 0.6) { const k = (z - 0.1) / 0.5; fball(lerp(-50, 540, k), lerp(1300, 720, k) - Math.sin(k * Math.PI) * 300, 30, z * 20); }
-  if (z > 1.2 && z < 1.7) { const k = (z - 1.2) / 0.5; fball(lerp(1130, 540, k), lerp(1400, 720, k), 30, z * 20); }
-  if (g1 && z < 1.0) burst(540, 700, 260, '', (z - 0.6) / 0.12, 0, 'rgba(255,214,10,.5)'); if (g2 && z < 2.1) burst(540, 700, 260, '', (z - 1.7) / 0.12, 0, 'rgba(255,214,10,.5)');
-  // Spain bench: jaws drop; the champions' shades fall and crack
-  for (const [x, y] of [[160, 1480], [300, 1500], [440, 1480]]) mini(x, y, t, 'ESP', { e: g1 ? 'shock' : 'smug', arms: g2 ? 'cover' : 'down', sweat: false });
-  const fall = clamp((z - 2.0) / 0.5); cup(760, 1450, 1.0, t, { legs: true, look: -1, mood: fall > 0 ? 'shy' : null });
-  if (fall < 1) shades(760 + fall * 40, 1450 - 239 + fall * 230, 1.0, fall * 1.5); else { shades(800, 1470, 1.0, 1.5); ctx.strokeStyle = '#fff'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(785, 1455); ctx.lineTo(795, 1475); ctx.lineTo(788, 1488); ctx.stroke(); }
-  if (z > 2.4) bubble('CRACK 💔', 760, 1080, z - 2.4, 40);
-  HUD(() => score(0, g2 ? 3 : g1 ? 2 : 1, g2 ? z - 1.7 : z - 0.6, g2 ? "57'" : "53'")); }
+function v_goals(z, t) { // 53' Rice corner → Konsa header, 57' White
+  bigPitch(t); sideGoal(830, 1400, 200, 320); PL('simon', 900, 1420, 0.75, z > 0.9 && z < 1.6 || z > 2.9 ? P_FALL : 'stand', z > 0.9 ? 'shock' : 'neutral', { rot: z > 0.9 && z < 1.6 || z > 2.9 ? -0.6 : 0 });
+  if (z < 1.9) { PL('rice', 110, 1480, 0.75, z < 0.4 ? 'stand' : KICK, 'angry'); const k = clamp((z - 0.4) / 0.5); if (z > 0.4 && z < 0.9) fball(lerp(150, 520, k), lerp(1440, 1050, k) - Math.sin(k * Math.PI) * 250, 22, z * 20);
+    const up = z > 0.6 && z < 1.1 ? Math.sin(clamp((z - 0.6) / 0.5) * Math.PI) * 200 : 0; PL('konsa', 520, 1460 - up, 0.9, z > 0.6 ? P_HEAD : runPose(t), z > 0.95 ? 'siuuu' : 'angry');
+    if (z > 0.9 && z < 1.15) fball(lerp(540, 950, (z - 0.9) / 0.25), lerp(1060, 1180, (z - 0.9) / 0.25), 22, z * 20); if (z > 1.15) { bigNet(960, 1180, z - 1.15); burst(760, 980, 140, 'GOAL!', (z - 1.15) / 0.12, 58); }
+  } else { const k = clamp((z - 2.0) / 0.7); PL('white', lerp(200, 640, k), 1470, 0.9, z < 2.7 ? runPose(t) : z < 2.9 ? KICK : RAISE, z > 2.9 ? 'siuuu' : 'angry'); if (z < 2.7) fball(lerp(260, 700, k), 1450, 22, z * 20); else if (z < 2.95) fball(lerp(700, 960, (z - 2.7) / 0.25), lerp(1450, 1200, (z - 2.7) / 0.25), 22, z * 20); if (z > 2.95) { bigNet(960, 1200, z - 2.95); burst(760, 980, 140, 'GOAL!', (z - 2.95) / 0.12, 58); } }
+  HUD(() => { score(0, z > 2.95 ? 3 : z > 1.15 ? 2 : 1, z > 2.95 ? z - 2.95 : z - 1.15, z > 1.9 ? "57'" : "53'"); if (z < 1.9) caption('RICE corner → KONSA header 💥', z - 0.3, 330, '#111', '#ffd60a', 46); else caption('WHITE ⚽ 0-3 😱', z - 2.0, 330, '#111', '#ffd60a', 56);
+    cutIn('yamal', 1, z - 3.2, 'shock', '#c60b1e', 'YAMAL: 🤯', '#c60b1e'); }); }
 
-function s_drama(z, t) { // 63' red card, 65' + 75' Spain come back… hold on!
-  nightPitch(t); sideGoal(-60, 1420, 170, 300);
-  const sp = z < 1.0 ? 0 : z < 2.0 ? 1 : 2; const panic = z > 1.0;
-  // England wall in front of their goal
-  for (let i = 0; i < 4; i++) mini(170 + i * 70, 1460 + (i % 2) * 30, t, 'ENG', { shake: panic && z < 3.0, e: panic ? 'scared' : 'neutral', arms: z > 3.0 ? 'down' : 'down' });
-  // Spain waves attack from the right
-  const wave = (z * 0.9) % 1; for (let i = 0; i < 6; i++) mini(lerp(1150, 520, (wave + i / 6) % 1), 1420 + (i % 3) * 45, t, 'ESP', { run: true, f: -1, e: 'angry' });
-  if (z > 0.9 && z < 1.3) { const k = (z - 0.9) / 0.4; fball(lerp(560, 20, k), lerp(1380, 1250, k), 22, z * 20); }
-  if (z > 1.9 && z < 2.3) { const k = (z - 1.9) / 0.4; fball(lerp(560, 20, k), lerp(1300, 1180, k), 22, z * 20); }
-  // Kane: the last wall
-  aura(520, 1150, t, z > 2.6 ? 1 : 0); KANE(520, 1470, 0.95, z > 2.6 ? { bArm: [-80, -60], fArm: [80, 60], bLeg: [-25, -12], fLeg: [25, 12] } : runPose(t, 10), 'angry'); if (z > 2.7 && z < 3.9) bubble('HOLD ON! 💪', 520, 980, z - 2.7, 44);
-  redCard(z - 0.05); if (z > 4.0) burst(540, 900, 170, 'FULL TIME!', (z - 4.0) / 0.12, 54, '#fff');
-  const vig = panic && z < 4.0 ? 0.25 + 0.2 * Math.abs(Math.sin(t * 6)) : 0; if (vig) { const v = ctx.createRadialGradient(W / 2, H / 2, 300, W / 2, H / 2, 1100); v.addColorStop(0, 'rgba(200,0,0,0)'); v.addColorStop(1, `rgba(200,0,0,${vig})`); ctx.fillStyle = v; ctx.fillRect(0, 0, W, H); }
-  HUD(() => { score(sp, 3, z < 2.0 ? z - 1.0 : z - 2.0, z < 0.95 ? "63'" : z < 2.0 ? "65'" : z < 2.6 ? "75'" : z < 3.2 ? "80'" : z < 3.7 ? "85'" : "90'");
-    if (z < 0.95) caption("🟥 ENGLAND DOWN TO 10", z - 0.15, 330, '#fff', '#e11d2a', 48); else if (z < 1.9) caption("OYARZABAL (pen) 😬", z - 0.95, 330, '#fff', '#c60b1e', 50); else if (z < 2.6) caption("NICO WILLIAMS 😱", z - 1.9, 330, '#fff', '#c60b1e', 54); else if (z < 4.0) caption("⏱️ 80'… 85'… 90'…", z - 2.6, 330, '#111', '#fff', 48); }); }
+function v_drama(z, t) { // 63' Anderson red (foul on Yamal) → 65' Oyarzabal pen 👻 → 75' Yamal → Nico → hold on
+  bigPitch(t); sideGoal(-60, 1420, 170, 300);
+  if (z < 1.2) { const k = clamp(z / 0.5); PL('yamal', lerp(700, 520, k), 1470, 0.9, z < 0.5 ? runPose(t) : P_FALL, z < 0.5 ? 'smug' : 'shock', { f: -1, rot: z > 0.5 ? -clamp((z - 0.5) / 0.3) * 1.3 : 0 }); PL('anderson', 380, 1480, 0.9, z < 0.45 ? P_SLIDE : 'stand', z < 0.6 ? 'angry' : 'shock'); redCard(z - 0.6); }
+  else if (z < 2.6) { PL('oyarzabal', lerp(500, 300, clamp((z - 1.3) / 0.4)), 1470, 0.9, z < 1.7 ? runPose(t) : z < 1.9 ? KICK : RAISE, 'smug', { f: -1 }); if (z > 1.7 && z < 1.95) fball(lerp(260, 30, (z - 1.7) / 0.25), 1300, 22, z * 20); if (z > 1.95) { ghost(300, 1120, t); burst(250, 900, 120, 'GOAL', (z - 1.95) / 0.12, 44, '#c60b1e'); } }
+  else if (z < 3.9) { const k = clamp((z - 2.6) / 0.5); PL('yamal', 760, 1480, 0.85, z < 2.9 ? runPose(t) : KICK, 'smug', { f: -1 }); if (z > 2.9 && z < 3.2) fball(lerp(700, 420, (z - 2.9) / 0.3), lerp(1450, 1200, (z - 2.9) / 0.3), 22, z * 20);
+    PL('nico', 400, 1470, 0.9, z < 3.2 ? runPose(t) : z < 3.35 ? KICK : RAISE, z > 3.4 ? 'siuuu' : 'angry', { f: -1 }); if (z > 3.2 && z < 3.4) fball(lerp(380, 20, (z - 3.2) / 0.2), 1260, 22, z * 20); if (z > 3.4) burst(240, 900, 120, 'GOAL', (z - 3.4) / 0.12, 44, '#c60b1e'); }
+  else { for (const [w, x] of [['rice', 160], ['konsa', 330], ['white', 760], ['anderson', -999]]) if (x > 0) PL(w, x, 1490, 0.75, P_GUARD, 'shock', { dy: Math.sin(t * 50 + x) * 3 }); aura(540, 1150, t, 1); KANE(540, 1470, 0.95, { bArm: [-80, -60], fArm: [80, 60], bLeg: [-25, -12], fLeg: [25, 12] }, 'angry'); bubble('HOLD ON! 💪', 540, 940, z - 4.0, 46); if (z > 5.4) burst(540, 820, 170, 'FULL TIME!', (z - 5.4) / 0.12, 54, '#fff'); }
+  const vig = z > 1.9 && z < 5.4 ? 0.25 + 0.2 * Math.abs(Math.sin(t * 6)) : 0; if (vig) { const v = ctx.createRadialGradient(W / 2, H / 2, 300, W / 2, H / 2, 1100); v.addColorStop(0, 'rgba(200,0,0,0)'); v.addColorStop(1, `rgba(200,0,0,${vig})`); ctx.fillStyle = v; ctx.fillRect(0, 0, W, H); }
+  HUD(() => { score(z > 3.4 ? 2 : z > 1.95 ? 1 : 0, 3, z > 3.4 ? z - 3.4 : z - 1.95, z < 1.2 ? "63'" : z < 2.6 ? "65'" : z < 3.9 ? "75'" : z < 4.5 ? "80'" : z < 5.0 ? "85'" : "90'");
+    if (z < 1.2) caption('🟥 ANDERSON off (foul on Yamal)', z - 0.6, 330, '#fff', '#e11d2a', 42); else if (z < 2.6) caption('OYARZABAL pen 👻 NOT HIM AGAIN', z - 1.95, 330, '#fff', '#3b82f6', 42); else if (z < 3.9) caption('YAMAL → NICO WILLIAMS 😱', z - 3.4, 330, '#fff', '#c60b1e', 46); else caption("⏱️ 80'… 85'… 90'…", z - 4.0, 330, '#111', '#fff', 48); }); }
 
-function s_payoff(z, t) { // the run is over
-  nightPitch(t, ['#fff', '#c8102e', '#1b2a5c']); for (let i = 0; i < 5; i++) { const k = ((t * 0.7 + i / 5) % 1); const x = 150 + (i * 197) % 800, y = 640 - k * 220; for (let j = 0; j < 12; j++) { const q = j / 12 * TAU; ell(x + Math.cos(q) * k * 120, y + Math.sin(q) * k * 120, 6, 6, `rgba(${i % 2 ? '255,255,255' : '230,40,60'},${1 - k})`); } }
-  const crack = clamp((z - 0.2) / 0.8); throne(250, 1470, 43, crack, t);
-  const tk = clamp((z - 0.4) / 0.6); ctx.save(); ctx.translate(250 + tk * 120, 1260 + tk * tk * 200); ctx.rotate(tk * 2.9); cup(0, 0, 0.8, t, { legs: true, look: 0, mood: 'shy' }); ctx.restore();
-  aura(720, 1100, t, 1); KANE(720, 1460, 0.95, HOLD, 'siuuu'); ballonDor(720, 1460 - 0.95 * 560, 1.4, 1);
-  for (const x of [520, 900]) mini(x, 1500, t, 'ENG', { jump: true, arms: 'up', e: 'happy' });
-  confettiCol(z * 0.8, '#ffffff');
-  HUD(() => { pill('SPAIN 2 - 3 ENGLAND', 1, 190, 'rgba(10,14,30,.9)', '#ffd60a', 46); caption('43-GAME UNBEATEN RUN: OVER 💥', z - 0.3, 330, '#fff', '#c60b1e', 44); if (z > 1.2) caption('2-3 at Wembley 🔄 3-2 in Madrid', z - 1.2, 440, '#111', '#fff', 44); if (z > 2.0) caption('ENGLAND TOP THE GROUP 🥇', z - 2.0, 550, '#111', '#ffd60a', 44); }); }
+function v_payoff(z, t) { bigPitch(t, ['#fff', '#c8102e', '#1b2a5c']); for (let i = 0; i < 5; i++) { const k = ((t * 0.7 + i / 5) % 1); const x = 150 + (i * 197) % 800, y = 640 - k * 220; for (let j = 0; j < 12; j++) { const q = j / 12 * TAU; ell(x + Math.cos(q) * k * 120, y + Math.sin(q) * k * 120, 6, 6, `rgba(${i % 2 ? '255,255,255' : '230,40,60'},${1 - k})`); } }
+  const crack = clamp((z - 0.2) / 0.8); throne(200, 1480, 43, crack, t); const tk = clamp((z - 0.4) / 0.6); ctx.save(); ctx.translate(200 + tk * 100, 1300 + tk * tk * 180); ctx.rotate(tk * 2.9); cup(0, 0, 0.6, t, { legs: true, mood: 'shy' }); ctx.restore();
+  PL('rice', 470, 1500, 0.75, RAISE, 'siuuu', { dy: -Math.abs(Math.sin(t * 8)) * 40 }); PL('konsa', 960, 1500, 0.75, RAISE, 'siuuu', { dy: -Math.abs(Math.sin(t * 8 + 1)) * 40, f: -1 });
+  aura(720, 1100, t, 1); KANE(720, 1470, 0.95, HOLD, 'siuuu'); ballonDor(720, 1470 - 0.95 * 560, 1.4, 1); confettiCol(z * 0.8, '#ffffff');
+  HUD(() => { pill('SPAIN 2 - 3 ENGLAND', 1, 190, 'rgba(10,14,30,.9)', '#ffd60a', 46); caption('43-GAME UNBEATEN RUN: OVER 💥', z - 0.3, 330, '#fff', '#c60b1e', 44); if (z > 1.2) caption('2-3 at Wembley 🔄 3-2 in Madrid', z - 1.2, 440, '#111', '#fff', 44); if (z > 2.0) caption('ENGLAND TOP THE GROUP 🥇', z - 2.0, 550, '#111', '#ffd60a', 44); cutIn('yamal', -1, z - 2.6, 'deadpan', '#c60b1e', 'YAMAL: 😶', '#c60b1e'); }); }
 
-function s_question(z, t) { const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#0f1a3a'); g.addColorStop(1, '#7a0a14'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
-  KANE(330, 1470, 0.85, { bArm: [-30, -10], fArm: [100, 150], bLeg: [-12, -6], fLeg: [12, 6] }, 'smug'); ballonDor(450, 1120, 1.1, 1); cup(780, 1460, 0.9, t, { legs: true, look: -1 }); shades(780, 1460 - 0.9 * 239, 0.9); ctx.strokeStyle = '#fff'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(760, 1240); ctx.lineTo(770, 1255); ctx.stroke(); txt('😤', 860, 1150, 70, '#fff', null);
+function v_question(z, t) { const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#0f1a3a'); g.addColorStop(1, '#7a0a14'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  KANE(300, 1470, 0.85, { bArm: [-30, -10], fArm: [100, 150], bLeg: [-12, -6], fLeg: [12, 6] }, 'smug'); ballonDor(420, 1120, 1.1, 1); PL('yamal', 790, 1470, 0.85, P_CROSS, 'angry', { f: -1 }); shades(790, 1470 - 0.85 * 375, 0.85, 0.2); txt('😤', 900, 960, 70, '#fff', null);
   HUD(() => { pop(eOB(z / 0.15), W / 2, 420, () => { ctx.rotate(-0.02); rr(-470, -120, 940, 240, 36, '#fff', DARK, 8); txt('SPAIN LOST:', 0, -40, 62, DARK, null); txt('FLUKE OR WARNING? 🤔', 0, 48, 62, '#c60b1e', null); });
     pop(eOB((z - 0.3) / 0.15), W / 2 - 220, 690, () => { rr(-190, -75, 380, 150, 36, '#ffc400', DARK, 7); txt('FLUKE 🍀', 0, 4, 58, DARK, null); }); pop(eOB((z - 0.45) / 0.15), W / 2 + 220, 690, () => { rr(-190, -75, 380, 150, 36, '#1b2a5c', DARK, 7); txt('WARNING ⚠️', 0, 4, 52, '#fff', null); });
-    pop(eOB((z - 0.8) / 0.15), W / 2, 850, () => txt('Comment 👇', 0, 0, 56, '#fff', DARK)); rr(70, 1500, 940, 64, 32, 'rgba(0,0,0,.55)', null); txt('Real result (Nov 15, 2026) · cartoon parody', W / 2, 1533, 34, '#fff', null, 'center', 800); }); }
+    pop(eOB((z - 0.8) / 0.15), W / 2, 850, () => txt('Comment 👇', 0, 0, 56, '#fff', DARK)); rr(70, 1500, 940, 64, 32, 'rgba(0,0,0,.55)', null); txt('Real results · cartoon parody', W / 2, 1533, 34, '#fff', null, 'center', 800); }); }
 
-// ---------- camera + HUD (lessons from Ep12: punch in on the peaks, shake on impacts, HUD fixed on top) ----------
+// ---------- camera + HUD ----------
 let HUDQ = []; const HUD = (f) => HUDQ.push(f);
 const _cap = caption; caption = (...a) => HUD(() => _cap(...a));
 const N = (t) => [t, 540, 960, 1];
 const CAMS = {
-  hook: [[0, 540, 960, 1.0], [2.4, 540, 1000, 1.1]],
-  flash: [N(0), N(1.0), [1.15, 450, 1250, 1.5], [1.6, 450, 1250, 1.5], [1.7, 840, 1130, 1.6], [2.2, 840, 1130, 1.6], N(2.45), N(3.3), [3.5, 760, 1200, 1.3], [5.0, 760, 1200, 1.35]],
-  lounge: [[0, 450, 1150, 1.12], [1.6, 450, 1150, 1.15], [2.0, 820, 1250, 1.45], [3.6, 820, 1250, 1.5]],
-  arrive: [N(0), N(0.8), [1.2, 540, 1000, 1.0], [2.5, 540, 1080, 1.35], [2.7, 540, 1080, 1.0], [2.8, 540, 950, 1.25], [4.0, 540, 950, 1.5]],
-  pen: [N(0), N(1.9), [2.05, 420, 1380, 1.7], [2.6, 420, 1380, 1.7], [2.75, 540, 960, 1.0], [3.0, 860, 1180, 1.25], [3.25, 860, 1180, 1.25], [3.5, 420, 1150, 1.3], [5.0, 420, 1150, 1.35]],
-  rush: [N(0), N(1.9), [2.1, 760, 1250, 1.5], [3.4, 760, 1250, 1.55]],
-  drama: [N(0), N(2.5), [2.75, 520, 1200, 1.4], [3.9, 520, 1200, 1.45], N(4.1)],
-  payoff: [[0, 300, 1250, 1.35], [1.0, 300, 1250, 1.35], [1.3, 600, 1150, 1.1], [3.4, 600, 1150, 1.15]],
+  hook: [[0, 540, 960, 1.0], [3.0, 540, 1000, 1.1]],
+  euro: [N(0), [1.3, 300, 1200, 1.45], [2.2, 300, 1200, 1.45], [2.5, 700, 1200, 1.35], [4.4, 720, 1220, 1.4]],
+  wembley: [N(0), N(0.45), [0.6, 450, 1250, 1.5], [1.0, 450, 1250, 1.5], [1.05, 840, 1130, 1.6], [1.5, 840, 1130, 1.6], N(1.8), N(2.7), [2.9, 700, 1200, 1.4], [5.0, 700, 1200, 1.45]],
+  champs: [[0, 540, 1100, 1.1], [1.6, 540, 1000, 1.2], [1.6, 540, 1150, 1.15], [4.0, 540, 1150, 1.25]],
+  tunnel: [[0, 540, 1250, 1.2], [3.0, 540, 1250, 1.3]],
+  ballon: [N(0), [0.8, 300, 1250, 1.4], [2.0, 300, 1250, 1.45], [2.15, 540, 1000, 1.3], [2.5, 540, 960, 1.0], [5.0, 600, 1100, 1.1]],
+  arrive: [N(0), N(0.6), [1.0, 540, 1000, 1.0], [2.1, 540, 1080, 1.3], [2.2, 540, 1000, 1.2], [3.2, 540, 950, 1.5]],
+  pen: [N(0), [0.55, 520, 1250, 1.4], [0.95, 520, 1250, 1.4], N(1.1), N(2.4), [2.55, 420, 1380, 1.7], [3.1, 420, 1380, 1.7], [3.25, 540, 960, 1.0], [3.5, 860, 1180, 1.25], [3.75, 860, 1180, 1.25], [4.0, 420, 1150, 1.3], [5.4, 420, 1150, 1.35]],
+  goals: [N(0), [0.7, 600, 1200, 1.3], [1.4, 700, 1150, 1.3], N(1.9), [2.9, 700, 1250, 1.3], [3.3, 600, 1200, 1.2], [4.4, 600, 1200, 1.2]],
+  drama: [[0, 500, 1250, 1.3], [1.2, 450, 1250, 1.3], [1.3, 350, 1200, 1.3], [2.6, 350, 1200, 1.3], [2.7, 580, 1250, 1.25], [3.9, 500, 1250, 1.25], [4.0, 540, 1200, 1.3], [5.2, 540, 1200, 1.4], N(5.5)],
+  payoff: [[0, 300, 1250, 1.35], [1.0, 300, 1250, 1.35], [1.3, 600, 1150, 1.1], [4.0, 600, 1150, 1.15]],
   question: [N(0)] };
-const SHK = { hook: [[0, 0.5, 18]], flash: [[1.7, 0.25, 14], [2.2, 0.2, 10]], lounge: [], arrive: [[0.0, 0.15, 8], [0.3, 0.15, 8], [0.6, 0.15, 10], [0.8, 0.4, 16]], pen: [[3.05, 0.4, 20]], rush: [[0.6, 0.3, 16], [1.7, 0.3, 18], [2.4, 0.2, 10]], drama: [[0.9, 0.2, 10], [1.9, 0.25, 12], [4.0, 0.4, 16]], payoff: [[0.2, 0.4, 16]], question: [] };
+const SHK = { hook: [[0, 0.5, 18]], euro: [[1.45, 0.3, 14]], wembley: [[1.05, 0.25, 14], [1.6, 0.2, 10]], champs: [[0, 0.3, 10]], tunnel: [], ballon: [[2.1, 0.3, 12]], arrive: [[0.6, 0.4, 16]], pen: [[0.55, 0.2, 10], [3.55, 0.4, 20]], goals: [[1.15, 0.3, 16], [2.95, 0.3, 18]], drama: [[0.5, 0.2, 10], [1.95, 0.25, 12], [3.4, 0.25, 12], [5.4, 0.4, 16]], payoff: [[0.2, 0.4, 16]], question: [] };
 const shakeAt = (n, z) => SHK[n].reduce((m, [a, d, A]) => z >= a && z < a + d ? Math.max(m, A * (1 - (z - a) / d)) : m, 0);
-
-const LEN = [['hook', 2.6, s_hook], ['flash', 5.0, s_flash], ['lounge', 3.6, s_lounge], ['arrive', 4.0, s_arrive], ['pen', 5.0, s_pen], ['rush', 3.4, s_rush], ['drama', 4.6, s_drama], ['payoff', 3.4, s_payoff], ['question', 2.8, s_question]];
+const LEN = [['hook', 3.0, v_hook], ['euro', 4.4, v_euro], ['wembley', 5.0, v_wembley], ['champs', 4.0, v_champs], ['tunnel', 3.0, v_tunnel], ['ballon', 5.0, v_ballon], ['arrive', 3.2, v_arrive], ['pen', 5.4, v_pen], ['goals', 4.4, v_goals], ['drama', 6.2, v_drama], ['payoff', 4.0, v_payoff], ['question', 3.0, v_question]];
 const SEG = []; { let t = 0; for (const [n, d, f] of LEN) { SEG.push([t, t + d, f, n]); t += d; } }
 const DURATION = SEG[SEG.length - 1][1];
 window.SEGS = SEG.map(s => [s[3], +s[0].toFixed(2)]);

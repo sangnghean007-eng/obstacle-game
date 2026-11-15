@@ -106,3 +106,12 @@ What works instead (Ep12 v3):
 - **Real-but-surprising facts** are the best gags: dig for coincidences (same day, same rival twice, walked past the trophy).
 - **Camera = impact (Ep12 v4):** never film the punchline from far away. Punch in (1.3–1.7×) on each peak (impact, reaction face, catch), shake the screen on every hit, then pull back to show the context. Keep the HUD (score, era, captions) fixed outside the camera. Clamp the camera so the frame edge never shows.
 - **Match-recap recipe (Ep13):** find the *previous* meeting and dig for its embarrassing real detail (Kane's slip at Wembley), then build the new match as its payoff ("NO SLIP ✅", 2-3 → 3-2 mirror). Draw only the gate-approved star; everyone else = generic mini players named in text. Give the arrogant side a symbol that can visibly break (the "UNBEATEN 43" throne shatters to 0).
+
+## 11. Read the INTENT, not the words (user, Nov 15 2026: "why do you only do exactly what I say? Make it full and varied. Remember this. Don't be so simple.")
+The user gives a 1-2 line brief. That is the SEED, not the spec. Before scripting, always expand it yourself:
+- **Back-story:** dig up the history between the sides (previous meetings, finals, famous moments, recurring villains/heroes). Ep13 example: Euro 2024 final (Oyarzabal), Wembley Sep 2026 (Kane slip + Oyarzabal again), Spain's World Cup, the Ballon d'Or where Kane beat Yamal.
+- **Faces on BOTH sides:** every real player who matters to the story is drawn as a recognisable portrait (likeness gate), not as a faceless mini. Give each side a face: the hero AND the rival (Kane vs Yamal), plus the recurring villain (Oyarzabal 👻) and the key supporting cast (keeper, scorers, assister, red card).
+- **Show every key moment as a scene**, not as text: each goal, the red card, the assist, the save, the celebration. A moment that only appears in a caption is a missed gag.
+- **Several scene types inside one video:** flashback, ceremony, lounge, tunnel, match action, close-up reaction, jumbotron, payoff. Different backgrounds, palettes and sound worlds.
+- **Length follows the story:** 45–60 s is fine when every 3–5 s has a new beat (Facebook favours 45–60 s anyway).
+- **Self-check before shipping:** "If the user watched this, what would they say is missing?" List 5 things a fan would expect (players, moments, history, rivalry, stats). If any is missing, add it.

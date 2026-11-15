@@ -176,9 +176,11 @@
       if (S.jawLines) for (const l of S.jawLines) line(l, 10, 'rgba(120,70,45,.22)'); });
     if (S.cheekLines) for (const l of S.cheekLines) line(l, 3, 'rgba(110,60,40,.4)');
     if (S.beard) clipTo(S.face, () => { ctx.save(); ctx.filter = 'blur(4px)'; let bf = S.beardCol; if (S.beardGrad) { bf = ctx.createLinearGradient(0, S.beardGrad[0], 0, S.beardGrad[1]); bf.addColorStop(0, S.beardGrad[2]); bf.addColorStop(1, S.beardCol); } shape(S.beard, bf, 0); ctx.filter = 'none'; ctx.restore(); clipTo(S.beard, () => { for (let i = 0; i < 420; i++) { const x = 150 + (i * 47) % 320, y = 320 + (i * 29) % 260; ctx.fillStyle = i % 3 ? 'rgba(60,32,18,.22)' : 'rgba(200,140,90,.18)'; ctx.fillRect(x, y, 3, 6); } }); if (S.stache) { ctx.save(); ctx.filter = 'blur(1.5px)'; shape(S.stache, 'rgba(78,44,24,.92)', 0); ctx.restore(); } });
+    if (S.fade) for (const f of S.fade) shape(f, S.fadeCol || 'rgba(40,26,16,.85)', 0);
     // hair (front) + strands
     shape(S.hair, S.hairCol, S.hairLw ?? 5, true, !S.hairSharp); if (S.hairShade) shape(S.hairShade, 'rgba(0,0,0,.18)', 0);
     for (const l of (S.strands || [])) line(l, 3, S.strandCol || 'rgba(255,255,255,.3)');
+    if (S.curls) clipTo(S.hair, () => { let i = 0; for (let y = 0; y < 270; y += 17) for (let x = 140; x < 520; x += 19) { i++; const jx = ((i * 37) % 11) - 5, jy = ((i * 23) % 9) - 4, r = 6 + (i % 3) * 2; ctx.strokeStyle = ((i * 7919) % 13 < 5) ? S.curls : 'rgba(255,248,215,.75)'; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(x + jx, y + jy, r, i * 0.7, i * 0.7 + 4.6); ctx.stroke(); } });
     if (S.hairTex) clipTo(S.hair, () => { for (let i = 0; i < 160; i++) { const x = 130 + (i * 37) % 350, y = 20 + (i * 53) % 260; ctx.strokeStyle = 'rgba(255,255,255,.08)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI * 1.4); ctx.stroke(); } });
     if (S.goatee) { shape(S.goatee, '#2a1a10', 0); }
     if (o.cascao) { shape([[200, 22], [262, 12], [300, 40], [280, 80], [236, 96], [196, 70], [186, 40]], '#1a120c', 4); for (let i = 0; i < 5; i++) line([[206 + i * 18, 34], [214 + i * 18, 78]], 2.5, 'rgba(255,255,255,.25)'); } // R9's famous 2002 'Cascão' fringe
@@ -249,6 +251,21 @@
     eyeL: [258, 307, 54, 15], eyeR: [372, 313, 52, 15],
     nose: { bridge: [[312, 302], [314, 345], [316, 372]], tip: [318, 383], nostrilL: [[294, 393], [306, 387], [312, 397], [300, 401]], nostrilR: [[326, 397], [332, 387], [344, 393], [338, 401]], wingL: [[288, 376], [282, 391], [296, 403], [312, 401]], wingR: [[326, 401], [342, 403], [352, 391], [346, 376]] },
     folds: [[[276, 398], [258, 425], [256, 448]], [[360, 400], [378, 425], [378, 448]]], mouth: { x: 312, y: 448, w: 112, rest: 'smile' }, chinLine: [] };
-  const FACES = { ronaldo, messi, hojlund: o => generic(HOJ, o), pele: o => generic(PELE, o), r9: o => generic(R9, o), kane: o => generic(KANE, o) };
+  // ---------- LAMINE YAMAL (Commons "Lamine Yamal in 2025 (cropped)": bleached-blond curly mop on top over dark roots, dark faded sides, thick straight dark brows, young oval face, full lips) ----------
+  const YAMAL = { skin: '#b98060', shade: '#96603f', hairCol: '#e6cf8f', browCol: '#1a120c', iris: '#2a1a10', lips: '#94584a', lid: 0.22, hairLw: 4, curls: 'rgba(110,80,35,.55)',
+    neck: [[245, 500], [415, 500], [425, 600], [560, 640], [60, 640], [235, 600]], underJaw: [[250, 515], [410, 510], [400, 545], [330, 560], [260, 545]],
+    face: [[198, 250], [190, 320], [198, 392], [220, 452], [252, 502], [292, 534], [330, 542], [368, 534], [408, 502], [440, 452], [462, 392], [468, 320], [462, 250], [448, 205], [410, 175], [330, 165], [250, 175], [212, 205]],
+    earL: [[190, 300], [160, 290], [152, 340], [165, 386], [194, 394]], earR: [[470, 300], [500, 290], [508, 340], [494, 386], [466, 394]],
+    fade: [[[182, 330], [184, 250], [204, 215], [222, 232], [208, 300], [196, 330]], [[478, 330], [476, 250], [456, 215], [438, 232], [452, 300], [464, 330]]],
+    sideShade: [[540, 150], [462, 220], [470, 330], [414, 500], [540, 560]], sockets: [[260, 314, 42, 18], [400, 314, 42, 18]], blush: [],
+    jawLines: [[[212, 452], [246, 502], [290, 532]], [[448, 452], [414, 500], [372, 530]]], cheekLines: [],
+    hair: [[196, 236], [178, 206], [150, 178], [170, 160], [150, 128], [182, 112], [178, 78], [214, 72], [226, 42], [262, 52], [282, 24], [314, 42], [340, 18], [366, 40], [396, 26], [414, 56], [446, 50], [452, 84], [482, 96], [472, 128], [494, 150], [470, 172], [486, 204], [466, 236], [446, 226], [430, 246], [410, 226], [390, 248], [368, 226], [346, 246], [324, 224], [302, 248], [282, 226], [262, 244], [240, 224], [218, 242]],
+    hairShade: [[196, 236], [230, 214], [300, 205], [360, 205], [430, 214], [468, 236], [430, 226], [360, 220], [300, 220], [230, 226]],
+    strands: [], strandCol: 'rgba(255,255,255,.3)',
+    browL: [[216, 290], [256, 279], [298, 285], [298, 299], [256, 292], [218, 302]], browR: [[444, 290], [404, 279], [362, 285], [362, 299], [404, 292], [442, 302]],
+    eyeL: [260, 320, 52, 14], eyeR: [400, 320, 52, 14],
+    nose: { bridge: [[330, 322], [328, 362], [326, 392]], tip: [330, 404], nostrilL: [[300, 414], [314, 406], [322, 418], [306, 422]], nostrilR: [[338, 418], [346, 406], [360, 414], [354, 422]], wingL: [[290, 392], [282, 412], [298, 426], [318, 424]], wingR: [[342, 424], [362, 426], [378, 412], [370, 392]] },
+    folds: [], mouth: { x: 330, y: 466, w: 108, rest: 'smile' }, chinLine: [[310, 518], [330, 524], [350, 518]] };
+  const FACES = { ronaldo, messi, hojlund: o => generic(HOJ, o), pele: o => generic(PELE, o), r9: o => generic(R9, o), kane: o => generic(KANE, o), yamal: o => generic(YAMAL, o) };
   window.portrait = { draw(c2d, name, x, y, s, o = {}) { ctx = c2d; ctx.save(); ctx.translate(x, y); ctx.scale(s * (o.f || 1), s); ctx.translate(-330, -300); FACES[name](o); ctx.restore(); } };
 })();
