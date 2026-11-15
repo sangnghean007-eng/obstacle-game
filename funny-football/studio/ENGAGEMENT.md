@@ -63,3 +63,12 @@ Next upgrades:
   - [Socialync: open loops](https://www.socialync.io/blog/open-loops-in-content-2026)
   - [Joyspace: pattern interrupts](https://joyspace.ai/pattern-interrupt-reset-attention-span)
   - [Social Media Examiner: Shorts hooks and curiosity loops](https://www.socialmediaexaminer.com/youtube-shorts-hooks-and-curiosity-loops-that-explode-your-views/)
+
+## 6. Anti-monotony rule (user, Nov 15 2026: "isn't it too monotonous?")
+Repeating beats every 3–5 s is not enough: **the beats themselves must differ.** In any series of similar segments (rounds, goals, exhibits, attempts):
+- **Rotate the stage:** location, palette and lighting change each segment.
+- **Rotate the gimmick:** combo counter, anime special-move strip, slow-mo, number counter, camera whip/reveal, full-screen cut-in, split screen, freeze frame.
+- **Rotate the reaction layout:** both faces, loser only, winner only, full-screen, none.
+- **Vary the lengths:** mix quick and longer segments (e.g. 3.4–4.6 s) and put the biggest one last.
+- **Escalate:** the final segment is the biggest spectacle.
+Add a line to the scorecard: **11. Do no two consecutive segments share a stage, gimmick AND reaction layout? (0–2)**. The total becomes /22; ship at 15+.

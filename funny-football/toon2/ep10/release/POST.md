@@ -1,4 +1,4 @@
-# Release index: Episode 10 "MESSI vs RONALDO: FINAL FIGHT" (32.6 s, no dialogue)
+# Release index: Episode 10 "MESSI vs RONALDO: FINAL FIGHT" (33.0 s, no dialogue)
 | File | Purpose |
 |---|---|
 | `final-fight-9x16.mp4` | Final video, 1080x1920, 30 fps |
@@ -29,3 +29,14 @@
   - the goat moved
 
 **Re-check on publish day:** the career goal counts (Messi's playoffs from Nov 21; Ronaldo's next Al-Nassr game).
+
+**v3 (user: "isn't it too monotonous?"):** yes, every round shared one stage, structure and reaction layout. Now each round is different:
+| Round | Stage | Gimmick | Reaction |
+|---|---|---|---|
+| 1 Ballon d'Or | gala spotlights + gold sparkles | COMBO x8 counter | both portraits |
+| 2 UCL | starry European night | anime "SPECIAL MOVE!" strip | loser only (Messi deadpan) |
+| 3 World Cup | golden rays | slow-motion beam | winner only (smug, gold glow) |
+| 4 Intl goals | Portugal / Argentina flag bands | 1→146 counter | both portraits |
+| 5 Assists | Miami neon + palms | camera pans behind Ronaldo, "BEHIND YOU! 😱", BONK | loser only (angry) |
+| 6 Career goals | storm + lightning | full-screen SIUUU portrait cut-in | then Messi deadpan |
+Round lengths now vary (3.4–4.4 s).

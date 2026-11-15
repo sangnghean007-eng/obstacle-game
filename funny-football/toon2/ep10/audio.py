@@ -2,8 +2,8 @@
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'sfx'))
 from synth import *
-RD, HIT = 3.8, 2.0
-R0 = 2.0; S = dict(draw=2.0 + 6 * RD, final=2.0 + 6 * RD + 1.4, thanks=2.0 + 6 * RD + 1.4 + 3.6); END = S['thanks'] + 2.8
+D = [3.4, 4.2, 4.0, 3.4, 3.8, 4.4]; HS = [1.8, 2.5, 2.3, 1.8, 2.1, 2.1]
+R0 = 2.0; ST = [R0 + sum(D[:i]) for i in range(6)]; S = dict(draw=R0 + sum(D)); S['final'] = S['draw'] + 1.4; S['thanks'] = S['final'] + 3.6; END = S['thanks'] + 2.8
 m = Mix(END)
 def k808(t, g=.9): d = .5; m.m(osc(glide(110, 42, d, .3), d) * dec(d, 5) + .2 * lp(noise(d), 1500) * dec(d, 60), t, g, 0, .02)
 def arcade(t0, t1, g=1.0, bpm=140):  # original arcade fight loop: driving bass + stabs + hats
@@ -22,9 +22,14 @@ arcade(R0 - 0.1, S['draw'], .85)
 m.crowd(R0, S['draw'] - R0, .14, swell=False)
 moves = ['ballon', 'ucl', 'beam', 'kick', 'assist', 'siu']; wins = 'MRMRMR'
 for i in range(6):
-    t = R0 + i * RD; gong(t, .35); m.pop(t + .6, .25, 1200); m.pop(t + .72, .25, 1500)
-    th = t + HIT
-    if moves[i] == 'ballon': [m.ding(th - .6 + j * .07, 1800 + j * 120, .12, .3) for j in range(8)]; m.whoosh(th - .6, .6, .35, True)
+    t = ST[i]; gong(t, .35); m.pop(t + .6, .25, 1200); m.pop(t + .72, .25, 1500)
+    th = t + HS[i]
+    if i == 1: m.whoosh(th - 1.25, .4, .45, True); m.brass_hit([hz('E3'), hz('B3'), hz('E4')], th - 1.2, .5, .35)  # special move strip
+    if i == 2: m.slowdown(th - .9, .9, .4)
+    if i == 3: [m.tick(th - .6 + j * .05, True, .12) for j in range(16)]
+    if i == 4: m.f(m.wav('gasp'), th - .6, .35, 0, .1)
+    if i == 5: m.crash(th + .15, .5); m.f(m.wav('siu_crowd'), th + .4, .6, 0, .3)
+    if moves[i] == 'ballon': [m.ding(th - .6 + j * .075, 1800 + j * 120, .16, .3) for j in range(8)]; m.whoosh(th - .6, .6, .35, True)
     if moves[i] == 'ucl': [m.whoosh(th - .6 + j * .1, .3, .2, True, -.3 + j * .15) for j in range(5)]
     if moves[i] == 'beam': m.choir([hz('E4'), hz('G#4'), hz('B4'), hz('E5')], th - .7, .8, .2); m.f(lp(osc(glide(200, 900, .6), .6, 'saw'), 2500) * env(int(.6 * SR), .05, .1), th - .6, .25, 0, .2)
     if moves[i] == 'kick': [m.thwack(th - .6 + j * .06, .45, -.3 + j * .07) for j in range(9)]
