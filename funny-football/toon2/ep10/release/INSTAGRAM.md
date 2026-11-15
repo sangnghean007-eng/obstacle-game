@@ -5,7 +5,8 @@ Messi vs Ronaldo: FINAL FIGHT 🥊 Who wins? Comment 7 or 10 👇
 
 6 rounds, 6 real stats → 3-3 DOUBLE K.O.
 Final round: the race to 1000 goals (985 vs 937) ⚽
-Spot the 3 hidden 🐐 👀
+We left one big stat out 👀 Which one?
+Send this to your Messi / Ronaldo friend 😏
 
 Real stats as of Nov 12, 2026 · cartoon parody, original characters.
 

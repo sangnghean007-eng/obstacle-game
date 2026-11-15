@@ -19,6 +19,7 @@ This channel makes funny satirical football cartoon Shorts (YouTube channel **So
 - Branch: **`claude/new-session-e2g4yg`** (all work is here).
 - `studio/PLAYBOOK.md`: all rules. The latest sections win: "v3 house style" and "Approved template (Ep4 v4)".
 - `studio/likeness/README.md`: **the likeness gate.** Every real player must pass it (portrait + chibi) before appearing in a video. Tools: `fetch_ref.sh`, `grid.py`, `overlay.js`, `overlay_sheet.py`.
+- `studio/ENGAGEMENT.md`: **the watch, share, argue engine.** Score every script on its 10-question scorecard; produce only at 14+/20.
 - `studio/SOCIAL_COPY.md`: **how to write the posts** for YouTube, TikTok, Instagram, Facebook and X (rules, templates, checklist). Read it before writing any dossier.
 - `studio/REVIEW_ROOM.md`, `scorecard.csv`, `performance.csv`, `IDEAS.md`.
 - Character systems:

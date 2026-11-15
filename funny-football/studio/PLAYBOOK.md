@@ -296,3 +296,6 @@ Sources:
 - [Tubefilter: soccer on Shorts in 2026](https://www.tubefilter.com/2026/07/13/top-50-most-viewed-youtube-channels-week-of-07-12-2026/)
 - [Complex: Mbappé anime meme](https://www.complex.com/sports/a/markelibert/ishowspeed-mbappe-dictator-meme-world-cup-2026)
 - [Outlook India: World Cup 2026 memes](https://www.outlookindia.com/sports/football/fifa-world-cup-2026-top-ten-memes-erling-haaland-lionel-messi)
+
+## Engagement engine (user, Nov 15 2026: "make people want to watch, share and argue")
+Before every script, fill in the scorecard in `studio/ENGAGEMENT.md` (open loop, layered hook, a beat every 3–5 s, twist and loop, high-arousal emotion, social currency, trigger, two camps, an easy comment action, facts and sensitivity). Ship only at 14+/20.

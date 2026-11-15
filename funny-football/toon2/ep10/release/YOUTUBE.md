@@ -19,7 +19,7 @@ Messi vs Ronaldo in a fighting game 🥊 6 rounds, 6 real stats:
 It ends 3-3… so the FINAL ROUND is the race to 1000 goals.
 
 Who gets there first? Comment 7 or 10 👇
-Spot the 3 hidden 🐐 👀
+We left one big stat out 👀 Which one?
 
 Real stats as of Nov 12, 2026. Cartoon parody with original characters and synthesized audio. No logos. Not affiliated with any player, club or league.
 

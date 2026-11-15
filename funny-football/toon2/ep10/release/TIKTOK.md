@@ -1,7 +1,7 @@
 # TikTok: Ep10 "FINAL FIGHT"
 **Caption:**
 ```
-Messi vs Ronaldo in a fighting game 🥊 6 real stats, it ends 3-3… so who reaches 1000 goals first? Comment 7 or 10 👇
+Messi vs Ronaldo in a fighting game 🥊 6 real stats, it ends 3-3… so who reaches 1000 goals first? Comment 7 or 10 👇 Send this to a Messi fan 😏
 
 #messi #ronaldo #messivsronaldo #goat #footballtiktok
 ```

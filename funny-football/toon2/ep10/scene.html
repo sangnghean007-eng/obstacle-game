@@ -208,7 +208,7 @@ function s_thanks(u) {
   const tap = u > 1.0; pop(eOB((u - 0.2) / 0.2) * (1 + 0.06 * Math.sin(u * 10)), W / 2, 410, () => { rr(-230, -62, 460, 124, 62, tap ? '#22c55e' : '#e11d2a', DARK, 7); txt(tap ? 'FOLLOWING ✓' : '+ FOLLOW', 0, 4, 58, '#fff', null); });
   pop(eOB((u - 0.4) / 0.2), W / 2 - 220, 640, () => { rr(-190, -90, 380, 180, 40, YEL, DARK, 7); txt('TEAM 7', 0, 4, 76, BLUE, null); });
   pop(eOB((u - 0.55) / 0.2), W / 2 + 220, 640, () => { rr(-190, -90, 380, 180, 40, PINK, DARK, 7); txt('TEAM 10', 0, 4, 76, '#111', null); });
-  pop(eOB((u - 0.7) / 0.2), W / 2, 810, () => txt('Comment 7 or 10 👇', 0, 0, 66, '#fff')); pop(eOB((u - 0.85) / 0.2), W / 2, 900, () => txt('Spot 3 hidden 🐐 👀', 0, 0, 52, YEL));
+  pop(eOB((u - 0.7) / 0.2), W / 2, 810, () => txt('Comment 7 or 10 👇', 0, 0, 66, '#fff')); pop(eOB((u - 0.85) / 0.2), W / 2, 900, () => txt('We left one stat out 👀 Which?', 0, 0, 50, YEL));
   portrait.draw(ctx, 'ronaldo', 300, 1170, 0.45, Object.assign({ expr: 'siuuu' }, KR)); portrait.draw(ctx, 'messi', 790, 1180, 0.45, Object.assign({ expr: 'smug' }, KM));
   rr(70, 1452, 940, 70, 35, 'rgba(0,0,0,.55)', null); txt('Real stats as of Nov 12, 2026 · parody', W / 2, 1488, 44, '#fff', null, 'center', 800);
 }
