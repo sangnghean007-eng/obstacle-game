@@ -103,7 +103,7 @@
   // ---------- MESSI (2018 reference, landmarks on the 600x620 grid: hair top 50, brows ~288, eyes 312, nose tip 382, mouth 440, beard chin 560) ----------
   function messi(o) {
     const E = exprOf(o); PUPIL = E.pupil;
-    const SK = '#e3b391', SH = '#c08562', HAIR = '#4b301f', BEARD = '#a65a2c', BD = '#7a3e1c';
+    const SK = '#e3b391', SH = '#c08562', HAIR = '#4b301f', BEARD = '#8e5030', BD = '#6a361a';
     const face = [[160, 250], [158, 320], [168, 390], [195, 460], [240, 520], [295, 548], [350, 532], [400, 480], [432, 410], [442, 330], [440, 250], [420, 190], [370, 160], [295, 152], [215, 170]];
     shape([[195, 470], [425, 460], [450, 580], [560, 640], [40, 640], [170, 580]], SH, 5);
     if (o.kit) { shape([[30, 640], [150, 585], [230, 600], [300, 650], [370, 600], [450, 585], [580, 640], [580, 720], [30, 720]], o.kit, 5); line([[230, 600], [300, 660], [370, 600]], 14, o.trim || '#111'); }
@@ -111,12 +111,29 @@
     shape([[440, 285], [474, 280], [486, 330], [470, 392], [442, 398]], SK, 5);
     shape(face, SK, 6);
     clipTo(face, () => { shape([[470, 160], [415, 200], [425, 330], [400, 470], [470, 560]], 'rgba(160,100,70,.3)', 0); soft(232, 305, 46, 22, 'rgba(110,60,40,.3)'); soft(342, 303, 44, 22, 'rgba(110,60,40,.3)'); soft(290, 345, 10, 30, 'rgba(255,230,210,.45)'); });
-    // beard: full and dense from the cheekbones down, moustache joined
-    const beard = [[158, 330], [164, 410], [190, 475], [235, 535], [290, 572], [350, 552], [400, 500], [432, 430], [444, 335], [428, 352], [400, 372], [372, 398], [340, 410], [312, 404], [285, 406], [258, 404], [226, 392], [192, 360]];
-    shape(beard, BEARD, 5);
-    clipTo(beard, () => { for (let i = 0; i < 120; i++) { const x = 165 + (i * 53) % 275, y = 360 + (i * 37) % 200; line([[x, y], [x + 3, y + 11]], 2.5, i % 3 ? 'rgba(80,40,20,.35)' : 'rgba(230,160,110,.35)'); } soft(290, 520, 70, 40, 'rgba(70,35,15,.35)'); });
-    shape([[226, 432], [252, 410], [290, 412], [326, 410], [354, 432], [340, 444], [318, 432], [290, 436], [262, 432], [240, 446]], BD, 3); // droopy moustache
-    shape([[256, 440], [290, 436], [326, 440], [316, 454], [290, 458], [266, 454]], '#b56b5a', 4); // lower lip
+    // beard v2 (user: "looks like a mask"): no ink on the cheek edge, feathered hair strokes, sideburns joined to the hair,
+    // darker toward the jaw, tufted outline only along the bottom, soft moustache over the upper lip.
+    // thin brown sideburns joining the hair
+    shape([[158, 268], [176, 270], [180, 330], [166, 340]], HAIR, 0); shape([[428, 286], [444, 284], [444, 336], [430, 338]], HAIR, 0);
+    const beard = [[160, 330], [158, 380], [168, 430], [192, 484], [236, 532], [290, 556], [350, 540], [398, 494], [428, 432], [442, 375], [444, 330], [428, 336], [418, 362], [398, 384], [370, 400], [340, 406], [312, 402], [285, 404], [258, 402], [228, 392], [204, 370], [184, 340], [176, 330]];
+    const edge = [[176, 330], [184, 340], [204, 370], [228, 392], [258, 402], [285, 404], [312, 402], [340, 406], [370, 400], [398, 384], [418, 362], [428, 336]];
+    shape(beard, BEARD, 0);
+    clipTo(beard, () => {
+      const g = ctx.createLinearGradient(0, 330, 0, 570); g.addColorStop(0, 'rgba(190,120,75,.3)'); g.addColorStop(0.55, 'rgba(110,58,30,.12)'); g.addColorStop(1, 'rgba(60,30,14,.5)'); ctx.fillStyle = g; ctx.fillRect(140, 260, 320, 320);
+      for (let i = 0; i < 260; i++) { const x = 150 + (i * 53) % 300, y = 280 + (i * 37) % 290, a = ((x - 300) / 160) * 0.35; line([[x, y], [x + a * 10, y + 13]], 2.4, i % 3 ? 'rgba(75,35,15,.4)' : 'rgba(235,160,105,.4)'); }
+    });
+    // feathered top edge: short strands growing up/out over the skin, fading
+    for (let i = 0; i < edge.length - 1; i++) for (let k = 0; k < 7; k++) { const t = k / 7, x = edge[i][0] + (edge[i + 1][0] - edge[i][0]) * t, y = edge[i][1] + (edge[i + 1][1] - edge[i][1]) * t, dx = (x - 300) * 0.04; line([[x, y + 5], [x + dx + (k % 2 ? 1.5 : -1.5), y - 5 - (k % 3) * 2]], 2.2, k % 2 ? 'rgba(142,80,48,.6)' : 'rgba(106,54,26,.45)'); }
+    for (let i = 0; i < 40; i++) { const x = 190 + (i * 61) % 230, y = 330 + (i * 29) % 40 - (Math.abs(x - 300) < 60 ? 0 : 30); if (y < 360) { ctx.fillStyle = 'rgba(110,60,30,.35)'; ctx.fillRect(x, y, 2, 2); } } // stubble above the line
+    // tufted bottom outline only
+    const bot = [[159, 335], [158, 380], [168, 430], [192, 484], [236, 532], [290, 556], [350, 540], [398, 494], [428, 432], [442, 375], [444, 335]];
+    ctx.beginPath(); ctx.moveTo(bot[0][0], bot[0][1]); for (let i = 0; i < bot.length - 1; i++) for (let k = 1; k <= 8; k++) { const t = k / 8, x = bot[i][0] + (bot[i + 1][0] - bot[i][0]) * t, y = bot[i][1] + (bot[i + 1][1] - bot[i][1]) * t, nx = (x - 300) * 0.03, ny = (y - 380) * 0.03; ctx.lineTo(x + (k % 2 ? nx * 0.9 : 0), y + (k % 2 ? ny * 0.9 : 0)); }
+    ctx.lineWidth = 5; ctx.strokeStyle = INK; ctx.lineJoin = 'round'; ctx.stroke();
+    soft(290, 470, 30, 18, 'rgba(60,28,10,.45)'); // soul patch shadow under the lip
+    // lips + soft moustache (no outline), strands falling over the upper lip
+    shape([[256, 440], [290, 436], [326, 440], [316, 454], [290, 458], [266, 454]], '#b56b5a', 3);
+    shape([[224, 436], [250, 412], [290, 414], [328, 412], [356, 436], [336, 444], [290, 438], [244, 444]], BD, 0);
+    for (let i = 0; i < 16; i++) { const x = 232 + i * 7.5; line([[x, 416], [x + (x - 290) * 0.08, 440 + Math.abs(x - 290) * 0.03]], 2.2, i % 2 ? 'rgba(60,28,10,.6)' : 'rgba(200,120,70,.5)'); }
     // hair: swept back, long on top, fringe falling to the left over the forehead, covers the tops of the ears
     shape([[146, 300], [140, 220], [158, 140], [205, 82], [270, 52], [345, 48], [410, 70], [452, 120], [470, 190], [470, 270], [452, 290], [440, 230], [420, 185], [380, 162], [325, 160], [282, 166], [255, 190], [228, 228], [205, 252], [180, 268], [165, 300]], HAIR, 5);
     shape([[158, 262], [168, 200], [210, 156], [266, 140], [252, 172], [224, 212], [196, 252]], HAIR, 0); line([[166, 250], [180, 205], [215, 168], [252, 150]], 3, 'rgba(255,220,180,.25)'); // fringe

@@ -270,3 +270,8 @@ Sources: [Proko: Caricature 101](https://www.proko.com/course-lesson/caricature-
   - Expressions via `o.expr`: `siuuu` (huge open shout, brows up, forehead wrinkles), `shock` (tiny pupils, brows to the hairline, O mouth), `smug` (one brow raised, half-lidded, smirk), `angry` (V brows, frown lines, gritted teeth), `deadpan` (Messi: heavy lids).
   - Sheet: `toon2/portrait_expressions.jpg`.
   - **Where to use them:** reaction cut-ins as a framed `face()` panel (Ep9 `scene.html`): the shock on bad news, a smug reaction to a rival's failure, the stadium big screen, the end card. A portrait cut-in on the punchline beat gets the biggest laugh.
+- **Beards (user, Nov 15: "Messi's beard looks like a mask"):**
+  - Never outline the cheek edge of a beard, and never fill it with one flat colour.
+  - Do this instead: no ink on the top edge; short strands feathering up over the skin; a few stubble dots above the line; thin sideburns in the HAIR colour joining the hair; the beard darkens toward the jaw (gradient + two-tone strand texture); a soft, unoutlined moustache with strands over the upper lip.
+  - Only the bottom contour gets ink, and only slightly tufted (big zigzags look cartoonish).
+  - Keep the beard starting below the cheekbone.
