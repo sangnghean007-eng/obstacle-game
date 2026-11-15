@@ -31,18 +31,20 @@ for (const k of ['mate1', 'mate2', 'mate3', 'mate4']) window.CH[k].kit = window.
 // ---------- likeness v2 (Nov 15 2026): caricature specs that push each player's most distinctive traits ----------
 // Traits come from widely known public appearance (2026). Confidence noted per player; the user reviews the sheet.
 window.LIKE = {
-  // HIGH confidence: strong angular jaw + pointed chin, high cheekbones, thin arched groomed brows, big white smile,
-  // short faded sides with a textured top pushed up, stud earring, clean-shaven, athletic V-shape.
-  ronaldo: { head: { R: 112, hair: 'fade', quiff: 1, hairCol: '#1a120c', jaw: 0.8, chin: 0.6, chinPoint: 0.5, cheekbones: true, faceW: 0.94, faceH: 1.06, browArch: 0.2, browW: 0.07, browLen: 1.1, eyeShape: 'almond', eyeSize: 1.0, iris: '#4a2c16', nose: 0.3, mouthW: 1.4, earring: '#e5e7eb' } },
-  // HIGH: full trimmed beard (brown, slightly reddish), rounder face, short neat hair, sleeve tattoo on one arm, smaller and stockier build.
-  messi: { head: { R: 106, hair: 'sidepart', hairCol: '#3b2416', beard: 'trim', beardCol: '#6b4128', faceW: 1.04, faceH: 0.97, jaw: 0.35, eyeShape: 'almond', lidBase: 0.12, browW: 0.11, iris: '#3a2416', nose: 0.5, mouthW: 0.95 }, tattoo: { arm: 'f', col: '#2b3a55' } },
-  // MEDIUM: tall young striker, light brown/blond hair swept back, fair skin, clean-shaven, strong straight brows.
-  hoj: { head: { R: 104, hair: 'swept', hairCol: '#b58a4f', faceH: 1.06, faceW: 0.95, jaw: 0.5, chin: 0.3, browW: 0.12, browCol: '#8a6538', iris: '#4a6fa5', nose: 0.4 } },
-  // MEDIUM: shaved/buzzed head with a trimmed beard, fair skin, intense look.
-  d1: { head: { R: 104, hair: 'buzz', hairCol: '#7a5a3a', beard: 'trim', beardCol: '#7a5a3a', jaw: 0.6, browW: 0.13, lidBase: 0.15, iris: '#4a6fa5' } },
-  // MEDIUM: dark short hair, full trimmed beard, light skin, heavy brows (Portugal centre-back).
-  p1: { skin: '#e8c2a0', shade: '#c99f7d', head: { R: 102, hair: 'fade', hairCol: '#1d1410', beard: 'trim', beardCol: '#1d1410', jaw: 0.7, browW: 0.16, lidBase: 0.12, iris: '#3a2416' } },
-  // MEDIUM: slim young forward with voluminous dark styled hair, light skin, light stubble.
-  p2: { skin: '#ecc6a4', shade: '#cfa483', head: { R: 100, hair: 'styled', hairCol: '#22160f', stubble: true, faceH: 1.05, faceW: 0.95, jaw: 0.4, browW: 0.11, iris: '#3a2416' } },
-  // LOW (generic but neat): other players keep the base look with a short fade.
+  // Studied from CC-licensed Wikimedia Commons photos (2018, 2023), proportions only, nothing traced.
+  // RONALDO: long narrow face, square jaw + strong chin, defined cheekbones, thick straight brows sitting low over deep-set narrow eyes,
+  // long straight nose, wide mouth; hair LOW and tight: faded sides, short top combed up/right with a hard part; light-olive skin; stud earring.
+  ronaldo: { skin: '#d9a27c', shade: '#b9825e', head: { R: 108, hair: 'cr7', hairCol: '#16100b', faceW: 0.86, faceH: 1.16, jaw: 0.95, chin: 0.9, chinPoint: 0.2, cheekbones: true,
+    eyeSize: 0.8, eyeShape: 'almond', lidBase: 0.1, deepEyes: true, eyeGap: 1.05, browW: 0.12, browLen: 1.15, browY: 0.07, browBase: -0.15, browCol: '#16100b',
+    iris: '#4a2c16', nose: 0.2, noseLen: 1.2, mouthW: 1.3, earSize: 1.15, earring: '#e5e7eb' } },
+  // MESSI: oval face, medium-length wavy hair swept back over the ears, full thick ginger-brown beard + moustache,
+  // heavy low brows, deep intense eyes, longish nose; sleeve tattoo; smaller stockier build.
+  messi: { head: { R: 104, hair: 'long', hairCol: '#4a2e1c', beard: true, beardCol: '#8a5230', faceW: 0.94, faceH: 1.08, jaw: 0.5,
+    eyeSize: 0.8, eyeShape: 'almond', lidBase: 0.15, deepEyes: true, browW: 0.14, browY: 0.07, browBase: -0.12, browCol: '#3b2416', iris: '#3a2416', nose: 0.4, noseLen: 0.9, mouthW: 0.9 }, tattoo: { arm: 'f', col: '#2b3a55' } },
+  // HØJLUND: very light platinum-blond short hair, pale skin, slim young face, light brows.
+  hoj: { skin: '#f3d3bd', shade: '#dcb39a', head: { R: 102, hair: 'swept', hairCol: '#eadba8', faceH: 1.1, faceW: 0.92, jaw: 0.6, chin: 0.4, eyeSize: 0.85, eyeShape: 'almond', browW: 0.1, browCol: '#c9b07a', iris: '#5b7fb0', nose: 0.3, noseLen: 0.6 } },
+  // Others: medium/low confidence (no reference photo yet).
+  d1: { head: { R: 104, hair: 'buzz', hairCol: '#7a5a3a', beard: 'trim', beardCol: '#7a5a3a', jaw: 0.7, eyeSize: 0.85, eyeShape: 'almond', browW: 0.13, lidBase: 0.18, iris: '#4a6fa5' } },
+  p1: { skin: '#e8c2a0', shade: '#c99f7d', head: { R: 102, hair: 'fade', hairCol: '#1d1410', beard: 'trim', beardCol: '#1d1410', jaw: 0.7, eyeSize: 0.85, eyeShape: 'almond', browW: 0.16, lidBase: 0.15, iris: '#3a2416' } },
+  p2: { skin: '#ecc6a4', shade: '#cfa483', head: { R: 100, hair: 'styled', hairCol: '#22160f', stubble: true, faceH: 1.08, faceW: 0.93, jaw: 0.45, eyeSize: 0.85, eyeShape: 'almond', browW: 0.11, iris: '#3a2416' } },
 };

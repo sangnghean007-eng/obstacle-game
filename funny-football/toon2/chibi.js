@@ -97,6 +97,15 @@
         blob(() => { ctx.moveTo(-R * 0.98, -R * 0.2); ctx.bezierCurveTo(-R * 1.05, -R * 1.15, R * 0.85, -R * 1.3, R * 1.0, -R * 0.35); ctx.quadraticCurveTo(R * 0.7, -R * 0.7, R * 0.05, -R * 0.72); ctx.quadraticCurveTo(-R * 0.55, -R * 0.66, -R * 0.98, -R * 0.2); ctx.closePath(); }, hc);
         stroke([[-R * 0.35, -R * 0.75], [-R * 0.42, -R * 1.08]], 4, 'rgba(0,0,0,.35)'); for (let i = 0; i < 3; i++) stroke([[-R * 0.15 + i * R * 0.25, -R * 0.8], [R * 0.05 + i * R * 0.25, -R * 0.98]], 3, 'rgba(255,255,255,.25)'); }
     }
+    if (h.hair === 'cr7') {
+      ctx.save(); ctx.lineCap = 'round'; ctx.lineWidth = R * 0.12; ctx.strokeStyle = 'rgba(30,20,14,.45)'; for (const [a1, a2] of [[Math.PI * 1.02, Math.PI * 1.22], [Math.PI * 1.82, Math.PI * 1.95]]) { ctx.beginPath(); ctx.ellipse(0, -R * 0.12, R * 0.94, R * 0.96, 0, a1, a2); ctx.stroke(); } ctx.restore();
+      blob(() => { ctx.moveTo(-R * 0.72, -R * 0.78); ctx.bezierCurveTo(-R * 0.8, -R * 1.12, -R * 0.25, -R * 1.32, R * 0.3, -R * 1.3); ctx.bezierCurveTo(R * 0.72, -R * 1.3, R * 0.98, -R * 1.08, R * 0.9, -R * 0.82); ctx.quadraticCurveTo(R * 0.6, -R * 1.02, R * 0.15, -R * 0.98); ctx.quadraticCurveTo(-R * 0.35, -R * 0.96, -R * 0.72, -R * 0.78); ctx.closePath(); }, hc);
+      stroke([[-R * 0.42, -R * 0.98], [-R * 0.36, -R * 1.22]], 3, 'rgba(255,255,255,.6)');
+      for (let i = 0; i < 3; i++) stroke([[-R * 0.15 + i * R * 0.3, -R * 1.0], [R * 0.08 + i * R * 0.3, -R * 1.22]], 3, 'rgba(255,255,255,.3)'); }
+    if (h.hair === 'long') {
+      blob(() => { ctx.moveTo(-R * 1.08, R * 0.3); ctx.bezierCurveTo(-R * 1.3, -R * 0.6, -R * 0.95, -R * 1.38, -R * 0.1, -R * 1.38); ctx.bezierCurveTo(R * 0.7, -R * 1.4, R * 1.15, -R * 1.0, R * 1.0, -R * 0.55); ctx.quadraticCurveTo(R * 0.85, -R * 0.85, R * 0.55, -R * 0.95); ctx.quadraticCurveTo(R * 0.1, -R * 1.08, -R * 0.35, -R * 0.95); ctx.quadraticCurveTo(-R * 0.72, -R * 0.75, -R * 0.8, -R * 0.2); ctx.quadraticCurveTo(-R * 0.85, R * 0.15, -R * 1.08, R * 0.3); ctx.closePath(); }, hc);
+      for (const [x1, y1, x2, y2] of [[-0.9, 0.1, -0.85, -0.6], [-0.55, -0.85, -0.2, -1.2], [0.0, -0.9, 0.4, -1.2], [0.5, -0.75, 0.85, -1.0]]) stroke([[x1 * R, y1 * R], [(x1 + x2) / 2 * R - R * 0.1, (y1 + y2) / 2 * R], [x2 * R, y2 * R]], 3.5, 'rgba(255,255,255,.25)');
+      blob(() => { ctx.moveTo(R * 0.55, -R * 0.78); ctx.quadraticCurveTo(R * 0.75, -R * 0.55, R * 0.62, -R * 0.4); }, null, OL * 0.6); }
     if (h.hair === 'spiky') { blob(() => { ctx.moveTo(-R, -R * 0.2); for (let i = 0; i <= 8; i++) { const x = -R + i * R * 0.25; ctx.lineTo(x, -R * (i % 2 ? 1.35 : 0.7)); } ctx.lineTo(R, -R * 0.2); ctx.closePath(); }, hc); }
   }
   function head(C, e, t) {
@@ -120,12 +129,13 @@
     // eyes
     const blink = e.blink ?? ((Math.floor((t + (C.blinkSeed || 0)) * 10) % 37) < 2), ex = R * 0.34 * (h.eyeGap || 1), ey = -R * 0.08, rx = R * 0.2 * (h.eyeSize || 1), ry = R * 0.26 * (h.eyeSize || 1) * (h.eyeShape === 'almond' ? 0.72 : h.eyeShape === 'round' ? 1.08 : 1);
     const ee = Object.assign({ lidCol: C.skin }, e, blink && !e.noBlink ? { lid: 1 } : {}); if (h.lidBase && !(ee.lid >= 0.95) && ee.eyes !== 'happy') ee.lid = Math.max(ee.lid || 0, h.lidBase);
+    if (h.deepEyes) for (const [xx, k] of [[fx - ex, 1], [fx + ex * 0.92, 0.88]]) ell(xx, ey - ry * 0.25, rx * 1.35 * k, ry * 1.1, 'rgba(60,30,20,.16)', 0);
     eye(fx - ex, ey, rx, ry, ee, h.iris || '#5a3a1e', -1); eye(fx + ex * 0.92, ey, rx * 0.88, ry, ee, h.iris || '#5a3a1e', 1);
     // brows
-    const by = ey - ry - R * 0.12 - (e.brow || 0) * R * 0.15, bt = (e.browTilt || 0);
+    const by = ey - ry - R * 0.12 + (h.browY || 0) * R - (e.brow || 0) * R * 0.15, bt = (e.browTilt || 0) + (h.browBase || 0);
     for (const [bx, sd] of [[fx - ex, -1], [fx + ex * 0.92, 1]]) { ctx.save(); ctx.translate(bx, by); ctx.rotate(bt * sd * 0.45); const bw = R * (h.browW || 0.13), bl = R * 0.22 * (h.browLen || 1), ba = R * (h.browArch || 0); if (ba) blob(() => { ctx.moveTo(-bl, bw * 0.4); ctx.quadraticCurveTo(-bl * 0.2 * sd, -ba - bw * 0.3, bl, bw * 0.2 - ba * 0.2); ctx.lineTo(bl, bw * 0.2 - ba * 0.2 + bw * 0.6); ctx.quadraticCurveTo(-bl * 0.2 * sd, -ba + bw * 0.7, -bl, bw * 0.4 + bw * 0.8); ctx.closePath(); }, h.browCol || h.hairCol, OL * 0.5); else blob(() => ctx.roundRect(-bl, -R * 0.07, bl * 2, bw, R * 0.07), h.browCol || h.hairCol, OL * 0.6); ctx.restore(); }
     // nose
-    blob(() => { ctx.moveTo(fx + R * 0.02, R * 0.08); ctx.quadraticCurveTo(fx + R * (0.28 + (h.nose || 0) * 0.1), R * 0.3, fx + R * 0.05, R * 0.34); }, null, OL * 0.8);
+    const nl = h.noseLen || 0; if (nl) stroke([[fx + R * 0.0, -R * 0.12], [fx + R * 0.08, R * 0.12 + nl * R * 0.1]], OL * 0.6, 'rgba(0,0,0,.35)'); blob(() => { ctx.moveTo(fx + R * 0.02, R * 0.08 + nl * R * 0.08); ctx.quadraticCurveTo(fx + R * (0.28 + (h.nose || 0) * 0.1), R * (0.3 + nl * 0.1), fx + R * 0.05, R * (0.34 + nl * 0.1)); }, null, OL * 0.8);
     ell(fx + R * 0.1, R * 0.3, R * 0.06 * (1 + (h.nose || 0)), R * 0.04, 'rgba(0,0,0,.18)', 0);
     if (h.beard && h.beard !== 'trim') ell(fx + R * 0.02, R * 0.6, R * 0.38 * (h.mouthW || 1), R * 0.2, C.skin, 0);
     mouth(fx + R * 0.02, R * 0.56, R * 0.3 * (h.mouthW || 1), e.mouth || 'smile', C);

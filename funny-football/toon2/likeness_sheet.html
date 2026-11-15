@@ -1,21 +1,15 @@
-<!doctype html><html><head><meta charset="utf-8"><title>Likeness v2</title><style>html,body{margin:0;background:#222}</style></head>
-<body><canvas id="c" width="2160" height="1920"></canvas>
+<!doctype html><html><head><meta charset="utf-8"><title>Likeness v3</title><style>html,body{margin:0;background:#222}</style></head>
+<body><canvas id="c" width="1800" height="1000"></canvas>
 <script src="chibi.js"></script><script src="chibi_cast.js"></script>
 <script>
 const ctx = document.getElementById('c').getContext('2d'); window.T2T = 0.3;
 const like = (base, spec, extra = {}) => Object.assign({}, CH[base], spec, extra, { head: Object.assign({}, CH[base].head, spec.head || {}) });
 const POR = { shirt: '#c8102e', sleeve: '#c8102e', cuff: '#046a38', collar: '#046a38', shorts: '#046a38', sock: '#c8102e', sockShade: '#9b0c23', sockBand: '#046a38', boot: '#fff', num: '#ffd400' };
 const DEN = { shirt: '#fff', sleeve: '#fff', cuff: '#c8102e', collar: '#c8102e', shorts: '#fff', sock: '#fff', sockShade: '#ddd', sockBand: '#c8102e', boot: '#c8102e', num: '#c8102e' };
-const cells = [
-  ['RONALDO (old)', CH.ronaldo, 'smile'], ['RONALDO (new)', like('ronaldo', LIKE.ronaldo), 'grin'],
-  ['MESSI (old)', CH.messi, 'smile'], ['MESSI (new)', like('messi', LIKE.messi), 'smile'],
-  ['HØJLUND (old)', like('mate3', { kit: DEN, name: 'HØJLUND', num: '', head: { hair: 'short', hairCol: '#b98a4a' } }), 'smile'], ['HØJLUND (new)', like('mate3', LIKE.hoj, { kit: DEN, name: 'HØJLUND', num: '', shoulderW: 96, torsoH: 150, leg: 120 }), 'grin'],
-  ['HØJBJERG (new)', like('mate1', LIKE.d1, { kit: DEN, name: 'HØJBJERG', num: '' }), 'smirk'], ['DIAS (new)', like('mate1', LIKE.p1, { kit: POR, name: 'DIAS', num: '3' }), 'flat'],
-  ['FÉLIX (new)', like('mate3', LIKE.p2, { kit: POR, name: 'FÉLIX', num: '11' }), 'smile'], ['RONALDO 🇵🇹 (new)', like('ronaldo', LIKE.ronaldo, { kit: POR }), 'grin'],
-];
-ctx.fillStyle = '#2b2f3a'; ctx.fillRect(0, 0, 2160, 1920);
-cells.forEach(([label, C, m], i) => { const col = i % 5, row = Math.floor(i / 5), x = 216 + col * 432, y = 900 + row * 960;
-  ctx.fillStyle = i % 2 ? '#39405a' : '#30364b'; ctx.fillRect(col * 432 + 6, row * 960 + 6, 420, 948);
-  chibi.draw(ctx, C, 'stand', { mouth: m }, x, y, 1.15, { f: 1, still: true });
-  ctx.font = '900 34px Inter, sans-serif'; ctx.textAlign = 'center'; ctx.fillStyle = '#fff'; ctx.fillText(label, x, row * 960 + 60); });
+const ARG = { shirt: '#9fd3f5', stripes: '#ffffff', sleeve: '#9fd3f5', cuff: '#111', collar: '#111', shorts: '#111', sock: '#111', sockShade: '#000', sockBand: '#9fd3f5', boot: '#ffd21f', num: '#111' };
+const cells = [['RONALDO v3', like('ronaldo', LIKE.ronaldo, { kit: POR }), { mouth: 'flat' }], ['RONALDO v3', like('ronaldo', LIKE.ronaldo), { mouth: 'grin' }], ['MESSI v3', like('messi', LIKE.messi, { kit: ARG }), { mouth: 'flat' }], ['HØJLUND v3', like('mate3', LIKE.hoj, { kit: DEN, name: '', num: '' }), { mouth: 'grin' }]];
+ctx.fillStyle = '#2b2f3a'; ctx.fillRect(0, 0, 1800, 1000);
+cells.forEach(([label, C, e], i) => { const x = 225 + i * 450; ctx.fillStyle = i % 2 ? '#39405a' : '#30364b'; ctx.fillRect(i * 450 + 6, 6, 438, 988);
+  ctx.save(); ctx.translate(x, 1050); ctx.scale(1.3, 1.3); chibi.draw(ctx, C, 'stand', e, 0, 0, 1, { f: 1, still: true }); ctx.restore();
+  ctx.font = '900 34px Inter, sans-serif'; ctx.textAlign = 'center'; ctx.fillStyle = '#fff'; ctx.fillText(label, x, 60); });
 </script></body></html>

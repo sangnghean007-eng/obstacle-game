@@ -234,3 +234,17 @@ Sources: [Proko: Caricature 101](https://www.proko.com/course-lesson/caricature-
 - Per-player specs live in `window.LIKE` in `chibi_cast.js`. Comparison sheet: `toon2/likeness_sheet.html` → `toon2/likeness_v2_sheet.jpg`.
 
 **Known limit:** likeness from code-drawn shapes tops out around 6/10 (noted earlier). Strong signifiers still carry recognition: name and number, kit, the hook text naming the player, and signature moves (SIUUU, pointing to the sky).
+
+### Likeness method v3: the photo-reference loop (Nov 15 2026; use it for every new player)
+1. **Get 1–2 reference photos** from Wikimedia Commons (CC-licensed), for study only:
+   - Download: `curl -sSL -A "<descriptive UA>" -o x.jpg "https://commons.wikimedia.org/wiki/Special:FilePath/<File_name.jpg>?width=600"`.
+   - Find file names with the Commons search API (`list=search`, `srnamespace=6`). It rate-limits, so wait 4–6 s between calls and send a descriptive User-Agent. en.wikipedia.org is blocked in this environment; commons.wikimedia.org works.
+   - Keep the photos in the scratchpad only. **Never ship, trace or commit them.**
+2. **Write the trait checklist** from the photo (proportions, not details): face length/width, jaw and chin, hairline height, hair volume and direction, brow thickness/angle/height, eye depth, nose length, beard coverage and colour, skin tone.
+3. **Build the spec in `LIKE`**, render a side-by-side (photo row on top, cartoon row below), compare, fix the biggest mismatch, repeat 2–3 times.
+4. **Lessons from round 1:**
+   - The chibi default (round face, big round eyes, tall hair) is what kills likeness.
+   - Ronaldo needed a long narrow face, LOW tight hair with a high forehead, low straight brows and a long nose. A tall quiff was wrong.
+   - Messi needed hair swept back off the forehead (not a bowl) plus a big ginger-brown beard.
+   - Brow angle sets the mood: inner ends raised = sad, a strong V = cartoon-angry. A slight inward dip (`browBase` about −0.15) reads "intense".
+5. New rig params from this round: `browY`, `browBase`, `noseLen`, `deepEyes`, and hair styles `cr7` and `long`.
