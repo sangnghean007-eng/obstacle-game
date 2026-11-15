@@ -3,7 +3,7 @@ import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'sfx'))
 from synth import *
 D = [3.4, 4.2, 4.0, 3.4, 3.8, 4.4]; HS = [1.8, 2.5, 2.3, 1.8, 2.1, 2.1]
-R0 = 2.0; ST = [R0 + sum(D[:i]) for i in range(6)]; S = dict(draw=R0 + sum(D)); S['final'] = S['draw'] + 1.4; S['thanks'] = S['final'] + 3.6; END = S['thanks'] + 2.8
+R0 = 2.0; ST = [R0 + sum(D[:i]) for i in range(6)]; BOOK0 = R0 + sum(D); S = dict(draw=BOOK0 + 8 * 0.85); S['final'] = S['draw'] + 1.4; S['thanks'] = S['final'] + 3.6; END = S['thanks'] + 2.8
 m = Mix(END)
 def k808(t, g=.9): d = .5; m.m(osc(glide(110, 42, d, .3), d) * dec(d, 5) + .2 * lp(noise(d), 1500) * dec(d, 60), t, g, 0, .02)
 def arcade(t0, t1, g=1.0, bpm=140):  # original arcade fight loop: driving bass + stabs + hats
@@ -38,6 +38,9 @@ for i in range(6):
     hit(th); m.cheer_burst(th + .05, .4)
     m.f(m.wav('gasp' if wins[i] == 'R' else 'grumble_angry'), th + .6, .3, .3 if wins[i] == 'R' else -.3, .1)
     if wins[i] == 'R' and moves[i] != 'siu': m.f(m.wav('siu'), th + .35, .6, -.3, .25)
+for j in range(8):
+    tb = BOOK0 + j * .85; m.whoosh(tb, .25, .35, True, .5 if j % 2 == 0 else -.5); hit(tb + .22, .7); m.pop(tb + .3, .3, 900 + j * 80)
+m.crowd(BOOK0, 6.8, .2, swell=False)
 t = S['draw']; hit(t, 1.0); m.slowdown(t + .1, .8, .4); m.brass_hit([hz('D3'), hz('G#3'), hz('D4')], t + .2, .9, .35); m.f(m.wav('ooh_crowd'), t + .2, .4, 0, .3)
 t = S['final']; gong(t, .45); m.drone(hz('E2'), t, 3.5, .12)
 for j in range(16): m.tick(t + .4 + j * .075, j % 2 == 0, .18)

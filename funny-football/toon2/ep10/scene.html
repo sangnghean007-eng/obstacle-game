@@ -88,8 +88,14 @@ function stadium(t, cols = [RED, GRN, '#fff', YEL], seed = 7, clap = 0) {
 const YEL = '#ffd400', BLUE = '#1e3a8a', PINK = '#f5a3c7', GY = 1480, RX = 230, MX = 860;
 const likeC = (k) => Object.assign({}, CH[k], LIKE[k], { head: Object.assign({}, CH[k].head, LIKE[k].head) });
 const CR = likeC('ronaldo'), LM = likeC('messi');
-const RON = (p, e, x, y, s = 1.2, o = {}) => chibi.draw(ctx, CR, p, e, x, y, s, Object.assign({ f: 1 }, o));
-const MES = (p, e, x, y, s = 1.2, o = {}) => chibi.draw(ctx, LM, p, e, x, y, s, Object.assign({ f: -1 }, o));
+// one style everywhere: caricature portrait heads on chibi bodies (bobblehead), expressions mapped from the chibi ones
+function pExpr(name, e) { const s = typeof e === 'string' ? e : (e && e.mouth) || '';
+  if (/dizzy|shock|^o$/.test(s)) return 'shock'; if (/strain|angry|grit/.test(s)) return 'angry';
+  if (/happy|grin/.test(s) || (e && e.eyes === 'happy')) return name === 'ronaldo' ? 'siuuu' : 'smug';
+  if (/flat|sad|bored/.test(s) || (e && e.lid > 0.3)) return name === 'messi' ? 'deadpan' : 'neutral'; return name === 'ronaldo' ? 'smug' : 'neutral'; }
+const bobble = (name, kit) => (Rr, e) => portrait.draw(ctx, name, 0, -Rr * 0.28, Rr * 2.1 / 330, { headOnly: true, expr: pExpr(name, e), kit, mouth: 'flat' });
+const RON = (p, e, x, y, s = 1.2, o = {}) => chibi.draw(ctx, CR, p, e, x, y, s, Object.assign({ f: 1, headFn: bobble('ronaldo', YEL) }, o));
+const MES = (p, e, x, y, s = 1.2, o = {}) => chibi.draw(ctx, LM, p, e, x, y, s, Object.assign({ f: -1, headFn: bobble('messi', PINK) }, o));
 const P_THROW = { bArm: [-40, -20], fArm: [120, 100], bLeg: [-20, -10], fLeg: [20, 30] };
 const P_GUARD = { bArm: [60, 150], fArm: [70, 160], bLeg: [-14, -8], fLeg: [14, 8] }, P_KICK = { bArm: [-70, -40], fArm: [70, 40], bLeg: [-12, -6], fLeg: [80, 85] };
 const P_HIT = { bArm: [-150, -120], fArm: [-130, -100], bLeg: [-30, -10], fLeg: [30, 20] };
@@ -211,11 +217,32 @@ function s_round(i) { return u => {
     if (R.react === 'winner') reactOne(wN, wE, k, '😏', true);
     if (R.react === 'full') { fullSiu(u - h - 0.15); if (u - h > 1.45) reactOne('messi', 'deadpan', u - h - 1.45, '…😐', false); } }
 }; }
+const BOOK = [ // [who, big line, small line] all verified in facts.md
+  ['M', 'WORLD CUP', 'ALL-TIME TOP SCORER'], ['R', '140', 'UCL GOALS · RECORD'],
+  ['M', '6 vs 4', 'EUROPEAN GOLDEN SHOES'], ['R', '234', "CAPS · MEN'S RECORD"],
+  ['M', '#2 ALL-TIME', 'FREE-KICK GOALS (CR7 #9)'], ['R', '6 WORLD CUPS', 'SCORED IN ALL SIX · FIRST EVER'],
+  ['M', '+11 🏆', 'MORE TEAM TROPHIES'], ['R', '4 vs 3', 'COUNTRIES WON A LEAGUE'] ];
+const BK = 0.85;
+function s_book(u) { // rapid-fire record cards, each one a combo hit; ends 4-4
+  const i = Math.min(BOOK.length - 1, Math.floor(u / BK)), k = (u - i * BK) / BK, [who, big, small] = BOOK[i], mW = who === 'M';
+  ctx.fillStyle = mW ? '#3b1530' : '#13204a'; ctx.fillRect(0, 0, W, H);
+  ctx.save(); ctx.translate(W / 2, 980); ctx.rotate(u); for (let j = 0; j < 20; j++) { ctx.rotate(TAU / 20); ctx.fillStyle = mW ? 'rgba(245,163,199,.18)' : 'rgba(255,212,0,.16)'; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(1500, -80); ctx.lineTo(1500, 80); ctx.fill(); } ctx.restore();
+  bigText('RECORD BOOK 📖', 300, 92, YEL, 1, -0.02);
+  let nm = 0, nr = 0; for (let j = 0; j <= i; j++) { if (j < i || k > 0.25) BOOK[j][0] === 'M' ? nm++ : nr++; }
+  pop(1, W / 2, 430, () => { rr(-330, -50, 660, 100, 50, '#111', '#fff', 5); txt(`RONALDO ${nr}`, -40, 3, 40, YEL, null, 'right'); txt('–', 0, 3, 40, '#fff', null); txt(`${nm} MESSI`, 40, 3, 40, PINK, null, 'left'); });
+  // attacker portrait slams in from its side, the other flinches
+  const ax = mW ? 760 : 320, dx = mW ? 300 : 780, sl = eOB(k / 0.18);
+  portrait.draw(ctx, mW ? 'ronaldo' : 'messi', dx + (k > 0.25 ? (mW ? -1 : 1) * 30 * Math.sin(k * 40) * (1 - k) : 0), 1250, 0.5, Object.assign({ expr: k > 0.25 ? (mW ? 'shock' : 'deadpan') : 'neutral' }, mW ? KR : KM));
+  ctx.save(); ctx.translate(lerp(mW ? 1300 : -300, ax, Math.min(1, sl)), 1180); portrait.draw(ctx, mW ? 'messi' : 'ronaldo', 0, 0, 0.62, Object.assign({ expr: mW ? 'smug' : 'siuuu' }, mW ? KM : KR)); ctx.restore();
+  pop(eOB((k - 0.1) / 0.15), W / 2, 700, () => { ctx.rotate(mW ? 0.03 : -0.03); rr(-470, -130, 940, 260, 36, mW ? PINK : YEL, DARK, 8); ctx.font = `900 110px ${F}`; const tw = ctx.measureText(big).width; txt(big, 0, -30, Math.min(110, 110 * 860 / tw), mW ? '#111' : BLUE, '#fff'); ctx.font = `900 46px ${F}`; const sw2 = ctx.measureText(small).width; txt(small, 0, 72, Math.min(46, 46 * 860 / sw2), DARK, null); });
+  if (k > 0.25 && k < 0.5) { burst(dx, 1000, 120, 'HIT!', eOB((k - 0.25) / 0.08), 48, '#fff', 0.1); }
+  if (i === BOOK.length - 1 && k > 0.6) pop(eOB((k - 0.6) / 0.15), W / 2, 950, () => { ctx.rotate(-0.06); txt('STILL A DRAW?! 😳', 0, 0, 84, '#fff', '#c1121f'); });
+}
 function s_draw(u) { // 3-3 → DOUBLE K.O.?!
   const C = [540, 1050, 1.0 + u * 0.05, 0]; cam(C, () => { arena(u + 9); shadowAt(RX, 130); shadowAt(MX, 120); RON('stand', 'dizzy', RX - 40, GY, 1.25, { lean: -0.2 }); MES('stand', 'dizzy', MX + 40, GY, 1.15, { lean: 0.2 }); stars(RX - 40, GY - 620, u, 90); stars(MX + 40, GY - 600, u + 1, 90); }, u < 0.25 ? 14 : 0, u);
-  hud(0.0001, 0.0001, '3-3', 1); ctx.fillStyle = 'rgba(0,0,0,.35)'; ctx.fillRect(0, 0, W, H);
+  hud(0.0001, 0.0001, '7-7', 1); ctx.fillStyle = 'rgba(0,0,0,.35)'; ctx.fillRect(0, 0, W, H);
   bigText('DOUBLE K.O.?!', 760, 130, '#ff3b5c', eOB(u / 0.15));
-  pop(eOB((u - 0.3) / 0.2), W / 2, 960, () => { rr(-200, -90, 400, 180, 90, '#111', '#fff', 8); txt('3 – 3', 0, 4, 140, YEL, null); });
+  pop(eOB((u - 0.3) / 0.2), W / 2, 960, () => { rr(-200, -90, 400, 180, 90, '#111', '#fff', 8); txt('7 – 7', 0, 4, 140, YEL, null); });
 }
 function s_final(u) { // FINAL ROUND: race to 1000 (two lanes), the goat holds the finish flag
   const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#13204a'); g.addColorStop(1, '#3b1530'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
@@ -238,7 +265,7 @@ function s_thanks(u) {
   portrait.draw(ctx, 'ronaldo', 300, 1170, 0.45, Object.assign({ expr: 'siuuu' }, KR)); portrait.draw(ctx, 'messi', 790, 1180, 0.45, Object.assign({ expr: 'smug' }, KM));
   rr(70, 1452, 940, 70, 35, 'rgba(0,0,0,.55)', null); txt('Real stats as of Nov 12, 2026 · parody', W / 2, 1488, 44, '#fff', null, 'center', 800);
 }
-const LEN = [['hook', 2.0, s_hook], ...ROUNDS.map((r, i) => [`r${i + 1}`, r.d, s_round(i)]), ['draw', 1.4, s_draw], ['final', 3.6, s_final], ['thanks', 2.8, s_thanks]];
+const LEN = [['hook', 2.0, s_hook], ...ROUNDS.map((r, i) => [`r${i + 1}`, r.d, s_round(i)]), ['book', BOOK.length * BK, s_book], ['draw', 1.4, s_draw], ['final', 3.6, s_final], ['thanks', 2.8, s_thanks]];
 const SEG = []; { let t = 0; for (const [n, d, f] of LEN) { SEG.push([t, t + d, f, n]); t += d; } }
 const DURATION = SEG[SEG.length - 1][1];
 window.SEGS = SEG.map(s => [s[3], +s[0].toFixed(2)]);

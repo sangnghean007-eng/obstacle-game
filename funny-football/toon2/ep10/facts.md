@@ -13,3 +13,16 @@ A remake of the Ep7 comparison in the viral-first format (fighting-game spoof). 
 
 **Avoid:** age, crying, family jokes; calling an overall winner (it ends 3-3, then "you decide").
 **Re-check on publish day:** Messi's playoff games (Nov 21+) and Ronaldo's next Al-Nassr game can change the goal counts.
+
+## v4 additions: RECORD BOOK round (Nov 15, 2026; balanced 4 v 4 on purpose, no overall winner)
+| Card | Claim on screen | Status | Sources |
+|---|---|---|---|
+| Messi | World Cup all-time top scorer | VERIFIED (exact total differs, 18–21, so the number is not shown) | ESPN (World Cup 2026 stats: "all-time record"); NPR (Jun 24, 2026); Complex |
+| Ronaldo | 140 UCL goals, the record | VERIFIED | Ep7 sheet (footballtransfers, worldsoccertalk) |
+| Messi | European Golden Shoes 6 vs 4 | VERIFIED | Ep7 sheet (planetfootball, mlssoccer/tsn) |
+| Ronaldo | 234 caps, the men's record | VERIFIED | Ep7 sheet (aljazeera, kuwaittimes) |
+| Messi | Free-kick goals #2 all-time, Ronaldo #9 | VERIFIED (ranks only; counts differ by source) | World Soccer Talk; Leadership.ng ("Messi climbs to 2nd… Ronaldo 9th"); bolavip |
+| Ronaldo | Scored at 6 World Cups, the first ever | VERIFIED | NPR (Jun 24, 2026); messixronaldo.com; Complex |
+| Messi | +11 more team trophies | VERIFIED as the gap (beIN Sep 2026: 48 vs 37; messixronaldo Nov 12: 47 vs 36; totals vary by counting rules) | beIN Sports; messixronaldo.com; Wikipedia (47) |
+| Ronaldo | League titles in 4 countries vs 3 | VERIFIED | Ep7 sheet (cbsnews, aljazeera, foxsports) |
+**Not used (sources conflict):** exact World Cup goal totals, hat-trick counts, free-kick counts, Messi's UCL goal total.

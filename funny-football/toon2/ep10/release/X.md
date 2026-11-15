@@ -3,8 +3,8 @@
 ```
 Messi vs Ronaldo: FINAL FIGHT 🥊
 
-6 rounds, 6 real stats
-Result: 3-3 😳
+14 real records
+Result: 7-7 😳
 Tie-breaker: race to 1000 goals
 Ronaldo 985 · Messi 937
 

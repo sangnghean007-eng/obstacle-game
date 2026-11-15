@@ -299,3 +299,7 @@ Sources:
 
 ## Engagement engine (user, Nov 15 2026: "make people want to watch, share and argue")
 Before every script, fill in the scorecard in `studio/ENGAGEMENT.md` (open loop, layered hook, a beat every 3–5 s, twist and loop, high-arousal emotion, social currency, trigger, two camps, an easy comment action, facts and sensitivity). Ship only at 14+/20.
+
+## One art style + enough data (user feedback on Ep10, Nov 15 2026)
+- **Never mix portrait cut-ins with plain chibi faces.** Characters with a portrait must wear it in action too: `chibi.draw(ctx, C, pose, expr, x, y, s, { headFn: (R, e) => portrait.draw(ctx, name, 0, -R * 0.28, R * 2.1 / 330, { headOnly: true, expr }) })`. Map chibi expressions to portrait expressions (see `pExpr` in `ep10/scene.html`).
+- **Legends get legend-sized data.** For GOAT-level comparisons show 12+ verified records. Use a rapid-fire "RECORD BOOK" round (one card every ~0.85 s, alternating sides) on top of the featured rounds. Keep it balanced and true; show ranks instead of counts where sources disagree.

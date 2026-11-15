@@ -1,7 +1,7 @@
 # YouTube Shorts: Ep10 "FINAL FIGHT"
 **Title:**
 ```
-Messi vs Ronaldo: FINAL FIGHT 🥊 Who Wins Round 6?
+Messi vs Ronaldo: FINAL FIGHT 🥊 14 Records, 1 Winner?
 ```
 Backup titles:
 - Ronaldo vs Messi Fighting Game… It Ends 3-3?! 🤯
@@ -16,7 +16,8 @@ Messi vs Ronaldo in a fighting game 🥊 6 rounds, 6 real stats:
 ⚽ International goals: 125 vs 146
 🎯 All-time assists record: Messi
 ⚽ Career goals: 937 vs 985
-It ends 3-3… so the FINAL ROUND is the race to 1000 goals.
+📖 RECORD BOOK bonus round: World Cup all-time top scorer (Messi) · 140 UCL goals (Ronaldo) · Golden Shoes 6-4 (Messi) · 234 caps (Ronaldo) · free kicks #2 all-time (Messi) · scored at 6 World Cups (Ronaldo) · +11 team trophies (Messi) · league champion in 4 countries (Ronaldo)
+It ends 7-7… so the FINAL ROUND is the race to 1000 goals.
 
 Who gets there first? Comment 7 or 10 👇
 We left one big stat out 👀 Which one?

@@ -1,4 +1,4 @@
-# Release index: Episode 10 "MESSI vs RONALDO: FINAL FIGHT" (33.0 s, no dialogue)
+# Release index: Episode 10 "MESSI vs RONALDO: FINAL FIGHT" (39.8 s, no dialogue)
 | File | Purpose |
 |---|---|
 | `final-fight-9x16.mp4` | Final video, 1080x1920, 30 fps |
@@ -40,3 +40,7 @@
 | 5 Assists | Miami neon + palms | camera pans behind Ronaldo, "BEHIND YOU! 😱", BONK | loser only (angry) |
 | 6 Career goals | storm + lightning | full-screen SIUUU portrait cut-in | then Messi deadpan |
 Round lengths now vary (3.4–4.4 s).
+
+**v4 (user: "too little data, they are legends of legends"; "the still portraits and the video don't match"):**
+- **Data:** a RECORD BOOK bonus round with 8 more verified records, alternating Messi/Ronaldo, 4-4. The total becomes **14 records, 7-7**. Ranks are used where sources conflict on counts (see facts.md).
+- **One style:** the fighters now wear the caricature portrait heads on chibi bodies (bobblehead), via `chibi.draw(..., { headFn })` and `portrait.draw(..., { headOnly })`. Chibi expressions are mapped to portrait expressions, so the cut-ins and the action match.

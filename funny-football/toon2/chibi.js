@@ -197,7 +197,7 @@
     leg(C, bh, P.bLeg, 'ink'); leg(C, fh, P.fLeg, 'ink'); leg(C, bh, P.bLeg, 'fill'); leg(C, fh, P.fLeg, 'fill');
     shorts(C);
     ctx.save(); ctx.translate(0, C.hipY); ctx.scale(1 + br * 0.006, 1 - br * 0.008); ctx.translate(0, -C.hipY); torso(C); ctx.restore();
-    ctx.save(); ctx.translate(0, C.headY + br * 2); ctx.rotate((o.headTilt || 0)); head(C, e, t); ctx.restore();
+    ctx.save(); ctx.translate(0, C.headY + br * 2); ctx.rotate((o.headTilt || 0)); if (o.headFn) { if (C.f < 0) ctx.scale(-1, 1); o.headFn(C.head.R, e); } else head(C, e, t); ctx.restore();
     arm(C, fs, P.fArm, 'ink', 'f'); arm(C, fs, P.fArm, 'fill', 'f');
     ctx.restore();
   }
