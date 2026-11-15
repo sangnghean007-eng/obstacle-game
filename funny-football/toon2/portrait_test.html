@@ -1,9 +1,7 @@
-<!doctype html><html><head><meta charset="utf-8"><title>Portrait test</title><style>html,body{margin:0}</style></head><body><canvas id="c" width="1800" height="700"></canvas>
+<!doctype html><html><head><meta charset="utf-8"><title>Portrait expressions</title><style>html,body{margin:0}</style></head><body><canvas id="c" width="2400" height="1300"></canvas>
 <script src="portrait.js"></script><script>
-const ctx = document.getElementById('c').getContext('2d'); ctx.fillStyle = '#2b2f3a'; ctx.fillRect(0, 0, 1800, 700);
-const g = (x, c) => { const gr = ctx.createLinearGradient(0, 0, 0, 700); gr.addColorStop(0, c); gr.addColorStop(1, '#111'); ctx.fillStyle = gr; ctx.fillRect(x, 0, 600, 700); };
-g(0, '#7a2e3a'); g(600, '#7a2e3a'); g(1200, '#3a5a7a');
-portrait.draw(ctx, 'ronaldo', 300, 330, 1.0, { kit: '#1e3a8a', trim: '#ffd400', mouth: 'open' });
-portrait.draw(ctx, 'ronaldo', 900, 330, 1.0, { kit: '#c8102e', trim: '#046a38', mouth: 'smile' });
-portrait.draw(ctx, 'messi', 1500, 330, 1.0, { kit: '#9fd3f5', trim: '#111' });
+const ctx = document.getElementById('c').getContext('2d'); ctx.fillStyle = '#2b2f3a'; ctx.fillRect(0, 0, 2400, 1300);
+const R = [['neutral', 'open'], ['siuuu'], ['shock'], ['smug'], ['angry']], M = [['neutral'], ['deadpan'], ['shock'], ['smug']];
+R.forEach(([e, m], i) => { ctx.fillStyle = i % 2 ? '#3b2030' : '#45283a'; ctx.fillRect(i * 480, 0, 480, 650); portrait.draw(ctx, 'ronaldo', 240 + i * 480, 300, 0.78, { expr: e, mouth: m, kit: '#c8102e', trim: '#046a38' }); ctx.font = '900 40px Inter'; ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.fillText(e.toUpperCase(), 240 + i * 480, 50); });
+M.forEach(([e], i) => { ctx.fillStyle = i % 2 ? '#20304b' : '#283a58'; ctx.fillRect(i * 600, 650, 600, 650); portrait.draw(ctx, 'messi', 300 + i * 600, 950, 0.8, { expr: e, kit: '#9fd3f5', trim: '#111' }); ctx.font = '900 40px Inter'; ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.fillText(e.toUpperCase(), 300 + i * 600, 700); });
 </script></body></html>

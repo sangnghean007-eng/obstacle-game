@@ -265,3 +265,8 @@ Sources: [Proko: Caricature 101](https://www.proko.com/course-lesson/caricature-
   - The neck must be as wide as the jaw for athletes.
 - **Overlay check (round 2, Nov 15):** render the portrait at identity scale on a transparent canvas and blend it at 55% over the 600x620 photo crop (scratchpad scripts `overlay.js` + `ovsheet.sh`). This shows exact landmark errors.
   - Fixes it found: thick brows dipping down at the inner end (the key Ronaldo/Messi "intense" read), a wider, squarer jaw with jaw corners at about the ear-lobe line, a dark under-jaw shadow, dark nostrils, a full upper lip, darker faded sides, a ginger beard reaching higher up the cheeks, and a droopy moustache.
+- **Funny caricature (round 3, Nov 15, user: "finish it, a bit funnier"):**
+  - Stronger exaggeration on Ronaldo: chin/jaw stretched 30% down, 8% wider.
+  - Expressions via `o.expr`: `siuuu` (huge open shout, brows up, forehead wrinkles), `shock` (tiny pupils, brows to the hairline, O mouth), `smug` (one brow raised, half-lidded, smirk), `angry` (V brows, frown lines, gritted teeth), `deadpan` (Messi: heavy lids).
+  - Sheet: `toon2/portrait_expressions.jpg`.
+  - **Where to use them:** reaction cut-ins as a framed `face()` panel (Ep9 `scene.html`): the shock on bad news, a smug reaction to a rival's failure, the stadium big screen, the end card. A portrait cut-in on the punchline beat gets the biggest laugh.
