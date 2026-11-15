@@ -1,7 +1,7 @@
-# Release index: Episode 10 "MESSI vs RONALDO: FINAL FIGHT" (39.8 s, no dialogue)
+# Release index: Episode 10 "MESSI vs RONALDO: FINAL FIGHT" (35.4 s, no dialogue)
 | File | Purpose |
 |---|---|
-| `final-fight-9x16.mp4` | Final video, 1080x1920, 30 fps |
+| `goat-games-9x16.mp4` | Final video, 1080x1920, 30 fps |
 | `cover-9x16.jpg` | Cover: frame 0 (VS screen with both portraits, "FINAL FIGHT 🥊 WHO WINS?") |
 | `YOUTUBE.md` · `TIKTOK.md` · `INSTAGRAM.md` · `FACEBOOK.md` · `X.md` | Platform dossiers (written to `studio/SOCIAL_COPY.md`) |
 
@@ -44,3 +44,15 @@ Round lengths now vary (3.4–4.4 s).
 **v4 (user: "too little data, they are legends of legends"; "the still portraits and the video don't match"):**
 - **Data:** a RECORD BOOK bonus round with 8 more verified records, alternating Messi/Ronaldo, 4-4. The total becomes **14 records, 7-7**. Ranks are used where sources conflict on counts (see facts.md).
 - **One style:** the fighters now wear the caricature portrait heads on chibi bodies (bobblehead), via `chibi.draw(..., { headFn })` and `portrait.draw(..., { headOnly })`. Chibi expressions are mapped to portrait expressions, so the cut-ins and the action match.
+
+**v5 "GOAT GAMES" (user: "still monotonous, can't you be more creative?"):** the format itself changes per stat. **7 different video-game genres**, each with its own camera, UI, palette and sound world.
+| Game | Stat | Genre |
+|---|---|---|
+| 1 | Ballon d'Or | fight + combo |
+| 2 | UCL titles | kart race with item boxes |
+| 3 | World Cup | platform jump (Ronaldo's block drops "EURO 2016 ✅") |
+| 4 | Intl goals | space shooter with a high-score counter |
+| 5 | Assists | pinball where every bounce is an assist |
+| 6 | 8 records | buzzer quiz show |
+| 7 | Career goals | boss fight vs the "1000" goat (985 vs 937 damage → 15 vs 63 HP left) |
+There is a game-select teaser at the start and a running score pill, ending 7-7. The v4 backup is in review/scene_v4.html.

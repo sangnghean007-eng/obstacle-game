@@ -1,7 +1,7 @@
 # X (Twitter): Ep10 "FINAL FIGHT"
 **Main post** (native video; no link):
 ```
-Messi vs Ronaldo: FINAL FIGHT 🥊
+Messi vs Ronaldo: GOAT GAMES 🎮
 
 14 real records
 Result: 7-7 😳

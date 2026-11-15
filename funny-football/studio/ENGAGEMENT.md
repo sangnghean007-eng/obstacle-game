@@ -72,3 +72,9 @@ Repeating beats every 3–5 s is not enough: **the beats themselves must differ.
 - **Vary the lengths:** mix quick and longer segments (e.g. 3.4–4.6 s) and put the biggest one last.
 - **Escalate:** the final segment is the biggest spectacle.
 Add a line to the scorecard: **11. Do no two consecutive segments share a stage, gimmick AND reaction layout? (0–2)**. The total becomes /22; ship at 15+.
+
+## 7. Format-level variety (user, Nov 15 2026: "still monotonous, be more creative")
+Rotating backgrounds and gimmicks inside ONE format is still monotonous; the viewer sees the same template. For list-type content (comparisons, records, attempts), **change the genre per segment**: fighting game, kart race, platform jump, space shooter, pinball, quiz show, boss fight, cooking show, nature documentary, news bulletin, horror trailer…
+- **Each genre brings its own camera, UI, physics, palette and sound world**, so every segment feels like a new video.
+- **Keep one thread** (a running score pill, the same two characters, the mascot) so the story still connects.
+- Ask before scripting: **"Could a viewer predict the next segment's look?"** If yes, change the genre.

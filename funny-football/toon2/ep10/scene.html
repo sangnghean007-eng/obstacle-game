@@ -192,7 +192,7 @@ function s_hook(u) { // frame 0: VS screen with both portraits, hook text alread
   ctx.restore();
   pop(1 + 0.12 * Math.abs(Math.sin(u * 8)), W / 2, 900, () => { ctx.rotate(-0.1 + Math.sin(u * 20) * 0.03); txt('VS', 0, 0, 260, '#fff', '#c1121f'); });
   txt('RONALDO', 290, 1450, 70, BLUE, '#fff'); txt('MESSI', 800, 1450, 70, '#111', '#fff');
-  pop(1, W / 2, 330, () => { ctx.rotate(-0.03); txt('FINAL FIGHT 🥊', 0, -60, 96, '#fff'); txt('WHO WINS?', 0, 50, 96, YEL); });
+  pop(1, W / 2, 330, () => { ctx.rotate(-0.03); txt('GOAT GAMES 🎮', 0, -60, 96, '#fff'); txt('WHO WINS?', 0, 50, 96, YEL); });
   for (let i = 0; i < 6; i++) { const a = u * 3 + i; ctx.strokeStyle = 'rgba(255,255,255,.6)'; ctx.lineWidth = 6; ctx.beginPath(); ctx.moveTo(W / 2 + Math.cos(a) * 140, 900 + Math.sin(a) * 140); ctx.lineTo(W / 2 + Math.cos(a) * 260, 900 + Math.sin(a) * 260); ctx.stroke(); }
 }
 function s_round(i) { return u => {
@@ -200,7 +200,7 @@ function s_round(i) { return u => {
   const C = camK([[0, 540, 1050, 1.0, 0], [h - 0.1, R.g === 'behind' ? 300 : 540, 1050, R.g === 'behind' ? 1.15 : 1.0, 0], [h, wR ? 700 : 380, 1080, 1.18, wR ? 0.04 : -0.04], [h + 0.6, 540, 1050, 1.02, 0]], u);
   cam(C, () => { arena(u + i, R.bg); fighters(u, R, h); projectile(u, R, h); }, hit && u < h + 0.2 ? 18 : 0, u);
   hud(hit ? hr2 : hr, hit ? hm2 : hm, `R${i + 1}`, 1, !wR && hit ? u - h : -1, wR && hit ? u - h : -1);
-  if (u < 0.8) bigText(`ROUND ${i + 1}`, 470, 110, '#fff', eOB(u / 0.15));
+  if (u < 0.8) bigText(i === 0 ? 'GAME 1: FIGHT 🥊' : `ROUND ${i + 1}`, 470, i === 0 ? 90 : 110, '#fff', eOB(u / 0.15));
   pop(eOB((u - 0.15) / 0.2), W / 2, 600, () => { ctx.font = `900 64px ${F}`; const w = Math.min(1000, ctx.measureText(R.t).width + 70); rr(-w / 2, -50, w, 100, 30, 'rgba(10,14,30,.9)', '#fff', 5); const tw = ctx.measureText(R.t).width; txt(R.t, 0, 3, Math.min(64, 64 * (w - 50) / tw), YEL, null); });
   statNums(R.r, R.m, u - 0.55, hit ? R.win : null);
   // gimmicks
@@ -240,8 +240,8 @@ function s_book(u) { // rapid-fire record cards, each one a combo hit; ends 4-4
 }
 function s_draw(u) { // 3-3 → DOUBLE K.O.?!
   const C = [540, 1050, 1.0 + u * 0.05, 0]; cam(C, () => { arena(u + 9); shadowAt(RX, 130); shadowAt(MX, 120); RON('stand', 'dizzy', RX - 40, GY, 1.25, { lean: -0.2 }); MES('stand', 'dizzy', MX + 40, GY, 1.15, { lean: 0.2 }); stars(RX - 40, GY - 620, u, 90); stars(MX + 40, GY - 600, u + 1, 90); }, u < 0.25 ? 14 : 0, u);
-  hud(0.0001, 0.0001, '7-7', 1); ctx.fillStyle = 'rgba(0,0,0,.35)'; ctx.fillRect(0, 0, W, H);
-  bigText('DOUBLE K.O.?!', 760, 130, '#ff3b5c', eOB(u / 0.15));
+  ctx.fillStyle = 'rgba(0,0,0,.35)'; ctx.fillRect(0, 0, W, H);
+  bigText('DOUBLE K.O.?!', 760, 130, '#ff3b5c', eOB(u / 0.15)); scorePill(7, 7);
   pop(eOB((u - 0.3) / 0.2), W / 2, 960, () => { rr(-200, -90, 400, 180, 90, '#111', '#fff', 8); txt('7 – 7', 0, 4, 140, YEL, null); });
 }
 function s_final(u) { // FINAL ROUND: race to 1000 (two lanes), the goat holds the finish flag
@@ -265,7 +265,99 @@ function s_thanks(u) {
   portrait.draw(ctx, 'ronaldo', 300, 1170, 0.45, Object.assign({ expr: 'siuuu' }, KR)); portrait.draw(ctx, 'messi', 790, 1180, 0.45, Object.assign({ expr: 'smug' }, KM));
   rr(70, 1452, 940, 70, 35, 'rgba(0,0,0,.55)', null); txt('Real stats as of Nov 12, 2026 · parody', W / 2, 1488, 44, '#fff', null, 'center', 800);
 }
-const LEN = [['hook', 2.0, s_hook], ...ROUNDS.map((r, i) => [`r${i + 1}`, r.d, s_round(i)]), ['book', BOOK.length * BK, s_book], ['draw', 1.4, s_draw], ['final', 3.6, s_final], ['thanks', 2.8, s_thanks]];
+// ================= v5 "GOAT GAMES": every stat is a different video-game genre (anti-monotony at the format level) =================
+const HR = (x, y, s, ex) => portrait.draw(ctx, 'ronaldo', x, y, s, { headOnly: true, expr: ex, kit: YEL });
+const HM = (x, y, s, ex) => portrait.draw(ctx, 'messi', x, y, s, { headOnly: true, expr: ex, kit: PINK });
+const TALLY = [[0, 1], [1, 1], [1, 2], [2, 2], [2, 3], [6, 7], [7, 7]]; // after G1..G5, quiz (4-4), boss
+function scorePill(r, m, k = 1) { pop(k, W / 2, 196, () => { rr(-300, -46, 600, 92, 46, 'rgba(10,14,30,.92)', '#fff', 5); txt(`RONALDO ${r}`, -40, 3, 38, YEL, null, 'right'); txt('–', 0, 3, 38, '#fff', null); txt(`${m} MESSI`, 40, 3, 38, PINK, null, 'left'); }); }
+function gameCard(n, game, stat, u, col = YEL) { if (u > 1.1) return; const k = u < 0.9 ? eOB(u / 0.15) : 1 - (u - 0.9) / 0.2; pop(k, W / 2, 470, () => { ctx.rotate(-0.03); rr(-430, -110, 860, 220, 34, '#111', col, 8); txt(`GAME ${n}: ${game}`, 0, -38, 62, col, null); txt(stat, 0, 48, 48, '#fff', null); }); }
+function result(text, col, u, at, y = 760) { if (u < at) return; pop(eOB((u - at) / 0.15), W / 2, y, () => { ctx.rotate(-0.05); rr(-400, -80, 800, 160, 40, col, DARK, 8); txt(text, 0, 4, 76, DARK, '#fff'); }); }
+function pixelBg(top, bot) { const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, top); g.addColorStop(1, bot); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); }
+
+function s_select(u) { // GAME SELECT teaser grid
+  pixelBg('#0b0f2a', '#2a0b3a'); txt('SELECT GAME', W / 2, 330, 90, YEL, DARK);
+  const G = [['🥊', 'FIGHT'], ['🏎️', 'KART'], ['🧱', 'JUMP'], ['🚀', 'SHOOTER'], ['🎯', 'PINBALL'], ['🎤', 'QUIZ'], ['👾', 'BOSS']];
+  G.forEach(([ic, nm], i) => { const col = i % 3, row = Math.floor(i / 3), x = 230 + col * 310, y = 620 + row * 300; const on = Math.floor(u * 9) % 7 === i;
+    pop(eOB((u - i * 0.05) / 0.15), x, y, () => { rr(-130, -120, 260, 240, 26, on ? YEL : '#1f2747', on ? '#fff' : '#5b6ba8', on ? 9 : 5); txt(ic, 0, -25, 90, '#fff', null); txt(nm, 0, 80, 36, on ? DARK : '#fff', null); }); });
+  txt('7 GAMES · 14 RECORDS', W / 2, 1500, 52, '#fff', DARK); }
+
+function s_kart(u) { // GAME 2: KART RACE — collect UCL cups (5 vs 4)
+  pixelBg('#7cc8ff', '#c8f0ff'); for (let i = 0; i < 4; i++) { ctx.fillStyle = i % 2 ? '#5fbf6a' : '#4caf5a'; ctx.beginPath(); ctx.ellipse(((i * 380 - u * 120) % 1600 + 1600) % 1600 - 200, 980, 320, 160, 0, Math.PI, TAU); ctx.fill(); }
+  ctx.fillStyle = '#555c66'; ctx.fillRect(0, 1000, W, 560); ctx.fillStyle = '#fff'; for (let i = 0; i < 12; i++) ctx.fillRect(((i * 160 - u * 900) % 1920 + 1920) % 1920 - 200, 1290, 90, 14); ctx.fillStyle = '#e11d2a'; for (let i = 0; i < 30; i++) ctx.fillRect(((i * 80 - u * 900) % 2400 + 2400) % 2400 - 200, 1000, 40, 18);
+  const fin = u > 3.0; if (u > 2.4) { const fx = lerp(1300, 860, clamp((u - 2.4) / 0.6)); for (let r = 0; r < 14; r++) for (let c = 0; c < 2; c++) { ctx.fillStyle = (r + c) % 2 ? '#111' : '#fff'; ctx.fillRect(fx + c * 30, 1010 + r * 38, 30, 38); } }
+  const kart = (x, y, col, head) => { ell(x, y + 50, 120, 18, 'rgba(0,0,0,.25)'); rr(x - 120, y - 40, 240, 80, 24, col, DARK, 7); rr(x - 40, y - 70, 110, 40, 14, '#222', DARK, 5); for (const dx of [-80, 80]) { ell(x + dx, y + 40, 34, 34, '#111', 6); ell(x + dx, y + 40, 12, 12, '#999'); } head(x - 10, y - 120); };
+  const rx = 260 + 520 * easeIO(clamp(u / 3.2)), mx = 240 + 420 * easeIO(clamp(u / 3.4));
+  const pickR = [0.4, 0.9, 1.4, 1.9, 2.4], pickM = [0.6, 1.1, 1.6, 2.1], nR = pickR.filter(t => u > t).length, nM = pickM.filter(t => u > t).length;
+  for (const [ts, y, xx] of [[pickR, 1180, rx], [pickM, 1420, mx]]) ts.forEach(t => { if (u < t) { const bx = xx + (t - u) * 900; if (bx < W + 100) { rr(bx - 40, y - 140, 80, 80, 14, `hsl(${(u * 300 + bx) % 360},80%,60%)`, '#fff', 5); txt('?', bx, y - 98, 54, '#fff', DARK); } } else if (u < t + 0.5) uclCup(lerp(xx, xx < 600 ? 260 : 820, (u - t) / 0.5), lerp(y - 160, 360, (u - t) / 0.5), 0.45, u * 10); });
+  kart(rx, 1180, YEL, (x, y) => HR(x, y, 0.27, fin ? 'siuuu' : 'angry')); kart(mx, 1420, PINK, (x, y) => HM(x, y, 0.27, fin ? 'deadpan' : 'angry'));
+  speed(rx - 160, 1180, 1, u, 5, 200); speed(mx - 160, 1420, 1, u + 1, 5, 200);
+  pop(1, 260, 330, () => { rr(-150, -44, 300, 88, 44, YEL, DARK, 5); txt(`🏆 x${nR}`, 0, 3, 48, BLUE, null); }); pop(1, 820, 330, () => { rr(-150, -44, 300, 88, 44, PINK, DARK, 5); txt(`🏆 x${nM}`, 0, 3, 48, '#111', null); });
+  if (fin) { pop(eOB((u - 3.0) / 0.12), rx, 900, () => txt('1ST 🏁', 0, 0, 80, YEL, DARK)); pop(eOB((u - 3.2) / 0.12), mx, 1260, () => txt('2ND', 0, 0, 60, '#fff', DARK)); }
+  gameCard(2, 'KART 🏎️', 'CHAMPIONS LEAGUE TITLES', u); scorePill(...(u > 3.0 ? TALLY[1] : TALLY[0])); }
+
+function s_jump(u) { // GAME 3: PLATFORM JUMP — grab the World Cup (1 vs 0); Ronaldo's block drops his Euro 2016
+  pixelBg('#5c94fc', '#9cc0ff'); for (let i = 0; i < 3; i++) { const x = ((i * 420 - u * 40) % 1400 + 1400) % 1400 - 150; ell(x, 520 + i * 60, 90, 40, '#fff'); ell(x + 60, 500 + i * 60, 70, 40, '#fff'); }
+  const brick = (x, y, w, h, col = '#b5651d') => { rr(x, y, w, h, 4, col, DARK, 5); ctx.strokeStyle = 'rgba(0,0,0,.35)'; ctx.lineWidth = 3; for (let yy = y + 20; yy < y + h; yy += 20) { ctx.beginPath(); ctx.moveTo(x, yy); ctx.lineTo(x + w, yy); ctx.stroke(); } };
+  brick(-20, 1500, 1120, 120); brick(140, 1240, 220, 50); brick(470, 1060, 220, 50); brick(760, 860, 220, 50);
+  const starBlock = (x, y, hit) => { rr(x - 50, y - 50, 100, 100, 10, hit ? '#8b5a2b' : '#ffcf3f', DARK, 6); if (!hit) txt('★', x, y + 4, 60, '#fff', DARK); };
+  // Messi path: ground → p1 → p2 → p3, hits the star block above p3 at 2.0
+  const hops = [[0, 200, 1500], [0.6, 250, 1240], [1.2, 580, 1060], [1.8, 870, 860]]; let mx = 200, my = 1500, air = 0;
+  for (let i = 0; i < hops.length - 1; i++) { const [t0, x0, y0] = hops[i], [t1, x1, y1] = hops[i + 1]; if (u >= t0 && u < t1) { const k = (u - t0) / (t1 - t0); mx = lerp(x0, x1, k); my = lerp(y0, y1, k) - Math.sin(k * Math.PI) * 220; air = 1; } }
+  if (u >= 1.8) { mx = 870; const hk = clamp((u - 1.8) / 0.4); my = 860 - Math.sin(hk * Math.PI) * 170; air = hk < 1 ? 1 : 0; }
+  starBlock(870, 560, u > 2.0); if (u > 2.0) worldCup(870, u < 2.6 ? lerp(520, 420, (u - 2.0) / 0.6) : 860 - 330, 0.55, 1);
+  MES(air ? { bArm: [-120, -160], fArm: [120, 160], bLeg: [60, -40], fLeg: [70, -30] } : u > 2.6 ? { bArm: [-145, -165], fArm: [125, 150], bLeg: [-10, -6], fLeg: [10, 6] } : 'run1', 'happy', mx, my, 0.62, { f: 1 });
+  // Ronaldo follows, bonks a brick at 2.4 → out pops "EURO 2016 ✅"
+  const rk = clamp((u - 1.0) / 1.2), rx = lerp(60, 300, rk), bonk = u > 2.3 && u < 2.7, ry = 1500 - (u > 2.1 && u < 2.5 ? Math.sin(clamp((u - 2.1) / 0.4) * Math.PI) * 200 : 0);
+  brick(250, 1130, 100, 50, '#c97a2a'); RON(u > 2.1 && u < 2.5 ? { bArm: [-160, -170], fArm: [160, 170], bLeg: [-10, -6], fLeg: [10, 6] } : 'run2', bonk ? 'dizzy' : 'grin', rx, ry, 0.62, { f: 1 }); if (bonk) stars(rx, 1100, u, 70);
+  if (u > 2.4) pop(eOB((u - 2.4) / 0.15), 300, 1010, () => { rr(-130, -34, 260, 68, 34, '#fff', DARK, 5); txt('EURO 2016 ✅', 0, 2, 32, BLUE, null); });
+  result('WORLD CUP: MESSI 1 – 0', PINK, u, 2.7, 1180); gameCard(3, 'JUMP 🧱', 'WORLD CUP', u); scorePill(...(u > 2.7 ? TALLY[2] : TALLY[1])); hiddenGoat(60, 1440, 34); }
+
+function s_shooter(u) { // GAME 4: SPACE SHOOTER — international goals 146 vs 125
+  ctx.fillStyle = '#05060f'; ctx.fillRect(0, 0, W, H); const R = rng(9); for (let i = 0; i < 90; i++) { const x = R() * W, y = (R() * H + u * (200 + R() * 400)) % H; ell(x, y, 2 + R() * 2, 2 + R() * 2, 'rgba(255,255,255,.8)'); }
+  const k = clamp((u - 0.5) / 2.3), nR = Math.round(146 * easeOut(k)), nM = Math.round(125 * easeOut(Math.min(1, k * 146 / 125 > 1 ? 1 : k)) * (k < 1 ? 1 : 1));
+  const ship = (x, col, head) => { ctx.beginPath(); ctx.moveTo(x, 1330); ctx.lineTo(x + 90, 1470); ctx.lineTo(x - 90, 1470); ctx.closePath(); ctx.fillStyle = col; ctx.fill(); ctx.lineWidth = 7; ctx.strokeStyle = '#fff'; ctx.stroke(); ell(x, 1490, 30, 20, `rgba(255,${120 + Math.random() * 100},40,.9)`); head(x, 1260); };
+  for (const [x, on] of [[300, k < 1], [780, k < 0.86]]) if (on && u > 0.5) for (let j = 0; j < 6; j++) { const y = 1300 - ((u * 2400 + j * 200) % 1200); fball(x + Math.sin(j * 3) * 20, y, 22, u * 10 + j); }
+  for (let j = 0; j < 5; j++) { const tx = 140 + j * 200, ty = 640 + Math.sin(u * 3 + j) * 30; rr(tx - 60, ty - 40, 120, 80, 8, null, '#fff', 5); ctx.strokeStyle = 'rgba(255,255,255,.4)'; ctx.lineWidth = 2; for (let q = 1; q < 4; q++) { ctx.beginPath(); ctx.moveTo(tx - 60 + q * 30, ty - 40); ctx.lineTo(tx - 60 + q * 30, ty + 40); ctx.stroke(); } if (u > 0.5 && Math.floor(u * 12 + j) % 5 === 0) txt('+1', tx, ty - 70, 40, YEL, null); }
+  ship(300, YEL, (x, y) => HR(x, y - 30, 0.36, k >= 1 ? 'siuuu' : 'angry')); ship(780, PINK, (x, y) => HM(x, y - 30, 0.36, k >= 1 ? 'shock' : 'angry'));
+  const nMv = Math.min(125, Math.round(146 * easeOut(k))); txt(String(nR).padStart(3, '0'), 300, 380, 110, YEL, DARK); txt(String(nMv).padStart(3, '0'), 780, 380, 110, PINK, DARK);
+  if (k >= 1) { pop(eOB((u - 2.8) / 0.15), 300, 470, () => txt('HIGH SCORE 👑', 0, 0, 48, '#fff', DARK)); } txt('INTERNATIONAL GOALS', W / 2, 290, 40, '#9fb3ff', null);
+  gameCard(4, 'SHOOTER 🚀', 'INTERNATIONAL GOALS · WORLD RECORD', u, '#9fb3ff'); scorePill(...(u > 2.8 ? TALLY[3] : TALLY[2])); }
+
+function s_pinball(u) { // GAME 5: PINBALL — Messi's ball pings off bumpers, every bump is an ASSIST
+  pixelBg('#120a3a', '#3a0b4a'); rr(60, 300, 960, 1260, 60, null, '#ff4fd8', 10); rr(80, 320, 920, 1220, 50, null, '#36e6ff', 4);
+  const B = [[300, 650], [560, 560], [800, 700], [420, 900], [700, 980], [540, 1180]]; B.forEach(([x, y], i) => { const lit = Math.floor(u * 8) % B.length === i; ell(x, y, 70, 70, lit ? '#ffe14d' : '#ff4fd8', 7); txt('⚽', x, y + 3, 48, '#fff', null); });
+  const path = [[300, 1450], [300, 650], [560, 560], [800, 700], [420, 900], [700, 980], [540, 1180], [880, 1400]], seg = clamp(u / 2.8) * (path.length - 1), si = Math.min(path.length - 2, Math.floor(seg)), sk = seg - si;
+  const bx = lerp(path[si][0], path[si + 1][0], sk), by = lerp(path[si][1], path[si + 1][1], sk); ell(bx, by, 30, 30, '#e5e7eb', 5); fball(bx, by, 28, u * 15);
+  const hits = Math.min(6, Math.floor(seg)); for (let i = 1; i <= hits; i++) if (seg - i < 0.6) pop(eOB((seg - i) / 0.2), path[i][0] + 80, path[i][1] - 90, () => txt('+ASSIST', 0, 0, 44, '#36e6ff', DARK));
+  // flippers: Messi's (left) fires, Ronaldo's (right) misses
+  ctx.save(); ctx.translate(330, 1460); ctx.rotate(u < 0.3 ? -0.5 : 0.1); rr(0, -16, 200, 32, 16, PINK, DARK, 5); ctx.restore(); ctx.save(); ctx.translate(750, 1460); ctx.rotate(u > 2.5 ? 0.6 : -0.1); rr(-200, -16, 200, 32, 16, YEL, DARK, 5); ctx.restore();
+  HM(230, 1380, 0.3, u > 2.8 ? 'smug' : 'neutral'); HR(850, 1380, 0.3, u > 2.6 ? 'angry' : 'neutral'); if (u > 2.6 && u < 3.2) txt('MISS!', 860, 1250, 56, '#fff', '#c1121f');
+  result('ASSISTS: MESSI #1 🎯', PINK, u, 2.9, 760); gameCard(5, 'PINBALL 🎯', 'ALL-TIME ASSISTS RECORD', u, '#36e6ff'); scorePill(...(u > 2.9 ? TALLY[4] : TALLY[3])); hiddenGoat(990, 1500, 32); }
+
+function s_quiz(u) { // GAME 6: QUIZ SHOW — 8 records, buzzers (reuses BOOK)
+  pixelBg('#1a0b2e', '#0b1a3a'); for (let i = 0; i < 12; i++) { const a = i / 12 * TAU + u * 0.6; ctx.fillStyle = 'rgba(255,215,90,.08)'; ctx.beginPath(); ctx.moveTo(540, 300); ctx.lineTo(540 + Math.cos(a) * 1600, 300 + Math.sin(a) * 1600); ctx.lineTo(540 + Math.cos(a + 0.15) * 1600, 300 + Math.sin(a + 0.15) * 1600); ctx.fill(); }
+  const i = Math.min(BOOK.length - 1, Math.floor(u / BK)), k = (u - i * BK) / BK, [who, big, small] = BOOK[i], mW = who === 'M';
+  let nm = 0, nr = 0; for (let j = 0; j <= i; j++) if (j < i || k > 0.3) BOOK[j][0] === 'M' ? nm++ : nr++;
+  txt('WHO HAS THE RECORD? 🎤', W / 2, 330, 64, YEL, DARK);
+  pop(eOB(k / 0.15), W / 2, 640, () => { rr(-460, -150, 920, 300, 30, '#0d1233', '#ffd60a', 8); ctx.font = `900 100px ${F}`; const tw = ctx.measureText(big).width; txt(big, 0, -30, Math.min(100, 100 * 840 / tw), '#fff', null); ctx.font = `900 44px ${F}`; const sw2 = ctx.measureText(small).width; txt(small, 0, 80, Math.min(44, 44 * 840 / sw2), '#9fb3ff', null); });
+  const podium = (x, col, head, n, lit) => { rr(x - 170, 1230, 340, 260, 20, col, DARK, 7); txt(String(n), x, 1370, 110, DARK, '#fff'); ell(x, 1210, 70, 30, lit ? '#ff3b5c' : '#7a1d2e', 6); if (lit) { ctx.fillStyle = 'rgba(255,59,92,.35)'; ctx.beginPath(); ctx.arc(x, 1200, 120, 0, TAU); ctx.fill(); } head(x, 1060); };
+  podium(280, YEL, (x, y) => HR(x, y, 0.42, k > 0.3 ? (mW ? 'shock' : 'siuuu') : 'neutral'), nr, !mW && k > 0.25); podium(800, PINK, (x, y) => HM(x, y, 0.42, k > 0.3 ? (mW ? 'smug' : 'deadpan') : 'neutral'), nm, mW && k > 0.25);
+  if (k > 0.25 && k < 0.55) txt('BZZZ!', mW ? 800 : 280, 900, 70, '#ff3b5c', '#fff');
+  if (i === BOOK.length - 1 && k > 0.6) pop(eOB((k - 0.6) / 0.15), W / 2, 940, () => { ctx.rotate(-0.06); txt('4 – 4 ?! 😳', 0, 0, 96, '#fff', '#c1121f'); });
+  gameCard(6, 'QUIZ 🎤', '8 RECORDS · RAPID FIRE', u * 1.6, '#ff3b5c'); scorePill(...(u > BOOK.length * BK - 0.3 ? TALLY[5] : TALLY[4])); }
+
+function s_boss(u) { // GAME 7: BOSS FIGHT — the "1000 GOALS" boss (giant goat mascot); 985 vs 937 damage
+  pixelBg('#1b0505', '#3a0b0b'); for (let i = 0; i < 20; i++) { const y = (i * 97 + u * 300) % H; ctx.fillStyle = 'rgba(255,120,40,.12)'; ctx.fillRect((i * 151) % W, y, 6, 60); }
+  goatJudge(540, 760 + Math.sin(u * 3) * 10, 1.25, u, { angry: true, eyes: 'normal', chew: u > 3.4 }); rr(380, 840, 320, 110, 20, '#111', '#ffd60a', 6); txt('1000', 540, 897, 86, YEL, null);
+  const bar = (y, col, name, left, k) => { rr(120, y - 30, 840, 60, 30, '#3b0d0d', '#fff', 5); rr(120, y - 30, 840 * (1000 - (1000 - left) * k) / 1000, 60, 30, col, null); txt(`${name}: ${Math.round(1000 - (1000 - left) * k)} HP LEFT`, 540, y + 2, 34, '#fff', DARK); };
+  const kR = easeOut(clamp((u - 0.7) / 0.9)), kM = easeOut(clamp((u - 1.9) / 0.9)); bar(1270, YEL, "RONALDO'S BOSS", 15, kR); bar(1370, PINK, "MESSI'S BOSS", 63, kM);
+  HR(200, 1080, 0.42, u > 0.7 && u < 1.8 ? 'siuuu' : 'angry'); HM(880, 1080, 0.42, u > 1.9 && u < 3.0 ? 'smug' : 'deadpan');
+  if (u > 0.7 && u < 1.6) { const k = (u - 0.7) / 0.9; ctx.strokeStyle = `rgba(255,212,0,${1 - k})`; ctx.lineWidth = 40 * (1 - k) + 6; ctx.beginPath(); ctx.ellipse(540, 760, 120 + k * 500, 90 + k * 300, 0, 0, TAU); ctx.stroke(); pop(eOB((u - 0.7) / 0.12), 300, 560, () => txt('985 DMG', 0, 0, 72, YEL, DARK)); }
+  if (u > 1.9 && u < 2.8) { for (let j = 0; j < 4; j++) { const q = clamp((u - 1.9 - j * 0.08) / 0.5); fball(lerp(880, 560, q), lerp(1450, 780, q) - Math.sin(q * Math.PI) * 200, 26, u * 20); } pop(eOB((u - 1.9) / 0.12), 780, 560, () => txt('937 DMG', 0, 0, 72, PINK, DARK)); }
+  if (u > 2.9) pop(eOB((u - 2.9) / 0.15), W / 2, 380, () => { rr(-470, -90, 940, 180, 40, '#fff', DARK, 8); txt('WHO FINISHES IT FIRST? 👇', 0, 4, 58, '#c1121f', null); });
+  gameCard(7, 'BOSS 👾', 'CAREER GOALS: 985 vs 937', u, '#ff7a3a'); scorePill(...(u > 2.6 ? TALLY[6] : TALLY[5])); }
+
+const LEN = [['hook', 2.0, s_hook], ['select', 1.3, s_select], ['r1', ROUNDS[0].d, s_round(0)], ['kart', 3.6, s_kart], ['jump', 3.4, s_jump], ['shooter', 3.3, s_shooter], ['pinball', 3.4, s_pinball], ['quiz', BOOK.length * BK, s_quiz], ['boss', 4.0, s_boss], ['draw', 1.4, s_draw], ['thanks', 2.8, s_thanks]];
 const SEG = []; { let t = 0; for (const [n, d, f] of LEN) { SEG.push([t, t + d, f, n]); t += d; } }
 const DURATION = SEG[SEG.length - 1][1];
 window.SEGS = SEG.map(s => [s[3], +s[0].toFixed(2)]);

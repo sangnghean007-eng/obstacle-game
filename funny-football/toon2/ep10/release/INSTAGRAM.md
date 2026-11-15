@@ -1,9 +1,9 @@
 # Instagram Reels: Ep10 "FINAL FIGHT"
 **Caption:**
 ```
-Messi vs Ronaldo: FINAL FIGHT 🥊 Who wins? Comment 7 or 10 👇
+Messi vs Ronaldo: GOAT GAMES 🎮 Who wins? Comment 7 or 10 👇
 
-6 rounds + a RECORD BOOK round: 14 real records → 7-7 DOUBLE K.O.
+7 games (fight, kart, jump, shooter, pinball, quiz, boss): 14 real records → 7-7 DOUBLE K.O.
 Final round: the race to 1000 goals (985 vs 937) ⚽
 We left one big stat out 👀 Which one?
 Send this to your Messi / Ronaldo friend 😏

@@ -1,7 +1,7 @@
 # YouTube Shorts: Ep10 "FINAL FIGHT"
 **Title:**
 ```
-Messi vs Ronaldo: FINAL FIGHT 🥊 14 Records, 1 Winner?
+Messi vs Ronaldo in 7 Video Games 🎮 14 Records, 1 Winner?
 ```
 Backup titles:
 - Ronaldo vs Messi Fighting Game… It Ends 3-3?! 🤯
@@ -9,7 +9,7 @@ Backup titles:
 
 **Description:**
 ```
-Messi vs Ronaldo in a fighting game 🥊 6 rounds, 6 real stats:
+Messi vs Ronaldo in 7 video games 🎮 (fight, kart, jump, shooter, pinball, quiz, boss), 14 real records:
 🏆 Ballon d'Or: 8 vs 5
 🏆 Champions League: 4 vs 5
 🌍 World Cup: 1 vs 0

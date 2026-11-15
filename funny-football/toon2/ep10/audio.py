@@ -1,51 +1,56 @@
-"""Ep10 FINAL FIGHT sound: fighting-game arcade score, round gongs, whooshes per special move, heavy hits, crowd, SIUUU. No TTS."""
+"""Ep10 v5 GOAT GAMES sound: a different chiptune/game sound-world per game. Original synth only, no TTS."""
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'sfx'))
 from synth import *
-D = [3.4, 4.2, 4.0, 3.4, 3.8, 4.4]; HS = [1.8, 2.5, 2.3, 1.8, 2.1, 2.1]
-R0 = 2.0; ST = [R0 + sum(D[:i]) for i in range(6)]; BOOK0 = R0 + sum(D); S = dict(draw=BOOK0 + 8 * 0.85); S['final'] = S['draw'] + 1.4; S['thanks'] = S['final'] + 3.6; END = S['thanks'] + 2.8
+T = dict(select=2.0, r1=3.3, kart=6.7, jump=10.3, shooter=13.7, pinball=17.0, quiz=20.4, boss=27.2, draw=31.2, thanks=32.6); END = 35.4
 m = Mix(END)
 def k808(t, g=.9): d = .5; m.m(osc(glide(110, 42, d, .3), d) * dec(d, 5) + .2 * lp(noise(d), 1500) * dec(d, 60), t, g, 0, .02)
-def arcade(t0, t1, g=1.0, bpm=140):  # original arcade fight loop: driving bass + stabs + hats
-    b = 60 / bpm; t = t0; i = 0; roots = ['E2', 'E2', 'G2', 'A2', 'E2', 'E2', 'D2', 'B1']
-    while t < t1 - .05:
-        r = roots[i % 8]
-        for k in range(4): m.bass(hz(r) * (2 if k % 2 else 1), t + k * b * .5, b * .45, .3 * g)
-        k808(t, .6 * g); m.snare(t + b, .25 * g); m.hat(t + b * .5, .08 * g); m.hat(t + b * 1.5, .08 * g)
-        if i % 2 == 0: m.saw_chord([hz('E4'), hz('G4'), hz('B4')], t, b * .25, .05 * g, 2500, 0, .005, .05, .2)
-        t += 2 * b; i += 1
-def gong(t, g=.5): d = 2.0; x = sum(a * osc(f, d) for f, a in [(110, 1), (163, .6), (247, .4), (330, .3)]) * dec(d, 1.6); m.f(x, t, g, 0, .4)
-def hit(t, g=1.0): k808(t, g); m.thud(t, .9 * g); m.crash(t, .4); m.f(bp(noise(.12), 1500, 6000) * dec(.12, 30), t, .6 * g, 0, .2)
-# HOOK: VS slam
-hit(0, 1.0); gong(0, .4); m.brass_hit([hz('E3'), hz('B3'), hz('E4')], 0, .8, .35); m.crowd(0, 2.0, .3)
-arcade(R0 - 0.1, S['draw'], .85)
-m.crowd(R0, S['draw'] - R0, .14, swell=False)
-moves = ['ballon', 'ucl', 'beam', 'kick', 'assist', 'siu']; wins = 'MRMRMR'
-for i in range(6):
-    t = ST[i]; gong(t, .35); m.pop(t + .6, .25, 1200); m.pop(t + .72, .25, 1500)
-    th = t + HS[i]
-    if i == 1: m.whoosh(th - 1.25, .4, .45, True); m.brass_hit([hz('E3'), hz('B3'), hz('E4')], th - 1.2, .5, .35)  # special move strip
-    if i == 2: m.slowdown(th - .9, .9, .4)
-    if i == 3: [m.tick(th - .6 + j * .05, True, .12) for j in range(16)]
-    if i == 4: m.f(m.wav('gasp'), th - .6, .35, 0, .1)
-    if i == 5: m.crash(th + .15, .5); m.f(m.wav('siu_crowd'), th + .4, .6, 0, .3)
-    if moves[i] == 'ballon': [m.ding(th - .6 + j * .075, 1800 + j * 120, .16, .3) for j in range(8)]; m.whoosh(th - .6, .6, .35, True)
-    if moves[i] == 'ucl': [m.whoosh(th - .6 + j * .1, .3, .2, True, -.3 + j * .15) for j in range(5)]
-    if moves[i] == 'beam': m.choir([hz('E4'), hz('G#4'), hz('B4'), hz('E5')], th - .7, .8, .2); m.f(lp(osc(glide(200, 900, .6), .6, 'saw'), 2500) * env(int(.6 * SR), .05, .1), th - .6, .25, 0, .2)
-    if moves[i] == 'kick': [m.thwack(th - .6 + j * .06, .45, -.3 + j * .07) for j in range(9)]
-    if moves[i] == 'assist': m.thwack(th - .6, .6); m.whoosh(th - .5, .5, .35, False); m.boing(th - .05, .4)
-    if moves[i] == 'siu': m.f(m.wav('siu'), th - .55, 1.0, -.2, .25); m.f(lp(noise(.8), 400) * env(int(.8 * SR), .01, .5), th - .3, .5, 0, .2)
-    hit(th); m.cheer_burst(th + .05, .4)
-    m.f(m.wav('gasp' if wins[i] == 'R' else 'grumble_angry'), th + .6, .3, .3 if wins[i] == 'R' else -.3, .1)
-    if wins[i] == 'R' and moves[i] != 'siu': m.f(m.wav('siu'), th + .35, .6, -.3, .25)
-for j in range(8):
-    tb = BOOK0 + j * .85; m.whoosh(tb, .25, .35, True, .5 if j % 2 == 0 else -.5); hit(tb + .22, .7); m.pop(tb + .3, .3, 900 + j * 80)
-m.crowd(BOOK0, 6.8, .2, swell=False)
-t = S['draw']; hit(t, 1.0); m.slowdown(t + .1, .8, .4); m.brass_hit([hz('D3'), hz('G#3'), hz('D4')], t + .2, .9, .35); m.f(m.wav('ooh_crowd'), t + .2, .4, 0, .3)
-t = S['final']; gong(t, .45); m.drone(hz('E2'), t, 3.5, .12)
-for j in range(16): m.tick(t + .4 + j * .075, j % 2 == 0, .18)
-m.ding(t + 1.6, 2093, .3); m.ding(t + 1.75, 2637, .3); m.f(m.wav('bleat'), t + 1.9, .3, .4, .1); m.brass_hit([hz('E3'), hz('B3'), hz('E4'), hz('G4')], t + 2.1, .8, .32)
-t = S['thanks']
+def sq(f, t, d, g=.12, pan=0): m.m(lp(osc(f, d, 'sq'), 3500) * env(int(d * SR), .005, .03), t, g, pan, .05)
+def chip(t0, t1, notes, step, g=.12, bass=None):
+    t = t0; i = 0
+    while t < t1 - .02:
+        sq(hz(notes[i % len(notes)]), t, step * .9, g)
+        if bass and i % 2 == 0: m.bass(hz(bass[(i // 2) % len(bass)]), t, step * 1.8, .25)
+        if i % 2 == 0: m.hat(t, .05)
+        if i % 4 == 0: k808(t, .5)
+        t += step; i += 1
+def coin(t, g=.25): sq(hz('B5'), t, .06, g); sq(hz('E6'), t + .06, .18, g)
+def hit(t, g=1.0): k808(t, g); m.thud(t, .8 * g); m.crash(t, .35)
+def jingle(t, up=True): [sq(hz(n), t + i * .08, .1, .16) for i, n in enumerate(['C5', 'E5', 'G5', 'C6'] if up else ['G4', 'E4', 'C4'])]
+# hook + select
+hit(0); m.brass_hit([hz('E3'), hz('B3'), hz('E4')], 0, .8, .35); m.crowd(0, 2.0, .3)
+for i in range(10): sq(hz(['C5', 'E5', 'G5', 'E5'][i % 4]), T['select'] + i * .12, .08, .12)
+coin(T['select'] + 1.15)
+# G1 fight (Ballon d'Or combo)
+t = T['r1']; m.gong = None; [m.ding(t + 1.2 + j * .075, 1800 + j * 120, .16, .3) for j in range(8)]; m.whoosh(t + 1.2, .6, .35, True); hit(t + 1.8); m.cheer_burst(t + 1.85, .4)
+chip(t, t + 3.4, ['E4', 'G4', 'B4', 'G4'], .14, .08, ['E2', 'D2'])
+# G2 kart: engine drone + item pickups
+t = T['kart']; m.f(lp(osc(glide(80, 140, 3.4), 3.4, 'saw'), 600) * env(int(3.4 * SR), .1, .3), t, .18, 0, .05)
+chip(t, t + 3.6, ['A4', 'C5', 'E5', 'C5', 'D5', 'F5'], .12, .1, ['A2', 'F2'])
+for x in [.4, .9, 1.4, 1.9, 2.4, .6, 1.1, 1.6, 2.1]: coin(t + x, .18)
+jingle(t + 3.0); m.cheer_burst(t + 3.05, .35)
+# G3 jump: boing jumps, block hits
+t = T['jump']; chip(t, t + 3.4, ['C5', 'C5', 'G4', 'E4', 'A4', 'B4'], .13, .1, ['C3', 'G2'])
+for x in [0, .6, 1.2, 1.8]: m.boing(t + x, .25, .3, 300, 700)
+m.bonk(t + 2.0, .4); jingle(t + 2.05); m.choir([hz('C5'), hz('E5'), hz('G5')], t + 2.1, .7, .14); m.bonk(t + 2.3, .5); m.tweet(t + 2.4, 3, .12)
+# G4 shooter: laser pews + counter ticks
+t = T['shooter']; chip(t, t + 3.3, ['E5', 'E5', 'D5', 'E5', 'G5', 'E5'], .1, .09, ['E2'])
+for j in range(26): m.f(osc(glide(1800, 600, .08), .08, 'sq') * dec(.08, 30), t + .5 + j * .09, .08, -.3 if j % 2 else .3, .02)
+jingle(t + 2.8); m.cheer_burst(t + 2.85, .35)
+# G5 pinball: bumper dings + flipper clacks
+t = T['pinball']; chip(t, t + 3.4, ['G4', 'B4', 'D5', 'B4'], .11, .09, ['G2', 'D2'])
+for j in range(7): m.ding(t + j * .4, 1200 + j * 150, .22, -.3 + j * .1)
+m.f(bp(noise(.05), 800, 3000) * dec(.05, 60), t + .05, .5); m.f(bp(noise(.05), 800, 3000) * dec(.05, 60), t + 2.6, .5); m.f(m.wav('grumble_angry'), t + 2.7, .3, .3, .1); jingle(t + 2.9)
+# G6 quiz: buzzers per card
+t = T['quiz']; m.saw_chord([hz('C4'), hz('E4'), hz('G4')], t, 6.8, .04, 1600, 0, .3, .5, .4)
+for j in range(8): tb = t + j * .85; m.pop(tb, .2, 1200); m.f(lp(osc(glide(180, 170, .35), .35, 'sq'), 1200) * env(int(.35 * SR), .005, .05), tb + .22, .25, .4 if j % 2 == 0 else -.4, .02); m.ding(tb + .3, 2093, .15)
+m.f(m.wav('ooh_crowd'), t + 6.3, .35, 0, .3)
+# G7 boss: rumble, SIUUU blast, free-kick volley, bleat
+t = T['boss']; m.drone(hz('A1'), t, 4.0, .18); m.f(m.wav('bleat'), t + .2, .4, 0, .2); m.f(m.wav('siu'), t + .7, 1.0, -.3, .25); hit(t + .8, .9)
+[m.thwack(t + 1.9 + j * .08, .45, .3) for j in range(4)]; hit(t + 2.3, .8); m.brass_hit([hz('A2'), hz('E3'), hz('A3')], t + 2.9, .8, .3)
+# draw + thanks
+t = T['draw']; hit(t); m.slowdown(t + .1, .8, .4); m.f(m.wav('ooh_crowd'), t + .2, .4, 0, .3)
+t = T['thanks']
 for i, n in enumerate(['E5', 'G5', 'B5', 'E6', 'B5', 'G5', 'E6']): m.pluck(hz(n), t + .1 + i * .16, .6, .22, -.3 + i * .1, .5, .4)
 m.ding(t + 1.0, 2093, .35); m.pop(t + 1.0, .3)
 m.write(sys.argv[1])
