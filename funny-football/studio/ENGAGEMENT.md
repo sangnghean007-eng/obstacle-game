@@ -148,5 +148,6 @@ Ep15 v1 had 13 hits that were all the same swing → BONK → lump. Repetition k
 ## 16. Act the hits: victims suffer, attackers gloat (user, Nov 16 2026)
 - **Victim:** sobbing face (open-mouth wail + tear streams), damage that ACCUMULATES with each hit (bruise → black eye → plasters → head bandage → lumps), and a **shielding/trembling pose between hits** (hands up, shaking). Never a neutral face after a hit. Helper: `hurtFx()` + `SHAKEP(t)` in Ep15.
 - **Attacker:** gleeful and menacing: evil grin, "HEHE 😈"/"HAHA", fist pumps, cracking knuckles before the next hit. Helper: `gloat()`.
+- **Cartoon bumps look like bumps:** 1 dome on top of the head that GROWS with each hit, a 2nd smaller one beside it from hit 5, and at most 1 stacked on top (max 3), in the character's skin tone with a red rim and a shine. Never a tall column of bumps.
 - **Bystanders react too** (laugh, gasp, cover eyes). A hit lands three times: the impact, the victim's reaction, the crowd's reaction.
 - Sound: a sob/wail for the victim and a chuckle for the attacker after every big hit.
