@@ -351,6 +351,22 @@
     eyeL: [268, 302, 50, 15], eyeR: [392, 302, 50, 15],
     nose: { bridge: [[330, 305], [329, 345], [330, 370]], tip: [334, 396], nostrilL: [[304, 404], [318, 398], [324, 408], [310, 412]], nostrilR: [[340, 408], [346, 398], [360, 404], [354, 412]], wingL: [[298, 388], [292, 404], [306, 416], [322, 414]], wingR: [[342, 416], [358, 416], [370, 404], [362, 388]] },
     folds: [], mouth: { x: 330, y: 456, w: 82, rest: 'smile' }, chinLine: [[312, 528], [330, 534], [348, 528]] };
-  const FACES = { ronaldo, messi, hojlund: o => generic(HOJ, o), pele: o => generic(PELE, o), r9: o => generic(R9, o), kane: o => generic(KANE, o), yamal: o => generic(YAMAL, o), simon: o => generic(SIMON, o), cubarsi: o => generic(CUBARSI, o), konsa: o => generic(KONSA, o), oyarzabal: o => generic(OYAR, o), nico: o => generic(NICO, o), anderson: o => generic(ANDERSON, o) };
+  // ---------- DECLAN RICE (Commons "Declan Rice September 2021" frontal + "England v Ghana 23 June 2026-133" for the 2026 look: dark-brown wavy quiff with faded sides, thick straight dark brows, long straight nose, stubble beard) ----------
+  const RICE = { skin: '#efc6ae', shade: '#d4a68c', hairCol: '#2c1f17', browCol: '#24170f', iris: '#5f7f94', lips: '#cc8478', lid: 0.18, hairLw: 4, beardCol: 'rgba(70,46,30,.62)', beardGrad: [390, 480, 'rgba(70,46,30,.12)'],
+    neck: [[230, 520], [420, 520], [430, 610], [590, 640], [70, 640], [220, 610]], underJaw: [[235, 530], [415, 525], [400, 560], [320, 575], [245, 560]],
+    face: [[192, 250], [190, 320], [198, 400], [212, 450], [238, 498], [276, 532], [320, 548], [366, 534], [406, 498], [434, 450], [458, 400], [472, 320], [472, 250], [458, 212], [420, 194], [330, 190], [240, 194], [206, 214]],
+    earL: [[192, 290], [168, 280], [164, 326], [176, 362], [198, 368]], earR: [[470, 290], [492, 282], [498, 328], [486, 368], [466, 374]],
+    fade: [[[188, 270], [190, 200], [208, 176], [222, 196], [208, 270]], [[474, 270], [472, 200], [454, 176], [440, 196], [456, 270]]], fadeCol: 'rgba(60,44,32,.45)',
+    sideShade: [[570, 150], [470, 230], [474, 330], [406, 498], [570, 560]], sockets: [[246, 312, 44, 18], [360, 312, 44, 18]], blush: [],
+    beard: [[190, 380], [212, 430], [244, 452], [276, 420], [296, 414], [320, 418], [342, 414], [364, 420], [396, 452], [430, 430], [454, 380], [480, 470], [430, 560], [320, 600], [210, 560], [170, 470]],
+    stache: [[270, 424], [292, 418], [320, 421], [346, 418], [368, 424], [356, 426], [320, 423], [282, 426]],
+    jawLines: [], cheekLines: [], strands: [[[220, 190], [250, 120], [310, 80]], [[280, 190], [310, 120], [360, 72]], [[350, 190], [380, 120], [420, 90]], [[420, 196], [450, 150], [460, 120]]], strandCol: 'rgba(120,90,70,.45)',
+    hair: [[202, 262], [194, 210], [200, 160], [222, 116], [256, 84], [302, 62], [354, 56], [404, 66], [442, 92], [466, 134], [474, 184], [468, 262], [458, 226], [446, 206], [424, 212], [402, 200], [376, 214], [348, 202], [320, 216], [292, 204], [266, 214], [242, 202], [220, 212], [210, 230]],
+    hairShade: [[210, 210], [252, 194], [330, 188], [410, 194], [458, 210], [430, 160], [330, 140], [240, 160]],
+    browL: [[210, 300], [252, 287], [296, 291], [296, 302], [252, 298], [212, 310]], browR: [[332, 291], [376, 287], [418, 300], [416, 310], [376, 298], [332, 302]],
+    eyeL: [248, 318, 54, 15], eyeR: [360, 318, 54, 15],
+    nose: { bridge: [[302, 320], [300, 360], [298, 380]], tip: [300, 392], nostrilL: [[276, 400], [288, 394], [296, 404], [282, 408]], nostrilR: [[306, 404], [312, 394], [326, 400], [320, 408]], wingL: [[270, 384], [264, 400], [278, 412], [294, 410]], wingR: [[308, 412], [324, 412], [336, 400], [330, 384]] },
+    folds: [], mouth: { x: 300, y: 446, w: 90, rest: 'flat' }, chinLine: [[302, 530], [320, 536], [338, 530]] };
+  const FACES = { ronaldo, messi, hojlund: o => generic(HOJ, o), pele: o => generic(PELE, o), r9: o => generic(R9, o), kane: o => generic(KANE, o), yamal: o => generic(YAMAL, o), simon: o => generic(SIMON, o), cubarsi: o => generic(CUBARSI, o), konsa: o => generic(KONSA, o), oyarzabal: o => generic(OYAR, o), nico: o => generic(NICO, o), anderson: o => generic(ANDERSON, o), rice: o => generic(RICE, o) };
   window.portrait = { draw(c2d, name, x, y, s, o = {}) { ctx = c2d; ctx.save(); ctx.translate(x, y); ctx.scale(s * (o.f || 1), s); ctx.translate(-330, -300); FACES[name](o); ctx.restore(); } };
 })();
