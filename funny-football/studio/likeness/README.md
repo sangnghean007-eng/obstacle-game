@@ -2,6 +2,7 @@
 
 User rule (Nov 15 2026): "make sure everyone from now on also looks alike".
 **No real player appears in a video until they pass this gate.**
+**Caricature mode (Nov 16, from BIG_CHANNELS.md):** standout players also get an `_x` variant built with `xform(SPEC, rules)` in `portrait.js`: blow the 1–2 defining traits up 1.5–2× (Kane: towering forehead + quiff, long beard-chin; Yamal: giant blond mop). Use the `_x` heads in videos; keep the measured spec as the base. Test sheet: `toon2/ep13/review/caricature_test.png`.
 **Scope (user, Nov 16):** only build portraits for the 2–4 standout players of a story; the rest are generic minis with their names.
 
 ## Two layers

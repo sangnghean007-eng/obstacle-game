@@ -181,7 +181,7 @@
     shape(S.hair, S.hairCol, S.hairLw ?? 5, true, !S.hairSharp); if (S.hairShade) shape(S.hairShade, 'rgba(0,0,0,.18)', 0);
     for (const l of (S.strands || [])) line(l, 3, S.strandCol || 'rgba(255,255,255,.3)');
     if (S.twists) for (const T of S.twists) { const k = Math.floor(T.length * 0.4 / 2) * 2; const a = [], b = []; for (let i = 0; i < T.length; i += 2) (i <= k ? a : b).push([T[i], T[i + 1]]); b.unshift(a[a.length - 1]); line(a, 17, '#120c08'); line(a, 12, S.hairCol); line(b, 17, '#120c08'); line(b, 12, S.tipCol || '#e8c14a'); }
-    if (S.curls) clipTo(S.hair, () => { let i = 0; for (let y = 0; y < 270; y += 17) for (let x = 140; x < 520; x += 19) { i++; const jx = ((i * 37) % 11) - 5, jy = ((i * 23) % 9) - 4, r = 6 + (i % 3) * 2; ctx.strokeStyle = ((i * 7919) % 13 < 5) ? S.curls : 'rgba(255,248,215,.75)'; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(x + jx, y + jy, r, i * 0.7, i * 0.7 + 4.6); ctx.stroke(); } });
+    if (S.curls) clipTo(S.hair, () => { let i = 0; const xs = S.hair.map(p => p[0]), ys = S.hair.map(p => p[1]); for (let y = Math.min(...ys) - 10; y < Math.max(...ys) + 10; y += 17) for (let x = Math.min(...xs) - 10; x < Math.max(...xs) + 10; x += 19) { i++; const jx = ((i * 37) % 11) - 5, jy = ((i * 23) % 9) - 4, r = 6 + (i % 3) * 2; ctx.strokeStyle = ((i * 7919) % 13 < 5) ? S.curls : 'rgba(255,248,215,.75)'; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(x + jx, y + jy, r, i * 0.7, i * 0.7 + 4.6); ctx.stroke(); } });
     if (S.hairTex) clipTo(S.hair, () => { for (let i = 0; i < 160; i++) { const x = 130 + (i * 37) % 350, y = 20 + (i * 53) % 260; ctx.strokeStyle = 'rgba(255,255,255,.08)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI * 1.4); ctx.stroke(); } });
     if (S.goatee) { shape(S.goatee, '#2a1a10', 0); }
     if (o.cascao) { shape([[200, 22], [262, 12], [300, 40], [280, 80], [236, 96], [196, 70], [186, 40]], '#1a120c', 4); for (let i = 0; i < 5; i++) line([[206 + i * 18, 34], [214 + i * 18, 78]], 2.5, 'rgba(255,255,255,.25)'); } // R9's famous 2002 'Cascão' fringe
@@ -367,6 +367,23 @@
     eyeL: [248, 318, 54, 15], eyeR: [360, 318, 54, 15],
     nose: { bridge: [[302, 320], [300, 360], [298, 380]], tip: [300, 392], nostrilL: [[276, 400], [288, 394], [296, 404], [282, 408]], nostrilR: [[306, 404], [312, 394], [326, 400], [320, 408]], wingL: [[270, 384], [264, 400], [278, 412], [294, 410]], wingR: [[308, 412], [324, 412], [336, 400], [330, 384]] },
     folds: [], mouth: { x: 300, y: 446, w: 90, rest: 'flat' }, chinLine: [[302, 530], [320, 536], [338, 530]] };
-  const FACES = { ronaldo, messi, hojlund: o => generic(HOJ, o), pele: o => generic(PELE, o), r9: o => generic(R9, o), kane: o => generic(KANE, o), yamal: o => generic(YAMAL, o), simon: o => generic(SIMON, o), cubarsi: o => generic(CUBARSI, o), konsa: o => generic(KONSA, o), oyarzabal: o => generic(OYAR, o), nico: o => generic(NICO, o), anderson: o => generic(ANDERSON, o), rice: o => generic(RICE, o) };
+  // ---------- CARICATURE MODE (Nov 16, learned from big channels): blow up the 1-2 defining traits ----------
+  function xform(S, rules) { const C = JSON.parse(JSON.stringify(S)); const mp = (v, f) => Array.isArray(v) ? (typeof v[0] === 'number' && v.length >= 2 && typeof v[1] === 'number' ? f(v) : v.map(u => mp(u, f))) : (v && typeof v === 'object' ? Object.fromEntries(Object.entries(v).map(([k, u]) => [k, mp(u, f)])) : v);
+    for (const [keys, fn] of rules) for (const k of keys) if (C[k] !== undefined) C[k] = mp(C[k], (p) => { const q = p.slice(); const r = fn(q[0], q[1]); q[0] = r[0]; q[1] = r[1]; if (p.length >= 4 && k.startsWith('eye')) { q[2] = p[2] * (r[2] || 1); q[3] = p[3] * (r[3] || 1); } return q; });
+    if (rules.mouth) C.mouth = Object.assign({}, C.mouth, rules.mouth(C.mouth)); return C; }
+  // Kane: towering forehead + tall swept quiff, long beard-chin, smaller squinting eyes
+  const KANE_X = xform(KANE, [
+    [['hair', 'hairShade', 'strands'], (x, y) => [330 + (x - 330) * 1.05, y < 150 ? 150 - (150 - y) * 1.8 - 55 : y - 55 * Math.max(0, Math.min(1, (300 - y) / 100))]],
+    [['face'], (x, y) => [x, y < 230 ? y - 55 : y > 430 ? y + (y - 430) * 0.45 : y]],
+    [['beard', 'underJaw', 'neck'], (x, y) => [x, y > 430 ? y + (y - 430) * 0.45 : y]],
+    [['earL', 'earR'], (x, y) => [330 + (x - 330) * 1.12, y]],
+    [['eyeL', 'eyeR'], (x, y) => [x, y, 0.85, 0.75]],
+  ]); KANE_X.mouth = Object.assign({}, KANE.mouth, { y: KANE.mouth.y + 8, w: KANE.mouth.w * 1.15 });
+  // Yamal: a GIANT bleached curly mop, small young face, bigger lips
+  const YAMAL_X = xform(YAMAL, [
+    [['hair', 'hairShade'], (x, y) => [330 + (x - 330) * 1.55, 240 - (240 - y) * 1.9]],
+    [['eyeL', 'eyeR'], (x, y) => [x, y, 1.1, 1.15]],
+  ]); YAMAL_X.mouth = Object.assign({}, YAMAL.mouth, { w: YAMAL.mouth.w * 1.2 });
+  const FACES = { ronaldo, messi, hojlund: o => generic(HOJ, o), pele: o => generic(PELE, o), r9: o => generic(R9, o), kane: o => generic(KANE, o), yamal: o => generic(YAMAL, o), simon: o => generic(SIMON, o), cubarsi: o => generic(CUBARSI, o), konsa: o => generic(KONSA, o), oyarzabal: o => generic(OYAR, o), nico: o => generic(NICO, o), anderson: o => generic(ANDERSON, o), rice: o => generic(RICE, o), kane_x: o => generic(KANE_X, o), yamal_x: o => generic(YAMAL_X, o) };
   window.portrait = { draw(c2d, name, x, y, s, o = {}) { ctx = c2d; ctx.save(); ctx.translate(x, y); ctx.scale(s * (o.f || 1), s); ctx.translate(-330, -300); FACES[name](o); ctx.restore(); } };
 })();
