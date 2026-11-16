@@ -76,5 +76,11 @@ K0 = M0 + 10.0
 x_ = lp(noise(1.0), 600) * dec(1.0, 2); m.f(x_, K0 + .1, .5); slide(K0 + .1, 700, 200, .6, .25); k808(K0 + .7, 1.0); m.crash(K0 + .7, .6); m.f(m.wav('ooh_crowd'), K0 + .75, .35, 0, .3)
 m.f(m.wav('laugh_m'), K0 + 1.0, .5, -.3, .2); m.f(m.wav('laugh_crowd'), K0 + 1.1, .45, 0, .3); m.f(m.wav('chuckle'), K0 + 1.6, .35, .3, .2); m.slurp(K0 + 1.4, .6, .25)
 beat(K0 + 1.2, END, .7, 100)
+# v5: sobbing victims + gloating attackers
+for t_ in (C0 + 2.4, C0 + 5.0, C0 + 8.6, C0 + 11.2): m.f(m.wav('wail'), t_, .3, -.3, .2)
+for t_ in (C0 + 2.9, C0 + 5.9, C0 + 8.9, C0 + 11.5): m.f(m.wav('chuckle'), t_, .3, .4, .2)
+m.f(m.wav('wail'), P0 + 2.6, .35, .3, .2); m.f(m.wav('chuckle'), P0 + 2.8, .35, -.4, .2)
+for t_ in (M0 + 3.4, M0 + 5.4, M0 + 7.0): m.f(m.wav('wail'), t_, .35, .3, .2); m.f(m.wav('chuckle'), t_ + .3, .3, -.3, .2)
+m.f(m.wav('wail'), K0 + 1.0, .4, .3, .2)
 E0 = K0 + 3.0; m.ding(E0, 1318, .3); m.pop(E0 + .3, .3)
 m.write(sys.argv[1])

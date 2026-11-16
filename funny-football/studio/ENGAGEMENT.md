@@ -144,3 +144,9 @@ Ep15 v1 had 13 hits that were all the same swing → BONK → lump. Repetition k
 - **Test:** watch with the sound off and the text blurred. If the story still reads, ship it.
 - **Break a convention in every video:** an impossible camera move, a genre switch mid-video, a fourth-wall break (a character grabs the combo counter, the K.O. text hits someone), a callback character from an older episode, an ending nobody expects.
 - **Excitement curve:** start on a hit (frame 0 action), escalate every 3–5 s, end on the biggest moment + an open loop.
+
+## 16. Act the hits: victims suffer, attackers gloat (user, Nov 16 2026)
+- **Victim:** sobbing face (open-mouth wail + tear streams), damage that ACCUMULATES with each hit (bruise → black eye → plasters → head bandage → lumps), and a **shielding/trembling pose between hits** (hands up, shaking). Never a neutral face after a hit. Helper: `hurtFx()` + `SHAKEP(t)` in Ep15.
+- **Attacker:** gleeful and menacing: evil grin, "HEHE 😈"/"HAHA", fist pumps, cracking knuckles before the next hit. Helper: `gloat()`.
+- **Bystanders react too** (laugh, gasp, cover eyes). A hit lands three times: the impact, the victim's reaction, the crowd's reaction.
+- Sound: a sob/wail for the victim and a chuckle for the attacker after every big hit.
