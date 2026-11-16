@@ -1,5 +1,5 @@
 # Instagram Reels: Ep14
-**Caption** (line 1 = 77 characters):
+**Caption** (line 1 = 74 characters):
 ```
 Messi asked Ronaldo for bicycle kick lessons 🚲😂 Who's the GOAT: 7 or 10? 👇
 📺 Juventus 2018 (the Juve fans clapped) · Poland 2024 (at 39!)
