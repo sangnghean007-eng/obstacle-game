@@ -53,6 +53,7 @@ User rule (Nov 15 2026): "make sure everyone from now on also looks alike".
 | Declan Rice | `rice` (generic + stubble) | via `CAST` | "Declan Rice September 2021.jpg" (frontal) + "England v Ghana 23 June 2026-133" | round 3, awaiting user check |
 | Ezri Konsa | `konsa` (generic + goatee) | via `CAST` | "Ezri Konsa.jpg" + "England v Panama 27 June 26-158" (side) | round 2 traits-based, awaiting user check |
 | Elliot Anderson | `anderson` (generic) | via `CAST` | "England v Panama 27 June 26-075" + "England v Ghana 23 June 2026-147" (small faces) | round 2 traits-based, awaiting user check |
+| Rodri | `rodri` (generic + goatee beard) | via `CAST` (ep15) | "Rodri Argentina v Spain 19 July 2026-297.jpg" (near-frontal, Golden Ball) | round 2, awaiting user check |
 | Ben White | none | none | no usable Commons photo (the "Ben White" files are a rugby player; the footballer category is empty) | NOT drawn: shown as a generic mini with his name |
 | Højbjerg, Dias, Félix, B. Silva, D. Costa, Andersen, Veiga | — | rough | none yet | TODO before the next use |
 

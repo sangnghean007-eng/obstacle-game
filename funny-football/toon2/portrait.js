@@ -384,6 +384,21 @@
     [['hair', 'hairShade'], (x, y) => [330 + (x - 330) * 1.55, 240 - (240 - y) * 1.9]],
     [['eyeL', 'eyeR'], (x, y) => [x, y, 1.1, 1.15]],
   ]); YAMAL_X.mouth = Object.assign({}, YAMAL.mouth, { w: YAMAL.mouth.w * 1.2 });
-  const FACES = { ronaldo, messi, hojlund: o => generic(HOJ, o), pele: o => generic(PELE, o), r9: o => generic(R9, o), kane: o => generic(KANE, o), yamal: o => generic(YAMAL, o), simon: o => generic(SIMON, o), cubarsi: o => generic(CUBARSI, o), konsa: o => generic(KONSA, o), oyarzabal: o => generic(OYAR, o), nico: o => generic(NICO, o), anderson: o => generic(ANDERSON, o), rice: o => generic(RICE, o), kane_x: o => generic(KANE_X, o), yamal_x: o => generic(YAMAL_X, o) };
+  // ---------- RODRI (Commons "Rodri Argentina v Spain 19 July 2026-297": lifting the 2026 Golden Ball; short dark messy hair, long face, heavy-lidded deep eyes, strong nose, dark goatee over stubble) ----------
+  const RODRI = { skin: '#d9a27c', shade: '#b9825e', hairCol: '#231912', browCol: '#1a120c', iris: '#3a2416', lips: '#b8705f', lid: 0.3, hairLw: 4, hairSharp: true, beardCol: 'rgba(40,28,20,.9)', beardGrad: [400, 480, 'rgba(40,28,20,.18)'],
+    neck: [[250, 500], [450, 500], [460, 600], [610, 640], [90, 640], [240, 600]], underJaw: [[255, 515], [440, 510], [430, 545], [340, 560], [265, 545]],
+    face: [[192, 260], [190, 320], [198, 390], [218, 448], [250, 500], [296, 530], [340, 538], [382, 512], [416, 470], [440, 414], [458, 350], [470, 280], [478, 220], [450, 180], [350, 165], [250, 172], [208, 205]],
+    earL: [[196, 290], [174, 282], [170, 330], [182, 370], [200, 376]], earR: [[468, 286], [498, 278], [510, 326], [498, 368], [470, 378]],
+    sideShade: [[590, 150], [478, 230], [482, 340], [428, 474], [590, 560]], sockets: [[232, 296, 44, 20], [332, 290, 44, 20]], blush: [],
+    beard: [[226, 430], [250, 446], [272, 444], [294, 456], [316, 444], [342, 440], [370, 432], [402, 418], [430, 440], [410, 520], [340, 570], [264, 540], [226, 490]],
+    stache: [[246, 404], [272, 394], [296, 398], [322, 394], [350, 404], [336, 410], [296, 404], [260, 410]],
+    jawLines: [], cheekLines: [[[200, 320], [210, 340]], [[452, 320], [444, 340]]], strands: [],
+    hair: [[192, 270], [178, 220], [182, 160], [200, 118], [226, 92], [254, 72], [282, 78], [306, 58], [334, 70], [360, 54], [386, 70], [412, 66], [438, 86], [466, 96], [488, 128], [506, 160], [512, 210], [504, 270], [490, 232], [480, 206], [454, 186], [420, 176], [380, 168], [340, 166], [300, 168], [260, 174], [230, 186], [210, 210], [202, 240]],
+    hairShade: [[200, 215], [250, 180], [350, 166], [450, 186], [490, 225], [470, 150], [350, 120], [230, 140]],
+    browL: [[198, 270], [236, 258], [278, 266], [278, 278], [236, 270], [200, 282]], browR: [[306, 270], [346, 258], [388, 266], [386, 278], [346, 270], [308, 282]],
+    eyeL: [234, 302, 54, 15], eyeR: [334, 294, 54, 15],
+    nose: { bridge: [[288, 300], [286, 340], [284, 362]], tip: [286, 376], nostrilL: [[262, 386], [276, 378], [284, 390], [268, 394]], nostrilR: [[294, 390], [302, 378], [316, 386], [310, 394]], wingL: [[254, 368], [248, 386], [262, 398], [280, 396]], wingR: [[298, 398], [316, 398], [330, 386], [322, 368]] },
+    folds: [[[250, 392], [236, 420], [240, 440]], [[340, 392], [356, 418], [354, 438]]], mouth: { x: 294, y: 424, w: 92, rest: 'smile' }, chinLine: [] };
+  const FACES = { ronaldo, messi, hojlund: o => generic(HOJ, o), pele: o => generic(PELE, o), r9: o => generic(R9, o), kane: o => generic(KANE, o), yamal: o => generic(YAMAL, o), simon: o => generic(SIMON, o), cubarsi: o => generic(CUBARSI, o), konsa: o => generic(KONSA, o), oyarzabal: o => generic(OYAR, o), nico: o => generic(NICO, o), anderson: o => generic(ANDERSON, o), rice: o => generic(RICE, o), kane_x: o => generic(KANE_X, o), yamal_x: o => generic(YAMAL_X, o), rodri: o => generic(RODRI, o) };
   window.portrait = { draw(c2d, name, x, y, s, o = {}) { ctx = c2d; ctx.save(); ctx.translate(x, y); ctx.scale(s * (o.f || 1), s); ctx.translate(-330, -300); FACES[name](o); ctx.restore(); } };
 })();

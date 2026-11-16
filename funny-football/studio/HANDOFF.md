@@ -45,6 +45,7 @@ This channel makes funny satirical football cartoon Shorts (YouTube channel **So
 | Ep12 | v4 "THE 20-YEAR CHASE 🏆" (Messi & Ronaldo chase a runaway trophy 2006→2026, one slapstick gag per World Cup, Pelé/R9 in the VIP box) (`toon2/ep12/`) | Done, awaiting user feedback; v1 list and v2 "exes" kept in `review/` |
 | Ep13 | v2 "THE REVENGE 😤" (50.6 s, 12 scenes, 9 portraits incl. Yamal & Oyarzabal; movie-trailer parody of Spain 2-3 England, Nov 15 2026: Kane slipped at Wembley → Ballon d'Or → scores the pen in Madrid; ends Spain's 43-game run) (`toon2/ep13/`) | Done, awaiting user feedback; post within 24 h |
 | Ep14 | "CR7 ACADEMY 🚲" (lesson parody: Messi learns the bicycle kick from Ronaldo, fails, gets slapped, hands over a literal goat; Part 2 teased) (`toon2/ep14/`) | Signed off; posts written (Nov 16) |
+| Ep15 | "DON'T MESS WITH CR7 🏆" (Yamal mocks CR7 → 13-hit TROPHY COMBO → cries to Rodri → giant World Cup showdown, "still RESERVED?", CR7 calls Messi) (`toon2/ep15/`) | Video done, awaiting sign-off (then posts) |
 | Ep9 | "NO RONALDO, NO PROBLEM?" how it started/how it's going (`toon2/ep9/`): Portugal 4-2 Denmark without him → 1-4 on his farewell night | Done (user-requested topic), awaiting feedback |
 | Ep10 | "MESSI vs RONALDO: FINAL FIGHT" fighting-game remake of Ep7 (`toon2/ep10/`), viral-first, portraits | Done, awaiting feedback |
 | Ep11 | "TWO LIVES" Ronaldo vs Messi split-screen timeline 2002→2026 (`toon2/ep11/`) | Done, awaiting user feedback |
