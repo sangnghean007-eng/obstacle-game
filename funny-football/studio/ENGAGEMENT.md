@@ -138,3 +138,9 @@ Ep15 v1 had 13 hits that were all the same swing → BONK → lump. Repetition k
 - **Escalate**: each gag bigger than the last; end on the biggest.
 - **Cut the talk scenes hard** (mock, set-ups): 3–4 s each. Spend the time on action. Target 30–40 s.
 - **Characters must MOVE**: launches, flips, squash & stretch, flying off-screen, sliding down walls. A beat where both just stand is a dead beat.
+
+## 15. Show, don't tell + break the rules (user, Nov 16 2026: "limit dialogue, it should be understood through the video; be creative and unconventional so viewers get excited")
+- **Dialogue budget: ≤3 short text bubbles per video.** Everything else is told with pictures: props, faces, gestures, icons and emoji-only bubbles (😏, 👉 0 😂, 😭👉🏆×13, a thought bubble with a face in it). Labels for real titles (EURO 2016, ×5) are fine; full sentences are not.
+- **Test:** watch with the sound off and the text blurred. If the story still reads, ship it.
+- **Break a convention in every video:** an impossible camera move, a genre switch mid-video, a fourth-wall break (a character grabs the combo counter, the K.O. text hits someone), a callback character from an older episode, an ending nobody expects.
+- **Excitement curve:** start on a hit (frame 0 action), escalate every 3–5 s, end on the biggest moment + an open loop.

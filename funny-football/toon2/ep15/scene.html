@@ -313,11 +313,11 @@ function s_hook(z, t) { street(t); const hit = z > 1.2; const yx = hit ? 520 - M
   RO(AKIMBO, hit ? 'deadpan' : 'neutral', 720, GYS, 0.95, { f: -1 });
   YA(hit ? P_HIT : runPose(t, 8), hit ? 'shock' : 'smug', yx, GYS, 0.95, { rot: hit ? -0.2 * Math.max(0, 1 - (z - 1.2) * 2) : 0 }); if (!hit || z < 1.6) shades(yx, GYS - 0.95 * 375, 0.95); else { const k = clamp((z - 1.2) / 0.5); shades(yx - k * 120, GYS - 0.95 * 375 - k * 200 + k * k * 260, 0.95, -k * 6); }
   if (hit && z < 1.6) burst(620, 1120, 110, 'BONK', (z - 1.2) / 0.1, 40, '#fff');
-  if (z > 1.8) bubble('watch it, old man 😏', 400, 960, z - 1.8, 42); }
+  if (z > 1.8) bubble('😏', 400, 960, z - 1.8, 60); }
 function s_mock(z, t) { street(t); RO(AKIMBO, z > 2.6 ? 'angry' : 'deadpan', 720, GYS, 0.95, { f: -1 });
   const laugh = z > 3.0; YA(laugh ? { bArm: [-60, -150], fArm: [60, 150], bLeg: [-12, -6], fLeg: [12, 6] } : { bArm: [-20, -10], fArm: [100, 150], bLeg: [-8, -4], fLeg: [8, 4] }, laugh ? 'siuuu' : 'smug', 380, GYS + (laugh ? -Math.abs(Math.sin(t * 14)) * 12 : 0), 0.95);
-  if (z < 3.0) phone(560, 960, z - 0.2); if (z > 0.6 && z < 3.0) bubble('Messi has a World Cup… 🏆', 360, 760, z - 0.6, 40);
-  if (z > 3.0) { pop(eOB((z - 3.0) / 0.15), 380, 900, () => { ell(0, 0, 90, 110, null, 22); ctx.lineWidth = 22; ctx.strokeStyle = '#fff'; ctx.beginPath(); ctx.ellipse(0, 0, 80, 100, 0, 0, TAU); ctx.stroke(); }); bubble('…you have ZERO 😂', 360, 760, z - 3.0, 46); tears(380, 1110, t, 0.4); }
+  if (z < 3.0) phone(560, 960, z - 0.2); if (z > 0.6 && z < 3.0) bubble('🏆😍', 360, 760, z - 0.6, 56);
+  if (z > 3.0) { pop(eOB((z - 3.0) / 0.15), 380, 900, () => { ell(0, 0, 90, 110, null, 22); ctx.lineWidth = 22; ctx.strokeStyle = '#fff'; ctx.beginPath(); ctx.ellipse(0, 0, 80, 100, 0, 0, TAU); ctx.stroke(); }); bubble('👉 0 😂', 520, 760, z - 3.0, 60); tears(380, 1110, t, 0.4); }
   if (z > 2.6) { steam2(720, 1020, t); txt('💢', 790, 1000, 60, '#fff', null); } }
 // v2 TROPHY COMBO: 5 different gags (golf, cymbals, cannon, pinball, SIUUU K.O.)
 function shoes(x, y) { for (const d of [-22, 22]) rr(x + d - 22, y - 16, 48, 22, 10, '#fff', DARK, 4); for (let i = 0; i < 3; i++) { const q = ((T2T * 1.5 + i / 3) % 1); ell(x + (i - 1) * 16, y - 30 - q * 80, 10 + q * 14, 10 + q * 14, `rgba(200,200,200,${1 - q})`); } }
@@ -335,13 +335,13 @@ function s_combo(z, t) { street(t); const yx0 = 360; const tk = clamp((z - 0.1) 
   else if (z < 5.6) { lab = 'NATIONS LEAGUE ×2 🥁'; const clap = z > 3.8; n = clap ? 3 : 1; const flat = clap && z < 4.6 ? 0.55 : clap && z < 4.9 ? -0.25 * Math.sin((z - 4.6) / 0.3 * Math.PI) : 0;
     yam = [clap ? P_HIT : 'stand', clap ? 'shock' : 'smug', yx0, GYS, { sq: flat }]; ron = [{ bArm: [-90, -90], fArm: [90, 90], bLeg: [-20, -10], fLeg: [20, 10] }, 'smug'];
     const gap = clap ? (z < 4.6 ? 60 : lerp(60, 300, clamp((z - 4.6) / 0.4))) : lerp(300, 180, clamp((z - 3.3) / 0.5)); nlCup(yx0 - gap, headY + 120, 0.7); nlCup(yx0 + gap, headY + 120, 0.7);
-    if (clap && z < 4.3) burst(yx0, headY - 40, 120, 'CLANG!', (z - 3.8) / 0.1, 44, '#fff'); if (z > 4.0) bubble('June 2025… I beat YOU 😏', 700, 860, z - 4.0, 36); if (z > 4.6 && z < 5.0) burst(yx0, GYS - 60, 80, 'BOING', (z - 4.6) / 0.1, 30, '#fff'); }
+    if (clap && z < 4.3) burst(yx0, headY - 40, 120, 'CLANG!', (z - 3.8) / 0.1, 44, '#fff'); if (z > 4.0) bubble('2025 😏', 700, 860, z - 4.0, 50); if (z > 4.6 && z < 5.0) burst(yx0, GYS - 60, 80, 'BOING', (z - 4.6) / 0.1, 30, '#fff'); }
   // G3 UCL cannon 5.6–9.0
   else if (z < 9.0) { lab = 'CHAMPIONS LEAGUE ×5 🔫'; ctx.save(); ctx.translate(900, GYS - 120); ctx.rotate(-0.1); rr(-180, -70, 260, 140, 30, '#3a3a3a', DARK, 7); rr(-260, -40, 120, 80, 14, '#222', DARK, 6); ctx.restore(); ron = [{ bArm: [-20, -10], fArm: [60, 90], bLeg: [-14, -8], fLeg: [14, 8] }, 'siuuu'];
     const shots = [6.0, 6.4, 6.8, 7.2, 7.6]; const fired = shots.filter(s => z > s).length; n = 3 + fired;
     for (const s of shots) { const k = (z - s) / 0.35; if (k > 0 && k < 1) { uclCup(lerp(640, s >= 7.2 ? yx0 + 20 : 0, k), headY + 160 + (s === 6.4 ? 120 : s === 6.8 ? -140 : 0), 0.5, k * 12); speed(lerp(640, 0, k) + 80, headY + 160, -1, t, 3, 120); } }
     const hit = z > 7.55; const fly = clamp((z - 7.95) / 0.35);
-    if (!hit) { const dodge = z > 6.0 && z < 6.45 ? { rot: -1.0 } : z > 6.4 && z < 6.85 ? { sq: 0.35 } : z > 6.8 && z < 7.25 ? { dy: -180 } : {}; yam = [z > 6.8 && z < 7.25 ? JUMPP : 'stand', z > 6.0 ? 'smug' : 'shock', yx0, GYS, dodge]; if (z > 6.5 && z < 7.2) bubble('too slow 😎', yx0 + 170, 1060, z - 6.5, 38); }
+    if (!hit) { const dodge = z > 6.0 && z < 6.45 ? { rot: -1.0 } : z > 6.4 && z < 6.85 ? { sq: 0.35 } : z > 6.8 && z < 7.25 ? { dy: -180 } : {}; yam = [z > 6.8 && z < 7.25 ? JUMPP : 'stand', z > 6.0 ? 'smug' : 'shock', yx0, GYS, dodge]; if (z > 6.5 && z < 7.2) bubble('😎', yx0 + 170, 1060, z - 6.5, 56); }
     else if (z < 7.95) yam = [P_HIT, 'shock', yx0 - (z - 7.55) * 200, GYS, { rot: -0.4 }];
     else { if (fly < 1) yam = [FLAIL(t), 'shock', lerp(yx0 - 80, 150, fly), GYS - fly * 120, { rot: -fly }]; else { holeSil(150, GYS - 100); yam = [P_HIT, 'shock', 150, GYS - 100 + clamp((z - 8.3) / 0.6) * 100, { rot: 0 }]; } }
     if (z > 7.2 && z < 7.6) burst(yx0 + 20, headY + 160, 100, 'OOF', (z - 7.2) / 0.1, 36, '#fff'); if (z > 7.6 && z < 8.0) burst(yx0, headY, 110, 'BONK!', (z - 7.6) / 0.1, 40, '#fff'); if (z > 8.3 && z < 8.7) burst(150, GYS - 300, 120, 'SPLAT', (z - 8.3) / 0.1, 40, '#fff'); }
@@ -359,16 +359,16 @@ function s_combo(z, t) { street(t); const yx0 = 360; const tk = clamp((z - 0.1) 
   if (yam) YA(yam[0], yam[1], yam[2], yam[3], 0.95, yam[4] || {}); if (yam && z < 9.0 && !(z > 1.9 && z < 3.0)) lumps(yam[2] + 10, yam[3] - 0.95 * 500, Math.min(n, 13), 1); else if (yam && z >= 9.0 && z < 12.0) lumps(yam[2] + 10, yam[3] - 0.95 * 500, Math.min(n, 13), 1);
   HUD(() => { if (n > 0) pop(1, W / 2, 300, () => { rr(-330, -70, 660, 140, 30, 'rgba(10,14,30,.9)', '#ffd60a', 6); txt(`TROPHY COMBO ×${n}`, 0, 4, 60, '#ffd60a', null); }); if (lab) caption(lab, 0.5, 440, '#111', '#fff', 46); }); }
 function s_cry(z, t) { street(t); const run = z > 1.6; const yx = run ? lerp(380, -350, easeIO((z - 1.6) / 2.2)) : 380;
-  RO(z > 2.2 ? RAISE : AKIMBO, z > 2.2 ? 'siuuu' : 'smug', 720, GYS, 0.95, { f: -1 }); if (z > 2.2) bubble('SIUUU 😎', 720, 880, z - 2.2, 46);
+  RO(z > 2.2 ? RAISE : AKIMBO, z > 2.2 ? 'siuuu' : 'smug', 720, GYS, 0.95, { f: -1 }); if (z > 2.2) bubble('SIUUU', 720, 880, z - 2.2, 50);
   YA(run ? runPose(t, 22) : { bArm: [-160, -130], fArm: [160, 130], bLeg: [-8, -4], fLeg: [8, 4] }, 'shock', yx, GYS, 0.95, { f: run ? -1 : 1, rot: run && z > 2.4 && z < 2.7 ? -0.6 : 0 }); lumps(yx + 10, GYS - 0.95 * 500, 13, 1); tears(yx, GYS - 0.95 * 360, t, 1);
   if (run) for (let i = 0; i < 5; i++) ell(yx + 120 + i * 50, GYS - 20 + Math.sin(t * 9 + i) * 8, 40 - i * 5, 22, 'rgba(220,210,190,.8)');
-  if (z > 0.3 && z < 3.2) bubble("I'M TELLING RODRI! 😭", 420, 820, z - 0.3, 44); if (z > 2.4 && z < 2.8) burst(yx, GYS - 80, 90, 'TRIP', (z - 2.4) / 0.1, 34, '#fff'); }
+  if (z > 0.3 && z < 3.2) pop(eOB((z - 0.3) / 0.15), 430, 800, () => { for (const [dx, dy, r] of [[-120, 130, 12], [-90, 100, 18]]) ell(dx, dy, r, r, '#fff', 4); ell(0, 0, 110, 90, '#fff', 5); ctx.save(); ctx.beginPath(); ctx.ellipse(0, 0, 100, 80, 0, 0, TAU); ctx.clip(); face('rodri', 0, 25, 0.28, 'angry', '#c60b1e'); ctx.restore(); }); if (z > 2.4 && z < 2.8) burst(yx, GYS - 80, 90, 'TRIP', (z - 2.4) / 0.1, 34, '#fff'); }
 function s_rodri(z, t) { home(t); const hug = z < 3.2;
   RD(z > 3.0 ? { bArm: [-30, -10], fArm: [110, 160], bLeg: [-12, -6], fLeg: [12, 6] } : 'stand', z > 2.4 ? 'angry' : 'deadpan', 470, 1440, 1.0);
   YA(hug ? { bArm: [60, 100], fArm: [70, 110], bLeg: [80, 0], fLeg: [90, 0] } : { bArm: [-20, -10], fArm: [120, 150], bLeg: [-8, -4], fLeg: [8, 4] }, 'shock', hug ? 230 : 160, 1500, 0.8, { f: 1 }); lumps(hug ? 240 : 170, 1500 - 0.8 * 500, 13, 0.85); if (hug) tears(230, 1500 - 0.8 * 360, t, 0.7);
-  if (z > 0.3 && z < 2.2) bubble('he hit me with 13 trophies 😭', 330, 830, z - 0.3, 36); if (z > 2.0 && z < 2.6) txt('*sigh*', 470, 900, 40, '#fff', DARK); if (z > 2.4 && z < 3.0) burst(520, 1100, 80, 'CRACK', (z - 2.4) / 0.1, 32, '#fff');
+  if (z > 0.3 && z < 2.2) bubble('😭👉🏆×13', 330, 830, z - 0.3, 46); if (z > 2.0 && z < 2.6) txt('*sigh*', 470, 900, 40, '#fff', DARK); if (z > 2.4 && z < 3.0) burst(520, 1100, 80, 'CRACK', (z - 2.4) / 0.1, 32, '#fff');
   const wk = clamp((z - 3.2) / 1.6); if (wk > 0) { const cx = lerp(1300, 820, easeOut(wk)); cart(cx, 1500); worldCup(cx, 1440, 2.4, 1); pop(eOB((z - 3.6) / 0.15), cx, 760, () => { rr(-230, -80, 460, 160, 20, 'rgba(0,0,0,.75)', '#ffd60a', 5); txt('WORLD CUP 2026', 0, -26, 40, '#ffd60a', null); txt('CAPTAIN · GOLDEN BALL', 0, 30, 30, '#fff', null); }); }
-  if (z > 4.6) bubble('show me 😤', 420, 840, z - 4.6, 50); }
+  }
 function s_showdown(z, t) { street(t, true); tumble(lerp(1200, -150, (z * 0.18) % 1), 1440, t);
   // CR7's little pile
   euroCup(820, GYS + 10, 0.5); nlCup(870, GYS + 10, 0.45); nlCup(910, GYS + 10, 0.45); for (let i = 0; i < 3; i++) uclCup(780 + i * 50, GYS - 60, 0.3, 0);
@@ -380,9 +380,9 @@ function s_showdown(z, t) { street(t, true); tumble(lerp(1200, -150, (z * 0.18) 
   if (land) { ctx.fillStyle = 'rgba(0,0,0,.35)'; ctx.beginPath(); ctx.ellipse(780, GYS + 10, 260, 40, 0, 0, TAU); ctx.fill(); RD(AKIMBO, 'smug', 250, GYS, 1.0); YA({ bArm: [-20, -10], fArm: [100, 130], bLeg: [-8, -4], fLeg: [8, 4] }, 'smug', 70, GYS + 20, 0.7, { f: 1 }); lumps(80, GYS + 20 - 0.7 * 500, 6, 0.75); }
   const climb = z > 4.6 && z < 6.8; const cy = climb ? GYS - Math.max(0, Math.sin(clamp((z - 4.6) / 1.4) * Math.PI) * 360) : GYS;
   RO(climb ? JUMPP : wink ? { bArm: [-40, -20], fArm: [40, 20], bLeg: [-12, -6], fLeg: [12, 6] } : 'stand', wink ? 'shock' : climb ? 'angry' : 'deadpan', climb ? 760 : 860, cy, 0.95, { f: -1 });
-  if (z > 3.0 && z < 4.6) bubble('count THIS one 😏', 280, 880, z - 3.0, 40); if (z > 3.6 && z < 4.8) bubble('ZERO 😝', 100, 1180, z - 3.6, 38);
+  if (z > 3.0 && z < 4.6) bubble('👆😏', 280, 880, z - 3.0, 56); if (z > 3.6 && z < 4.8) bubble('0 😝', 100, 1180, z - 3.6, 52);
   if (z > 6.0 && z < 6.6) burst(700, GYS - 200, 90, 'SKRRT', (z - 6.0) / 0.1, 32, '#fff');
-  if (wink) bubble('still RESERVED? 😏', 600, 560, z - 7.2, 44); if (z > 8.0) txt('😱', 940, 990, 80, '#fff', null); }
+  if (wink) bubble('RESERVED? 😏', 600, 560, z - 7.2, 48); if (z > 8.0) txt('😱', 940, 990, 80, '#fff', null); }
 function s_twist(z, t) { street(t, true); worldCup(560, GYS, 3.0, 1); RD(AKIMBO, z > 1.8 ? 'shock' : 'smug', 250, GYS, 1.0); YA('stand', z > 1.8 ? 'shock' : 'smug', 70, GYS + 20, 0.7, { f: 1 });
   RO({ bArm: [-20, -10], fArm: [150, 160], bLeg: [-12, -6], fLeg: [12, 6] }, z > 1.0 ? 'smug' : 'deadpan', 860, GYS, 0.95, { f: -1 });
   pop(eOB((z - 0.5) / 0.15), 860, 820, () => { rr(-90, -150, 180, 300, 22, '#111', DARK, 5); ctx.fillStyle = '#1b2a5c'; ctx.fillRect(-78, -136, 156, 272); txt('calling…', 0, -90, 26, '#fff', null); txt('MESSI', 0, -40, 38, '#74acdf', null); txt('📞', 0, 40, 60, '#fff', null); });
