@@ -19,7 +19,7 @@ Use this guide for every release dossier (`toon2/epN/release/*.md`). It was rese
 ## 1. YouTube Shorts
 | Field | Rule |
 |---|---|
-| **Title** | 40–70 characters; must read fully on a phone at a glance. Main keyword first (player/team), then the twist/emotion, 1 emoji max. No hashtags in the title **(consensus; a minority puts #shorts in the title, which is not needed)**. |
+| **Title** | Main keyword first (player/team), then the twist/emotion, 1–2 emoji. **User rule (Nov 16, 2026): always end the title with 3 hashtags, one of them `#shorts`** (e.g. `… #shorts #ronaldo #messi`). Keep the whole title ≤100 characters (YouTube's limit) and the words before the hashtags ≤60 so they read on a phone. |
 | **Description** | Line 1 = one keyword-rich sentence (it shows in search). Then the story in 3–7 short lines (emoji bullets OK), then the question, then the parody/rights footer, then **3 hashtags** on the last line. The first 3 hashtags show above the title. Never more than 15 (YouTube ignores all hashtags if there are too many). |
 | **Tags** | 10–15 comma-separated, ≤500 characters: player names (with and without accents: hojlund/højlund), match "A vs B", score "A 1-4 B", competition, the format phrase ("how it started how its going"), "football cartoon", "football animation", "soccer 365". Tags matter little for Shorts but help misspellings. |
 | **Settings** | Category **Comedy** · Standard YouTube License · embedding on · not made for kids · altered/AI content: No · playlist "Soccer 365 Cartoons" · related video = previous episode. |
@@ -63,7 +63,7 @@ The Shorts feed (watch time, swipe-away rate) drives most views; metadata mainly
 | **Engagement** | Reply to early replies fast; X weighs early engagement velocity and conversations. Quote-post the video after 24 h with a fresh angle. **(consensus)** |
 
 ## 6. Templates (copy and fill in)
-**YouTube title:** `<Keyword hook>?! <emoji> <Team A score Team B / short twist>`
+**YouTube title:** `<Keyword hook>?! <emoji> <short twist> #shorts #<player1> #<player2/team>`
 
 **TikTok:** `<Hook = on-screen text> <emoji> <1-line story with names + score>. <Binary question> 👇` + `#<player> #<team> #<signature> #<competition> #football #footballtiktok`
 

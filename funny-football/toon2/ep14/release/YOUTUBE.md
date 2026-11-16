@@ -1,7 +1,7 @@
 # YouTube Shorts: Ep14 "CR7 ACADEMY 🚲"
 **Title:**
 ```
-Messi Tries to Learn Ronaldo's Bicycle Kick 🚲😂
+Messi Tries to Learn Ronaldo's Bicycle Kick 🚲😂 #shorts #ronaldo #messi
 ```
 **Description:**
 ```
