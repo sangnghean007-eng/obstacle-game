@@ -9,7 +9,7 @@ This channel makes funny satirical football cartoon Shorts (YouTube channel **So
   - Do not stop to ask the user to approve a script.
 - Facts must be real and checked against 2 or more sources (`toon2/epN/facts.md`). Everything else is labelled "parody".
 - Never copy other creators' art or use copyrighted footage. Use inspiration only.
-- **Research → remember → apply** (user, Nov 14 2026). Also **read the intent, not the words** (ENGAGEMENT.md §11, Nov 15): expand every short brief into the full story with back-story and every key moment as a scene; portraits only for the 2–4 standout players (Nov 16), the rest are named minis:
+- **Research → remember → apply** (user, Nov 14 2026). Social posts only after the user signs off the video, then paste them in chat (SOCIAL_COPY.md §7). Also **read the intent, not the words** (ENGAGEMENT.md §11, Nov 15): expand every short brief into the full story with back-story and every key moment as a scene; portraits only for the 2–4 standout players (Nov 16), the rest are named minis:
   - Whenever you research something (platform rules, techniques, formats), write the findings into the studio docs right away, so the next session does not research it again. Use `PLAYBOOK.md` for production rules, `SOCIAL_COPY.md` for post writing, and `LEARNING_LOG.md` for other notes.
   - Apply the findings from then on without being asked.
   - Read those docs before starting a task.
