@@ -3,7 +3,14 @@ hook 0 · mock 3.4 · combo 9.4 · cry 24.4 · rodri 29.4 · showdown 35.4 · tw
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'sfx'))
 from synth import *
-END = 50.4; m = Mix(END)
+OLD = [(0, 3.4, .8), (3.4, 6.0, .65), (9.4, 15.0, 14 / 15), (24.4, 5.0, .6), (29.4, 6.0, .65), (35.4, 10.0, .75), (45.4, 5.0, .7)]
+NEW0 = []; _t = 0
+for a_, d_, sl_ in OLD: NEW0.append(_t); _t += d_ * sl_
+def R(t):
+    for (a_, d_, sl_), n0 in zip(OLD, NEW0):
+        if t < a_ + d_ or (a_, d_, sl_) == OLD[-1]: return n0 + (t - a_) * sl_
+END = _t; m = Mix(END)
+_put = m.put; m.put = lambda bus, s, t0, *a, **k: _put(bus, s, R(t0), *a, **k)
 def k808(t, g=.9): d = .5; m.m(osc(glide(110, 42, d, .3), d) * dec(d, 5) + .2 * lp(noise(d), 1500) * dec(d, 60), t, g, 0, .02)
 def beat(t0, t1, g=.8, bpm=92):
     b = 60 / bpm; t = t0; i = 0
@@ -25,11 +32,7 @@ m.bonk(1.2, .9); m.boing(1.25, .3, .4, 300, 150); m.whoosh(1.3, .4, .2, True, -.
 t = 3.4; beat(t, t + 6.0, .6); m.pop(t + .2, .4, 900); m.choir([hz('D4'), hz('F#4'), hz('A4')], t + .4, 1.4, .08); m.ding(t + .6, 1568, .2)
 m.f(m.wav('laugh_m'), t + 3.0, .5, -.2, .2); m.f(m.wav('laugh_crowd'), t + 3.4, .3, 0, .3); m.f(m.wav('grumble_angry'), t + 2.6, .35, .3, .2)
 m.f(hp(noise(1.2), 2500) * env(int(1.2 * SR), .1, .3), t + 2.7, .2, .4)
-# COMBO: trunk, fighting-game music, 13 hits with rising dings, SIUUU
-t = 9.4; creak(t + .2); m.sparkle(t + .4, 1.0, .15); fight(t + .6, t + 12.8, .8)
-for n, tt_ in enumerate([1.41, 3.76, 4.56, 6.87, 7.27, 7.67, 8.07, 8.47]): m.whoosh(t + tt_ - .3, .3, .25, True, .3); hit(t + tt_, n + 1)
-for i in range(5): m.whoosh(t + 10.4 + i * .35, .3, .15, False); hit(t + 10.95 + i * .35, 9 + i, .7)
-m.f(m.wav('ooh_crowd'), t + 5.0, .25, 0, .3); m.f(m.wav('laugh_crowd'), t + 9.0, .3, 0, .3); m.f(m.wav('siu'), t + 12.8, .9, .2, .25); m.crash(t + 12.8, .4)
+# COMBO v2 (placed in NEW time, see bottom)
 # CRY: wail, run, trip, SIUUU
 t = 24.4; m.f(m.wav('wail'), t + .2, .5, -.2, .2)
 for k in range(14): m.footstep(t + 1.6 + k * .1, .2, -.4)
@@ -49,4 +52,16 @@ t = 45.4
 for k in range(4): m.f(osc(950 + k * 120, .08) * dec(.08, 20), t + .6 + k * .1, .25, .3)
 for k in range(2): m.f((osc(440, .4) + osc(480, .4)) * .5 * env(int(.4 * SR), .01, .05), t + 1.1 + k * .6, .25, .3)
 m.brass_hit([hz('D3'), hz('G#3'), hz('D4')], t + 1.6, .7, .3); m.f(m.wav('ooh_crowd'), t + 1.7, .3, 0, .3); m.ding(t + 2.4, 1318, .3)
+# ---- COMBO v2 sounds, placed directly at new times ----
+m.put = _put; C0 = NEW0[2]
+fight(C0 + .4, C0 + 12.4, .8); creak(C0 + .1)
+m.whoosh(C0 + .8, .3, .3, True); m.thwack(C0 + 1.0, 1.0); slide(C0 + 1.05, 400, 2000, .8, .3); m.f(m.wav('ooh_crowd'), C0 + 1.2, .3, 0, .3); slide(C0 + 1.6, 2000, 300, .4, .25); m.thud(C0 + 1.95, .8); m.f(bp(noise(.3), 100, 800) * dec(.3, 8), C0 + 1.95, .6); m.f(m.wav('laugh_crowd'), C0 + 2.2, .3, 0, .3)
+x = sum(a_ * osc(f_, .9) for f_, a_ in [(420, 1), (1013, .7), (1730, .5), (2600, .4)]) * dec(.9, 4); m.f(x + hp(noise(.9), 3000) * dec(.9, 5) * .6, C0 + 3.8, .7); m.boing(C0 + 4.6, .4, .5, 150, 600); m.f(m.wav('chuckle'), C0 + 4.2, .3, .3, .2)
+m.f(lp(noise(.5), 400) * dec(.5, 6), C0 + 5.7, .4)
+for k_, s_ in enumerate([6.0, 6.4, 6.8, 7.2, 7.6]): k808(C0 + s_, .7); m.whoosh(C0 + s_, .3, .25, False, -.3)
+for s_ in (6.2, 6.6, 7.0): m.whoosh(C0 + s_, .25, .2, True, .4)
+m.bonk(C0 + 7.3, .7); m.bonk(C0 + 7.7, .9); slide(C0 + 7.95, 900, 300, .35, .25); m.thud(C0 + 8.3, .9); m.f(bp(noise(.4), 200, 2000) * dec(.4, 8), C0 + 8.3, .5); m.f(m.wav('laugh_crowd'), C0 + 8.4, .3, 0, .3)
+for k_ in range(10): m.hat(C0 + 9.0 + k_ * .12, .1)
+for k_ in range(12): m.ding(C0 + 10.4 + k_ * .13, 1568 + (k_ % 5) * 220, .2, (-1) ** k_ * .4); m.pop(C0 + 10.45 + k_ * .13, .2, 1200)
+m.f(m.wav('siu'), C0 + 12.5, 1.0, 0, .25); k808(C0 + 12.5, 1.0); m.crash(C0 + 12.5, .6); m.whoosh(C0 + 12.6, .8, .4, False, -.5); m.brass_hit([hz('E3'), hz('B3'), hz('E4'), hz('G#4')], C0 + 12.9, 1.0, .4); m.cheer_burst(C0 + 12.9, .4)
 m.write(sys.argv[1])

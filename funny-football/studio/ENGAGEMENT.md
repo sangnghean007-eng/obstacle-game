@@ -131,3 +131,10 @@ Before rendering, watch each beat as a stranger with the sound off:
 - **One line of dialogue per beat** in a speech bubble (2–4 simple English words: "WATCH ME 😎", "YOUR TURN!", "HIGHER!", "AGAIN!"). Bubbles beat captions.
 - **Slow the actions down:** a hit needs ~0.35 s of wind-up and a 0.5 s hold for the reaction. Use per-segment slow factors (`LEN` 4th value) instead of rushing.
 - **Big readable props:** ball radius ≥30 px in mid shots; one action at a time in the frame centre.
+
+## 14. Never repeat the same gag motion (user, Nov 16 2026: "boring")
+Ep15 v1 had 13 hits that were all the same swing → BONK → lump. Repetition kills a combo.
+- **A "list" of hits must be a list of DIFFERENT gags**, each with its own motion, camera angle and sound: golf swing (launch off-screen, head-first landing) · cymbal clap (squash flat, spring back) · cannon (dodge ×3 Matrix-style, then hit, splat into a wall silhouette) · pinball (juggle, volley, ricochet + score pop-ups) · finisher (shockwave, blown out of the shoes, giant "K.O.").
+- **Escalate**: each gag bigger than the last; end on the biggest.
+- **Cut the talk scenes hard** (mock, set-ups): 3–4 s each. Spend the time on action. Target 30–40 s.
+- **Characters must MOVE**: launches, flips, squash & stretch, flying off-screen, sliding down walls. A beat where both just stand is a dead beat.

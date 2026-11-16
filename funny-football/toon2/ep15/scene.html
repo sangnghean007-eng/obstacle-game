@@ -319,22 +319,45 @@ function s_mock(z, t) { street(t); RO(AKIMBO, z > 2.6 ? 'angry' : 'deadpan', 720
   if (z < 3.0) phone(560, 960, z - 0.2); if (z > 0.6 && z < 3.0) bubble('Messi has a World Cup… 🏆', 360, 760, z - 0.6, 40);
   if (z > 3.0) { pop(eOB((z - 3.0) / 0.15), 380, 900, () => { ell(0, 0, 90, 110, null, 22); ctx.lineWidth = 22; ctx.strokeStyle = '#fff'; ctx.beginPath(); ctx.ellipse(0, 0, 80, 100, 0, 0, TAU); ctx.stroke(); }); bubble('…you have ZERO 😂', 360, 760, z - 3.0, 46); tears(380, 1110, t, 0.4); }
   if (z > 2.6) { steam2(720, 1020, t); txt('💢', 790, 1000, 60, '#fff', null); } }
-const COMBO = [ // [t0, dur, draw, label, add]
-  [1.0, 0.45, () => euroCup(0, 0, 0.8), 'EURO 2016', 1], [3.4, 0.4, () => nlCup(0, 0, 0.8), 'NATIONS LEAGUE 2019', 1], [4.2, 0.4, () => nlCup(0, 0, 0.8), 'NATIONS LEAGUE 2025', 1],
-  [6.6, 0.3, () => uclCup(0, 0, 0.6, 0), 'UCL', 1], [7.0, 0.3, () => uclCup(0, 0, 0.6, 0), 'UCL', 1], [7.4, 0.3, () => uclCup(0, 0, 0.6, 0), 'UCL', 1], [7.8, 0.3, () => uclCup(0, 0, 0.6, 0), 'UCL', 1], [8.2, 0.3, () => uclCup(0, 0, 0.6, 0), 'UCL', 1]];
-function s_combo(z, t) { street(t); trunk(860, GYS + 20, clamp((z - 0.2) / 0.4));
-  let hits = 0; for (const [t0, dur, , , add] of COMBO) if (z > t0 + dur * 0.9) hits += add; const bdo = z > 10.6 ? Math.min(5, Math.floor((z - 10.6) / 0.35) + 1) : 0; hits += bdo;
-  const spin = z > 6.6 && z < 9.2; const dazed = hits > 0; const yx = 380;
-  YA(spin ? FLAIL(t) : dazed ? P_HIT : 'stand', dazed ? 'shock' : 'smug', yx, GYS, 0.95, { rot: spin ? Math.sin(t * 25) * 0.25 : 0, f: spin && Math.sin(t * 25) > 0 ? -1 : 1 });
-  if (hits < 1) shades(yx, GYS - 0.95 * 375, 0.95); const headY = GYS - 0.95 * 500; lumps(yx + 10, headY, Math.min(hits, 13), 1); if (dazed) stars(yx, headY - 40 - Math.min(hits, 13) * 26, t, 80);
-  const swingIt = COMBO.some(([t0, dur]) => z > t0 - 0.1 && z < t0 + dur + 0.2) || (z > 10.4 && z < 12.4);
-  RO(swingIt ? { bArm: [-20, -10], fArm: [150, 170], bLeg: [-14, -8], fLeg: [14, 8] } : z > 12.8 ? RAISE : AKIMBO, z > 12.8 ? 'siuuu' : 'smug', 680, GYS, 0.95, { f: -1 });
-  for (const [t0, dur, draw, label] of COMBO) swing(draw, z, t0, dur, [640, 900], [yx + 10, headY + 20], 'BONK!');
-  if (z > 10.4 && z < 12.6) for (let i = 0; i < 5; i++) { const k = clamp((z - 10.4 - i * 0.35) / 0.4); if (k > 0 && k < 1) ballonDor(lerp(560 + i * 30, yx + 10, k), lerp(600, headY, k * k), 0.9, 1); }
-  if (z > 2.9 && z < 5.2) bubble('June 2025… I beat YOU in the final 😏', 660, 820, z - 2.9, 34);
-  if (z > 12.8) bubble('SIUUU 😎', 680, 900, z - 12.8, 50);
-  HUD(() => { if (hits > 0) pop(1 + (hits && (z % 0.4) < 0.1 ? 0.12 : 0), W / 2, 300, () => { rr(-330, -70, 660, 140, 30, 'rgba(10,14,30,.9)', '#ffd60a', 6); txt(`TROPHY COMBO ×${hits}`, 0, 4, 60, '#ffd60a', null); });
-    const cur = COMBO.filter(([t0]) => z > t0 - 0.2).pop(); const lab = z > 10.4 ? "BALLON D'OR ×5 ✨" : z > 6.4 ? 'CHAMPIONS LEAGUE ×5 ⭐' : cur ? cur[3] : ''; if (lab && z < 12.8) caption(lab, 0.5, 440, '#111', '#fff', 46); }); }
+// v2 TROPHY COMBO: 5 different gags (golf, cymbals, cannon, pinball, SIUUU K.O.)
+function shoes(x, y) { for (const d of [-22, 22]) rr(x + d - 22, y - 16, 48, 22, 10, '#fff', DARK, 4); for (let i = 0; i < 3; i++) { const q = ((T2T * 1.5 + i / 3) % 1); ell(x + (i - 1) * 16, y - 30 - q * 80, 10 + q * 14, 10 + q * 14, `rgba(200,200,200,${1 - q})`); } }
+function holeSil(x, y) { ctx.fillStyle = '#1a1208'; ctx.beginPath(); ctx.ellipse(x, y - 210, 70, 90, 0, 0, TAU); ctx.fill(); rr(x - 60, y - 140, 120, 130, 20, '#1a1208', null); for (const [dx, dy, w, h] of [[-120, -150, 70, 26], [50, -150, 70, 26], [-45, -20, 30, 90], [15, -20, 30, 90]]) rr(x + dx, y + dy, w, h, 10, '#1a1208', null); }
+function s_combo(z, t) { street(t); const yx0 = 360; const tk = clamp((z - 0.1) / 0.4); trunk(900, GYS + 20, z < 5.6 || z > 9.0 ? tk : 1);
+  let n = 0; let lab = '', yam = null, ron = null; const headY = GYS - 0.95 * 500;
+  // G1 EURO golf 0.6–3.0
+  if (z < 3.0) { lab = 'EURO 2016 ⛳'; n = z > 1.0 ? 1 : 0; const up = clamp((z - 1.0) / 0.8), down = clamp((z - 1.9) / 0.4);
+    ron = [z < 1.0 ? { bArm: [10, 30], fArm: [20, 40], bLeg: [-14, -8], fLeg: [14, 8] } : { bArm: [120, 150], fArm: [110, 140], bLeg: [-14, -8], fLeg: [14, 8] }, 'angry'];
+    if (z > 0.5) { ctx.save(); const a = z < 1.0 ? lerp(0.3, 1.2, clamp((z - 0.5) / 0.5)) : lerp(1.2, -2.2, clamp((z - 1.0) / 0.2)); ctx.translate(680, GYS - 230); ctx.rotate(a); euroCup(0, 230, 0.6); ctx.restore(); }
+    if (z < 1.0) yam = ['stand', 'shock', yx0, GYS, {}]; else if (z < 1.9) yam = [FLAIL(t), 'shock', yx0, GYS - up * 1300, { rot: up * 8 }];
+    else { ctx.save(); ctx.beginPath(); ctx.rect(0, 0, W, GYS); ctx.clip(); YA({ bArm: [-170, -170], fArm: [170, 170], bLeg: [-20 + Math.sin(t * 30) * 25, -10], fLeg: [20 - Math.sin(t * 30) * 25, 10] }, 'shock', yx0, GYS - 300 + down * 300 - 160, 0.95, { rot: Math.PI }); ctx.restore(); ell(yx0, GYS + 2, 90, 16, '#555'); if (z < 2.4) burst(yx0, GYS - 120, 110, 'THUNK', (z - 1.9) / 0.1, 40, '#fff'); }
+    if (z > 1.0 && z < 1.4) burst(560, GYS - 200, 110, 'FORE!', (z - 1.0) / 0.1, 40, '#fff'); }
+  // G2 NATIONS LEAGUE cymbals 3.0–5.6
+  else if (z < 5.6) { lab = 'NATIONS LEAGUE ×2 🥁'; const clap = z > 3.8; n = clap ? 3 : 1; const flat = clap && z < 4.6 ? 0.55 : clap && z < 4.9 ? -0.25 * Math.sin((z - 4.6) / 0.3 * Math.PI) : 0;
+    yam = [clap ? P_HIT : 'stand', clap ? 'shock' : 'smug', yx0, GYS, { sq: flat }]; ron = [{ bArm: [-90, -90], fArm: [90, 90], bLeg: [-20, -10], fLeg: [20, 10] }, 'smug'];
+    const gap = clap ? (z < 4.6 ? 60 : lerp(60, 300, clamp((z - 4.6) / 0.4))) : lerp(300, 180, clamp((z - 3.3) / 0.5)); nlCup(yx0 - gap, headY + 120, 0.7); nlCup(yx0 + gap, headY + 120, 0.7);
+    if (clap && z < 4.3) burst(yx0, headY - 40, 120, 'CLANG!', (z - 3.8) / 0.1, 44, '#fff'); if (z > 4.0) bubble('June 2025… I beat YOU 😏', 700, 860, z - 4.0, 36); if (z > 4.6 && z < 5.0) burst(yx0, GYS - 60, 80, 'BOING', (z - 4.6) / 0.1, 30, '#fff'); }
+  // G3 UCL cannon 5.6–9.0
+  else if (z < 9.0) { lab = 'CHAMPIONS LEAGUE ×5 🔫'; ctx.save(); ctx.translate(900, GYS - 120); ctx.rotate(-0.1); rr(-180, -70, 260, 140, 30, '#3a3a3a', DARK, 7); rr(-260, -40, 120, 80, 14, '#222', DARK, 6); ctx.restore(); ron = [{ bArm: [-20, -10], fArm: [60, 90], bLeg: [-14, -8], fLeg: [14, 8] }, 'siuuu'];
+    const shots = [6.0, 6.4, 6.8, 7.2, 7.6]; const fired = shots.filter(s => z > s).length; n = 3 + fired;
+    for (const s of shots) { const k = (z - s) / 0.35; if (k > 0 && k < 1) { uclCup(lerp(640, s >= 7.2 ? yx0 + 20 : 0, k), headY + 160 + (s === 6.4 ? 120 : s === 6.8 ? -140 : 0), 0.5, k * 12); speed(lerp(640, 0, k) + 80, headY + 160, -1, t, 3, 120); } }
+    const hit = z > 7.55; const fly = clamp((z - 7.95) / 0.35);
+    if (!hit) { const dodge = z > 6.0 && z < 6.45 ? { rot: -1.0 } : z > 6.4 && z < 6.85 ? { sq: 0.35 } : z > 6.8 && z < 7.25 ? { dy: -180 } : {}; yam = [z > 6.8 && z < 7.25 ? JUMPP : 'stand', z > 6.0 ? 'smug' : 'shock', yx0, GYS, dodge]; if (z > 6.5 && z < 7.2) bubble('too slow 😎', yx0 + 170, 1060, z - 6.5, 38); }
+    else if (z < 7.95) yam = [P_HIT, 'shock', yx0 - (z - 7.55) * 200, GYS, { rot: -0.4 }];
+    else { if (fly < 1) yam = [FLAIL(t), 'shock', lerp(yx0 - 80, 150, fly), GYS - fly * 120, { rot: -fly }]; else { holeSil(150, GYS - 100); yam = [P_HIT, 'shock', 150, GYS - 100 + clamp((z - 8.3) / 0.6) * 100, { rot: 0 }]; } }
+    if (z > 7.2 && z < 7.6) burst(yx0 + 20, headY + 160, 100, 'OOF', (z - 7.2) / 0.1, 36, '#fff'); if (z > 7.6 && z < 8.0) burst(yx0, headY, 110, 'BONK!', (z - 7.6) / 0.1, 40, '#fff'); if (z > 8.3 && z < 8.7) burst(150, GYS - 300, 120, 'SPLAT', (z - 8.3) / 0.1, 40, '#fff'); }
+  // G4 BALLON D'OR pinball 9.0–12.0
+  else if (z < 12.0) { lab = "BALLON D'OR ×5 🎯"; n = 8 + (z > 10.4 ? Math.min(5, Math.floor((z - 10.4) / 0.3) + 1) : 0); yam = [P_HIT, 'shock', yx0, GYS, { rot: z > 10.4 ? Math.sin(t * 22) * 0.3 : 0 }];
+    if (z < 10.3) { ron = [{ bArm: [-20, -10], fArm: [20, 10], bLeg: [-12, -6], fLeg: [60, 70 + Math.sin(t * 20) * 20] }, 'siuuu']; for (let i = 0; i < 5; i++) ballonDor(640 + Math.sin(t * 6 + i * 1.3) * 70, 900 - Math.abs(Math.sin(t * 7 + i)) * 260, 0.8, 1); }
+    else { ron = [KICK, 'siuuu']; for (let i = 0; i < 5; i++) { const k = ((z - 10.4 - i * 0.12) * 1.6) % 1; const pts = [[640, 1100], [yx0, headY], [80, 900], [yx0, headY + 40], [600, 700], [yx0, headY - 20]]; const seg = Math.floor(k * 5), f = (k * 5) % 1; const A = pts[seg], B = pts[seg + 1]; if (z > 10.4 + i * 0.12) ballonDor(lerp(A[0], B[0], f), lerp(A[1], B[1], f), 0.7, 1); } for (let i = 0; i < 4; i++) { const k = ((z * 2.5 + i / 4) % 1); if (z > 10.5) txt('+1000', yx0 + (i - 1.5) * 70, headY - 60 - k * 140, 34, '#ffd60a', DARK); } }
+    if (z > 10.5) stars(yx0, headY - 30, t, 90); }
+  // G5 SIUUU K.O. 12.0–14.0
+  else { lab = 'SIUUU FINISHER 💥'; n = 13; const go = z > 12.5; const fly = clamp((z - 12.6) / 0.8);
+    ron = [go ? RAISE : { bArm: [-60, -20], fArm: [60, 20], bLeg: [-30, -10], fLeg: [30, 10] }, 'siuuu']; if (go) { for (let i = 0; i < 3; i++) { const r = ((z - 12.5) * 900 + i * 120) % 1100; ctx.strokeStyle = `rgba(255,214,10,${Math.max(0, 1 - r / 1100)})`; ctx.lineWidth = 16; ctx.beginPath(); ctx.arc(720, 1150, r, 0, TAU); ctx.stroke(); } }
+    shoes(yx0, GYS); if (fly < 1) yam = [FLAIL(t), 'shock', lerp(yx0, -400, fly), GYS - Math.sin(fly * Math.PI) * 400, { rot: -fly * 10 }];
+    if (z > 12.9) HUD(() => pop(eOB((z - 12.9) / 0.15), W / 2, 760, () => { ctx.rotate(-0.08); txt('K.O. 💫', 0, 0, 170, '#ffd60a', DARK); })); }
+  const ry = ron && ron[0] === RAISE && z > 12.5 ? -Math.abs(Math.sin((z - 12.5) * 5)) * 160 : 0; if (ron) RO(ron[0], ron[1], 720, GYS + ry, 0.95, { f: -1 });
+  if (yam) YA(yam[0], yam[1], yam[2], yam[3], 0.95, yam[4] || {}); if (yam && z < 9.0 && !(z > 1.9 && z < 3.0)) lumps(yam[2] + 10, yam[3] - 0.95 * 500, Math.min(n, 13), 1); else if (yam && z >= 9.0 && z < 12.0) lumps(yam[2] + 10, yam[3] - 0.95 * 500, Math.min(n, 13), 1);
+  HUD(() => { if (n > 0) pop(1, W / 2, 300, () => { rr(-330, -70, 660, 140, 30, 'rgba(10,14,30,.9)', '#ffd60a', 6); txt(`TROPHY COMBO ×${n}`, 0, 4, 60, '#ffd60a', null); }); if (lab) caption(lab, 0.5, 440, '#111', '#fff', 46); }); }
 function s_cry(z, t) { street(t); const run = z > 1.6; const yx = run ? lerp(380, -350, easeIO((z - 1.6) / 2.2)) : 380;
   RO(z > 2.2 ? RAISE : AKIMBO, z > 2.2 ? 'siuuu' : 'smug', 720, GYS, 0.95, { f: -1 }); if (z > 2.2) bubble('SIUUU 😎', 720, 880, z - 2.2, 46);
   YA(run ? runPose(t, 22) : { bArm: [-160, -130], fArm: [160, 130], bLeg: [-8, -4], fLeg: [8, 4] }, 'shock', yx, GYS, 0.95, { f: run ? -1 : 1, rot: run && z > 2.4 && z < 2.7 ? -0.6 : 0 }); lumps(yx + 10, GYS - 0.95 * 500, 13, 1); tears(yx, GYS - 0.95 * 360, t, 1);
@@ -371,12 +394,12 @@ let HUDQ = []; const HUD = (f) => HUDQ.push(f);
 const _cap = caption; caption = (...a) => HUD(() => _cap(...a));
 const N = (t) => [t, 540, 960, 1];
 const CAMS = { hook: [[0, 540, 1150, 1.15], [1.1, 580, 1150, 1.25], [1.4, 600, 1150, 1.4], [3.4, 520, 1120, 1.3]], mock: [[0, 500, 1100, 1.2], [2.8, 460, 1050, 1.35], [3.2, 450, 1050, 1.45], [6.0, 520, 1100, 1.3]],
-  combo: [[0, 600, 1150, 1.15], [1.6, 520, 1100, 1.25], [6.4, 520, 1100, 1.25], [7.0, 420, 1050, 1.5], [9.2, 420, 1050, 1.5], [10.2, 480, 1000, 1.25], [12.6, 440, 1000, 1.35], [15.0, 560, 1100, 1.2]],
+  combo: [[0, 560, 1150, 1.15], [1.0, 540, 1100, 1.0], [1.8, 400, 1250, 1.3], [3.0, 480, 1150, 1.2], [3.8, 380, 1050, 1.5], [4.6, 480, 1100, 1.2], [5.6, 560, 1150, 1.0], [7.5, 300, 1150, 1.2], [9.0, 380, 1150, 1.15], [10.4, 380, 1050, 1.3], [12.0, 540, 1100, 1.0], [14.0, 500, 1050, 1.1]],
   cry: [[0, 420, 1050, 1.4], [1.6, 420, 1050, 1.4], [2.2, 540, 1100, 1.1], [5.0, 540, 1100, 1.1]], rodri: [[0, 380, 1200, 1.3], [3.0, 400, 1150, 1.3], [3.4, 600, 1100, 1.0], [6.0, 600, 1100, 1.05]],
   showdown: [[0, 540, 1100, 1.0], [2.3, 540, 1100, 1.0], [2.6, 500, 1000, 1.05], [4.4, 400, 1100, 1.2], [5.0, 700, 1150, 1.2], [6.8, 700, 1150, 1.2], [7.2, 520, 800, 1.25], [10.0, 600, 900, 1.25]], twist: [[0, 600, 1100, 1.1], [5.0, 600, 1050, 1.15]] };
-const SHK = { hook: [[1.2, 0.3, 14]], mock: [], combo: [[1.4, 0.2, 12], [3.75, 0.2, 12], [4.55, 0.2, 12], [6.85, 2.0, 10], [10.6, 1.8, 10]], cry: [[2.4, 0.2, 8]], rodri: [[2.4, 0.2, 8]], showdown: [[2.4, 0.5, 22], [7.0, 0.3, 10]], twist: [] };
+const SHK = { hook: [[1.2, 0.3, 14]], mock: [], combo: [[1.0, 0.2, 12], [2.0, 0.3, 14], [3.8, 0.3, 16], [6.0, 1.8, 8], [7.6, 0.3, 16], [8.3, 0.3, 14], [10.4, 1.5, 10], [12.5, 0.8, 22]], cry: [[2.4, 0.2, 8]], rodri: [[2.4, 0.2, 8]], showdown: [[2.4, 0.5, 22], [7.0, 0.3, 10]], twist: [] };
 const shakeAt = (n, z) => SHK[n].reduce((m, [a, d, A]) => z >= a && z < a + d ? Math.max(m, A * (1 - (z - a) / d)) : m, 0);
-const LEN = [['hook', 3.4, s_hook, 1], ['mock', 6.0, s_mock, 1], ['combo', 15.0, s_combo, 1], ['cry', 5.0, s_cry, 1], ['rodri', 6.0, s_rodri, 1], ['showdown', 10.0, s_showdown, 1], ['twist', 5.0, s_twist, 1]];
+const LEN = [['hook', 3.4, s_hook, 0.8], ['mock', 6.0, s_mock, 0.65], ['combo', 14.0, s_combo, 1], ['cry', 5.0, s_cry, 0.6], ['rodri', 6.0, s_rodri, 0.65], ['showdown', 10.0, s_showdown, 0.75], ['twist', 5.0, s_twist, 0.7]];
 const SEG = []; { let t = 0; for (const [n, d, f, sl] of LEN) { SEG.push([t, t + d * sl, f, n, sl]); t += d * sl; } }
 const DURATION = SEG[SEG.length - 1][1];
 window.SEGS = SEG.map(s => [s[3], +s[0].toFixed(2)]);
