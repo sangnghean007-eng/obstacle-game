@@ -1,7 +1,7 @@
 # TikTok: Ep13
 **Caption:**
 ```
-Kane's REVENGE 😤 He slipped vs Spain at Wembley… 7 weeks later the Ballon d'Or winner scores the pen in Madrid and England beat the world champions 3-2. Spain lost: fluke or warning? 👇
+Kane's REVENGE 😤 Oyarzabal haunted England twice, Kane slipped at Wembley… then the Ballon d'Or winner scored the pen in Madrid and England beat Yamal's world champions 3-2. Fluke or warning? 👇
 #kane #england #spain #nationsleague #footballtiktok
 ```
 **Cover:** frame 0 (the VS card "THE REVENGE 😤"). Keep the original sound.

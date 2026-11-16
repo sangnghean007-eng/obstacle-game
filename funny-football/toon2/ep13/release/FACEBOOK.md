@@ -1,7 +1,7 @@
 # Facebook Reels: Ep13 (no engagement bait)
 **Caption:**
 ```
-In September, Harry Kane slipped on a penalty and Spain won 3-2 at Wembley. Tonight in Madrid, the new Ballon d'Or winner scored from the spot, England went 3-0 up and held on to win 3-2, ending the world champions' 43-game unbeaten run. Was it a fluke, or a warning for Spain?
+Oyarzabal broke England's hearts in the Euro 2024 final, then again at Wembley in September after Harry Kane slipped on a penalty. Last night in Madrid, the new Ballon d'Or winner scored from the spot, England went 3-0 up and held on to win 3-2, ending the world champions' 43-game unbeaten run. Was it a fluke, or a warning for Spain?
 Real result · cartoon parody
 ```
 **Hashtags:** #NationsLeague

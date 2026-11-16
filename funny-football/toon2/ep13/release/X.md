@@ -3,7 +3,8 @@
 ```
 THE REVENGE 😤
 
-Sep 26: Kane slips, pen hits the bar. England 2-3 Spain
+2024: Oyarzabal 👻 Euro final
+Sep 26: Kane slips, pen hits the bar. 2-3
 Oct 26: Ballon d'Or
 Nov 15: pen scored. No slip.
 Spain 2-3 England. 43-game unbeaten run: over
