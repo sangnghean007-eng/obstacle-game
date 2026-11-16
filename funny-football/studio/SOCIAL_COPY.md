@@ -74,6 +74,7 @@ The Shorts feed (watch time, swipe-away rate) drives most views; metadata mainly
 **X:** `<Hook> <emoji>` / `<date>: <fact>` ×3 / `<question> 👇 #<1> #<2>` → Reply 1 facts · Reply 2 engagement
 
 ## 7. Pre-ship checklist
+- [ ] **Paste all 5 posts in the chat reply when sending the video** (user, Nov 16: "forgot the social posts?"). The files alone are not enough.
 - [ ] First line has the hook + the main name/keyword, matching the on-screen hook
 - [ ] Every number/date/name is in `facts.md`; invented parts are labelled parody
 - [ ] YouTube: title fits on a phone, 3 hashtags in the description, tags ≤500 characters, Comedy category, standard license, embedding on
