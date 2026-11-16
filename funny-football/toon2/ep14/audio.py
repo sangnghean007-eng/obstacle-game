@@ -3,7 +3,15 @@ hook 0 · obsess 3.2 · door 8.6 · jump 12.0 · flip 16.6 · kick 21.2 · final
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'sfx'))
 from synth import *
-END = 42.4; m = Mix(END)
+# v2 timeline: a 1.6 s TV close-up is added first, and some segments are slowed (clarity pass). Remap every event from the v1 times.
+OLD = [(0, 3.2, 1), (3.2, 5.4, 1.1), (8.6, 3.4, 1.2), (12.0, 4.6, 1.25), (16.6, 4.6, 1.2), (21.2, 4.8, 1.2), (26.0, 6.0, 1.1), (32.0, 6.4, 1), (38.4, 4.0, 1)]
+NEW0 = []; _t = 1.6
+for a, d, sl in OLD: NEW0.append(_t); _t += d * sl
+def R(t):
+    for (a, d, sl), n0 in zip(OLD, NEW0):
+        if t < a + d or (a, d, sl) == OLD[-1]: return n0 + (t - a) * sl
+END = _t; m = Mix(END)
+_put = m.put; m.put = lambda bus, s, t0, *a, **k: _put(bus, s, R(t0), *a, **k)
 def k808(t, g=.9): d = .5; m.m(osc(glide(110, 42, d, .3), d) * dec(d, 5) + .2 * lp(noise(d), 1500) * dec(d, 60), t, g, 0, .02)
 def bounce(t0, t1, g=1.0, bpm=118, key='C'):
     b = 60 / bpm; t = t0; i = 0; root = {'C': 'C3', 'F': 'F2', 'G': 'G2'}[key]; prog = [0, 5, 7, 5]
@@ -59,4 +67,7 @@ m.f(m.wav('laugh_crowd'), t + 3.6, .3, 0, .3); m.f(m.wav('bleat'), t + 5.0, .4, 
 t = 38.4
 for i, n in enumerate(['C4', 'E4', 'G4', 'C4', 'D#4', 'G4', 'C4', 'D4', 'F4']): m.pluck(hz(n), t + .1 + i * .22, .3, .14, -.2, .9, .2)
 m.ding(t + 1.2, 1318, .3); m.brass_hit([hz('C3'), hz('G3'), hz('C4')], t + 1.25, .6, .25); m.pop(t + 1.8, .3, 900); m.f(m.wav('chuckle'), t + 2.3, .25, -.3, .2)
+# v2: TV close-up sounds (placed directly, not remapped)
+m.put = _put
+m.f(m.wav('cheer_crowd'), 0, .35, 0, .3); m.whoosh(.15, .5, .3, True); m.thwack(.6, .9); m.whoosh(.62, .4, .3, True, .4); m.net(1.05, .7, .4); k808(1.05, 1.0); m.crash(1.05, .5); m.cheer_burst(1.05, .5)
 m.write(sys.argv[1])

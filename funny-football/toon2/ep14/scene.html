@@ -288,18 +288,25 @@ function slipper(x, y, a, s = 1) { ctx.save(); ctx.translate(x, y); ctx.rotate(a
 function dust(x, y, t, k) { if (k <= 0) return; for (let i = 0; i < 9; i++) { const a = i / 9 * TAU + t * 6; ell(x + Math.cos(a) * 140, y + Math.sin(a) * 70, 70 + Math.sin(t * 9 + i) * 12, 60, 'rgba(235,225,200,.95)', 5); } for (let i = 0; i < 6; i++) { const a = t * 11 + i; txt(['💥', '⭐', '👋', '🩴', '💫', '🔥'][i], x + Math.cos(a) * 110, y + Math.sin(a * 1.3) * 60, 56, '#fff', null); } }
 
 // ---------- shots ----------
+function s_tvclose(z, t) { ctx.fillStyle = '#111'; ctx.fillRect(0, 0, W, H); rr(30, 380, 1020, 1180, 30, '#1a1a1a', '#333', 10); ctx.save(); ctx.beginPath(); ctx.rect(60, 410, 960, 1120); ctx.clip(); stadium(t, ['#ffd400', '#1e3a8a', '#fff'], 5);
+  const k = clamp((z - 0.15) / 0.9); RO(k > 0 && k < 1 ? BIKE : k >= 1 ? RAISE : 'stand', k >= 1 ? 'siuuu' : 'angry', 420, 1420 - Math.sin(k * Math.PI) * 320, 1.15, { rot: k > 0 && k < 1 ? -k * 2.8 : 0 });
+  if (z > 0.55 && z < 1.05) { const b = (z - 0.55) / 0.5; for (let i = 3; i > 0; i--) ell(lerp(470, 930, b - i * 0.05), lerp(900, 1120, b - i * 0.05), 30 - i * 5, 30 - i * 5, `rgba(255,255,255,${0.2 * (4 - i)})`); fball(lerp(470, 930, b), lerp(900, 1120, b), 34, z * 12); }
+  sideGoal(860, 1440, 220, 360); if (z > 1.05) { bigNet(950, 1150, z - 1.05); burst(700, 800, 170, 'GOAL!', (z - 1.05) / 0.12, 70); }
+  ctx.fillStyle = 'rgba(0,0,0,.1)'; for (let yy = 410; yy < 1530; yy += 6) ctx.fillRect(60, yy, 960, 2); ctx.restore(); rr(60, 1440, 960, 90, 0, 'rgba(0,0,0,.7)', null); txt('CR7 🚲  BICYCLE KICK', W / 2, 1486, 44, '#ffd60a', null); }
+
 function s_hook(z, t) { room(t); tv(560, 760, 460, 300, t, z, 'CR7 🚲'); const shock = z > 0.6;
   ME(shock ? { bArm: [-30, -10], fArm: [60, 120], bLeg: [80, 0], fLeg: [90, 0] } : SITM, shock ? 'shock' : 'deadpan', 330, 1400, 1.0, { f: 1 });
   if (!shock) { ell(470, 1080, 22, 30, '#c58b4b', 5); } else { const k = clamp((z - 0.6) / 0.5); ctx.save(); ctx.translate(470 + k * 60, 1080 + k * k * 300); ctx.rotate(k * 3); ell(0, 0, 22, 30, '#c58b4b', 5); ctx.restore(); if (z > 1.1) txt('💦', 540, 1380, 50, '#fff', null); }
-  if (z > 1.2) hearts(330, 900, t, 6);
+  if (z > 1.2) hearts(330, 900, t, 6); if (z > 1.0) bubble('WOW… HOW?! 😍', 380, 820, z - 1.0, 48);
   HUD(() => { title('MESSI SAW THIS… 😍', 1, 330, 70, '#fff'); }); }
 function s_obsess(z, t) { if (z < 2.8) { room(t); for (const [px, py, r] of [[120, 520, -0.1], [900, 560, 0.12]]) { ctx.save(); ctx.translate(px, py); ctx.rotate(r); rr(-90, -120, 180, 240, 10, '#fff8e0', DARK, 5); RO(BIKE, 'siuuu', 0, 90, 0.28, { rot: -2.4 }); txt('❤️', 60, -90, 40, '#fff', null); ctx.restore(); }
-    tv(300, 700, 480, 320, t, z * 2, z < 1.4 ? 'APR 3 2018 · vs JUVENTUS' : 'NOV 15 2024 · vs POLAND (age 39!)'); ME({ bArm: [-30, -10], fArm: [100, 110], bLeg: [-8, -4], fLeg: [8, 4] }, 'smug', 540, 1480, 1.05, { f: 1 }); rr(640, 1150, 40, 70, 8, '#222', DARK, 4);
+    tv(300, 700, 480, 320, t, z * 2, z < 1.4 ? 'APR 3 2018 · vs JUVENTUS' : 'NOV 15 2024 · vs POLAND (age 39!)'); ME({ bArm: [-30, -10], fArm: [100, 110], bLeg: [-8, -4], fLeg: [8, 4] }, 'smug', 540, 1480, 1.05, { f: 1 }); if (z > 0.4) bubble('again! again! 🤩', 560, 1020, z - 0.4, 44); rr(640, 1150, 40, 70, 8, '#222', DARK, 4);
     const n = z < 0.8 ? 1 : z < 1.6 ? 12 : z < 2.2 ? 47 : 99; HUD(() => { pill(`⏪ REPLAY ×${n}`, 1, 330, 'rgba(0,0,0,.8)', '#ffd60a', 48); if (z > 1.4) caption('even the Juventus fans clapped 👏', z - 1.4, 450, '#111', '#fff', 38); }); return; }
   const u = z - 2.8; backyard(t); const fly = clamp((u - 0.3) / 0.6); const down = u > 0.9;
   if (!down) ME(u < 0.3 ? 'stand' : BIKE, u < 0.3 ? 'angry' : 'shock', 540, 1440 - Math.sin(fly * Math.PI) * 220, 0.95, { f: 1, rot: -fly * 2.2 }); else ME(LIE, 'shock', 540, 1500, 0.95, { f: 1, rot: -1.57 });
-  const bk = clamp((u - 1.1) / 0.4); if (u < 1.1) fball(560, 1440 - Math.sin(fly * Math.PI) * 300, 22, z * 9); else fball(lerp(600, 380, bk), lerp(700, 1340, bk), 22, z * 9);
+  const bk = clamp((u - 1.1) / 0.4); if (u < 1.1) fball(560, 1440 - Math.sin(fly * Math.PI) * 300, 30, z * 9); else fball(lerp(600, 380, bk), lerp(700, 1340, bk), 30, z * 9);
   if (u > 0.9 && u < 1.3) burst(540, 1250, 110, 'THUD', (u - 0.9) / 0.1, 40, '#fff'); if (u > 1.5 && u < 1.9) burst(380, 1220, 100, 'BONK!', (u - 1.5) / 0.1, 40, '#fff'); if (u > 1.5) stars(380, 1240, t, 70);
+  if (u < 0.35) bubble('my turn 😤', 540, 1000, u + 0.2, 44); if (u > 1.7) bubble('ouch… 🤕', 600, 1150, u - 1.7, 42);
   HUD(() => caption('trying it alone… 🙃', u - 0.1, 330, '#fff', 'rgba(0,0,0,.7)', 50)); }
 function s_door(z, t) { const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#f4b860'); g.addColorStop(1, '#c86a3a'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); rr(380, 560, 600, 960, 20, '#f2e6d0', DARK, 8); rr(560, 860, 280, 660, 140, '#6b3f1f', DARK, 8); rr(600, 760, 200, 80, 14, '#d4a017', DARK, 6); txt('CR7', 700, 802, 56, DARK, null); ctx.fillStyle = '#5a3a2a'; ctx.fillRect(0, 1520, W, 400);
   const open = clamp((z - 1.4) / 0.4); if (open > 0) { ctx.fillStyle = `rgba(255,230,120,${open})`; ctx.beginPath(); ctx.roundRect(560, 860, 280 * open, 660, [140, 0, 0, 0]); ctx.fill(); }
@@ -309,28 +316,31 @@ function s_door(z, t) { const g = ctx.createLinearGradient(0, 0, 0, H); g.addCol
   if (z > 1.5 && z < 2.6) bubble('teach me? 🥺', 300, 980, z - 1.5, 44); if (z > 2.5) bubble('SIUUU… OK 😏', 700, 960, z - 2.5, 44); }
 function s_jump(z, t) { academy(t, 1); const rj = z > 0.5 && z < 1.6 ? Math.sin(clamp((z - 0.5) / 1.1) * Math.PI) * 520 : 0; RO(rj > 0 ? JUMPP : POINT, rj > 0 ? 'siuuu' : 'smug', 620, 1440 - rj, 0.9, { f: -1 });
   const mj = z > 2.0 && z < 2.5 ? Math.sin(clamp((z - 2.0) / 0.5) * Math.PI) * 18 : 0; const hit = z > 3.05; ME(mj > 0 ? JUMPP : hit ? P_HIT : 'stand', hit ? 'shock' : 'angry', 380, 1460 - mj, 0.9, { f: 1, rot: hit ? 0.3 * Math.max(0, 1 - (z - 3.05) * 1.5) : 0 });
-  if (z > 2.0 && z < 2.9) { rr(440, 1380, 120, 50, 10, '#fff', DARK, 4); txt('2 cm', 500, 1406, 30, DARK, null); } slap(560, 1150, 410, 1120, z, 2.85, 0.22, 0.9, YEL, 'SLAP!'); if (hit) { handprint(430, 1150, 0.9, -0.2); stars(380, 1050, t, 80); }
+  if (z < 0.5) bubble('WATCH ME 😎', 640, 980, z + 0.2, 46); if (z > 1.6 && z < 2.1) bubble('YOUR TURN!', 640, 1000, z - 1.6, 46); if (z > 2.0 && z < 2.9) { rr(430, 1380, 140, 56, 10, '#fff', DARK, 4); txt('2 cm 😅', 500, 1408, 32, DARK, null); } slap(560, 1150, 410, 1120, z, 2.85, 0.22, 0.9, YEL, 'SLAP!'); if (hit) { handprint(430, 1150, 0.9, -0.2); stars(380, 1050, t, 80); }
   HUD(() => { pill('LESSON 1: JUMP 🦘', 1, 330, 'rgba(0,0,0,.8)', '#ffd60a', 46); if (z > 3.1) caption('CR7: "HIGHER!" 😤', z - 3.1, 450, '#111', '#ffd60a', 48); }); }
 function s_flip(z, t) { academy(t, 2); const rf = clamp((z - 0.3) / 0.9); RO(rf > 0 && rf < 1 ? JUMPP : POINT, rf > 0 && rf < 1 ? 'siuuu' : 'smug', 640, 1440 - Math.sin(rf * Math.PI) * 300, 0.9, { f: -1, rot: rf > 0 && rf < 1 ? -rf * TAU : 0 });
   const mf = clamp((z - 1.6) / 0.9); const stuck = z > 2.5 && z < 3.8;
   if (z < 1.6) ME('stand', 'angry', 380, 1460, 0.9, { f: 1 }); else if (!stuck && z < 3.8) ME(JUMPP, 'shock', 380, 1460 - Math.sin(mf * Math.PI) * 200, 0.9, { f: 1, rot: mf * 18 });
   if (stuck) { ctx.save(); ctx.beginPath(); ctx.rect(0, 0, W, 1460); ctx.clip(); ME({ bArm: [-170, -170], fArm: [170, 170], bLeg: [-20 + Math.sin(t * 30) * 25, -10], fLeg: [20 - Math.sin(t * 30) * 25, 10] }, 'shock', 380, 1300, 0.9, { f: 1, rot: Math.PI }); ctx.restore(); ell(380, 1462, 90, 18, '#2f6b3a'); burst(380, 1250, 100, 'THUNK', (z - 2.5) / 0.1, 40, '#fff'); }
   if (z >= 3.8) { const k = clamp((z - 3.8) / 0.4); ME(FLAIL(t), 'shock', 380 + k * 80, 1460 - Math.sin(k * Math.PI) * 120, 0.9, { f: 1, rot: Math.PI * (1 - k) }); RO({ bArm: [-20, -10], fArm: [120, 170], bLeg: [-14, -8], fLeg: [14, 8] }, 'angry', 560, 1440, 0.9, { f: -1 }); if (z < 4.2) burst(420, 1300, 90, 'POP!', (z - 3.8) / 0.1, 36, '#fff'); }
+  if (z < 0.4) bubble('FLIP LIKE THIS 😎', 640, 980, z + 0.2, 42); if (z > 1.3 && z < 1.7) bubble('ok… 😬', 380, 1020, z - 1.3, 42); if (z > 3.8) bubble('AGAIN! 😤', 560, 980, z - 3.8, 46);
   HUD(() => { pill('LESSON 2: FLIP 🤸', 1, 330, 'rgba(0,0,0,.8)', '#ffd60a', 46); if (stuck) caption('…stuck 🙃', z - 2.6, 450, '#111', '#fff', 48); }); }
 function s_kick(z, t) { academy(t, 3); const rk = clamp((z - 0.3) / 0.8); const rb = z > 0.3 && z < 1.1;
-  if (z < 3.0) RO(rb ? BIKE : z > 1.3 && z < 2.2 ? RAISE : POINT, z > 1.2 && z < 2.2 ? 'siuuu' : 'smug', 640, 1440 - Math.sin(rk * Math.PI) * 280, 0.9, { f: -1, rot: rb ? -rk * 2.6 : 0 }); else if (z >= 3.8) RO(POINT, 'siuuu', 520, 1440, 0.9, { f: 1 }); if (z > 0.6 && z < 1.2) fball(lerp(660, 950, (z - 0.6) / 0.6), lerp(1060, 1300, (z - 0.6) / 0.6), 22, z * 9); if (z > 1.2 && z < 1.7) burst(940, 1150, 100, 'SIUUU', (z - 1.2) / 0.1, 36, '#ffd60a');
+  if (z < 3.0) RO(rb ? BIKE : z > 1.3 && z < 2.2 ? RAISE : POINT, z > 1.2 && z < 2.2 ? 'siuuu' : 'smug', 640, 1440 - Math.sin(rk * Math.PI) * 280, 0.9, { f: -1, rot: rb ? -rk * 2.6 : 0 }); else if (z >= 3.8) RO(POINT, 'siuuu', 520, 1440, 0.9, { f: 1 }); if (z > 0.6 && z < 1.2) fball(lerp(660, 950, (z - 0.6) / 0.6), lerp(1060, 1300, (z - 0.6) / 0.6), 30, z * 9); if (z > 1.2 && z < 1.7) burst(940, 1150, 100, 'SIUUU', (z - 1.2) / 0.1, 36, '#ffd60a');
   const mk = clamp((z - 2.3) / 0.6); const boot = z > 3.4; const fly = clamp((z - 3.6) / 0.7);
   if (!boot) ME(z < 2.3 ? 'stand' : BIKE, z < 3.0 ? 'angry' : 'shock', 360, 1460 - Math.sin(mk * Math.PI) * 160, 0.9, { f: 1, rot: z > 2.3 && z < 2.9 ? -mk * 2.4 : 0 });
   else ME(FLAIL(t), 'shock', lerp(380, 980, fly), 1460 - Math.sin(fly * Math.PI) * 420, 0.9, { f: 1, rot: fly * 6 });
-  if (z > 2.4 && z < 3.0) { const k = (z - 2.4) / 0.6; fball(360, lerp(800, 1150, k), 22, z * 9); } if (z > 2.95 && z < 3.3) burst(360, 1100, 100, 'BONK!', (z - 2.95) / 0.1, 40, '#fff');
+  if (z > 2.4 && z < 3.0) { const k = (z - 2.4) / 0.6; fball(360, lerp(800, 1150, k), 30, z * 9); } if (z > 2.95 && z < 3.3) burst(360, 1100, 100, 'BONK!', (z - 2.95) / 0.1, 40, '#fff');
   if (z > 3.0 && z < 3.4) RO(P_FACEPALM, 'deadpan', 560, 1440, 0.9, { f: -1 }); if (z >= 3.4 && z < 3.8) { RO(KICK, 'angry', 480, 1440, 0.9, { f: 1 }); burst(420, 1300, 110, 'BOOT!', (z - 3.4) / 0.1, 40, '#fff'); }
   if (z > 4.2) { bigNet(980, 1250, z - 4.2); stars(980, 1180, t, 80); }
+  if (z < 0.3) bubble('KICK IT 🚲', 640, 980, z + 0.2, 46); if (z > 2.1 && z < 2.5) bubble('here I go! 😤', 360, 1020, z - 2.1, 42);
   HUD(() => { pill('LESSON 3: KICK ⚽', 1, 330, 'rgba(0,0,0,.8)', '#ffd60a', 46); if (z > 3.5) caption('into the net… the wrong way 😂', z - 3.5, 450, '#111', '#fff', 42); }); }
 function s_final(z, t) { academy(t, 4); const att = z < 0.9; const mb = clamp((z - 1.2) / 0.6); const back = z > 1.6;
   if (z < 2.3) { ME(z < 1.2 ? 'stand' : BIKE, z < 1.2 ? 'angry' : 'siuuu', 380, 1460 - Math.sin(mb * Math.PI) * 260, 0.9, { f: 1, rot: z > 1.2 && z < 1.8 ? -mb * 2.6 : 0 }); RO(FOLD, z > 2.0 ? 'shock' : 'smug', 760, 1440, 0.9, { f: -1 });
     if (z > 1.6 && z < 2.0) fball(lerp(420, 760, (z - 1.6) / 0.4), lerp(1150, 1080, (z - 1.6) / 0.4), 24, z * 9); if (z > 2.0) { burst(760, 1040, 110, 'BONK!', (z - 2.0) / 0.1, 40, '#fff'); stars(760, 1000, t, 80); } }
   else if (z < 2.8) { RO({ bArm: [-20, -10], fArm: [160, 170], bLeg: [-14, -8], fLeg: [14, 8] }, 'angry', 760, 1440, 0.9, { f: -1 }); slipper(820, 920, Math.sin(t * 20) * 0.4, 1.2); steam2(760, 980, t); ME('stand', 'shock', 380, 1460, 0.9, { f: 1 }); }
   else { const cx = 540 + Math.sin(t * 3) * 160; dust(cx, 1280, t, 1); }
+  if (z < 1.1) bubble('please work 🙏', 380, 1000, z, 42); if (z > 2.2 && z < 2.8) bubble('😡😡😡', 760, 900, z - 2.2, 50);
   HUD(() => { pill('ATTEMPT #99 🥁', 1, 330, 'rgba(0,0,0,.8)', '#ffd60a', 46); if (z > 2.0 && z < 2.8) caption('…right in CR7\'s face 😳', z - 2.0, 450, '#fff', '#c1121f', 46); if (z > 2.8) caption('🩴 SMACK SMACK SMACK', z - 2.8, 450, '#111', '#ffd60a', 48); }); }
 function s_goat(z, t) { const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#ff9a6a'); g.addColorStop(1, '#ffd36b'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, 1250); ell(540, 1150, 220, 220, 'rgba(255,240,200,.85)'); ctx.fillStyle = '#3a9d4a'; ctx.fillRect(0, 1250, W, 700);
   const walk = clamp(z / 1.6); const gx = lerp(-250, 470, walk), mx = lerp(-80, 330, walk); const hand = z > 2.0; const chew = z > 3.2;
@@ -348,17 +358,17 @@ function s_tag(z, t) { room(t); ME(SITM, 'smug', 330, 1400, 1.0, { f: 1, band: t
 let HUDQ = []; const HUD = (f) => HUDQ.push(f);
 const _cap = caption; caption = (...a) => HUD(() => _cap(...a));
 const N = (t) => [t, 540, 960, 1];
-const CAMS = { hook: [[0, 540, 1000, 1.05], [0.5, 540, 1000, 1.05], [0.7, 380, 1100, 1.45], [3.2, 380, 1100, 1.5]], obsess: [[0, 540, 1000, 1.1], [2.8, 540, 1000, 1.15], [2.8, 540, 1200, 1.2], [5.4, 500, 1250, 1.3]], door: [[0, 500, 1150, 1.15], [3.4, 520, 1150, 1.25]],
+const CAMS = { tvclose: [[0, 540, 1000, 1.05], [1.6, 540, 960, 1.1]], hook: [[0, 540, 1000, 1.05], [0.5, 540, 1000, 1.05], [0.7, 380, 1100, 1.45], [3.2, 380, 1100, 1.5]], obsess: [[0, 540, 1000, 1.1], [2.8, 540, 1000, 1.15], [2.8, 540, 1200, 1.2], [5.4, 500, 1250, 1.3]], door: [[0, 500, 1150, 1.15], [3.4, 520, 1150, 1.25]],
   jump: [[0, 520, 1150, 1.15], [0.5, 600, 1000, 1.05], [1.8, 520, 1200, 1.15], [2.8, 420, 1250, 1.35], [4.6, 420, 1250, 1.4]], flip: [[0, 520, 1150, 1.15], [1.4, 520, 1150, 1.15], [2.4, 450, 1300, 1.3], [4.6, 450, 1300, 1.3]], kick: [[0, 620, 1200, 1.15], [2.2, 520, 1250, 1.2], [3.3, 450, 1300, 1.3], [3.6, 700, 1250, 1.05], [4.8, 800, 1250, 1.2]],
   final: [N(0), [1.0, 540, 1250, 1.2], [2.0, 760, 1150, 1.45], [2.4, 760, 1150, 1.45], [2.8, 540, 1250, 1.15], [6.0, 540, 1250, 1.25]], goat: [N(0), [2.0, 540, 1250, 1.15], [3.2, 700, 1200, 1.35], [6.4, 700, 1200, 1.4]], tag: [N(0), [4.0, 540, 1050, 1.1]] };
-const SHK = { hook: [[0.6, 0.3, 10]], obsess: [[3.7, 0.25, 12], [4.3, 0.2, 10]], door: [], jump: [[3.05, 0.3, 14]], flip: [[2.5, 0.3, 14]], kick: [[2.95, 0.2, 10], [3.4, 0.3, 16]], final: [[2.0, 0.3, 16], [2.8, 3.2, 12]], goat: [[3.3, 0.3, 8]], tag: [] };
+const SHK = { tvclose: [[1.05, 0.35, 14]], hook: [[0.6, 0.3, 10]], obsess: [[3.7, 0.25, 12], [4.3, 0.2, 10]], door: [], jump: [[3.05, 0.3, 14]], flip: [[2.5, 0.3, 14]], kick: [[2.95, 0.2, 10], [3.4, 0.3, 16]], final: [[2.0, 0.3, 16], [2.8, 3.2, 12]], goat: [[3.3, 0.3, 8]], tag: [] };
 const shakeAt = (n, z) => SHK[n].reduce((m, [a, d, A]) => z >= a && z < a + d ? Math.max(m, A * (1 - (z - a) / d)) : m, 0);
-const LEN = [['hook', 3.2, s_hook], ['obsess', 5.4, s_obsess], ['door', 3.4, s_door], ['jump', 4.6, s_jump], ['flip', 4.6, s_flip], ['kick', 4.8, s_kick], ['final', 6.0, s_final], ['goat', 6.4, s_goat], ['tag', 4.0, s_tag]];
-const SEG = []; { let t = 0; for (const [n, d, f] of LEN) { SEG.push([t, t + d, f, n]); t += d; } }
+const LEN = [['tvclose', 1.6, s_tvclose, 1], ['hook', 3.2, s_hook, 1], ['obsess', 5.4, s_obsess, 1.1], ['door', 3.4, s_door, 1.2], ['jump', 4.6, s_jump, 1.25], ['flip', 4.6, s_flip, 1.2], ['kick', 4.8, s_kick, 1.2], ['final', 6.0, s_final, 1.1], ['goat', 6.4, s_goat, 1], ['tag', 4.0, s_tag, 1]];
+const SEG = []; { let t = 0; for (const [n, d, f, sl] of LEN) { SEG.push([t, t + d * sl, f, n, sl]); t += d * sl; } }
 const DURATION = SEG[SEG.length - 1][1];
 window.SEGS = SEG.map(s => [s[3], +s[0].toFixed(2)]);
 function render(t) { ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, W, H); window.T2T = t;
-  for (const [a, b, fn, n] of SEG) if (t >= a && t < b) { const z = t - a; HUDQ = []; const sh = shakeAt(n, z), C = camK(CAMS[n], z); C[2] *= 1 + sh / 350; const hw = W / (2 * C[2]), hh = H / (2 * C[2]); C[0] = clamp(C[0], hw, W - hw); C[1] = clamp(C[1], hh, H - hh);
+  for (const [a, b, fn, n, sl] of SEG) if (t >= a && t < b) { const z = (t - a) / sl; HUDQ = []; const sh = shakeAt(n, z), C = camK(CAMS[n], z); C[2] *= 1 + sh / 350; const hw = W / (2 * C[2]), hh = H / (2 * C[2]); C[0] = clamp(C[0], hw, W - hw); C[1] = clamp(C[1], hh, H - hh);
     cam(C, () => fn(z, t), sh, t); ctx.setTransform(1, 0, 0, 1, 0, 0); for (let i = 0; i < HUDQ.length; i++) HUDQ[i](); break; } }
 window.render = render; window.DURATION = DURATION;
 if (!location.search.includes('render')) { const t0 = performance.now(); (function loop() { render(((performance.now() - t0) / 1000) % DURATION); requestAnimationFrame(loop); })(); }

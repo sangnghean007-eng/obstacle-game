@@ -124,3 +124,10 @@ Every video needs **at least 4–5 physical-comedy hits**, spread across the tim
 - **Each hit is motivated by the story** (the arrogant one gets slapped back down, the scared one gets a "WAKE UP!" slap, the villain ghost gets swatted away).
 - **Cartoon rules:** no blood, no real injuries, no punching, nobody hurt badly. A slap is a gag, followed by stars or a funny face. Rivalry, not hate.
 - **Sound:** whoosh + crack + low thump + a crowd "ooh"/laugh for each hit.
+
+## 13. Clarity pass (user, Nov 16 2026: "not very clear")
+Before rendering, watch each beat as a stranger with the sound off:
+- **Show what the character sees, BIG** (full-screen TV close-up first, then the reaction). Never put the key thing in a small inset.
+- **One line of dialogue per beat** in a speech bubble (2–4 simple English words: "WATCH ME 😎", "YOUR TURN!", "HIGHER!", "AGAIN!"). Bubbles beat captions.
+- **Slow the actions down:** a hit needs ~0.35 s of wind-up and a 0.5 s hold for the reaction. Use per-segment slow factors (`LEN` 4th value) instead of rushing.
+- **Big readable props:** ball radius ≥30 px in mid shots; one action at a time in the frame centre.
