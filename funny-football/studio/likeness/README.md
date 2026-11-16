@@ -43,8 +43,19 @@ User rule (Nov 15 2026): "make sure everyone from now on also looks alike".
 | Pelé | `pele` (generic) | no | "Pele photo 1962.jpg" | round 2, awaiting user check |
 | Ronaldo Nazário (R9) | `r9` (generic) | no | "Ronaldo.jpeg" (2000s, shaved head) | round 2, awaiting user check |
 | Harry Kane | `kane` (generic + new feathered `beard`/`beardGrad`/`stache`) | via `KC` in ep13 (white kit, pale skin) | "Harry Kane 2023.jpg" (padded to fit the box) | round 4, awaiting user check |
+| Lamine Yamal | `yamal` (generic + `curls`, `fade`) | via `CAST` in ep13 | "Lamine Yamal in 2025 (cropped).jpg" (3/4 down view) | round 3, awaiting user check (no frontal photo yet) |
+| Unai Simón | `simon` (generic + beard) | via `CAST` | "Unai Simon France v Spain 7.24.26-066.jpg" (near-frontal) | round 3, awaiting user check |
+| Pau Cubarsí | `cubarsi` (generic) | via `CAST` | "Pau Cubarsi France v Spain 7.24.26-115.jpg" (3/4) | round 3, awaiting user check |
+| Mikel Oyarzabal | `oyarzabal` (generic + stubble) | via `CAST` | "Mikel Oyarzabal.jpg" (frontal) + "Argentina v Spain 19 July 2026-122" (2026 hair) | round 3, awaiting user check |
+| Nico Williams | `nico` (generic + new `twists`) | via `CAST` | "NICO WILLIAMS - ATHLETIC BILBAO v OSASUNA.jpg" (frontal) | round 4, awaiting user check |
+| Declan Rice | `rice` (generic + stubble) | via `CAST` | "Declan Rice September 2021.jpg" (frontal) + "England v Ghana 23 June 2026-133" | round 3, awaiting user check |
+| Ezri Konsa | `konsa` (generic + goatee) | via `CAST` | "Ezri Konsa.jpg" + "England v Panama 27 June 26-158" (side) | round 2 traits-based, awaiting user check |
+| Elliot Anderson | `anderson` (generic) | via `CAST` | "England v Panama 27 June 26-075" + "England v Ghana 23 June 2026-147" (small faces) | round 2 traits-based, awaiting user check |
+| Ben White | none | none | no usable Commons photo (the "Ben White" files are a rugby player; the footballer category is empty) | NOT drawn: shown as a generic mini with his name |
 | Højbjerg, Dias, Félix, B. Silva, D. Costa, Andersen, Veiga | — | rough | none yet | TODO before the next use |
 
+**Name trap (Nov 16):** check the person in the photo is the right one. "Ben White 2023" on Commons is a rugby player from Toulon. If no photo can be confirmed, do not draw the face: use a generic mini with the name.
+**New generic features (Nov 16):** `fade` (side fade polygons), `curls` (curly-hair texture colour), `twists` (twisted locks with coloured tips, each a point list), `beard` + `beardGrad` + `stache`.
 **Beard tip (Kane, Nov 15):** a full beard = `beard` polygon + `beardGrad` (transparent at the cheek top → full at the chin) + a darker `stache`; blur 4px. Keep the cheek top edge low (about nose-tip height) so it never reads as a mask.
 **Download tip 2:** when the API says "too many requests", build the thumb URL yourself: `upload.wikimedia.org/wikipedia/commons/thumb/<md5[0]>/<md5[0:2]>/<File_name>/500px-<File_name>` (md5 of the underscored file name).
 
