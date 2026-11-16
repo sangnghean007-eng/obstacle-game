@@ -115,3 +115,12 @@ The user gives a 1-2 line brief. That is the SEED, not the spec. Before scriptin
 - **Several scene types inside one video:** flashback, ceremony, lounge, tunnel, match action, close-up reaction, jumbotron, payoff. Different backgrounds, palettes and sound worlds.
 - **Length follows the story:** 45–60 s is fine when every 3–5 s has a new beat (Facebook favours 45–60 s anyway).
 - **Self-check before shipping:** "If the user watched this, what would they say is missing?" List 5 things a fan would expect (players, moments, history, rivalry, stats). If any is missing, add it.
+
+## 12. Slapstick quota (user, Nov 16 2026: "our videos lack slaps and the like")
+Every video needs **at least 4–5 physical-comedy hits**, spread across the timeline (not only at the end):
+- **Slap / smack** with a big cartoon hand (helper `slap()` in Ep13): swoosh lines → SLAP! burst → head jolt → red handprint + stars.
+- **Object hits:** the ball/rebound bonks someone, a name card flies into a face, sunglasses get smacked off, a trophy falls on a head.
+- **Pratfalls:** slips, trips, fall into holes, squashed flat, flying off screen spinning.
+- **Each hit is motivated by the story** (the arrogant one gets slapped back down, the scared one gets a "WAKE UP!" slap, the villain ghost gets swatted away).
+- **Cartoon rules:** no blood, no real injuries, no punching, nobody hurt badly. A slap is a gag, followed by stars or a funny face. Rivalry, not hate.
+- **Sound:** whoosh + crack + low thump + a crowd "ooh"/laugh for each hit.

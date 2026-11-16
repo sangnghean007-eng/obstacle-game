@@ -72,4 +72,11 @@ for i, ch in enumerate([['D3', 'F#3', 'A3', 'D4'], ['G3', 'B3', 'D4', 'G4'], ['A
 drums(t + .3, t + 4.0, .8, 120); m.cheer_burst(t + .3, .5); [m.firework(t + .4 + i * .55, .3, -.5 + i * .2) for i in range(6)]; m.scratch(t + 2.6, .25)
 # QUESTION
 t = 47.6; m.ding(t, 1318, .3); m.pop(t + .3, .3); m.pop(t + .45, .3, 1100); m.f(m.wav('ooh_crowd'), t + .3, .3, 0, .3); m.music_box(t + .9, ['D5', 'F#5', 'A5', 'D6'], .2, .12)
+# v3 SLAPSTICK: cartoon slaps (whoosh + crack + low thump + a little "ooh")
+def slapfx(t, g=.8): m.whoosh(t - .22, .22, .25, True, .3); m.f(hp(noise(.07), 1800) * dec(.07, 55) * 1.6, t, g, 0, .08); m.f(osc(glide(220, 90, .12), .12) * dec(.12, 25), t, g * .7); m.tweet(t + .12, 3, .1)
+slapfx(17.86); m.f(m.wav('ooh_crowd'), 17.95, .2, 0, .3)
+slapfx(21.75); m.f(m.wav('laugh_crowd'), 21.85, .3, 0, .3)
+slapfx(27.31, .9); m.whoosh(27.35, .4, .2, False, -.4)
+m.bonk(31.75, .7); m.f(m.wav('laugh_crowd'), 31.85, .25, 0, .3)
+slapfx(46.57); ghost(46.6, .25); m.f(m.wav('cheer_crowd'), 46.7, .3, 0, .3)
 m.write(sys.argv[1])
