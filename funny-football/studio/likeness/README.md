@@ -2,6 +2,7 @@
 
 User rule (Nov 15 2026): "make sure everyone from now on also looks alike".
 **No real player appears in a video until they pass this gate.**
+**Scope (user, Nov 16):** only build portraits for the 2–4 standout players of a story; the rest are generic minis with their names.
 
 ## Two layers
 | Layer | File | Used for |
