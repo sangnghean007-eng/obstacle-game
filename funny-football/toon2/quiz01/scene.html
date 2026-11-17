@@ -383,17 +383,17 @@ function quizBg(t, col) { const g = ctx.createLinearGradient(0, 0, 0, H); g.addC
 function clubTile(c, i, n, k) { if (k <= 0) return; const y = 300 + i * 104; const x = lerp(-700, 540, easeOut(k / 0.25)); ctx.save(); ctx.translate(x, y); rr(-410, -44, 820, 90, 20, c[2], DARK, 6); txt(c[0], -60, 4, c[0].length > 11 ? 50 : 56, c[3], c[2] === '#f7f7f7' || c[2] === '#fff200' || c[2] === '#fde100' || c[2] === '#fcd116' ? null : DARK); rr(250, -32, 140, 66, 14, '#fff', DARK, 4); txt(c[1], 320, 3, 38, DARK, null); ctx.restore();
   if (i < n - 1 && k > 0.25) txt('▼', 540, y + 58, 24, '#ffd60a', null); }
 function timer(k, col) { const w = 760; rr(160, 900, w, 34, 17, 'rgba(255,255,255,.15)', null); rr(160, 900, w * (1 - clamp(k)), 34, 17, k > 0.66 ? '#ef4444' : col, null); }
-const RD_LEN = 10.5, ARR = 0.55, THINK = 3.5;
-function s_round(i) { return (z, t) => { const R = ROUNDS[i]; quizBg(t, R.col); const n = R.clubs.length; const tEnd = 0.2 + n * ARR; const rev = z > tEnd + THINK ? clamp((z - tEnd - THINK) / 0.5) : 0;
-  silhouette(R.who, 540, 1740, 1.15, rev, t); if (rev > 0.6) { confettiCol(z - tEnd - THINK, R.col); stars(540, 1140, t, 160); }
+const RD_LEN = 10.5, ARR = 0.55, THINK = 4.0, TAIL = 0.9; // no reveal: answers go in the comments
+function s_round(i) { return (z, t) => { const R = ROUNDS[i]; quizBg(t, R.col); const n = R.clubs.length; const tEnd = 0.2 + n * ARR; const rev = 0; const done = z > tEnd + THINK;
+  silhouette(R.who, 540 + (done ? Math.sin(t * 30) * 6 : 0), 1740, 1.15, 0, t);
   R.clubs.forEach((c, j) => clubTile(c, j, n, (z - 0.2 - j * ARR) / 1)); 
   HUD(() => { pop(eOB(z / 0.12), W / 2, 150, () => { rr(-330, -60, 660, 120, 30, R.col, DARK, 6); txt(`#${i + 1} · ${R.lvl}`, 0, 4, 58, '#fff', DARK); });
-    if (z > tEnd && rev <= 0) { timer((z - tEnd) / THINK, R.col); txt(String(Math.max(1, 3 - Math.floor((z - tEnd) / (THINK / 3)))), 540, 1010, 100, '#fff', DARK); }
-    if (rev > 0) pop(eOB(rev), W / 2, 1010, () => { rr(-420, -66, 840, 132, 30, '#fff', DARK, 6); txt(R.name, 0, 6, R.name.length > 15 ? 54 : 62, DARK, null); }); }); }; }
+    if (z > tEnd && !done) { timer((z - tEnd) / THINK, R.col); txt(String(Math.max(1, 3 - Math.floor((z - tEnd) / (THINK / 3)))), 540, 1010, 100, '#fff', DARK); }
+    if (done) pop(eOB((z - tEnd - THINK) / 0.12), W / 2, 1010, () => { rr(-400, -66, 800, 132, 30, '#fff', DARK, 6); txt(`#${i + 1} = ❓ Comment 👇`, 0, 6, 56, DARK, null); }); }); }; }
 function s_intro(z, t) { quizBg(t, '#ffd60a'); for (const [w, x] of [['ronaldo', 220], ['haaland', 540], ['kane', 860]]) silhouette(w, x, 1650, 0.8, 0, t);
-  HUD(() => { pop(eOB(z / 0.12), W / 2, 420, () => { rr(-470, -170, 940, 340, 40, '#ffd60a', DARK, 8); txt('GUESS THE PLAYER', 0, -60, 76, DARK, null); txt('from his career 🧠', 0, 40, 62, DARK, null); txt('Can you get 3/3?', 0, 125, 50, '#7a1f1f', null); }); }); }
-function s_outro(z, t) { quizBg(t, '#ffd60a'); for (const [w, x] of [['ronaldo', 220], ['haaland', 540], ['kane', 860]]) silhouette(w, x, 1650, 0.8, 1, t);
-  HUD(() => { pop(eOB(z / 0.12), W / 2, 500, () => { rr(-460, -150, 920, 300, 40, '#fff', DARK, 8); txt('Your score? 👇', 0, -40, 84, DARK, null); txt('0/3 · 1/3 · 2/3 · 3/3', 0, 70, 54, '#7a1f1f', null); }); txt('Follow for more quizzes ⚽', W / 2, 1880, 34, '#fff', DARK, 'center', 800); }); }
+  HUD(() => { pop(eOB(z / 0.12), W / 2, 420, () => { rr(-470, -170, 940, 340, 40, '#ffd60a', DARK, 8); txt('GUESS THE PLAYER', 0, -60, 76, DARK, null); txt('from his career 🧠', 0, 40, 62, DARK, null); txt('Can you get all 3? (no answers given 😏)', 0, 125, 40, '#7a1f1f', null); }); }); }
+function s_outro(z, t) { quizBg(t, '#ffd60a'); [['ronaldo', 220], ['haaland', 540], ['kane', 860]].forEach(([w, x], i) => { silhouette(w, x, 1650, 0.8, 0, t); pop(eOB((z - 0.2 - i * 0.15) / 0.12), x, 1760, () => { rr(-70, -40, 140, 80, 20, ['#22c55e', '#f59e0b', '#ef4444'][i], DARK, 5); txt(`#${i + 1}`, 0, 3, 46, '#fff', DARK); }); });
+  HUD(() => { pop(eOB(z / 0.12), W / 2, 520, () => { rr(-470, -170, 940, 340, 40, '#fff', DARK, 8); txt('Write your 3 answers 👇', 0, -70, 66, DARK, null); txt('#1 … #2 … #3 …', 0, 20, 56, '#7a1f1f', null); txt('No Googling 😏', 0, 110, 50, '#1b2a5c', null); }); txt('Answers in the pinned comment 📌', W / 2, 1880, 34, '#fff', DARK, 'center', 800); }); }
 
 // ---------- camera + HUD ----------
 let HUDQ = []; const HUD = (f) => HUDQ.push(f);
@@ -402,7 +402,7 @@ const N = (t) => [t, 540, 960, 1];
 const CAMS = { intro: [N(0), N(2.2)], r0: [N(0), N(11)], r1: [N(0), N(11)], r2: [N(0), N(11)], outro: [N(0), N(3)] };
 const SHK = { intro: [], r0: [], r1: [], r2: [], outro: [] };
 const shakeAt = (n, z) => SHK[n].reduce((m, [a, d, A]) => z >= a && z < a + d ? Math.max(m, A * (1 - (z - a) / d)) : m, 0);
-const LEN = [['intro', 2.2, s_intro, 1], ['r0', 0.2 + 6 * 0.55 + 3.5 + 1.9, s_round(0), 1], ['r1', 0.2 + 5 * 0.55 + 3.5 + 1.9, s_round(1), 1], ['r2', 0.2 + 6 * 0.55 + 3.5 + 1.9, s_round(2), 1], ['outro', 3.0, s_outro, 1]];
+const LEN = [['intro', 2.2, s_intro, 1], ['r0', 0.2 + 6 * 0.55 + 4.0 + 0.9, s_round(0), 1], ['r1', 0.2 + 5 * 0.55 + 4.0 + 0.9, s_round(1), 1], ['r2', 0.2 + 6 * 0.55 + 4.0 + 0.9, s_round(2), 1], ['outro', 4.0, s_outro, 1]];
 const SEG = []; { let t = 0; for (const [n, d, f, sl] of LEN) { SEG.push([t, t + d * sl, f, n, sl]); t += d * sl; } }
 const DURATION = SEG[SEG.length - 1][1];
 window.SEGS = SEG.map(s => [s[3], +s[0].toFixed(2)]);
