@@ -69,3 +69,5 @@ Playwright, Chromium, ffmpeg, numpy and scipy are already available.
 - **What it does:** a fresh session runs every morning. It hunts 3 verified topic ideas (appended to `IDEAS.md`), learns one skill on the rotation (appended to `LEARNING_LOG.md`) and pushes to this branch.
 - **Limits:** it never posts, never makes videos and never edits `PLAYBOOK.md` directly. Proposed playbook changes go in the log entry for the producer to apply.
 - **Length rule (Nov 17):** one 30–45 s cut for ALL platforms, no subtitle files. Ep15 release = `toon2/ep15/release/dont-mess-with-cr7-32s-9x16.mp4` (v5, edge-detail fix). The 51 s master stays as the source.
+
+- **Ep16 "The Team Photo" v1 (Nov 17)** `toon2/ep16/`: FIFPRO World 11 2026 snub (Kane + Ronaldo out). 31.9 s single cut, new format (sneak-in caper), 4 gags + bicycle-kick bowling payoff. Awaiting sign-off; posts after sign-off.
