@@ -114,3 +114,11 @@ The Shorts feed (watch time, swipe-away rate) drives most views; metadata mainly
   - [SocialPilot: X algorithm 2026](https://socialpilot.co/blog/twitter-algorithm)
   - [socialk.it: X video strategy](https://socialk.it/en/blog/x-twitter-video-strategy)
   - [SocialRails: impressions](https://socialrails.com/blog/how-to-increase-twitter-impressions)
+
+## Per-platform length (data, Nov 17 2026)
+| Platform | Target length | Why |
+|---|---|---|
+| YouTube Shorts / TikTok | **20–30 s** | Ep2 (22 s) = 89% avg viewed + replays, best performer |
+| Instagram Reels | 25–30 s | Ep15 51 s lost 70% before the payoff at 25 s |
+| Facebook Reels | **30–45 s** | FB creator tips for this page: +284% views at 30–45 s; post 19:00–23:00 (+83%); always upload English SRT captions; ask for shares + follows in caption; add a sticker/poll in the editor |
+Render one master, then cut per platform with the ffmpeg trim/concat recipe (see toon2/ep15 v5 cuts).
