@@ -72,3 +72,4 @@ Playwright, Chromium, ffmpeg, numpy and scipy are already available.
 
 - **Ep16 "The Team Photo" v1 (Nov 17)** `toon2/ep16/`: FIFPRO World 11 2026 snub (Kane + Ronaldo out). 31.9 s single cut, new format (sneak-in caper), 4 gags + bicycle-kick bowling payoff. Awaiting sign-off; posts after sign-off.
 - **Ep17 "The Grass Is Greener" v1 (Nov 17)** `toon2/ep17/`: Mbappé left PSG for the UCL; PSG won 2025 + 2026 without him. Split-screen Paris/Madrid format, 31 s. New MBAPPE trait portrait (likeness gate pending user check). Awaiting sign-off.
+- **Format v2 (user, Nov 17):** see `studio/FORMATS_V2.md`: data/quiz/ranking/reaction formats (content + speed), cartoon stories max 1/week. Pilot: Quiz 01 "Guess the player" (`toon2/quiz01/`).
