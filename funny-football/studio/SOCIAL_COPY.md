@@ -60,6 +60,8 @@ The Shorts feed (watch time, swipe-away rate) drives most views; metadata mainly
 | **Main post** | **Native video upload, never a link** (links, including YouTube/TikTok links, get much less reach). ≤280 characters, counted with a script before shipping. Structure: hook line → 3–4 short lines of story (dates/scores) → one question. **(consensus)** |
 | **Hashtags** | 0–2. They do little on X in 2026 **(consensus)**. |
 | **Thread** | Reply 1 = the real facts + date + "cartoon parody". Reply 2 = an engagement question or the easter egg. If a link is ever needed, put it in a reply, never in the main post. |
+| **Data (Nov 17 2026)** | Our X account: 450 followers. Episode posts got **53–180 views** and ~1 like each (Ep12 180, Ep13 165, Ep14 56). The worst platform by far. Why: a small account posting a long list-style caption + video is ignored. A quote of a Fabrizio Romano post also got only 53 views because it was just "To late" with no take. |
+| **X playbook v2** | (1) **Reply-first:** within minutes of big breaking news (Romano, ESPN FC, B/R Football, club accounts), reply with a 1-line funny take + our clip/GIF. Replies on viral posts are where small accounts get seen. (2) **Main post = 1 short line + video**, no list, no "Show more" (first line must be the whole joke). (3) **Polls** for the episode question (polls get votes from non-followers). (4) Post our episode only as a reaction to news that is trending that day. (5) Effort budget: X gets ~10% of time; YouTube/TikTok/IG first. |
 | **Engagement** | Reply to early replies fast; X weighs early engagement velocity and conversations. Quote-post the video after 24 h with a fresh angle. **(consensus)** |
 
 ## 6. Templates (copy and fill in)
@@ -71,7 +73,7 @@ The Shorts feed (watch time, swipe-away rate) drives most views; metadata mainly
 
 **Facebook:** `How it started: …` / `How it's going: …` / `<genuine open question>` / `Real results · parody`
 
-**X:** `<Hook> <emoji>` / `<date>: <fact>` ×3 / `<question> 👇 #<1> #<2>` → Reply 1 facts · Reply 2 engagement
+**X:** `<one-line joke> <emoji>` + video (no list, fits without "Show more") → Reply 1 = poll with the episode question · Reply 2 facts. Plus 2–3 reply-posts with the clip under that day's biggest football news.
 
 ## 7. Pre-ship checklist
 - [ ] **Order (user, Nov 16):** write the posts ONLY after the user has signed off the video ("chốt video"). While iterating, send only the video + a short summary. Once it is signed off, write the 5 dossiers and paste all 5 posts in the chat reply (the files alone are not enough).
