@@ -1,5 +1,5 @@
 # Instagram Reels: Ep15
-**Caption** (line 1 = 79 characters):
+**Caption** (line 1 = 75 characters):
 ```
 Yamal laughed at Ronaldo… then Messi showed up 😂 Who's the GOAT: 7 or 10? 👇
 🏆 CR7: Euro 2016 · 2 Nations Leagues · 5 UCL · 5 Ballon d'Or
