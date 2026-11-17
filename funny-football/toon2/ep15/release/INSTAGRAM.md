@@ -9,4 +9,4 @@ Real titles · cartoon parody, original characters
 #ronaldo #messi #yamal #rodri #football
 ```
 **Settings:** cover = frame 1.5 s (1:1 crop keeps Yamal + CR7) · Share to Feed on · audio name "Don't Mess With CR7 – Soccer 365 (original)" · alt text: "Cartoon Ronaldo hits Yamal with his trophies, then Rodri and Messi hit back with theirs".
-**Pinned comment:** `Most savage moment? 1 trophy combo · 2 STRIKE · 3 Messi's meteor shower · 4 the World Cup tap 👇`
+**Pinned comment:** `Messi only brought HALF his trophies 👀 Which ones did he leave at home?`

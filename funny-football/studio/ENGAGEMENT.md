@@ -151,3 +151,14 @@ Ep15 v1 had 13 hits that were all the same swing → BONK → lump. Repetition k
 - **Show damage as BRUISES, not bumps** (user, Nov 16: bumps looked wrong): `hurtFx(level 1–6)` = cheek bruise + scratches → black eye + plaster → swollen cheek → both black eyes + 2nd plaster → head bandage → chin bruise. Damage carries over into later scenes (the victim stays bandaged). No bump columns.
 - **Bystanders react too** (laugh, gasp, cover eyes). A hit lands three times: the impact, the victim's reaction, the crowd's reaction.
 - Sound: a sob/wail for the victim and a chuckle for the attacker after every big hit.
+
+## 17. Comment engine v2 (user, Nov 17 2026: "nobody comments")
+Sources (vendor blogs, unverified numbers): [Socialync](https://www.socialync.io/blog/increase-tiktok-comments-engagement-2026), [Satura AI](https://saturaai.com/blog/how-to-get-more-comments-youtube-shorts), [TopQLearn](https://topqlearn.com/how-to-get-more-comments-on-tiktok).
+1. **Comments follow views.** First check the numbers (views, average % viewed, swipe-away). If views are low, fix the hook/cover/title first; no question will create comments from nobody.
+2. **Drop the generic ask** ("comment 7 or 10" is easy to ignore). Use:
+   - **The honest "you forgot…" gap:** leave real trophies out on purpose and ask "We left Ronaldo's BEST trophy out 👀 which one?" Fans love correcting.
+   - **A controversial take from the channel** in the pinned comment ("Ronaldo would still win 1 vs 3 😤"); people reply to disagree.
+   - **A hidden detail** to find (a hidden 🐐 in one frame → "found it at 0:12").
+   - **Ultra-low effort:** a one-emoji or one-number answer.
+3. **Seed + speed:** post the pinned comment right away, reply to every comment in the first hour, and on TikTok answer the best comment with a video reply (a free extra post).
+4. Log comments per video in performance.csv so the daily run can learn what works.

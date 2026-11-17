@@ -21,4 +21,4 @@ Real titles · cartoon parody with original characters and synthesized audio. No
 ronaldo, cristiano ronaldo, cr7, messi, lionel messi, lamine yamal, yamal, rodri, messi vs ronaldo, ronaldo vs yamal, goat debate, world cup 2026, nations league, ballon d'or, football cartoon, football animation, soccer 365
 ```
 **Settings:** Comedy · Standard YouTube License · embedding on · not made for kids · altered/AI content: No · playlist "Soccer 365 Cartoons" · related video = Ep14 CR7 ACADEMY.
-**Pinned comment:** `Best combo move? 1 golf ⛳ · 2 cymbals 🥁 · 3 cup cannon 🔫 · 4 pinball 🎯 · 5 Messi's World Cup tap 👇`
+**Pinned comment:** `We left out Ronaldo's BEST trophy on purpose 👀 Which one did we forget?` (then reply to every answer in the first hour)
