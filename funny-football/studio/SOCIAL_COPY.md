@@ -118,5 +118,5 @@ The Shorts feed (watch time, swipe-away rate) drives most views; metadata mainly
 ## Length: ONE cut for every platform, 30–45 s (user decision, Nov 17 2026)
 - Every episode ships as **one 30–45 s video** used on YouTube, TikTok, Instagram, Facebook and X. No per-platform length cuts.
 - Why: FB creator tips (+284% views at 30–45 s for this page) and IG/FB retention (51 s lost most viewers before the payoff). Ep2 at 22 s did well, but the user chose one shared length.
-- Always ship an English SRT (`subtitles-<len>-en.srt`) and upload it where the platform allows (FB, YouTube, IG).
+- **No subtitle files** (user, Nov 17): episodes are near-silent visual comedy, so SRT adds nothing. Ignore FB's "add captions" tip.
 - Post 19:00–23:00 Vietnam time (FB: +83%). Ask for shares + follows in the caption.
