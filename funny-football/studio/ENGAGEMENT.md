@@ -169,3 +169,4 @@ Sources (vendor blogs, unverified numbers): [Socialync](https://www.socialync.io
 - **Ending:** the last ~1 s loses ~30% of viewers. No slow end card/outro: end on the punchline frame and cut so it loops back into the hook (last frame should visually lead into frame 1).
 - **Premise:** Ep2 is a real, checkable story (club posts + real result) told as a cartoon. Real-event hooks + cartoon payoff > pure invented fights. Mix: ~1 real-event episode for every invented one.
 - Slapstick/no-dialogue rules (§12–§16) still apply, compressed into the shorter runtime.
+- **IG data, Ep15 (Nov 17):** skip rate 21% (better than usual) and shares 0.4% (above usual), but likes/saves/comments below usual, comments 0%. The hook and the K.O. payoff work; what is missing is a reason to comment or save. Fix: end on an open question the viewer answers in comments (a vote: "who wins round 2? 🐐 or 👑"), and keep runtime short (§18).
