@@ -11,3 +11,4 @@ Rules: hook text on frame 0 · one idea · built from verified data · comment t
 6. **Higher or lower** (two players, guess who has more X; 4 rounds).
 Cartoon story episodes (Ep16/Ep17 style) become at most 1 per week.
 - **Quiz rule (user, Nov 17):** never reveal the answers in a quiz video or its captions/tags. End on "Write your answers 👇"; reveal in the pinned comment after ~24 h (or in a follow-up video).
+- **Main line (user, Nov 17):** classic exciting matches told as exaggerated caricature cartoons (Ep18). Each one a different narrative device (Ep18 = live-match chronicle with a dressing-room power-up).
