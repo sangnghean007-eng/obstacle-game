@@ -36,7 +36,7 @@ This channel makes funny satirical football cartoon Shorts (YouTube channel **So
 | Episode | Topic | Status |
 |---|---|---|
 | Ep1 | "The GOATs Clock Out" (`goats/`) | Released earlier |
-| Ep2 | "The GOAT Dictionary" (`toon2/ep2/`) | About 2k views on YouTube |
+| Ep2 | "The GOAT Dictionary" (`toon2/ep2/`) | 3.1K views in 4 days, 89.2% avg viewed (best so far, 22 s) |
 | Ep3 | "RETIRED?!" v4 (`toon2/ep3/`): Messi Golden Boot | Older style |
 | Ep4 | v4 "CAN'T MOVE HIM" (`toon2/ep4/`): Traoré vs Cucurella | **User approved: "keep it up like this"** |
 | Ep5 | "SECRET PLAN" spy mini-movie (`toon2/ep5/`) | Done |
