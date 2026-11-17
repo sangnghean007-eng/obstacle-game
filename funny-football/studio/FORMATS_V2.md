@@ -10,3 +10,4 @@ Rules: hook text on frame 0 · one idea · built from verified data · comment t
 5. **Post-match reaction (≤6 h after a big match)**: scoreline + 3 facts + one meme stamp. Speed beats polish.
 6. **Higher or lower** (two players, guess who has more X; 4 rounds).
 Cartoon story episodes (Ep16/Ep17 style) become at most 1 per week.
+- **Quiz rule (user, Nov 17):** never reveal the answers in a quiz video or its captions/tags. End on "Write your answers 👇"; reveal in the pinned comment after ~24 h (or in a follow-up video).
