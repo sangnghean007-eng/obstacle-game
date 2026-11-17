@@ -8,7 +8,7 @@ Real titles · cartoon parody
 **Pinned comment:** `Which single trophy is worth the most here: CR7's Euro 2016, Rodri's World Cup or Messi's 8th Ballon d'Or?`
 
 ## v2 repost (Nov 17, after FB creator tips)
-- **File:** `dont-mess-with-cr7-FACEBOOK-32s-9x16.mp4` (32 s; FB says this page gets +284% views at 30–45 s) + upload `subtitles-FACEBOOK-32s-en.srt` as captions (CC).
+- **File:** `dont-mess-with-cr7-32s-9x16.mp4` (32 s; FB says this page gets +284% views at 30–45 s) + upload `subtitles-32s-en.srt` as captions (CC).
 - **Post time:** 19:00–23:00 (FB: +83% for this page).
 - **Caption:**
 ```

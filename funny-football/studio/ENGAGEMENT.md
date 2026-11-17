@@ -165,7 +165,7 @@ Sources (vendor blogs, unverified numbers): [Socialync](https://www.socialync.io
 
 ## 18. Data lesson: short + true story wins (YouTube analytics, Nov 17 2026)
 - **Ep2 "GOAT Dictionary" (22 s):** 3.1K views in 4 days (+1.9K above channel typical), avg view duration 0:20 = **89.2%**, retention starts above 100% (people replay). Ep14 (49 s): 1.3K views, flat after ~2 h.
-- **Length:** default to **20–30 s**. A 45–50 s episode must earn it; otherwise cut to the strongest 25 s (one story, 3 beats, 2–3 big gags instead of 5 spread thin). Replays only happen when the clip is short enough to loop.
+- **Length (user decision, Nov 17): every episode is 30–45 s, one cut for all platforms.** Plan for ~35 s: setup ≤3 s, combo ≤3–4 gags of ~2 s, reversal by ~12–15 s, payback, K.O. Never 50 s+.
 - **Ending:** the last ~1 s loses ~30% of viewers. No slow end card/outro: end on the punchline frame and cut so it loops back into the hook (last frame should visually lead into frame 1).
 - **Premise:** Ep2 is a real, checkable story (club posts + real result) told as a cartoon. Real-event hooks + cartoon payoff > pure invented fights. Mix: ~1 real-event episode for every invented one.
 - Slapstick/no-dialogue rules (§12–§16) still apply, compressed into the shorter runtime.

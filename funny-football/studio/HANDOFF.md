@@ -68,3 +68,4 @@ Playwright, Chromium, ffmpeg, numpy and scipy are already available.
 ## Daily learning (scheduled task, 6:44 am Australia/Sydney)
 - **What it does:** a fresh session runs every morning. It hunts 3 verified topic ideas (appended to `IDEAS.md`), learns one skill on the rotation (appended to `LEARNING_LOG.md`) and pushes to this branch.
 - **Limits:** it never posts, never makes videos and never edits `PLAYBOOK.md` directly. Proposed playbook changes go in the log entry for the producer to apply.
+- **Length rule (Nov 17):** one 30–45 s cut for ALL platforms + English SRT. Ep15 release = `toon2/ep15/release/dont-mess-with-cr7-32s-9x16.mp4` + `subtitles-32s-en.srt` (v5, edge-detail fix). The 51 s master stays as the source.
