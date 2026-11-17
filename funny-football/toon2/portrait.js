@@ -184,6 +184,7 @@
     if (S.curls) clipTo(S.hair, () => { let i = 0; const xs = S.hair.map(p => p[0]), ys = S.hair.map(p => p[1]); for (let y = Math.min(...ys) - 10; y < Math.max(...ys) + 10; y += 17) for (let x = Math.min(...xs) - 10; x < Math.max(...xs) + 10; x += 19) { i++; const jx = ((i * 37) % 11) - 5, jy = ((i * 23) % 9) - 4, r = 6 + (i % 3) * 2; ctx.strokeStyle = ((i * 7919) % 13 < 5) ? S.curls : 'rgba(255,248,215,.75)'; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(x + jx, y + jy, r, i * 0.7, i * 0.7 + 4.6); ctx.stroke(); } });
     if (S.hairTex) clipTo(S.hair, () => { for (let i = 0; i < 160; i++) { const x = 130 + (i * 37) % 350, y = 20 + (i * 53) % 260; ctx.strokeStyle = 'rgba(255,255,255,.08)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI * 1.4); ctx.stroke(); } });
     if (S.goatee) { shape(S.goatee, '#2a1a10', 0); }
+    if (S.stache && !S.beard) shape(S.stache, 'rgba(30,18,10,.55)', 0);
     if (o.cascao) { shape([[200, 22], [262, 12], [300, 40], [280, 80], [236, 96], [196, 70], [186, 40]], '#1a120c', 4); for (let i = 0; i < 5; i++) line([[206 + i * 18, 34], [214 + i * 18, 78]], 2.5, 'rgba(255,255,255,.25)'); } // R9's famous 2002 'Cascão' fringe
     if (o.young) { ctx.save(); ctx.globalAlpha = 0.35; ctx.fillStyle = S.skin; ctx.beginPath(); ctx.ellipse(220, 520, 90, 40, 0, 0, Math.PI * 2); ctx.fill(); ctx.restore(); }
     // brows / eyes / nose / mouth
@@ -399,6 +400,19 @@
     eyeL: [234, 302, 54, 15], eyeR: [334, 294, 54, 15],
     nose: { bridge: [[288, 300], [286, 340], [284, 362]], tip: [286, 376], nostrilL: [[262, 386], [276, 378], [284, 390], [268, 394]], nostrilR: [[294, 390], [302, 378], [316, 386], [310, 394]], wingL: [[254, 368], [248, 386], [262, 398], [280, 396]], wingR: [[298, 398], [316, 398], [330, 386], [322, 368]] },
     folds: [[[250, 392], [236, 420], [240, 440]], [[340, 392], [356, 418], [354, 438]]], mouth: { x: 294, y: 424, w: 92, rest: 'smile' }, chinLine: [] };
-  const FACES = { ronaldo, messi, hojlund: o => generic(HOJ, o), pele: o => generic(PELE, o), r9: o => generic(R9, o), kane: o => generic(KANE, o), yamal: o => generic(YAMAL, o), simon: o => generic(SIMON, o), cubarsi: o => generic(CUBARSI, o), konsa: o => generic(KONSA, o), oyarzabal: o => generic(OYAR, o), nico: o => generic(NICO, o), anderson: o => generic(ANDERSON, o), rice: o => generic(RICE, o), kane_x: o => generic(KANE_X, o), yamal_x: o => generic(YAMAL_X, o), rodri: o => generic(RODRI, o) };
+  // ---------- KYLIAN MBAPPÉ (traits only, no photo traced: shaved buzz head, round face with high wide cheekbones, big ears, arched brows, wide bright grin, thin moustache shadow) ----------
+  const MBAPPE = { skin: '#8a5a3c', shade: '#6c432b', hairCol: 'rgba(25,16,10,.92)', browCol: '#1a100a', iris: '#2a1a10', lips: '#7a4434', lid: 0.08, hairLw: 0, hairTex: true,
+    neck: [[245, 500], [415, 500], [425, 600], [560, 640], [60, 640], [235, 600]], underJaw: [[250, 515], [410, 510], [400, 550], [330, 562], [260, 550]],
+    face: [[204, 220], [196, 300], [204, 380], [222, 448], [252, 500], [290, 532], [330, 542], [370, 532], [408, 500], [438, 448], [456, 380], [464, 300], [456, 220], [440, 166], [400, 136], [330, 126], [260, 136], [220, 166]],
+    earL: [[206, 262], [150, 236], [134, 316], [154, 392], [208, 400]], earR: [[454, 262], [510, 236], [526, 316], [506, 392], [452, 400]],
+    sideShade: [[540, 150], [462, 220], [470, 330], [420, 500], [540, 560]], sockets: [[268, 300, 40, 16], [392, 300, 40, 16]], blush: [],
+    jawLines: [[[218, 440], [246, 494], [286, 526]], [[442, 440], [414, 494], [374, 526]]], cheekLines: [[[230, 350], [244, 384]], [[430, 350], [416, 384]]], strands: [],
+    hair: [[204, 226], [206, 180], [222, 146], [256, 122], [300, 110], [330, 108], [360, 110], [404, 122], [438, 146], [454, 180], [456, 226], [448, 204], [436, 184], [410, 170], [370, 162], [330, 160], [290, 162], [250, 170], [224, 184], [212, 204]],
+    browL: [[232, 268], [262, 252], [302, 258], [304, 268], [264, 262], [234, 278]], browR: [[428, 268], [398, 252], [358, 258], [356, 268], [396, 262], [426, 278]],
+    eyeL: [268, 300, 50, 16], eyeR: [392, 300, 50, 16],
+    nose: { bridge: [[330, 300], [328, 336], [326, 360]], tip: [330, 376], nostrilL: [[292, 388], [310, 378], [322, 392], [302, 398]], nostrilR: [[338, 392], [350, 378], [368, 388], [358, 398]], wingL: [[282, 366], [274, 388], [294, 404], [318, 402]], wingR: [[342, 402], [366, 404], [386, 388], [378, 366]] },
+    stache: [[288, 420], [310, 414], [330, 416], [350, 414], [372, 420], [352, 424], [330, 421], [308, 424]],
+    folds: [[[280, 404], [262, 440], [266, 466]], [[380, 404], [398, 440], [394, 466]]], mouth: { x: 330, y: 456, w: 140, rest: 'smile' }, chinLine: [] };
+  const FACES = { mbappe: o => generic(MBAPPE, o), ronaldo, messi, hojlund: o => generic(HOJ, o), pele: o => generic(PELE, o), r9: o => generic(R9, o), kane: o => generic(KANE, o), yamal: o => generic(YAMAL, o), simon: o => generic(SIMON, o), cubarsi: o => generic(CUBARSI, o), konsa: o => generic(KONSA, o), oyarzabal: o => generic(OYAR, o), nico: o => generic(NICO, o), anderson: o => generic(ANDERSON, o), rice: o => generic(RICE, o), kane_x: o => generic(KANE_X, o), yamal_x: o => generic(YAMAL_X, o), rodri: o => generic(RODRI, o) };
   window.portrait = { draw(c2d, name, x, y, s, o = {}) { ctx = c2d; ctx.save(); ctx.translate(x, y); ctx.scale(s * (o.f || 1), s); ctx.translate(-330, -300); FACES[name](o); ctx.restore(); } };
 })();
