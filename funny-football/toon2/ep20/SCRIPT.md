@@ -6,9 +6,9 @@ Pure cartoon parody, no real-event claims (the "NOV 5 😏" sign is a callback t
 | 2.6–4.2 | …AND IT GETS PERSONAL 😤 | extreme close-up, lightning between the eyes |
 | 4.2–7.6 | ROUND 1: RONALDO IS TALLER 💪 | long-arm head hold, Messi windmills the air → FLICK into the bin (CLANG) |
 | 7.6–10.0 | MESSI CALLS ARGENTINA 📞🇦🇷 | sobbing call, the Argentina bus screeches in |
-| 10.0–14.2 | ROUND 2: ARGENTINA ARRIVE 💀 | fight cloud (POW/BAM, flying shoes), Ronaldo out bandaged; Dibu does a dance |
+| 10.0–14.2 | ROUND 2: ARGENTINA ARRIVE 💀 | v2: four clear hits, one at a time with hit-stop: De Paul SLAP → Otamendi headbutt BONK → Álvarez BOOT to the backside (launch) → Dibu goalkeeper PUNCH into the lamp post (CLONK); Dibu dances |
 | 14.2–17.2 | RONALDO CALLS PORTUGAL 📞🇵🇹 | Portugal bus, team lines up behind him, 😎 |
 | 17.2–20.4 | …BUT PORTUGAL SWITCH SIDES 😈 | record scratch, they walk over to Messi; "NOV 5 😏" sign; Ronaldo ❓❓ |
-| 20.4–24.0 | ROUND 3: EVERYONE vs RONALDO 💀💀 | 8 players jump → SPLAT pancake; Messi crowns him with the crushed mate cup |
+| 20.4–24.0 | ROUND 3: EVERYONE vs RONALDO 💀💀 | 8 players jump → SPLAT, a visible body pile → they hop off: pancake; Messi crowns him with the crushed mate cup |
 | 24.0–26.6 | Who started it? 👇 | Bruno + Messi high-five over the pancake |
 Sound: 8-bit chiptune brawl (new style), fight foley, vox2 voices.

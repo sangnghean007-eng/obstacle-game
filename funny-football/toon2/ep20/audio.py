@@ -26,12 +26,14 @@ for i in range(8): m.whoosh(t + .2 + i * .22, .18, .15, i % 2 == 0, .3)
 m.vo('messi', 'grunt', t + .5, .45, .3); m.vo('ronaldo', 'laugh', t + 1.0, .5, -.3, 'snicker'); m.squeak(t + 2.0, .4); m.whip(t + 2.02, .4); m.vo('messi', 'yelp', t + 2.05, .6, .3); m.slide_whistle(t + 2.1, True, .5, .25); m.clang(t + 2.6, .5, .5); m.thump(t + 2.62, .5); m.vo('ronaldo', 'siu', t + 2.6, .6, -.3)
 # CALL 1
 t = 7.6; m.vo('messi', 'cry', t + .1, .6, .3, 'sob', 1.2); ring(t + .3); bus_horn(t + 1.3); m.f(lp(noise(.8), 300) * env(int(.8 * SR), .1, .3), t + 1.2, .4)
-# ROUND 2: the fight cloud
+# ROUND 2 v2: four clear hits (slap / headbutt / boot / punch) + lamp-post clonk
 t = 10.0; chip(t, t + 4.2, .9, 170, ('A3', 'C4', 'D4', 'E4'))
-for i, who in enumerate(('generic_m', 'big', 'generic_m', 'kid')): m.vo(who, 'grunt', t + .1 + i * .1, .4, -.4 + i * .25)
-for k in range(16): (m.smack if k % 3 else m.thump)(t + .6 + k * .15, .5 + .3 * (k % 2)); 
-for k in range(5): m.vo('ronaldo', ['oof', 'ow', 'yelp', 'oof', 'ow'][k], t + .7 + k * .45, .5, -.2)
-m.clang(t + 1.6, .3); m.cowbell(t + 2.2, .25); m.vo('ronaldo', 'cry', t + 3.1, .6, -.3, 'wail', 1.0); m.crowd(t + 3.3, 'laugh', 1.0, .3)
+m.whoosh(t + .4, .2, .3); m.smack(t + .55, 1.0, -.2); m.vo('ronaldo', 'yelp', t + .58, .6)
+for i in range(5): m.footstep(t + 1.0 + i * .07, .3, .4)
+m.thump(t + 1.35, .9); m.clang(t + 1.37, .25); m.vo('ronaldo', 'oof', t + 1.38, .6)
+m.whip(t + 2.05, .35); m.thwack(t + 2.15, .9); m.vo('ronaldo', 'ow', t + 2.18, .6); m.slide_whistle(t + 2.2, True, .6, .3)
+m.smack(t + 2.95, 1.0); m.boom(t + 2.96, .35); m.vo('ronaldo', 'yelp', t + 2.98, .6); m.clang(t + 3.3, .55, -.6); m.slide_whistle(t + 3.35, False, .4, .2)
+m.vo('ronaldo', 'cry', t + 3.6, .6, -.4, 'wail', .6); m.crowd(t + 3.5, 'laugh', 0.8, .3); m.vo('messi', 'laugh', t + 3.65, .5, .4, 'point')
 # CALL 2
 t = 14.2; m.vo('ronaldo', 'hmph', t + .1, .5); ring(t + .3); bus_horn(t + 1.0); m.f(lp(noise(.8), 300) * env(int(.8 * SR), .1, .3), t + 1.0, .4); m.vo('ronaldo', 'laugh', t + 1.9, .5, 0, 'cackle')
 # TWIST: record scratch, footsteps over, "?"
