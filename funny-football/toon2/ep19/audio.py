@@ -4,7 +4,24 @@ hook 0 · denmark 3.2 · sofa1 7.4 · wales 10.4 · sofa2 16.4 · mock 20.0 · e
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'sfx'))
 from fx2 import *
-END = 31.2; m = Mix2(END, ep=19)
+# v2 remap: OLD timeline (31.2 s) → NEW tight story cut with a new opening shot
+OLD = {'hook': 0, 'denmark': 3.2, 'sofa1': 7.4, 'wales': 10.4, 'forbs': 16.4, 'sofa2': 19.4, 'mock': 23.0, 'end': 26.4}
+NEW = [('leave', 2.6, 0), ('hook', 2.4, .6), ('denmark', 3.2, 1.0), ('sofa1', 2.4, .2), ('wales', 1.7, 4.3), ('forbs', 1.9, .9), ('sofa2', 3.2, .2), ('mock', 2.6, .2), ('end', 2.2, 0)]
+MAP = []; _t = 0
+for n, d, off in NEW:
+    if n in OLD: MAP.append((OLD[n] + off, OLD[n] + off + d, _t))
+    _t += d
+END = _t; m = Mix2(END, ep=19)
+def R(t):
+    for a, b, n0 in MAP:
+        if a - .05 <= t < b: return n0 + (t - a)
+    return None
+_put = m.put
+def _p(bus, s, t0, *a, **k):
+    r = R(t0)
+    if r is not None: _put(bus, s, r, *a, **k)
+m.put = _p
+def raw(bus, s, t0, *a, **k): _put(bus, s, t0, *a, **k)
 def fado(t0, t1, g=.6, bpm=132):
     b = 60 / bpm; t = t0; i = 0; ch = [['A3', 'C4', 'E4'], ['E3', 'G#3', 'B3'], ['D3', 'F3', 'A3'], ['E3', 'G#3', 'B3']]; mel = ['E5', 'C5', 'A4', 'B4', 'C5', 'D5', 'E5', 'B4']
     while t < t1 - .02:
@@ -44,4 +61,11 @@ for i, who in enumerate(('generic_m', 'big', 'bruno', 'kid')): m.whoosh(t + .3 +
 m.crowd(t + 2.0, 'laugh', 1.4, .35)
 # END: sobbing under the bucket, sad kazoo
 t = 26.4; m.vo('ronaldo', 'cry', t + .2, .6, 0, 'blubber', 1.6); m.vo('ronaldo', 'cry', t + 2.0, .5, 0, 'sob', 1.4); m.kazoo(t + 1.0, ['E4', 'D#4', 'D4', 'C#4'], .3, .12); m.crowd(t + 1.6, 'laugh', 1.6, .15, .5)
+# NEW opening (absolute time, not remapped): locker room hush, shirt toss, door, a lone fado line
+m.put = lambda bus, s, t0, *a, **k: _put(bus, s, t0, *a, **k)
+fado(0, 2.6, .5, 110); m.vo('ronaldo', 'hmph', .3, .6); m.whoosh(.45, .5, .3); m.thump(1.0, .4); m.vo('ronaldo', 'grunt', .7, .4)
+for i in range(6): m.footstep(1.05 + i * .22, .3, .3)
+m.f(osc(glide(300, 180, .5), .5, 'saw') * env(int(.5 * SR), .02, .2) * .3, 2.2, .3); m.crowd(1.6, 'gasp', .9, .25)
+# chapter caption whooshes
+for n0 in [0, 2.6, 5.0, 8.2, 10.6, 12.3, 14.2, 17.4, 20.0]: m.zip(n0 + .02, .18)
 m.write(sys.argv[1])
