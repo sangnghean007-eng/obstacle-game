@@ -6,7 +6,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'
 from fx2 import *
 # v2 remap: OLD timeline (31.2 s) → NEW tight story cut with a new opening shot
 OLD = {'hook': 0, 'denmark': 3.2, 'sofa1': 7.4, 'wales': 10.4, 'forbs': 16.4, 'sofa2': 19.4, 'mock': 23.0, 'end': 26.4}
-NEW = [('leave', 2.6, 0), ('hook', 2.4, .6), ('denmark', 3.2, 1.0), ('sofa1', 2.4, .2), ('wales', 1.7, 4.3), ('forbs', 1.9, .9), ('sofa2', 3.2, .2), ('mock', 2.6, .2), ('end', 2.2, 0)]
+NEW = [('leave', 2.6, 0), ('hook', 2.4, .6), ('denmark', 3.2, 1.0), ('sofa1', 2.4, .2), ('wales', 1.7, 4.3), ('forbs', 1.9, .9), ('sofa2', 3.2, .2), ('invade', 4.0, 0), ('end', 2.2, 0)]
 MAP = []; _t = 0
 for n, d, off in NEW:
     if n in OLD: MAP.append((OLD[n] + off, OLD[n] + off + d, _t))
@@ -67,5 +67,9 @@ fado(0, 2.6, .5, 110); m.vo('ronaldo', 'hmph', .3, .6); m.whoosh(.45, .5, .3); m
 for i in range(6): m.footstep(1.05 + i * .22, .3, .3)
 m.f(osc(glide(300, 180, .5), .5, 'saw') * env(int(.5 * SR), .02, .2) * .3, 2.2, .3); m.crowd(1.6, 'gasp', .9, .25)
 # chapter caption whooshes
-for n0 in [0, 2.6, 5.0, 8.2, 10.6, 12.3, 14.2, 17.4, 20.0]: m.zip(n0 + .02, .18)
+for n0 in [0, 2.6, 5.0, 8.2, 10.6, 12.3, 14.2, 17.4, 21.4]: m.zip(n0 + .02, .18)
+# INVADE (17.4–21.4): TV crash, four bodies tumble out, SIUUU chorus around the sofa, DONG on the bucket
+t = 17.4; m.f(hp(noise(.4), 1500) * dec(.4, 8), t + .05, .7); m.boom(t + .05, .4)
+for i, who in enumerate(('bruno', 'generic_m', 'kid', 'big')): m.slide_whistle(t + i * .35, False, .5, .2, (-1) ** i * .4); m.thump(t + .6 + i * .35, .5); m.vo(who, 'siu', t + 1.8 + i * .2, .5, -.5 + i * .33)
+fado(t + 1.2, t + 4.0, .8, 150); m.crowd(t + 2.0, 'laugh', 1.8, .35); m.clang(t + 2.75, .5); m.vo('ronaldo', 'cry', t + 2.9, .55, 0, 'wail', 1.0)
 m.write(sys.argv[1])

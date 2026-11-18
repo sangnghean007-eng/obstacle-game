@@ -491,19 +491,31 @@ function s_leave(z, t) { lockerRoom(t); rr(820, 560, 220, 640, 10, '#2a1d14', DA
   P19('por1', SHAKEP(t), 'shock', 150, GF + 60, 0.85); }
 const CHAP = { leave: ['NOV 5: RONALDO QUITS PORTUGAL 👋', '#fff'], hook: ["PORTUGAL: \"WE DON'T NEED HIM!\" 😎", '#ffd60a'], denmark: ['NEXT GAME: PORTUGAL 1-4 DENMARK 💀', '#ff8080'],
   sofa1: ['RONALDO WATCHING: 😂😂😂', '#fff'], wales: ['THEN vs WALES: A RED CARD… 10 MEN 😬', '#ff8080'], forbs: ['…AND A SUB SCORES THE WINNER! 2-3 ✅', '#7CFC9A'],
-  sofa2: ['RONALDO WATCHING: 💀', '#fff'], mock: ['PORTUGAL: "SIUUU" 😎', '#ffd60a'], end: ['', '#fff'] };
+  sofa2: ['RONALDO WATCHING: 💀', '#fff'], mock: ['PORTUGAL: "SIUUU" 😎', '#ffd60a'], invade: ['…THEN PORTUGAL VISIT HIM: "SIUUU!" 😎', '#ffd60a'], end: ['', '#fff'] };
 function chapter(n, z) { const c = CHAP[n]; if (!c || !c[0]) return; pop(eOB(z / 0.12), W / 2, 180, () => { ctx.font = `900 50px ${F}`; const w = Math.min(1040, ctx.measureText(c[0]).width + 70); rr(-w / 2, -60, w, 120, 26, 'rgba(0,0,0,.88)', c[1], 6); const fs = Math.min(50, 50 * (w - 60) / ctx.measureText(c[0]).width); txt(c[0], 0, 4, fs, c[1], DARK); }); }
+
+
+// v4 (user idea): Portugal climb OUT of Ronaldo's TV, invade his living room and celebrate in his face
+function s_invade(z, t) { sofaRoom(t, () => { ctx.fillStyle = '#2f8a3d'; ctx.fillRect(540, 200, 460, 290); for (let i = 0; i < 40; i++) { ctx.fillStyle = `rgba(255,255,255,${(i * 37 % 10) / 20})`; ctx.fillRect(540 + (i * 97 + t * 900) % 460, 200 + (i * 53) % 290, 18, 4); } }, 1);
+  P19('ronaldo', SITM, 'shock', 540, 1380, 1.1, { noShadow: true }); const [hx, hy] = head(540, 1380, 1.1); popcorn(hx, hy - 120, 1.05, 1); hurtFx(hx, hy + 30, 1.1, 4, t, true); tears(hx, hy + 20, t, 1.2);
+  const crew = [['bruno', 770, 0.0], ['por1', 150, 0.35], ['forbs', 960, 0.7], ['por2', 350, 1.05]]; const tv = [770, 515];
+  crew.forEach(([w, x, a], i) => { const k = clamp((z - a) / 0.6); if (k <= 0) return; const fx = lerp(tv[0], x, easeOut(k)), fy = lerp(tv[1] + 200, 1840, k) - Math.sin(k * Math.PI) * 260; const s = lerp(0.35, w === 'bruno' ? 1.25 : 1.12, k);
+    const jump = z > 1.7 + i * 0.18 ? Math.abs(Math.sin((z - 1.7 - i * 0.18) * 6)) * 160 : 0; const pose = k < 1 ? FLAIL(t) : jump > 20 ? { bArm: [-150, -170], fArm: [150, 170], bLeg: [-30, 10], fLeg: [30, -10] } : { bArm: [-20, -10], fArm: [100, 100], bLeg: [-8, -4], fLeg: [8, 4] };
+    P19(w, pose, 'siuuu', fx, fy - jump, s, { f: x > 540 ? -1 : 1, rot: k < 1 ? (1 - k) * 6 : 0 }); if (k >= 1 && jump > 120 && i % 2 === 0) burst(fx + (x > 540 ? 90 : -90), fy - 760, 70, 'SIUUU', 0.5, 26, '#ffd60a'); });
+  if (z > 0.05 && z < 0.5) burst(tv[0], tv[1] - 120, 140, 'CRASH!', (z - 0.05) / 0.08, 44, '#fff');
+  if (z > 2.4 && z < 2.8) { const q = (z - 2.4) / 0.4; ctx.save(); ctx.translate(lerp(820, hx + 60, q), lerp(1200, hy - 200, q)); rr(-30, -12, 60, 24, 8, '#e2ad88', DARK, 3); ctx.restore(); } if (z > 2.75 && z < 3.1) burst(hx, hy - 220, 90, 'DONG', (z - 2.75) / 0.08, 30, '#fff');
+  if (z > 2.0) { laughFx(200, 1100, t); laughFx(880, 1100, t); confettiCol(z - 2.0, '#046a38'); } }
 
 // ---------- camera + HUD ----------
 let HUDQ = []; const HUD = (f) => HUDQ.push(f);
 const _cap = caption; caption = (...a) => HUD(() => _cap(...a));
 const N = (t) => [t, 540, 960, 1];
-const CAMS = { leave: [[0, 540, 1300, 1.05], [2.6, 600, 1300, 1.12]], hook: [[0, 540, 1250, 1.0], [1.0, 540, 1300, 1.05], [3.2, 540, 1300, 1.1]], denmark: [[0, 640, 1500, 1.2], [1.3, 540, 1450, 1.15], [2.0, 640, 1500, 1.2], [3.0, 540, 1450, 1.15], [4.2, 540, 1400, 1.1]],
+const CAMS = { invade: [[0, 700, 760, 1.25], [0.8, 540, 1150, 1.0], [2.4, 540, 1250, 1.1], [4.0, 540, 1200, 1.05]], leave: [[0, 540, 1300, 1.05], [2.6, 600, 1300, 1.12]], hook: [[0, 540, 1250, 1.0], [1.0, 540, 1300, 1.05], [3.2, 540, 1300, 1.1]], denmark: [[0, 640, 1500, 1.2], [1.3, 540, 1450, 1.15], [2.0, 640, 1500, 1.2], [3.0, 540, 1450, 1.15], [4.2, 540, 1400, 1.1]],
   sofa1: [[0, 540, 1150, 1.0], [1.6, 540, 1300, 1.1], [3.0, 540, 1300, 1.05]], wales: [[0, 600, 1500, 1.15], [1.6, 540, 1500, 1.15], [3.6, 540, 1450, 1.15], [4.9, 540, 1350, 1.2], [6.0, 640, 1300, 1.1]],
   forbs: [[0, 640, 1500, 1.15], [1.2, 520, 1450, 1.2], [2.4, 540, 1450, 1.1], [3.0, 540, 1450, 1.1]], sofa2: [[0, 540, 1150, 1.0], [1.8, 540, 1200, 1.15], [2.6, 650, 900, 1.2], [3.6, 540, 1150, 1.05]], mock: [[0, 540, 1450, 1.1], [3.4, 540, 1420, 1.15]], end: [[0, 540, 1150, 1.0], [4.2, 540, 1150, 1.05]] };
-const SHK = { leave: [], hook: [[1.0, .3, 16]], denmark: [[1.3, .3, 18], [2.9, .4, 22]], sofa1: [[2.0, .3, 16]], wales: [[0.6, .3, 16], [3.6, .3, 16], [4.9, .4, 18]], forbs: [[1.6, .4, 20]], sofa2: [[1.8, .4, 22], [2.6, .3, 18]], mock: [], end: [] };
+const SHK = { invade: [[0.05, .3, 18], [2.75, .25, 14]], leave: [], hook: [[1.0, .3, 16]], denmark: [[1.3, .3, 18], [2.9, .4, 22]], sofa1: [[2.0, .3, 16]], wales: [[0.6, .3, 16], [3.6, .3, 16], [4.9, .4, 18]], forbs: [[1.6, .4, 20]], sofa2: [[1.8, .4, 22], [2.6, .3, 18]], mock: [], end: [] };
 const shakeAt = (n, z) => SHK[n].reduce((m, [a, d, A]) => z >= a && z < a + d ? Math.max(m, A * (1 - (z - a) / d)) : m, 0);
-const LEN = [['leave', 2.6, s_leave, 1, 0], ['hook', 2.4, s_hook, 1, 0.6], ['denmark', 3.2, s_denmark, 1, 1.0], ['sofa1', 2.4, s_sofa1, 1, 0.2], ['wales', 1.7, s_wales, 1, 4.3], ['forbs', 1.9, s_forbs, 1, 0.9], ['sofa2', 3.2, s_sofa2, 1, 0.2], ['mock', 2.6, s_mock, 1, 0.2], ['end', 2.2, s_end, 1, 0]];
+const LEN = [['leave', 2.6, s_leave, 1, 0], ['hook', 2.4, s_hook, 1, 0.6], ['denmark', 3.2, s_denmark, 1, 1.0], ['sofa1', 2.4, s_sofa1, 1, 0.2], ['wales', 1.7, s_wales, 1, 4.3], ['forbs', 1.9, s_forbs, 1, 0.9], ['sofa2', 3.2, s_sofa2, 1, 0.2], ['invade', 4.0, s_invade, 1, 0], ['end', 2.2, s_end, 1, 0]];
 const SEG = []; { let t = 0; for (const [n, d, f, sl, off] of LEN) { SEG.push([t, t + d * sl, f, n, sl, off || 0]); t += d * sl; } }
 const DURATION = SEG[SEG.length - 1][1];
 window.SEGS = SEG.map(s => [s[3], +s[0].toFixed(2)]);
