@@ -16,3 +16,4 @@ Problem: Ep9–Ep15 reused the same 12 voice WAVs (wail, chuckle, laugh_crowd, s
 | 16 Team Photo | sneaky pizzicato heist → oompah tuba + timpani roll | camera shutter, bowling xylophone run | ronaldo, kane, messi, haaland, mbappe, yamal (vox2) |
 | 17 Grass Is Greener | Paris waltz vs Madrid flamenco (split screen) | ARSENAL cannon BOOM, pretzel whip, door SLAM, rain + kazoo | mbappe, kane, generic crowd (vox2) |
 | 18 The Miracle | stadium drums + original brass fanfare (no real anthem) | dressing-room hum swell + power-up, noodle boings, moon slide whistle | crowd + generic voices (vox2) |
+| 19 We Don't Need Him | original fado-style guitar (Portugal) vs oompah tuba (sofa) | poster rip, bulldozer rumble, popcorn burst, TV crack, card whistles | bruno, hojlund, ronaldo, crowd (vox2) |

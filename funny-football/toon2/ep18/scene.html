@@ -5,6 +5,7 @@
 <script src="../chibi.js"></script>
 <script src="../chibi_cast.js"></script>
 <script src="../portrait.js"></script>
+<script src="../pro.js"></script>
 <script>
 
 const W = 1080, H = 1920, ctx = document.getElementById('c').getContext('2d');
@@ -372,7 +373,7 @@ const CAST18 = { // name: [kit, num, label, face|null, skin, chibi head]
   maldini: [MIL, '3', 'MALDINI', null, '#e2ad88', { R: 100, hair: 'long', hairCol: '#2a1d14', iris: '#3a2416' }], crespo: [MIL, '11', 'CRESPO', null, '#e8b892', { R: 100, hair: 'short', hairCol: '#2a1d14', iris: '#3a2416' }],
   kaka: [MIL, '22', 'KAKÁ', null, '#e8b892', { R: 100, hair: 'short', hairCol: '#2a1d14', iris: '#3a2416' }], pirlo: [MIL, '21', 'PIRLO', null, '#e2ad88', { R: 100, hair: 'long', hairCol: '#2a1d14', iris: '#3a2416', beard: 'trim', beardCol: '#2a1d14' }],
   serginho: [MIL, '27', 'SERGINHO', null, '#8d5a3b', { R: 100, hair: 'buzz', hairCol: '#1a1008', iris: '#2a1a10' }], dida: [MGK, '1', 'DIDA', null, '#6b4430', { R: 100, hair: 'buzz', hairCol: '#1a1008', iris: '#2a1a10' }] };
-function P18(who, pose, ex, x, y, s = 0.95, o = {}) { const [kit, num, nm, fc, skin, hd] = CAST18[who]; const C = Object.assign({}, CH.mate1, { skin, shade: skin, kit, num, name: nm, nameSize: nm.length > 8 ? 12 : 16 }, hd ? { head: hd } : {});
+function P18(who, pose, ex, x, y, s = 0.95, o = {}) { const [kit, num, nm, fc, skin, hd] = CAST18[who]; if (!o.noShadow) PRO.shadow(ctx, x, Math.max(y, GF - 40) > y + 40 ? GF : y, Math.max(0, GF - y), s); const C = Object.assign({}, CH.mate1, { skin, shade: skin, kit, num, name: nm, nameSize: nm.length > 8 ? 12 : 16 }, hd ? { head: hd } : {});
   ctx.save(); if (o.rot) { ctx.translate(x, y - 160 * s); ctx.rotate(o.rot); ctx.translate(-x, -(y - 160 * s)); }
   const chEx = { siuuu: 'happy', deadpan: 'bored', smug: 'smug', shock: 'shock', angry: 'angry' }[ex] || ex;
   chibi.draw(ctx, C, pose, fc ? 'neutral' : chEx, x, y + (o.dy || 0), s, Object.assign({ f: 1 }, fc ? { headFn: (R) => portrait.draw(ctx, fc, 0, -R * 0.28, R * 2.1 / 330, { headOnly: true, expr: ex, kit: kit.shirt }) } : {}, o)); ctx.restore(); }
@@ -442,7 +443,7 @@ function s_six(z, t) { ground(t, 1); net(970, GF + 40, -1); const g1 = z > 1.4, 
   sb(r, 3, mn, (g1 && z < 1.7) || (g2 && z < 4.2) || (g3 && z < 7.2) ? 1 : 0);
   P18('dida', z > 6.0 && z < 6.4 ? { bArm: [-160, -170], fArm: [160, 170], bLeg: [-20, -10], fLeg: [20, 10] } : g3 ? P_HIT : 'stand', z > 6.0 ? 'shock' : 'smug', 880, GF, 0.9, { f: -1, rot: g3 ? 0.4 : 0 }); if (z > 6.2) { const [hx, hy] = head(880, GF, 0.9); hurtFx(hx, hy, 0.9, g3 ? 2 : 1, t, g3); }
   // 54': Gerrard rocket header (flies flat like a missile)
-  if (z < 2.4) { const k = clamp((z - 0.6) / 0.8); P18('gerrard', z < 0.6 ? 'stand' : { bArm: [-100, -95], fArm: [-95, -90], bLeg: [80, 90], fLeg: [80, 90] }, 'angry', lerp(200, 820, k), GF - 300 * Math.sin(k * Math.PI * 0.5), 0.95, { rot: z > 0.6 ? 1.45 : 0 }); if (z > 0.6 && z < 1.4) { fireball(lerp(200, 820, k) + 140, GF - 300 * Math.sin(k * Math.PI * 0.5) - 60, t, 1); } if (g1) fball(980, GF - 300, 36, 0); }
+  if (z < 2.4) { const k = clamp((z - 0.6) / 0.8); P18('gerrard', z < 0.6 ? 'stand' : { bArm: [-100, -95], fArm: [-95, -90], bLeg: [80, 90], fLeg: [80, 90] }, 'angry', lerp(200, 820, k), GF - 300 * Math.sin(k * Math.PI * 0.5), 0.95, { rot: z > 0.6 ? 1.5 : 0 }); if (z > 0.6 && z < 1.4) { fireball(lerp(200, 820, k) + 140, GF - 300 * Math.sin(k * Math.PI * 0.5) - 60, t, 1); } if (g1) fball(980, GF - 300, 36, 0); }
   if (g1 && z < 1.9) burst(900, GF - 420, 130, "GERRARD 54'", (z - 1.4) / 0.1, 40, '#c8102e');
   // 56': Šmicer zig-zag shot through three Milan players who spin like tops
   if (z > 2.4 && z < 4.6) { P18('smicer', z < 3.0 ? 'stand' : { bArm: [-60, -30], fArm: [60, 30], bLeg: [-40, -20], fLeg: [100, 80] }, 'angry', 140, GF, 0.9); for (const [i, who] of [[0, 'kaka'], [1, 'pirlo'], [2, 'maldini']]) P18(who, 'stand', z > 3.2 ? 'shock' : 'smug', 360 + i * 170, GF - 20 + i * 10, 0.75, { f: (z > 3.2 && Math.sin(t * 30 + i) > 0) ? 1 : -1 });
@@ -496,7 +497,11 @@ const DURATION = SEG[SEG.length - 1][1];
 window.SEGS = SEG.map(s => [s[3], +s[0].toFixed(2)]);
 function render(t) { ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, W, H); window.T2T = t;
   for (const [a, b, fn, n, sl] of SEG) if (t >= a && t < b) { const z = (t - a) / sl; HUDQ = []; const sh = shakeAt(n, z), C = camK(CAMS[n], z); C[2] *= 1 + sh / 350; const hw = W / (2 * C[2]), hh = H / (2 * C[2]); C[0] = clamp(C[0], hw, W - hw); C[1] = clamp(C[1], hh, H - hh);
-    cam(C, () => fn(z, t), sh, t); ctx.setTransform(1, 0, 0, 1, 0, 0); for (let i = 0; i < HUDQ.length; i++) HUDQ[i](); break; } }
+    cam(C, () => fn(z, t), sh, t); ctx.setTransform(1, 0, 0, 1, 0, 0);
+    PRO.grade(ctx, t, n === 'song' || n === 'end');
+    for (const [a0, d0, A] of SHK[n]) if (A >= 14 && z >= a0 && z < a0 + 0.1) PRO.impact(ctx, (z - a0) / 0.1);
+    if (z < 0.2 && t > 0.1) PRO.whip(ctx, document.getElementById('c'), z / 0.2, (SEG.findIndex(q => q[3] === n) % 2) ? -1 : 1);
+    for (let i = 0; i < HUDQ.length; i++) HUDQ[i](); break; } }
 window.render = render; window.DURATION = DURATION;
 if (!location.search.includes('render')) { const t0 = performance.now(); (function loop() { render(((performance.now() - t0) / 1000) % DURATION); requestAnimationFrame(loop); })(); }
 </script></body></html>
