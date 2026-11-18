@@ -406,13 +406,22 @@ function daysSign() { return; }
 function daysSignOld(n, sub, k = 1, shake = 0, y = 330, sc = 1) { pop(eOB(k / 0.15) * sc, W / 2 + shake, y, () => { rr(-440, -190, 880, 380, 24, '#ffd60a', DARK, 9); rr(-420, -170, 840, 70, 10, '#111', null); txt('⚠️ DAYS WITHOUT RONALDO', 0, -133, 46, '#ffd60a', null);
   rr(-120, -80, 240, 170, 16, '#fff', DARK, 6); txt(String(n), 0, 8, 140, DARK, null); txt(sub, 0, 140, 40, DARK, null); }); }
 function sofaRoom(t, tvFn, crack = 0) { const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#f2c27a'); g.addColorStop(1, '#d99a5b'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
-  rr(60, 120, 360, 300, 14, '#8fd3ff', '#7a4a26', 12); ell(200, 330, 200, 60, '#f2d29a'); for (const x of [150, 300]) { rr(x - 8, 220, 16, 120, 4, '#6b4a2a', null); ell(x, 215, 60, 22, '#3f8f3f'); } txt('🐪', 330, 300, 50, '#fff', null); txt('RIYADH', 240, 160, 30, '#7a4a26', null);
+  ctx.save(); ctx.translate(0, 170);  rr(60, 120, 360, 300, 14, '#8fd3ff', '#7a4a26', 12); ell(200, 330, 200, 60, '#f2d29a'); for (const x of [150, 300]) { rr(x - 8, 220, 16, 120, 4, '#6b4a2a', null); ell(x, 215, 60, 22, '#3f8f3f'); } txt('🐪', 330, 300, 50, '#fff', null); txt('RIYADH', 240, 160, 30, '#7a4a26', null);
   rr(520, 180, 500, 330, 18, '#111', DARK, 8); ctx.save(); ctx.beginPath(); ctx.rect(540, 200, 460, 290); ctx.clip(); tvFn(); ctx.restore(); if (crack) { ctx.strokeStyle = '#fff'; ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(770, 340); for (const [dx, dy] of [[-160, -120], [0, 0], [180, -130], [0, 0], [-120, 150], [0, 0], [200, 140]]) ctx.lineTo(770 + dx, 340 + dy); ctx.stroke(); }
-  rr(700, 510, 140, 40, 8, '#333', DARK, 4); ctx.fillStyle = '#b5703a'; ctx.fillRect(0, 1250, W, H - 1250); for (let x = 0; x < W; x += 90) rr(x, 1250, 88, H - 1250, 0, x % 180 ? '#a8653a' : '#b5703a', 'rgba(0,0,0,.15)', 2);
+  rr(700, 510, 140, 40, 8, '#333', DARK, 4); ctx.restore(); ctx.fillStyle = '#b5703a'; ctx.fillRect(0, 1250, W, H - 1250); for (let x = 0; x < W; x += 90) rr(x, 1250, 88, H - 1250, 0, x % 180 ? '#a8653a' : '#b5703a', 'rgba(0,0,0,.15)', 2);
   rr(80, 1180, 920, 240, 50, '#7a1f3a', DARK, 7); rr(60, 1080, 120, 340, 40, '#8a2a48', DARK, 6); rr(900, 1080, 120, 340, 40, '#8a2a48', DARK, 6); rr(160, 1400, 760, 60, 20, '#5a1428', DARK, 5); ell(300, 1880, 220, 30, 'rgba(0,0,0,.2)'); }
 function popcorn(x, y, s = 1, onHead = 0) { ctx.save(); ctx.translate(x, y); ctx.scale(s, s); if (onHead) ctx.rotate(Math.PI); ctx.beginPath(); ctx.moveTo(-70, -120); ctx.lineTo(70, -120); ctx.lineTo(50, 40); ctx.lineTo(-50, 40); ctx.closePath(); ctx.fillStyle = '#fff'; ctx.fill(); ctx.lineWidth = 5; ctx.strokeStyle = DARK; ctx.stroke(); for (let i = -2; i <= 2; i++) rr(i * 28 - 6, -116, 14, 152, 2, '#e63946', null); if (!onHead) for (let i = 0; i < 9; i++) ell(-60 + i * 15, -128 - (i % 3) * 14, 18, 15, '#fff3c4', 3); ctx.restore(); }
-function tvMatch(t, a, b, sc, label) { ctx.fillStyle = '#2f8a3d'; ctx.fillRect(540, 200, 460, 290); rr(560, 215, 420, 64, 14, 'rgba(0,0,0,.8)', null); txt(`${a} ${sc} ${b}`, 770, 248, 40, '#fff', null); txt(label, 770, 420, 34, '#ffd60a', DARK); ctx.strokeStyle = 'rgba(255,255,255,.4)'; ctx.lineWidth = 3; ctx.strokeRect(600, 320, 340, 140); }
+function tvMatch(t, a, b, sc, label) { ctx.fillStyle = '#2f8a3d'; ctx.fillRect(540, 200, 460, 290); rr(550, 210, 440, 110, 16, 'rgba(0,0,0,.85)', '#ffd60a', 4); txt(`${a} ${sc} ${b}`, 770, 266, 64, '#fff', DARK); txt(label, 770, 420, 34, '#ffd60a', DARK); ctx.strokeStyle = 'rgba(255,255,255,.4)'; ctx.lineWidth = 3; ctx.strokeRect(600, 320, 340, 140); }
 function card(x, y, col, k, a = 0) { pop(eOB(k / 0.12), x, y, () => { ctx.rotate(a); rr(-50, -75, 100, 150, 12, col, DARK, 5); }); }
+
+
+// big TV-style scoreboard (user: "the scoreboard isn't prominent/clear enough"): flag-colour team blocks, huge digits, pulse + flash when a goal changes it
+const FLAG = { POR: ['#046a38', '#c8102e'], DEN: ['#c60c30', '#fff'], WAL: ['#fff', '#1f7a3a'] };
+function bigBoard(L, ls, R, rs, sub, pulse = 0, y = 400) { pop(1 + pulse * 0.12, W / 2, y, () => {
+  rr(-500, -110, 1000, 220, 36, 'rgba(6,10,26,.95)', '#ffd60a', 8); ctx.save(); ctx.globalAlpha = 0.25 + pulse * 0.5; rr(-500, -110, 1000, 220, 36, null, '#fff', 14); ctx.restore();
+  for (const [code, x] of [[L, -380], [R, 380]]) { const [a, b] = FLAG[code]; rr(x - 110, -85, 220, 170, 22, a, DARK, 5); ctx.save(); ctx.beginPath(); ctx.roundRect(x - 110, -85, 220, 170, 22); ctx.clip(); ctx.fillStyle = b; ctx.fillRect(x, -85, 110, 170); ctx.restore(); rr(x - 90, -34, 180, 68, 14, 'rgba(0,0,0,.65)', null); txt(code, x, 2, 58, '#fff', null); }
+  rr(-230, -85, 460, 170, 22, '#fff', DARK, 5); txt(ls === null ? 'vs' : `${ls} - ${rs}`, 0, 8, ls === null ? 80 : 128, DARK, null);
+  if (sub) { rr(-200, 104, 400, 64, 18, '#e63946', DARK, 5); txt(sub, 0, 138, 40, '#fff', null); } }); }
 
 // ---------- shots ----------
 function s_hook(z, t) { lockerRoom(t); const rip = z > 1.0; // Bruno rips the CR7 poster; the team cheers; the sign goes 0 → 1
@@ -428,7 +437,7 @@ function s_denmark(z, t) { pitch(t, 'BRAGA · NOV 14 · NATIONS LEAGUE', ['#c810
   const hx = lerp(980, 560, easeIO(k)); P19('hojlund', k > 0 && k < 1 ? runPose(t, 22) : RAISE, k >= 1 ? 'siuuu' : 'smug', hx, GF - 40, 1.05, { f: -1 }); if (k > 0 && k < 1) speed(hx + 180, GF - 300, 1, t, 6, 260);
   [['por1', 760], ['por2', 640], ['bruno', 440]].forEach(([w, x], i) => { const flat = hx < x + 60 && k > 0; P19(w, flat ? P_HIT : 'stand', flat ? 'shock' : 'smug', x, GF + 40, 0.9, { rot: flat ? (i % 2 ? 1.5 : -1.5) : 0, sq: flat ? 0.25 : 0 }); if (flat) { const [hhx, hhy] = head(x, GF + 40, 0.9); stars(hhx, hhy, t, 60); } });
   for (const [a, lab] of [[1.3, "HØJLUND ⚽"], [2.9, 'AGAIN ⚽⚽']]) if (z > a && z < a + 0.6) { fball(540, 1080, 40, 0); burst(540, 1050, 150, lab, (z - a) / 0.1, 40, '#c60c30'); }
-  HUD(() => { pop(1, W / 2, 380, () => { rr(-300, -60, 600, 120, 26, 'rgba(8,12,30,.92)', '#ffd60a', 6); txt(`POR ${z > 3.0 ? '1 - 4' : z > 1.3 ? '1 - 2' : '1 - 1'} DEN`, 0, 6, 64, '#fff', DARK); });
+  HUD(() => { bigBoard('POR', z > 3.0 ? 1 : null, 'DEN', 4, z > 3.0 ? 'FULL TIME' : '', z > 3.0 && z < 3.3 ? 1 : 0);
     if (z > 3.4) stamp('BIGGEST HOME LOSS EVER (competitive)', W / 2, 1180, (z - 3.4) / 0.5, -0.05, '#c60c30'); }); }
 function s_sofa1(z, t) { sofaRoom(t, () => tvMatch(t, 'POR', 'DEN', '1-4', 'FULL TIME')); const fall = z > 1.6 ? clamp((z - 1.6) / 0.4) : 0;
   P19('ronaldo', fall < 1 ? { bArm: [60, 150], fArm: [70, 160], bLeg: [80, 0], fLeg: [60, 20] } : { bArm: [-150, -170], fArm: [150, 170], bLeg: [-60, 30], fLeg: [40, 80] }, 'siuuu', 540, 1380 + fall * 300, 1.1, { rot: fall * -1.3, noShadow: true }); popcorn(780, 1300 + fall * 300, 0.8);
@@ -443,7 +452,7 @@ function s_wales(z, t) { pitch(t, 'CARDIFF · NOV 17 · NATIONS LEAGUE', ['#1f7a
   else { P19('neto', z < 3.6 ? 'stand' : z < 4.4 ? RAISE : z < 5.0 ? { bArm: [-60, -150], fArm: [60, 150], bLeg: [-14, -8], fLeg: [14, 8] } : FLAIL(t), z < 5.0 ? 'siuuu' : 'shock', z < 5.0 ? 540 : lerp(540, 1300, clamp((z - 5.0) / 0.7)), z < 5.0 ? GF : GF - Math.sin(clamp((z - 5.0) / 0.7) * Math.PI) * 600, 1.0, { rot: z > 5.0 ? (z - 5.0) * 8 : 0 });
     if (z > 4.4) card(360, 1050, '#ffd60a', z - 4.4, -0.2); if (z > 4.7) card(720, 1050, '#ffd60a', z - 4.7, 0.2); if (z > 4.9) { card(540, 980, '#e63946', z - 4.9, 0); if (z < 5.4) burst(540, 900, 120, '2 YELLOWS · 2 MINUTES', (z - 4.9) / 0.1, 30, '#fff'); } }
   for (const g of goals) if (z > g[0] && z < g[0] + 0.55) burst(540, 1060, 140, g[2], (z - g[0]) / 0.1, 40, g[1] === 'P' ? '#c8102e' : '#1f7a3a');
-  HUD(() => pop(1, W / 2, 380, () => { rr(-300, -60, 600, 120, 26, 'rgba(8,12,30,.92)', '#ffd60a', 6); txt(`WAL ${w} - ${p} POR`, 0, 6, 64, '#fff', DARK); if (z > 5.0) txt('🟥 10 MEN', 0, 92, 34, '#ff6b6b', DARK); })); }
+  HUD(() => bigBoard('WAL', w, 'POR', p, z > 4.9 ? '🟥 10 MEN' : '', goals.some(g => z > g[0] && z < g[0] + 0.3) || (z > 4.9 && z < 5.2) ? 1 : 0)); }
 function s_forbs(z, t) { pitch(t, "CARDIFF · 70' · 10 MEN", ['#1f7a3a', '#c8102e', '#fff']); goal(260, 1250, 560, 300, z > 1.6 && z < 2.3 ? 1 - (z - 1.6) * 1.4 : 0, t);
   // sub board, then the bottom-corner winner and a pile-on
   if (z < 1.0) { pop(eOB(z / 0.12), 880, 1100, () => { rr(-120, -90, 240, 180, 16, '#111', '#ffd60a', 6); txt('26 ⬆', 0, -20, 60, '#22c55e', null); txt('SUB', 0, 50, 40, '#fff', null); }); }
@@ -451,7 +460,7 @@ function s_forbs(z, t) { pitch(t, "CARDIFF · 70' · 10 MEN", ['#1f7a3a', '#c810
   if (z > 1.2 && z < 1.6) { const q = (z - 1.2) / 0.4; fball(lerp(700, 300, q), lerp(GF - 120, 1220, q), 34, z * 30); speed(lerp(700, 300, q) + 60, lerp(GF - 120, 1220, q), 1, t, 4, 140); }
   if (z > 1.6 && z < 2.3) burst(540, 1060, 150, "FORBS 70' ⚽", (z - 1.6) / 0.1, 40, '#c8102e');
   if (z > 2.0) { const k = clamp((z - 2.0) / 0.4); ['bruno', 'por1', 'por2'].forEach((w, i) => P19(w, RAISE, 'siuuu', lerp(-200 + i * 120, 600 + i * 120, k), GF - Math.sin(k * Math.PI) * 200, 0.95, { rot: k < 1 ? 0.4 : 0 })); }
-  HUD(() => pop(1, W / 2, 380, () => { rr(-300, -60, 600, 120, 26, 'rgba(8,12,30,.92)', '#ffd60a', 6); txt(`WAL 2 - ${z > 1.6 ? 3 : 2} POR`, 0, 6, 64, '#fff', DARK); txt('🟥 10 MEN', 0, 92, 34, '#ff6b6b', DARK); })); }
+  HUD(() => bigBoard('WAL', 2, 'POR', z > 1.6 ? 3 : 2, z > 1.6 ? "70' WINNER ✅" : '🟥 10 MEN', z > 1.6 && z < 1.95 ? 1 : 0)); }
 function s_sofa2(z, t) { const win = z > 1.8; sofaRoom(t, () => tvMatch(t, 'WAL', 'POR', win ? '2-3' : '2-2', win ? "FORBS 70' 😳" : '10 vs 11'), z > 2.6 ? 1 : 0);
   // Ronaldo laughs at the sub ("who?"), then the winner: popcorn explodes, bucket on his head, remote smashes the TV
   const rage = z > 1.8; P19('ronaldo', rage ? { bArm: [-150, -170], fArm: [150, 170], bLeg: [80, 0], fLeg: [60, 20] } : { bArm: [60, 150], fArm: [70, 160], bLeg: [80, 0], fLeg: [60, 20] }, rage ? 'shock' : 'smug', 540, 1380, 1.1, { noShadow: true });
