@@ -11,7 +11,7 @@ So… do they need Ronaldo? 👇
 Real results (Nov 2026) · cartoon parody, original characters.
 #shorts #ronaldo #portugal
 Tags: ronaldo, cristiano ronaldo, portugal, portugal without ronaldo, ronaldo retires, portugal denmark 1-4, wales portugal 2-3, nations league, bruno fernandes, hojlund, siuuu, football cartoon, football animation, soccer 365
-Pinned comment: Who's Portugal's new main man: Bruno, Leão or the kid Forbs? 👇
+Pinned comment: Who's Portugal's new main man: Bruno, Neto or Forbs? 👇
 
 ## TikTok
 Caption: Portugal without Ronaldo 😂 Lost 1-4 to Denmark… then beat Wales with 10 men and a sub's winner. Do they need him? 👇 #ronaldo #portugal #cr7 #football #footballtiktok
