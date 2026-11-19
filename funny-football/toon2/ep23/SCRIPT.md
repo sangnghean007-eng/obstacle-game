@@ -39,3 +39,8 @@ Comment/share triggers: the question + the "send this" line (inside the video, n
 - All six clips now on a full-size grass stadium (day / night / sunset / rain), no village/cage/futsal/beach/rooftop labels.
 - Opponents = one team "THE XI" in red with white shorts (+ green keeper), clearly different from Ronaldo's yellow and Messi's pink: "the two of them against everyone".
 - Hook: "RONALDO + MESSI vs 11 PLAYERS 😤 · 2 vs 11 · WHAT IF? #n/6". Clip 1 ends in the goal (GOLAZO) instead of the chicken coop.
+
+## v4 (owner, Nov 19: "no legs when jumping; too monotonous and stiff")
+- Bicycle-kick pose rebuilt so both legs show (one kicking up, one bent).
+- Nobody ever freezes: 'stand' is replaced by an idle cycle (arm swing, weight shift, little bounce) for every character.
+- Every clip now has red defenders sprinting in from the sides to stop the duo and getting beaten (trip, OOF, stars), so the frame is always moving and it reads as 2 vs 11.
