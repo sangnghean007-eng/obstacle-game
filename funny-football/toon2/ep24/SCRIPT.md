@@ -1,0 +1,20 @@
+# Draft v5: "DREAM DUO" — realistic special combos + clearly drawn stars (owner, Nov 19) — for sign-off before rebuilding
+Owner: "portray the two characters clearly" + "special combos, but realistic".
+
+## A. Making the two stars clear (every clip)
+- Ronaldo and Messi drawn 25–30% bigger than everyone else, always in the front layer; nobody ever crosses in front of their faces.
+- Each clip opens with a 0.6 s close-up "face cam" of the passer, then the finisher (portrait large, own kit, name + number on the back).
+- Max 2–3 opponents on screen at a time, kept to the sides/back; the keeper is the only one near the goal.
+- Real body language: Ronaldo = tall, power stance, chest out, SIUUU; Messi = small, low centre of gravity, head down while dribbling, finger to the sky after a goal.
+
+## B. Six realistic combos (each could happen in a real match; nothing magical)
+| # | Combo | What makes it special (but possible) | Realism notes |
+|---|---|---|---|
+| 1 | **Messi slalom → cut-back → Ronaldo first-time finish** | Messi beats 2 defenders with close touches along the byline, cuts back, Ronaldo arrives late and side-foots it into the far corner | classic Messi dribble + Ronaldo poacher run |
+| 2 | **Ronaldo step-overs → cross → Messi diving header** | Ronaldo does 3 step-overs on the wing, whips a cross, Messi (the small one!) dives and heads it in | nod to Messi's famous header in the 2009 UCL final (verify before any on-screen mention) |
+| 3 | **One-two at the edge of the box** | Messi plays it into Ronaldo, Ronaldo lays it back first time, Messi chips the keeper | a real wall pass, 2 touches, the chip is Messi's trademark |
+| 4 | **Free kick decoy** | Both stand over the ball; Ronaldo does his famous wide-legged run-up… and steps over it; Messi curls it into the top corner over the wall | real set-piece trick |
+| 5 | **Counter-attack** | Ronaldo wins it in his own half, sprints, Messi runs alongside, Ronaldo draws the keeper and squares it for an empty-net tap-in, they celebrate together | realistic 2-on-1 |
+| 6 | **Messi no-look through ball → Ronaldo bullet header… no: volley** | Messi lofts a no-look ball over the defence, Ronaldo volleys it on the half-volley into the roof of the net; then both do their own celebration side by side (SIUUU + finger to the sky) without crashing | big finish, all physically possible |
+Each video: hook "RONALDO + MESSI · 2 vs 11 · #n/6" → combo (real speed) → slow-mo replay with a drawn tactics line (arrow of the pass/run, like TV analysis) → card "Rate this combo 1–10 👇 / Send this to your football buddy 😂".
+No exploding balls, no 360° curls, no standing on shoulders.
