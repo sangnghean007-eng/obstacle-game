@@ -32,3 +32,8 @@ Cuts: face cards (1.0) → low tracking cam on Messi's dribble (1.3) → close-u
 ## #1 v4 (owner: "still quite simple and fast"), 21.5 s
 - Every gag time-stretched 1.3–2× and given a reaction hold (setup → hit → reaction), new camera keys within each shot.
 - Extra beats: photographer's flash + dazed defender after the ad-board crash; Ronaldo stomps with steam from his ears, Messi finally looks up 👀; a red defender tries to pull the keeper out of the net ("PULL!").
+
+## #2 "THE SLAP" (owner's story, Nov 19), 19.4 s — toon2/ep24 CLIP=2, release/dream-duo-real-2-slap-9x16.mp4
+1. Face cards. 2. Messi beats two defenders (pizzicato). 3. Close-up: Ronaldo star-struck ⭐ eyes, "WOW…". 4. Messi beats three more: spin, nutmeg, two defenders collide (BONK). 5. Close-up: Ronaldo clapping with heart eyes 💖.
+6. Messi passes, Ronaldo is still clapping: the ball rolls through his legs, "MISSED IT 😱", Messi 🤦. 7. Messi marches over (steam), jumps and SLAPS him (hit-stop, impact frame, hearts break 💔, handprint) → Ronaldo snaps out of it ❗, Messi points at the goal.
+8. Three goals, three combos: one-two + Ronaldo finish · Ronaldo cross + Messi diving header · Messi chip + Ronaldo volley (DUO 1-0, 2-0, 3-0). 9. Both run at the camera and do the SIUUU together. 10. Card: "Who needed the slap more? 👇".

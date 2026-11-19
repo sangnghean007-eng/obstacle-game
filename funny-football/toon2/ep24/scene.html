@@ -989,19 +989,90 @@ function celeCam(z, t) { stad(t, 'RONALDO + MESSI vs THE XI', 'day'); rr(1000, 1
 // v4 (owner: 'still simple and fast'): every gag stretched (sl > 1) and given a reaction hold
 const CUTS3 = [['fc', 1.0, (z, t) => fcHook(z, t), 1.3, 0], ['track', 1.0, (z, t) => play1(z, t), 1.3, 0], ['slide', 1.0, slideCam, 2.0, 0], ['shout', 1.0, shoutCam, 2.0, 0], ['track2', 0.6, (z, t) => play1(z, t), 1.3, 1.0], ['wide', 0.4, (z, t) => play1(z, t), 1.5, 1.9], ['gcam', 0.9, goalCam, 1.8, 0], ['fish', 1.0, fishCam, 1.8, 0], ['crowd', 0.9, crowdCam2, 2.0, 0], ['cele', 1.8, celeCam, 1.7, 0]];
 
+
+// ================= DREAM DUO #2 (owner's story, Nov 19): Messi dribbles past everyone while Ronaldo stands there in awe → Messi passes,
+// Ronaldo is still star-struck and misses it → Messi marches over and SLAPS him awake → they combine and score again and again → both do the SIUUU.
+const STAR_X = 0;
+function awe(x, y, s, t, hearts) { for (let i = 0; i < 6; i++) { const a = t * 2 + i * TAU / 6; txt(hearts ? '💖' : '✨', x + Math.cos(a) * 230 * s, y - 60 * s + Math.sin(a) * 120 * s, 46 * s, '#fff', null); }
+  if (hearts) for (const d of [-1, 1]) txt('❤️', x + d * 52 * s, y - 40 * s, 70 * s, '#fff', null); else for (const d of [-1, 1]) txt('⭐', x + d * 52 * s, y - 40 * s, 66 * s, '#fff', null); }
+const CLAP = (t) => { const o = Math.floor(t * 8) % 2; return { bArm: [o ? -60 : -20, o ? -60 : -15], fArm: [o ? 60 : 20, o ? 60 : 15], bLeg: [-14, -8], fLeg: [14, 8] }; };
+function score2(n, k) { pop(1 + (k < 0.2 ? 0.3 * (1 - k / 0.2) : 0), W / 2, 330, () => { rr(-300, -62, 600, 124, 30, 'rgba(6,10,26,.92)', '#ffd60a', 6); txt(`DUO ${n} - 0 XI`, 0, 6, 66, '#fff', DARK); }); }
+const KEEP = (x, dive, z) => X('gk1', dive ? { bArm: [-160, -170], fArm: [-150, -165], bLeg: [-20, 10], fLeg: [20, 40] } : { bArm: [-50, -20], fArm: [50, 20], bLeg: [-30, -10], fLeg: [30, 10] }, dive ? 'shock' : 'angry', x, 1330, { s: 0.85, gy: 1330, rot: dive ? -1.2 : 0, f: -1 });
+// B1: Messi beats the first two
+function dr1(z, t) { stad(t, 'RONALDO + MESSI vs THE XI', 'day'); goal(260, 1260, 560, 300, 0, t); KEEP(540, false, z);
+  const mx = lerp(1000, 520, z / 1.2), touch = Math.floor(z / 0.18) % 2; [['kid1', 820, 0.35], ['kid2', 640, 0.8]].forEach(([w, x, tf]) => { const f = z > tf; X(w, f ? SPRAWL : { bArm: [-60, -30], fArm: [60, 30], bLeg: [-40, -20], fLeg: [80, 60] }, f ? 'dizzy' : 'angry', f ? x - 40 : x, 1640, { rot: f ? -1.4 : 0, f: 1 }); if (f && z < tf + 0.35) burst(x, 1380, 70, 'WHOOSH', (z - tf) / 0.08, 24, '#fff'); if (f) stars(x - 60, 1560, t, 50); });
+  M10({ bArm: [-40, -20], fArm: [40, 20], bLeg: [-20 + touch * 30, -10], fLeg: [20 - touch * 30, 10] }, 'deadpan', mx, 1680, 1.1, { f: -1 }); fball(mx - 80 - touch * 20, 1670, 30, z * 30);
+  R7('stand', 'shock', 140, 1420, 0.75, { gy: 1420 }); }
+// B2: Ronaldo in awe (close-up)
+function aw1(z, t) { stad(t, 'RONALDO + MESSI vs THE XI', 'day'); ctx.fillStyle = 'rgba(255,240,200,.35)'; ctx.fillRect(0, 0, W, H);
+  M10(runPose(t, 20), 'deadpan', 860, 1200, 0.5, { f: -1, gy: 1200 }); fball(800, 1195, 13, t * 20);
+  R7({ bArm: [20, 40], fArm: [-20, -40], bLeg: [-14, -8], fLeg: [14, 8] }, 'shock', 460, 2150, 1.9, { gy: 2150 }); awe(460, 1250, 1.9 * 0.55, t, false);
+  if (z > 0.2) burst(780, 820, 90, 'WOW…', (z - 0.2) / 0.08, 34, '#fff'); }
+// B3: Messi beats three more (spin, nutmeg, two defenders collide)
+function dr2(z, t) { stad(t, 'RONALDO + MESSI vs THE XI', 'day'); goal(260, 1260, 560, 300, 0, t); KEEP(540, false, z);
+  const mx = lerp(900, 330, z / 1.2), spin = z > 0.2 && z < 0.5, touch = Math.floor(z / 0.18) % 2;
+  X('fut1', z > 0.45 ? SPRAWL : { bArm: [-60, -30], fArm: [60, 30], bLeg: [-40, -20], fLeg: [80, 60] }, z > 0.45 ? 'dizzy' : 'angry', 760, 1640, { rot: z > 0.45 ? 1.4 : 0 });
+  X('kid3', z > 0.75 ? SPRAWL : 'stand', z > 0.75 ? 'shock' : 'angry', 560, 1620, { rot: z > 0.75 ? -1.3 : 0, f: -1 }); if (z > 0.7 && z < 1.0) burst(560, 1330, 70, 'NUTMEG', (z - 0.7) / 0.08, 24, '#fff');
+  const cx = z > 0.9 ? 420 : lerp(150, 400, clamp(z / 0.9)), cx2 = z > 0.9 ? 450 : lerp(800, 470, clamp(z / 0.9));
+  X('fut2', z > 0.95 ? SPRAWL : runPose(t, 20), z > 0.95 ? 'dizzy' : 'angry', cx, 1560, { rot: z > 0.95 ? -1.4 : 0, s: 0.85, gy: 1560 }); X('kid1', z > 0.95 ? SPRAWL : runPose(t, 20), z > 0.95 ? 'dizzy' : 'angry', cx2, 1570, { rot: z > 0.95 ? 1.4 : 0, s: 0.85, f: -1, gy: 1570 });
+  if (z > 0.95 && z < 1.3) burst(440, 1300, 110, 'BONK!', (z - 0.95) / 0.08, 36, '#fff');
+  M10(spin ? { bArm: [-90, -90], fArm: [90, 90], bLeg: [-20, -10], fLeg: [20, 10] } : { bArm: [-40, -20], fArm: [40, 20], bLeg: [-20 + touch * 30, -10], fLeg: [20 - touch * 30, 10] }, 'deadpan', mx, 1700, 1.1, { f: spin && Math.sin(t * 40) > 0 ? 1 : -1 }); fball(mx - 80, 1690, 30, z * 30); if (spin) burst(mx, 1320, 70, 'SPIN', 0.6, 24, '#fff'); }
+// B4: Ronaldo clapping with heart eyes
+function aw2(z, t) { stad(t, 'RONALDO + MESSI vs THE XI', 'day'); ctx.fillStyle = 'rgba(255,200,220,.3)'; ctx.fillRect(0, 0, W, H);
+  R7(CLAP(t), 'siuuu', 540, 2150, 1.9, { gy: 2150 }); awe(540, 1250, 1.9 * 0.55, t, true); for (let i = 0; i < 8; i++) { const q = (t * 0.8 + i / 8) % 1; txt('💖', 300 + (i * 97) % 500, 1500 - q * 900, 40, '#fff', null); } if (Math.floor(t * 8) % 2) burst(540, 1500, 50, 'clap', 0.6, 20, '#fff'); }
+// C: the pass he misses
+function miss(z, t) { stad(t, 'RONALDO + MESSI vs THE XI', 'day'); goal(260, 1260, 560, 300, 0, t); KEEP(540, false, z);
+  const pass = z > 0.3; M10(z < 0.3 ? 'stand' : z < 0.6 ? { bArm: [-40, -20], fArm: [40, 20], bLeg: [-14, -8], fLeg: [-60, -90] } : z > 1.2 ? { bArm: [-20, -10], fArm: [150, 170], bLeg: [-12, -6], fLeg: [12, 6] } : FOLD, z > 1.2 ? 'angry' : 'smug', 260, 1640, 1.1, { f: 1 });
+  R7(CLAP(t), 'siuuu', 700, 1700, 1.25); awe(700, 1700 - 1.25 * 420, 0.6, t, true);
+  if (pass) { const q = clamp((z - 0.3) / 0.9); fball(lerp(330, 1250, q), lerp(1680, 1780, q), 30, z * 30); }
+  if (z > 0.75 && z < 1.05) burst(700, 1880, 70, 'through the legs…', 0.6, 22, '#fff'); if (z > 1.2) { stamp('MISSED IT 😱', W / 2, 980, (z - 1.2) / 0.5, -0.06, '#e63946'); txt('🤦', 330, 1150, 90, '#fff', null); } }
+// D: Messi marches over and slaps him awake
+function slapIt(z, t) { stad(t, 'RONALDO + MESSI vs THE XI', 'day'); const hitT = 1.0, hit = z > hitT, hs = hit && z < hitT + 0.12; const zz = hs ? hitT : z;
+  const mx = lerp(150, 470, clamp(zz / 0.9)); const after = z > 1.45;
+  R7(hit ? (after ? AKIMBO : P_HIT) : CLAP(t), hit ? (after ? 'angry' : 'shock') : 'siuuu', 700, 1720, 1.3, { headTilt: hit && !after ? -0.5 * Math.max(0, 1 - (z - hitT) * 2.5) : 0 });
+  const [hx, hy] = [705, 1720 - 1.3 * 420]; if (!hit) awe(700, hy + 40, 0.6, t, true); if (hit && !after) for (let i = 0; i < 6; i++) { const q = clamp((z - hitT) * 2); txt('💔', hx + Math.cos(i) * 200 * q, hy - 100 + Math.sin(i * 2) * 120 * q + q * q * 200, 46, '#fff', null); }
+  if (hit) handprint(hx - 50, hy + 40, 1.4, -0.3); if (after) { txt('❗', hx, hy - 240, 90, '#fff', null); }
+  M10(zz < 0.9 ? runPose(t, 16) : zz < hitT ? { bArm: [-30, -10], fArm: [-170, -150], bLeg: [-30, 10], fLeg: [30, -10] } : after ? { bArm: [-20, -10], fArm: [100, 100], bLeg: [-12, -6], fLeg: [12, 6] } : { bArm: [-30, -10], fArm: [60, 40], bLeg: [-30, 10], fLeg: [30, -10] }, 'angry', mx, 1720 - (zz > 0.9 && z < hitT + 0.3 ? 120 : 0), 1.1, { f: 1 });
+  if (!hit) steam2(mx, 1720 - 1.1 * 560, t); if (hit && z < hitT + 0.45) burst(hx - 40, hy, 150, 'SLAP!!', (z - hitT) / 0.06, 60, '#ffd60a'); if (after) { txt('👉 ⚽🥅', 470, 1120, 60, '#fff', DARK); } }
+// E: three goals, three different combos
+function goals3(z, t) { stad(t, 'RONALDO + MESSI vs THE XI', 'night'); const i = Math.min(2, Math.floor(z / 1.5)), k = (z % 1.5) / 1.5; const hit = k > 0.62; goal(260, 1260, 560, 300, hit && k < 0.85 ? 1 - (k - 0.62) * 4 : 0, t); KEEP(hit ? [380, 560, 700][i] : 540, hit, z);
+  if (i === 0) { // one-two then Ronaldo finishes
+    M10(k < 0.15 ? KICK2 : k > 0.62 ? RAISE : 'stand', k > 0.62 ? 'siuuu' : 'smug', 760, 1660, 1.05, { f: -1 }); R7(k > 0.4 && k < 0.62 ? KICK2 : k > 0.62 ? RAISE : 'stand', k > 0.62 ? 'siuuu' : 'angry', 360, 1700, 1.2);
+    let b = k < 0.25 ? [lerp(700, 420, k / 0.25), 1680] : k < 0.4 ? [lerp(420, 700, (k - 0.25) / 0.15), 1680 - Math.sin((k - 0.25) / 0.15 * Math.PI) * 40] : k < 0.5 ? [700, 1680] : k < 0.62 ? [lerp(700, 420, (k - 0.5) / 0.12), lerp(1680, 1090, (k - 0.5) / 0.12)] : [400, 1090];
+    if (k > 0.4 && k < 0.5) b = [lerp(700, 430, (k - 0.4) / 0.1), 1690]; fball(b[0], b[1], 30, z * 30); }
+  if (i === 1) { // Ronaldo cross, Messi diving header
+    R7(k < 0.25 ? KICK2 : k > 0.62 ? RAISE : 'stand', k > 0.62 ? 'siuuu' : 'angry', 900, 1600, 1.1, { f: -1 }); const dive = k > 0.45 && k < 0.7; M10(dive ? { bArm: [-100, -95], fArm: [-95, -90], bLeg: [80, 90], fLeg: [80, 90] } : k > 0.7 ? RAISE : runPose(t, 18), k > 0.7 ? 'siuuu' : 'angry', lerp(300, 520, clamp(k / 0.55)), 1660 - (dive ? 260 : 0), 1.05, { rot: dive ? 1.4 : 0 });
+    const b = k < 0.55 ? [lerp(860, 540, k / 0.55), lerp(1560, 1380, k / 0.55) - Math.sin(k / 0.55 * Math.PI) * 300] : k < 0.62 ? [lerp(540, 560, (k - 0.55) / 0.07), lerp(1380, 1090, (k - 0.55) / 0.07)] : [560, 1090]; fball(b[0], b[1], 30, z * 30); }
+  if (i === 2) { // Messi chip over the top, Ronaldo volley
+    M10(k < 0.2 ? KICK2 : k > 0.62 ? RAISE : 'stand', k > 0.62 ? 'siuuu' : 'smug', 300, 1680, 1.05); R7(k > 0.45 && k < 0.62 ? { bArm: [-60, -30], fArm: [60, 30], bLeg: [-20, 10], fLeg: [110, 90] } : k > 0.62 ? RAISE : runPose(t, 16), k > 0.62 ? 'siuuu' : 'angry', lerp(900, 720, clamp(k / 0.5)), 1640, 1.2, { f: -1 });
+    const b = k < 0.5 ? [lerp(360, 700, k / 0.5), lerp(1660, 1480, k / 0.5) - Math.sin(k / 0.5 * Math.PI) * 380] : k < 0.62 ? [lerp(700, 720, (k - 0.5) / 0.12), lerp(1480, 1050, (k - 0.5) / 0.12)] : [720, 1050]; fball(b[0], b[1], 30, z * 30); }
+  if (hit && k < 0.85) burst(540, 980, 120, ['GOAL!', 'GOAL!!', 'GOAL!!!'][i], (k - 0.62) / 0.06, 44, '#ffd60a');
+  HUD(() => score2(i + (hit ? 1 : 0), hit ? (k - 0.62) * 1.5 : 1)); }
+// F: the joint SIUUU
+function siu2(z, t) { stad(t, 'RONALDO + MESSI vs THE XI', 'night'); confettiCol(z + 0.2, '#d4af37'); const run = clamp(z / 0.7), air = z > 0.75 && z < 1.35 ? Math.sin((z - 0.75) / 0.6 * Math.PI) * 300 : 0, land = z >= 1.35;
+  const turn = z > 0.75 && z < 1.05; const P = land ? { bArm: [-30, 20], fArm: [30, -20], bLeg: [-40, -10], fLeg: [40, 10] } : air > 0 ? { bArm: [-150, -170], fArm: [150, 170], bLeg: [-30, 10], fLeg: [30, -10] } : runPose(t, 18);
+  R7(P, 'siuuu', lerp(250, 360, run), lerp(1500, 1760, run) - air, lerp(0.9, 1.35, run), { gy: lerp(1500, 1760, run), f: turn && Math.sin(t * 30) > 0 ? -1 : 1 });
+  M10(P, 'siuuu', lerp(830, 740, run), lerp(1500, 1760, run) - air, lerp(0.8, 1.2, run), { gy: lerp(1500, 1760, run), f: turn && Math.sin(t * 30 + 1) > 0 ? 1 : -1 });
+  if (z > 1.3 && z < 2.0) burst(540, 900, 220, 'SIUUU ×2', (z - 1.3) / 0.08, 70, '#ffd60a'); if (land) for (let i = 0; i < 8; i++) { const q = ((z - 1.35) * 2 + i / 8) % 1; ell(540 + Math.cos(i) * 400 * q, 1780, 30 * (1 - q), 12 * (1 - q), 'rgba(80,160,60,.7)'); } }
+function card2(z, t) { siu2(2.4, t); ctx.fillStyle = 'rgba(0,0,0,.35)'; ctx.fillRect(0, 0, W, H); const k = window.SEGT; HUD(() => { pop(eOB(k / 0.12), W / 2, 700, () => { rr(-460, -70, 920, 140, 34, '#fff', DARK, 7); txt('Who needed the slap more? 👇', 0, 6, 52, DARK, null); });
+  if (k > 0.4) pop(eOB((k - 0.4) / 0.12), W / 2, 880, () => { rr(-420, -46, 840, 92, 26, 'rgba(0,0,0,.8)', '#d4af37', 4); txt('Send this to your football buddy 😂', 0, 3, 38, '#fff', null); }); score2(3, 1); txt('Cartoon parody · they never played on the same team', W / 2, 1890, 28, '#fff', DARK, 'center', 800); }); }
+const CUTS_2 = [['fc2', 1.0, (z, t) => fcHook(z, t), 1.2, 0], ['dr1', 1.2, dr1, 1, 0], ['aw1', 1.0, aw1, 1.1, 0], ['dr2', 1.2, dr2, 1, 0], ['aw2', 1.0, aw2, 1, 0], ['miss', 2.0, miss, 1, 0], ['slap', 2.2, slapIt, 1, 0], ['goals', 4.5, goals3, 1, 0], ['siu2', 2.4, siu2, 1, 0], ['card2', 2.6, card2, 1, 0]];
+
 // ---------- camera + HUD ----------
 let HUDQ = []; const HUD = (f) => HUDQ.push(f);
 const _cap = caption; caption = (...a) => HUD(() => _cap(...a));
 const N = (t) => [t, 540, 960, 1];
-const CAMS = { slide: [[0, 540, 1350, 1.0], [0.7, 640, 1300, 1.1], [1.0, 700, 1280, 1.2]], shout: [N(0), [1.0, 500, 1000, 1.1]], track2: [[0, 860, 1420, 1.5], [0.6, 800, 1420, 1.45]], fish: [N(0), [1.0, 600, 1150, 1.05]], cele: [[0, 560, 1450, 1.0], [0.6, 720, 1400, 1.1], [1.1, 560, 1450, 1.05], [1.8, 360, 1450, 1.25]], fc: [N(0), N(1)], track: [[0, 980, 1420, 1.55], [1.3, 830, 1420, 1.55]], ronrun: [[0, 200, 1620, 1.6], [0.6, 280, 1600, 1.7]], wide: [[0, 540, 1350, 0.92], [0.4, 540, 1350, 0.92]], gcam: [N(0), N(0.9)],
+const CAMS = { fc2: [N(0), N(1)], dr1: [[0, 860, 1450, 1.2], [1.2, 600, 1450, 1.2]], aw1: [N(0), [1.0, 480, 1000, 1.08]], dr2: [[0, 760, 1450, 1.15], [1.2, 420, 1450, 1.15]], aw2: [N(0), [1.0, 540, 1000, 1.1]],
+  miss: [[0, 480, 1450, 1.0], [0.7, 700, 1450, 1.15], [1.2, 560, 1350, 1.0], [2.0, 540, 1350, 1.0]], slap: [[0, 420, 1450, 1.05], [0.95, 600, 1400, 1.25], [1.1, 640, 1350, 1.45], [1.6, 600, 1450, 1.15], [2.2, 560, 1450, 1.1]],
+  goals: [[0, 540, 1400, 1.0], [4.5, 540, 1400, 1.0]], siu2: [[0, 540, 1350, 1.0], [1.3, 540, 1400, 1.08], [2.4, 540, 1420, 1.12]], card2: [N(0), N(2.6)], slide: [[0, 540, 1350, 1.0], [0.7, 640, 1300, 1.1], [1.0, 700, 1280, 1.2]], shout: [N(0), [1.0, 500, 1000, 1.1]], track2: [[0, 860, 1420, 1.5], [0.6, 800, 1420, 1.45]], fish: [N(0), [1.0, 600, 1150, 1.05]], cele: [[0, 560, 1450, 1.0], [0.6, 720, 1400, 1.1], [1.1, 560, 1450, 1.05], [1.8, 360, 1450, 1.25]], fc: [N(0), N(1)], track: [[0, 980, 1420, 1.55], [1.3, 830, 1420, 1.55]], ronrun: [[0, 200, 1620, 1.6], [0.6, 280, 1600, 1.7]], wide: [[0, 540, 1350, 0.92], [0.4, 540, 1350, 0.92]], gcam: [N(0), N(0.9)],
   keeper: [[0, 560, 1300, 1.7], [0.5, 560, 1300, 1.85]], crowd: [N(0), N(0.7)], cele: [[0, 300, 1500, 1.5], [1.0, 360, 1450, 1.35]], v1: [[0, 540, 1100, 1.0], [1.0, 540, 1100, 1.0], [1.05, 760, 1420, 1.1], [2.6, 740, 1420, 1.08], [3.0, 540, 1450, 1.0], [3.5, 540, 1400, 1.02], [4.3, 480, 1480, 1.08]], dirt: [[0, 620, 1350, 1.1], [1.2, 400, 1350, 1.1], [1.8, 450, 1250, 1.0], [2.4, 700, 1200, 1.1], [3.0, 700, 1200, 1.1]], cage: [[0, 540, 1380, 1.05], [1.5, 540, 1300, 1.1], [2.6, 540, 1300, 1.12]],
   futsal: [[0, 400, 1380, 1.1], [1.2, 760, 1380, 1.1], [1.6, 560, 1300, 1.05], [2.8, 560, 1250, 1.1]], beach: [[0, 540, 1300, 1.0], [1.7, 540, 1300, 1.0], [2.1, 540, 1200, 1.1], [2.8, 540, 1200, 1.12]],
   roof: [[0, 620, 1350, 1.05], [1.0, 540, 1350, 1.15], [2.0, 560, 1250, 1.05], [3.0, 560, 1250, 1.08]], rain: [[0, 640, 1350, 1.0], [1.2, 540, 1200, 1.05], [2.4, 540, 900, 1.0], [3.4, 540, 1000, 1.0]], argue: [[0, 540, 1350, 1.05], [1.5, 555, 1400, 1.25], [4.0, 555, 1380, 1.15]] };
-const SHK = { slide: [[0.35, .4, 24]], shout: [[0, .7, 6]], track2: [], fish: [[0, .2, 12]], gcam: [[0.45, .4, 26]], crowd: [[0, .7, 8]], cele: [], fc: [], track: [[0.55, .2, 10], [1.2, .2, 10]], ronrun: [], wide: [], keeper: [[0, .3, 12]], v1: [[1.55, .2, 10], [2.2, .2, 10], [3.5, .4, 20]], dirt: [[1.75, .3, 16], [2.3, .3, 14]], cage: [[1.5, .3, 14]], futsal: [[1.9, .3, 16]], beach: [[2.1, .3, 18]], roof: [[1.7, .25, 14], [2.0, .3, 14]], rain: [[1.6, .5, 22]], argue: [[1.5, .4, 24]] };
+const SHK = { fc2: [], dr1: [[0.35, .2, 10], [0.8, .2, 10]], aw1: [], dr2: [[0.95, .3, 16]], aw2: [], miss: [[1.2, .3, 10]], slap: [[1.0, .45, 30]], goals: [[0.93, .3, 18], [2.43, .3, 18], [3.93, .3, 20]], siu2: [[1.35, .4, 22]], card2: [], slide: [[0.35, .4, 24]], shout: [[0, .7, 6]], track2: [], fish: [[0, .2, 12]], gcam: [[0.45, .4, 26]], crowd: [[0, .7, 8]], cele: [], fc: [], track: [[0.55, .2, 10], [1.2, .2, 10]], ronrun: [], wide: [], keeper: [[0, .3, 12]], v1: [[1.55, .2, 10], [2.2, .2, 10], [3.5, .4, 20]], dirt: [[1.75, .3, 16], [2.3, .3, 14]], cage: [[1.5, .3, 14]], futsal: [[1.9, .3, 16]], beach: [[2.1, .3, 18]], roof: [[1.7, .25, 14], [2.0, .3, 14]], rain: [[1.6, .5, 22]], argue: [[1.5, .4, 24]] };
 const shakeAt = (n, z) => SHK[n].reduce((m, [a, d, A]) => z >= a && z < a + d ? Math.max(m, A * (1 - (z - a) / d)) : m, 0);
 const CLIP = +(new URLSearchParams(location.search).get('clip') || 1);
 const CLIPS = { 1: ['v1', 4.3, s_v1, 2.3, 3.7], 99: ['dirt', 3.0, s_dirt, 1.2, 2.6], 2: ['cage', 2.6, s_cage, 0.2, 1.9], 3: ['futsal', 2.8, s_futsal, 1.0, 2.2], 4: ['beach', 2.8, s_beach, 1.4, 2.4], 5: ['roof', 3.0, s_roof, 0.6, 2.2], 6: ['rain', 3.4, s_rain, 0.8, 2.0] };
-const [CN, CD, CF, CP0, CP1] = CLIPS[CLIP];
+const [CN, CD, CF, CP0, CP1] = CLIPS[CLIP] || CLIPS[1];
 function hookCap(k) { pop(eOB(k / 0.12), W / 2, 180, () => { rr(-500, -78, 1000, 156, 28, 'rgba(0,0,0,.88)', '#d4af37', 6); txt('RONALDO + MESSI vs 11 PLAYERS 😤', 0, -24, 42, '#fff', null); txt(`2 vs 11 · WHAT IF? 🐐🐐  #${CLIP}`, 0, 34, 44, '#d4af37', null); }); }
 function wMain(z, t) { CF(z, t); HUD(() => { if (window.SEGT < 2.4) hookCap(window.SEGT); }); }
 function wReplay(z, t) { if (CN === 'v1') play1(z - 1.0, t, true); else CF(z, t); ctx.fillStyle = 'rgba(20,10,0,.12)'; ctx.fillRect(0, 0, W, H); HUD(() => { pop(1, W / 2, 180, () => { rr(-230, -50, 460, 100, 24, 'rgba(0,0,0,.85)', '#e63946', 5); txt('⏪ REPLAY · 0.5×', 0, 3, 42, '#fff', null); }); }); }
@@ -1009,7 +1080,7 @@ function wCard(z, t) { if (CN === 'v1') celeCam(1.79, t); else CF(CD - 0.02, t);
   if (k > 0.4) pop(eOB((k - 0.4) / 0.12), W / 2, 940, () => { rr(-420, -46, 840, 92, 26, 'rgba(0,0,0,.8)', '#d4af37', 4); txt('Send this to your football buddy 😂', 0, 3, 38, '#fff', null); });
   if (k > 0.8) pop(eOB((k - 0.8) / 0.12), W / 2, 1100, () => txt(`DREAM DUO #${CLIP} · follow for the next one ⚽`, 0, 0, 34, '#d4af37', DARK)); txt('Cartoon parody · they never played on the same team', W / 2, 1890, 28, '#fff', DARK, 'center', 800); }); }
 function fcHook(z, t) { faceCam(z, t); HUD(() => { if (window.SEGT < 2.4) hookCap(window.SEGT); }); }
-const LEN = CLIP === 1 ? CUTS3.map(c => c.slice()).concat([['v1', 1.4, (z, t) => play1(z - 1.0, t, true), 2, 2.3], ['v1', 2.4, wCard, 1, 4.28]]) : CLIP === 6 ? [[CN, CD, wMain, 1, 0], [CN, CP1 - CP0, wReplay, 2, CP0], ['argue', 4.0, s_argue, 1, 0]] : [[CN, CD, wMain, 1, 0], [CN, CP1 - CP0, wReplay, 2, CP0], [CN, 2.4, wCard, 1, CD - 0.02]];
+const LEN = CLIP === 2 ? CUTS_2.map(c => c.slice()) : CLIP === 1 ? CUTS3.map(c => c.slice()).concat([['v1', 1.4, (z, t) => play1(z - 1.0, t, true), 2, 2.3], ['v1', 2.4, wCard, 1, 4.28]]) : CLIP === 6 ? [[CN, CD, wMain, 1, 0], [CN, CP1 - CP0, wReplay, 2, CP0], ['argue', 4.0, s_argue, 1, 0]] : [[CN, CD, wMain, 1, 0], [CN, CP1 - CP0, wReplay, 2, CP0], [CN, 2.4, wCard, 1, CD - 0.02]];
 const SEG = []; { let t = 0; for (const [n, d, f, sl, off] of LEN) { SEG.push([t, t + d * sl, f, n, sl, off || 0]); t += d * sl; } }
 const DURATION = SEG[SEG.length - 1][1];
 window.SEGS = SEG.map(s => [s[3], +s[0].toFixed(2)]);
