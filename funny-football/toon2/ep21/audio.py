@@ -13,14 +13,19 @@ def uke(t0, t1, g=.6, bpm=132):
         t += b / 2; i += 1
 def strings(t0, d, g=.12):
     for n in ('A3', 'C4', 'E4'): tt = T(d); x = osc(hz(n) * (1 + .006 * np.sin(2 * np.pi * 5.5 * tt)), d, 'saw') * (0.6 + 0.4 * np.sin(2 * np.pi * 12 * tt)); m.m(lp(x, 2200) * env(len(tt), .3, .6), t0, g, 0, .4)
-uke(0, 4.6, .8)
-for k, t in enumerate([0.9, 2.16, 3.06, 3.96]): m.thwack(t - .5, .5); m.thump(t, .5); m.crowd(t + .02, 'cheer', 1.0, .25 + k * .05); m.vo('mbappe', ['yay', 'laugh', 'yay', 'laugh'][k], t + .1, .5, 0, *(['belly', 1.0] if k % 2 else []))
-m.slide_whistle(4.3, True, .4, .15)
-# the buzz: music cut, vibration, gulp
-m.scratch(4.88, .5); m.f(osc(150, .6, 'sq') * (0.5 + 0.5 * np.sign(np.sin(2 * np.pi * 18 * T(.6)))) * .4, 4.9, .35); m.f(osc(150, .6, 'sq') * (0.5 + 0.5 * np.sign(np.sin(2 * np.pi * 18 * T(.6)))) * .4, 5.6, .3)
-m.vo('mbappe', 'uhoh', 5.9, .6)
-# collapse: tremolo strings, trembling squeaks, sob
-strings(6.1, 2.8, .1); [m.squeak(6.4 + i * .3, .15) for i in range(6)]; m.vo('mbappe', 'cry', 7.4, .55, 0, 'whimper', 1.3)
-# end card
-m.wahwah(8.8, .22); m.vo('mbappe', 'cry', 9.2, .6, 0, 'blubber', 1.6); m.crowd(9.6, 'laugh', 1.6, .2)
+END = 12.2; m = Mix2(END, ep=2101)
+uke(0, 6.0, .85, 140)
+for k, t in enumerate([0.6, 1.5, 4.0 - 1.1, 4.0 + .1]): pass
+# goal 1 (0.6), goal 2 knee slide (1.5–2.9), goal 3 overhead (2.9–4.5), king (4.5–6.0)
+m.thwack(.1, .5); m.thump(.6, .5); m.crowd(.62, 'cheer', .9, .3); m.vo('mbappe', 'yay', .7, .5)
+m.f(lp(noise(1.2), 900) * env(int(1.2 * SR), .05, .3), 1.55, .35); m.crowd(1.5, 'cheer', 1.2, .35); m.vo('mbappe', 'laugh', 1.7, .5, 0, 'belly', 1.0)
+m.whoosh(3.2, .4, .3); m.f(hp(noise(.3), 3000) * dec(.3, 8), 3.38, .4); m.thwack(3.4, .8); m.thump(4.0, .6); m.crowd(4.02, 'cheer', 1.4, .45); m.vo('mbappe', 'siu', 4.1, .5)
+m.brass_hit([hz('C4'), hz('E4'), hz('G4'), hz('C5')], 4.5, 1.2, .25); m.sparkle(4.5, 1.0, .2); m.crowd(4.6, 'cheer', 1.4, .3); m.vo('mbappe', 'laugh', 5.0, .5, 0, 'cackle')
+# buzz (6.0): music cut, vibration; PSG burst out (6.9), conga, trophy BONK (8.45)
+m.scratch(5.98, .5); vib = osc(150, .6, 'sq') * (0.5 + 0.5 * np.sign(np.sin(2 * np.pi * 18 * T(.6)))) * .4; m.f(vib, 6.0, .35); m.vo('mbappe', 'uhoh', 6.6, .6)
+m.f(hp(noise(.4), 1500) * dec(.4, 8), 6.9, .5)
+for i in range(4): m.slide_whistle(6.9 + i * .18, False, .4, .15, (-1) ** i * .4); m.vo(['generic_m', 'kid', 'big', 'generic_f'][i], 'yay', 7.2 + i * .15, .35, -.5 + i * .33)
+m.kazoo(7.4, ['C5', 'E5', 'G5', 'E5', 'C5', 'E5', 'G5', 'C6'], .18, .12); m.crowd(7.6, 'laugh', 1.6, .35); m.clang(8.45, .5); m.vo('mbappe', 'oof', 8.47, .6)
+# collapse + end (9.2)
+strings(9.2, 3.0, .1); m.rain(9.2, 3.0, .1); m.wahwah(9.3, .2); m.vo('mbappe', 'cry', 9.5, .6, 0, 'blubber', 1.8)
 m.write(sys.argv[1])
