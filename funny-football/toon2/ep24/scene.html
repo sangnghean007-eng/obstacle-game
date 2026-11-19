@@ -935,9 +935,10 @@ function s_v1(z, t) { if (z < 1.0) faceCam(z, t); else play1(z - 1.0, t); }
 
 
 // ---------- v2 (owner: "monotonous"): broadcast-style multi-angle edit — new camera every ~0.6 s, reaction cutaways ----------
+function anyCrowd() { return crowdCache.__any || (crowdCache.__any = makeCrowd(['#d62828', '#fff', '#fcd116', '#f5a3c7'], 9)); }
 function goalCam(z, t) { // behind the net: the shot comes straight at the viewer
   const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#1d3a8a'); g.addColorStop(0.35, '#3a9d4a'); g.addColorStop(1, '#2a7d37'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
-  ctx.drawImage(crowdCache[Object.keys(crowdCache)[0]] || makeCrowd(['#d62828', '#fff', '#fcd116'], 4), -200, -380, 1500, 900);
+  ctx.drawImage(anyCrowd(), -200, -380, 1500, 900);
   ctx.strokeStyle = 'rgba(255,255,255,.7)'; ctx.lineWidth = 6; ctx.beginPath(); ctx.moveTo(0, 900); ctx.lineTo(W, 900); ctx.stroke(); ctx.beginPath(); ctx.ellipse(540, 900, 200, 40, 0, 0, Math.PI); ctx.stroke();
   // Ronaldo far away striking, Messi behind him
   const k = clamp(z / 0.45); R7(z < 0.1 ? KICK2 : { bArm: [-30, 20], fArm: [30, -20], bLeg: [-40, -10], fLeg: [40, 10] }, 'angry', 420, 1000, 0.55, { gy: 1000 }); M10(RAISE, 'smug', 700, 980, 0.5, { gy: 980 });
@@ -955,15 +956,44 @@ function crowdCam(z, t) { const g = ctx.createLinearGradient(0, 0, 0, H); g.addC
   for (let i = 0; i < 4; i++) { ctx.save(); ctx.translate(160 + i * 260, 360 + Math.sin(t * 6 + i) * 20); ctx.rotate(Math.sin(t * 4 + i) * 0.1); rr(-110, -50, 220, 100, 10, ['#fcd116', '#f5a3c7', '#fff', '#fcd116'][i], DARK, 5); txt(['SIUUU', 'GOAT 🐐', 'WOW', '🔥🔥'][i], 0, 4, 44, DARK, null); ctx.restore(); } confettiCol(z + 0.4, '#d4af37'); }
 const CUTS1 = [['fc', 1.0, (z, t) => fcHook(z, t), 1, 0], ['track', 1.3, (z, t) => play1(z, t), 1, 0], ['ronrun', 0.6, (z, t) => play1(z, t), 1, 1.3], ['wide', 0.4, (z, t) => play1(z, t), 1, 1.9], ['gcam', 0.9, goalCam, 1, 0], ['keeper', 0.5, (z, t) => play1(z, t), 1, 2.6], ['crowd', 0.7, crowdCam, 1, 0], ['cele', 1.0, (z, t) => play1(z, t), 1, 3.0]];
 
+
+// ---------- v3 (owner: "no comic situations"): five gags inside the realistic combo ----------
+function boards(y, broken, t) { const labels = ['SOCCER 365', '⚽ GOAT TV', 'SIUUU COLA', 'MATE 🧉', 'SOCCER 365']; for (let i = 0; i < 5; i++) { const x = i * 230 - 40; if (broken && i === 3) continue; rr(x, y - 120, 226, 120, 6, ['#1d3a8a', '#d62828', '#fcd116', '#16a34a', '#1d3a8a'][i], DARK, 5); txt(labels[i], x + 113, y - 58, 34, '#fff', DARK); } }
+function slideCam(z, t) { const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#0b1230'); g.addColorStop(1, '#22365e'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, 1400); ctx.drawImage(anyCrowd(), -200, 200, 1500, 900);
+  ctx.fillStyle = '#3a9d4a'; ctx.fillRect(0, 1400, W, H - 1400); for (let i = 0; i < 6; i++) { ctx.fillStyle = i % 2 ? 'rgba(255,255,255,.05)' : 'rgba(0,0,0,.05)'; ctx.fillRect(0, 1400 + i * 90, W, 45); } ctx.strokeStyle = '#fff'; ctx.lineWidth = 10; ctx.beginPath(); ctx.moveTo(0, 1560); ctx.lineTo(W, 1560); ctx.stroke();
+  const hit = z > 0.35; boards(1420, hit, t); const x = lerp(-200, 780, clamp(z / 0.35)) + (hit ? (z - 0.35) * 200 : 0);
+  X('kid1', { bArm: [-120, -100], fArm: [60, 80], bLeg: [80, 90], fLeg: [95, 100] }, hit ? 'dizzy' : 'angry', x, hit ? 1380 : 1640, { s: 1.3, gy: hit ? 1420 : 1640, rot: hit ? -0.8 : 0.4 });
+  if (!hit) for (let i = 0; i < 6; i++) ell(x - 140 - i * 40, 1640 + Math.sin(i) * 10, 18, 9, 'rgba(60,140,50,.8)');
+  if (hit) { for (let i = 0; i < 7; i++) { const q = clamp((z - 0.35) * 2); ctx.save(); ctx.translate(800 + Math.cos(i * 1.3) * 220 * q, 1340 - Math.sin(i * 2.1) * 200 * q + q * q * 200); ctx.rotate(i + q * 6); rr(-40, -20, 80, 40, 4, '#16a34a', DARK, 3); ctx.restore(); } if (z < 0.75) burst(820, 1250, 140, 'CRASH!', (z - 0.35) / 0.08, 46, '#fff'); stars(800, 1150, t, 70); } }
+function shoutCam(z, t) { stad(t, 'RONALDO + MESSI vs THE XI', 'day'); ctx.fillStyle = 'rgba(255,255,255,.25)'; ctx.fillRect(0, 0, W, H);
+  M10(runPose(t, 20), 'deadpan', 860, 1200, 0.55, { f: -1, gy: 1200 }); fball(800, 1195, 14, t * 20); txt('🎧', 890, 960, 40, '#fff', null);
+  const w = Math.sin(t * 22) * 25; R7({ bArm: [-150 + w, -170], fArm: [150 - w, 170], bLeg: [-14, -8], fLeg: [14, 8] }, 'angry', 420, 2150, 1.9, { gy: 2150 });
+  txt('💢', 640, 900, 90, '#fff', null); if (z > 0.1) bubble('PASS!!! 😤', 420, 760, z - 0.1, 70); }
+function fishCam(z, t) { const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#2f9e44'); g.addColorStop(1, '#2a7d37'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  ctx.drawImage(anyCrowd(), -200, -300, 1500, 900); const fl = Math.sin(t * 20);
+  X('gk1', { bArm: [-160 + fl * 30, -170], fArm: [160 - fl * 30, 170], bLeg: [-40 + fl * 40, -10], fLeg: [40 - fl * 40, 10] }, 'shock', 540, 1500, { s: 1.6, gy: 1700, rot: 0.3 + fl * 0.1 });
+  ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.lineWidth = 5; for (let x = 0; x <= W; x += 55) { ctx.beginPath(); for (let y = 500; y <= H; y += 40) { const sag = Math.exp(-Math.pow((x - 540) / 260, 2)) * Math.exp(-Math.pow((y - 1200) / 380, 2)) * 120; y > 500 ? ctx.lineTo(x + Math.sin(y * 0.02 + t * 8) * 4, y + sag) : ctx.moveTo(x, y); } ctx.stroke(); }
+  for (let y = 500; y <= H; y += 55) { ctx.beginPath(); for (let x = 0; x <= W; x += 40) { const sag = Math.exp(-Math.pow((x - 540) / 260, 2)) * Math.exp(-Math.pow((y - 1200) / 380, 2)) * 120; x ? ctx.lineTo(x, y + sag) : ctx.moveTo(x, y + sag); } ctx.stroke(); }
+  rr(-20, 470, W + 40, 50, 6, '#fafafa', DARK, 6); txt('🐟', 820, 900 + Math.sin(t * 6) * 20, 90, '#fff', null); }
+function crowdCam2(z, t) { crowdCam(z, t); const f = Math.cos(Math.min(1, z / 0.25) * Math.PI) < 0 ? 1 : 0, f2 = z > 0.45; const sx = Math.abs(Math.cos(Math.min(1, ((z > 0.45 ? z - 0.45 : z)) / 0.25) * Math.PI));
+  ctx.save(); ctx.translate(540, 1300); ctx.scale(Math.max(0.05, sx), 1); rr(-420, -150, 840, 300, 20, '#fff', DARK, 8); txt(f2 ? 'BOTH 🐐🐐' : f ? 'RONALDO > MESSI' : 'MESSI > RONALDO', 0, 10, 78, DARK, null); ctx.restore();
+  for (const d of [-1, 1]) { rr(540 + d * 380 - 30, 1430, 60, 300, 20, '#c98a5e', DARK, 5); } }
+function celeCam(z, t) { stad(t, 'RONALDO + MESSI vs THE XI', 'day'); rr(1000, 1180, 10, 260, 3, '#fff', DARK, 3); ctx.fillStyle = '#fcd116'; ctx.beginPath(); ctx.moveTo(1010, 1180); ctx.lineTo(1080, 1210); ctx.lineTo(1010, 1240); ctx.fill();
+  const back = z > 1.05; const rx = z < 0.6 ? lerp(400, 880, z / 0.6) : back ? lerp(880, 420, clamp((z - 1.05) / 0.35)) : 880; const air = z > 0.6 && z < 1.0 ? Math.sin((z - 0.6) / 0.4 * Math.PI) * 260 : 0;
+  const tap = Math.floor(t * 6) % 2; M10(FOLD, z > 1.45 ? 'angry' : 'deadpan', 250, 1720, 1.15, { f: 1 }); if (!back) txt('🦶', 300, 1760 - tap * 10, 40, '#fff', null);
+  R7(z < 0.6 ? runPose(t, 18) : air > 0 ? { bArm: [-150, -170], fArm: [150, 170], bLeg: [-30, 10], fLeg: [30, -10] } : back && z > 1.4 ? { bArm: [-20, -10], fArm: [-150, -120], bLeg: [-12, -6], fLeg: [12, 6] } : z < 1.05 ? { bArm: [-30, 20], fArm: [30, -20], bLeg: [-40, -10], fLeg: [40, 10] } : runPose(t, 12), 'siuuu', rx, 1740 - air, 1.3, { gy: 1740, f: back ? -1 : 1 });
+  if (z > 0.95 && z < 1.3) burst(880, 1150, 120, 'SIUUU', (z - 0.95) / 0.08, 40, '#ffd60a'); if (z > 0.45 && z < 1.45) bubble('ASSIST? 🙄', 250, 1000, z - 0.45, 56); if (z > 1.45) burst(250, 1000, 70, 'pat pat', 0.6, 26, '#fff'); }
+const CUTS3 = [['fc', 1.0, (z, t) => fcHook(z, t), 1, 0], ['track', 1.0, (z, t) => play1(z, t), 1, 0], ['slide', 0.7, slideCam, 1, 0], ['shout', 0.7, shoutCam, 1, 0], ['track2', 0.6, (z, t) => play1(z, t), 1, 1.0], ['wide', 0.4, (z, t) => play1(z, t), 1, 1.9], ['gcam', 0.9, goalCam, 1, 0], ['fish', 0.7, fishCam, 1, 0], ['crowd', 0.7, crowdCam2, 1, 0], ['cele', 1.8, celeCam, 1, 0]];
+
 // ---------- camera + HUD ----------
 let HUDQ = []; const HUD = (f) => HUDQ.push(f);
 const _cap = caption; caption = (...a) => HUD(() => _cap(...a));
 const N = (t) => [t, 540, 960, 1];
-const CAMS = { fc: [N(0), N(1)], track: [[0, 980, 1420, 1.55], [1.3, 830, 1420, 1.55]], ronrun: [[0, 200, 1620, 1.6], [0.6, 280, 1600, 1.7]], wide: [[0, 540, 1350, 0.92], [0.4, 540, 1350, 0.92]], gcam: [N(0), N(0.9)],
+const CAMS = { slide: [[0, 540, 1350, 1.0], [0.7, 640, 1300, 1.1]], shout: [N(0), [0.7, 500, 1000, 1.08]], track2: [[0, 860, 1420, 1.5], [0.6, 800, 1420, 1.45]], fish: [N(0), [0.7, 540, 1100, 1.1]], cele: [[0, 560, 1450, 1.0], [0.6, 720, 1400, 1.1], [1.1, 560, 1450, 1.05], [1.8, 360, 1450, 1.25]], fc: [N(0), N(1)], track: [[0, 980, 1420, 1.55], [1.3, 830, 1420, 1.55]], ronrun: [[0, 200, 1620, 1.6], [0.6, 280, 1600, 1.7]], wide: [[0, 540, 1350, 0.92], [0.4, 540, 1350, 0.92]], gcam: [N(0), N(0.9)],
   keeper: [[0, 560, 1300, 1.7], [0.5, 560, 1300, 1.85]], crowd: [N(0), N(0.7)], cele: [[0, 300, 1500, 1.5], [1.0, 360, 1450, 1.35]], v1: [[0, 540, 1100, 1.0], [1.0, 540, 1100, 1.0], [1.05, 760, 1420, 1.1], [2.6, 740, 1420, 1.08], [3.0, 540, 1450, 1.0], [3.5, 540, 1400, 1.02], [4.3, 480, 1480, 1.08]], dirt: [[0, 620, 1350, 1.1], [1.2, 400, 1350, 1.1], [1.8, 450, 1250, 1.0], [2.4, 700, 1200, 1.1], [3.0, 700, 1200, 1.1]], cage: [[0, 540, 1380, 1.05], [1.5, 540, 1300, 1.1], [2.6, 540, 1300, 1.12]],
   futsal: [[0, 400, 1380, 1.1], [1.2, 760, 1380, 1.1], [1.6, 560, 1300, 1.05], [2.8, 560, 1250, 1.1]], beach: [[0, 540, 1300, 1.0], [1.7, 540, 1300, 1.0], [2.1, 540, 1200, 1.1], [2.8, 540, 1200, 1.12]],
   roof: [[0, 620, 1350, 1.05], [1.0, 540, 1350, 1.15], [2.0, 560, 1250, 1.05], [3.0, 560, 1250, 1.08]], rain: [[0, 640, 1350, 1.0], [1.2, 540, 1200, 1.05], [2.4, 540, 900, 1.0], [3.4, 540, 1000, 1.0]], argue: [[0, 540, 1350, 1.05], [1.5, 555, 1400, 1.25], [4.0, 555, 1380, 1.15]] };
-const SHK = { gcam: [[0.45, .4, 26]], crowd: [[0, .7, 8]], cele: [], fc: [], track: [[0.55, .2, 10], [1.2, .2, 10]], ronrun: [], wide: [], keeper: [[0, .3, 12]], v1: [[1.55, .2, 10], [2.2, .2, 10], [3.5, .4, 20]], dirt: [[1.75, .3, 16], [2.3, .3, 14]], cage: [[1.5, .3, 14]], futsal: [[1.9, .3, 16]], beach: [[2.1, .3, 18]], roof: [[1.7, .25, 14], [2.0, .3, 14]], rain: [[1.6, .5, 22]], argue: [[1.5, .4, 24]] };
+const SHK = { slide: [[0.35, .4, 24]], shout: [[0, .7, 6]], track2: [], fish: [[0, .2, 12]], gcam: [[0.45, .4, 26]], crowd: [[0, .7, 8]], cele: [], fc: [], track: [[0.55, .2, 10], [1.2, .2, 10]], ronrun: [], wide: [], keeper: [[0, .3, 12]], v1: [[1.55, .2, 10], [2.2, .2, 10], [3.5, .4, 20]], dirt: [[1.75, .3, 16], [2.3, .3, 14]], cage: [[1.5, .3, 14]], futsal: [[1.9, .3, 16]], beach: [[2.1, .3, 18]], roof: [[1.7, .25, 14], [2.0, .3, 14]], rain: [[1.6, .5, 22]], argue: [[1.5, .4, 24]] };
 const shakeAt = (n, z) => SHK[n].reduce((m, [a, d, A]) => z >= a && z < a + d ? Math.max(m, A * (1 - (z - a) / d)) : m, 0);
 const CLIP = +(new URLSearchParams(location.search).get('clip') || 1);
 const CLIPS = { 1: ['v1', 4.3, s_v1, 2.3, 3.7], 99: ['dirt', 3.0, s_dirt, 1.2, 2.6], 2: ['cage', 2.6, s_cage, 0.2, 1.9], 3: ['futsal', 2.8, s_futsal, 1.0, 2.2], 4: ['beach', 2.8, s_beach, 1.4, 2.4], 5: ['roof', 3.0, s_roof, 0.6, 2.2], 6: ['rain', 3.4, s_rain, 0.8, 2.0] };
@@ -971,11 +1001,11 @@ const [CN, CD, CF, CP0, CP1] = CLIPS[CLIP];
 function hookCap(k) { pop(eOB(k / 0.12), W / 2, 180, () => { rr(-500, -78, 1000, 156, 28, 'rgba(0,0,0,.88)', '#d4af37', 6); txt('RONALDO + MESSI vs 11 PLAYERS 😤', 0, -24, 42, '#fff', null); txt(`2 vs 11 · WHAT IF? 🐐🐐  #${CLIP}`, 0, 34, 44, '#d4af37', null); }); }
 function wMain(z, t) { CF(z, t); HUD(() => { if (window.SEGT < 2.4) hookCap(window.SEGT); }); }
 function wReplay(z, t) { if (CN === 'v1') play1(z - 1.0, t, true); else CF(z, t); ctx.fillStyle = 'rgba(20,10,0,.12)'; ctx.fillRect(0, 0, W, H); HUD(() => { pop(1, W / 2, 180, () => { rr(-230, -50, 460, 100, 24, 'rgba(0,0,0,.85)', '#e63946', 5); txt('⏪ REPLAY · 0.5×', 0, 3, 42, '#fff', null); }); }); }
-function wCard(z, t) { if (CN === 'v1') play1(3.9, t); else CF(CD - 0.02, t); ctx.fillStyle = 'rgba(0,0,0,.35)'; ctx.fillRect(0, 0, W, H); const k = window.SEGT; HUD(() => { pop(eOB(k / 0.12), W / 2, 760, () => { rr(-460, -70, 920, 140, 34, '#fff', DARK, 7); txt('Rate this combo 1–10 👇', 0, 6, 58, DARK, null); });
+function wCard(z, t) { if (CN === 'v1') celeCam(1.79, t); else CF(CD - 0.02, t); ctx.fillStyle = 'rgba(0,0,0,.35)'; ctx.fillRect(0, 0, W, H); const k = window.SEGT; HUD(() => { pop(eOB(k / 0.12), W / 2, 760, () => { rr(-460, -70, 920, 140, 34, '#fff', DARK, 7); txt('Rate this combo 1–10 👇', 0, 6, 58, DARK, null); });
   if (k > 0.4) pop(eOB((k - 0.4) / 0.12), W / 2, 940, () => { rr(-420, -46, 840, 92, 26, 'rgba(0,0,0,.8)', '#d4af37', 4); txt('Send this to your football buddy 😂', 0, 3, 38, '#fff', null); });
   if (k > 0.8) pop(eOB((k - 0.8) / 0.12), W / 2, 1100, () => txt(`DREAM DUO #${CLIP} · follow for the next one ⚽`, 0, 0, 34, '#d4af37', DARK)); txt('Cartoon parody · they never played on the same team', W / 2, 1890, 28, '#fff', DARK, 'center', 800); }); }
 function fcHook(z, t) { faceCam(z, t); HUD(() => { if (window.SEGT < 2.4) hookCap(window.SEGT); }); }
-const LEN = CLIP === 1 ? CUTS1.map(c => c.slice()).concat([['v1', 1.4, (z, t) => play1(z - 1.0, t, true), 2, 2.3], ['v1', 2.4, wCard, 1, 4.28]]) : CLIP === 6 ? [[CN, CD, wMain, 1, 0], [CN, CP1 - CP0, wReplay, 2, CP0], ['argue', 4.0, s_argue, 1, 0]] : [[CN, CD, wMain, 1, 0], [CN, CP1 - CP0, wReplay, 2, CP0], [CN, 2.4, wCard, 1, CD - 0.02]];
+const LEN = CLIP === 1 ? CUTS3.map(c => c.slice()).concat([['v1', 1.4, (z, t) => play1(z - 1.0, t, true), 2, 2.3], ['v1', 2.4, wCard, 1, 4.28]]) : CLIP === 6 ? [[CN, CD, wMain, 1, 0], [CN, CP1 - CP0, wReplay, 2, CP0], ['argue', 4.0, s_argue, 1, 0]] : [[CN, CD, wMain, 1, 0], [CN, CP1 - CP0, wReplay, 2, CP0], [CN, 2.4, wCard, 1, CD - 0.02]];
 const SEG = []; { let t = 0; for (const [n, d, f, sl, off] of LEN) { SEG.push([t, t + d * sl, f, n, sl, off || 0]); t += d * sl; } }
 const DURATION = SEG[SEG.length - 1][1];
 window.SEGS = SEG.map(s => [s[3], +s[0].toFixed(2)]);

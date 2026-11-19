@@ -21,3 +21,10 @@ No exploding balls, no 360° curls, no standing on shoulders.
 
 ## #1 v2 (owner: "monotonous"): broadcast multi-angle edit, 11.6 s
 Cuts: face cards (1.0) → low tracking cam on Messi's dribble (1.3) → close-up Ronaldo's late run (0.6) → wide tactical cam for the cut-back (0.4) → BEHIND-THE-NET cam: the shot flies at the viewer, the net bulges toward the lens (0.9) → keeper close-up on the ground (0.5) → crowd cam with signs (0.7) → celebration close-up (1.0) → tactics replay 0.5× → card.
+
+## #1 v3 (owner: "no comic situations"), 13.7 s — five gags inside the realistic combo
+1. The beaten defender's slide tackle carries him off the pitch, CRASH through an advertising board.
+2. Ronaldo screaming "PASS!!! 😤" with both arms (💢), while Messi keeps dribbling with headphones on 🎧.
+3. The keeper ends up tangled in the net, flapping like a fish 🐟.
+4. Crowd sign flips: "MESSI > RONALDO" → "RONALDO > MESSI" → "BOTH 🐐🐐".
+5. Ronaldo runs to the corner flag for his SIUUU alone; Messi waits with folded arms tapping his foot: "ASSIST? 🙄"; Ronaldo comes back and pats him on the head (height joke), Messi annoyed.
