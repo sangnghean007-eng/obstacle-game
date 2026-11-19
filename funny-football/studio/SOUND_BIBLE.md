@@ -20,3 +20,4 @@ Problem: Ep9–Ep15 reused the same 12 voice WAVs (wail, chuckle, laugh_crowd, s
 | 20 Wrong Number | 8-bit chiptune brawl | phone rings, bus horns, record scratch, fight-cloud smack storm, SPLAT | ronaldo, messi, bruno, crowd (vox2) |
 | 21 Mbappé This Season | bright ukulele-style strum → cut → tremolo strings | phone buzz, record scratch, trembling squeaks, wah-wah | mbappe, crowd (vox2) |
 | 22 So Close | lounge jazz (walking bass, brushes, vibes) at the gala | tape rewind, lucky-bounce boing/ting/bonk, record scratch at the reveal, stiff claps, glass crack | mbappe, kane, crowd (vox2) |
+| 23 Dream Duo | trap beat glue + per-location room tone (phone video feel) | chickens, domino clacks, header pings, ball POP, net rip, thunder | ronaldo, messi, kids, crowd (vox2) |
