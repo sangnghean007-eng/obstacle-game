@@ -28,3 +28,7 @@ Cuts: face cards (1.0) → low tracking cam on Messi's dribble (1.3) → close-u
 3. The keeper ends up tangled in the net, flapping like a fish 🐟.
 4. Crowd sign flips: "MESSI > RONALDO" → "RONALDO > MESSI" → "BOTH 🐐🐐".
 5. Ronaldo runs to the corner flag for his SIUUU alone; Messi waits with folded arms tapping his foot: "ASSIST? 🙄"; Ronaldo comes back and pats him on the head (height joke), Messi annoyed.
+
+## #1 v4 (owner: "still quite simple and fast"), 21.5 s
+- Every gag time-stretched 1.3–2× and given a reaction hold (setup → hit → reaction), new camera keys within each shot.
+- Extra beats: photographer's flash + dazed defender after the ad-board crash; Ronaldo stomps with steam from his ears, Messi finally looks up 👀; a red defender tries to pull the keeper out of the net ("PULL!").
