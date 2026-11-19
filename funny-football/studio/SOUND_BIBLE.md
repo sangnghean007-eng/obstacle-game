@@ -18,3 +18,4 @@ Problem: Ep9–Ep15 reused the same 12 voice WAVs (wail, chuckle, laugh_crowd, s
 | 18 The Miracle | stadium drums + original brass fanfare (no real anthem) | dressing-room hum swell + power-up, noodle boings, moon slide whistle | crowd + generic voices (vox2) |
 | 19 We Don't Need Him | original fado-style guitar (Portugal) vs oompah tuba (sofa) | poster rip, bulldozer rumble, popcorn burst, TV crack, card whistles | bruno, hojlund, ronaldo, crowd (vox2) |
 | 20 Wrong Number | 8-bit chiptune brawl | phone rings, bus horns, record scratch, fight-cloud smack storm, SPLAT | ronaldo, messi, bruno, crowd (vox2) |
+| 21 Mbappé This Season | bright ukulele-style strum → cut → tremolo strings | phone buzz, record scratch, trembling squeaks, wah-wah | mbappe, crowd (vox2) |
