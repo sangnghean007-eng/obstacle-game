@@ -11,18 +11,18 @@ def trap(t0, t1, g=.6, bpm=140):
         if i % 8 == 4: m.snare(t, .22 * g)
         m.hat(t, .04 * g); m.hat(t + b / 4, .025 * g) if i % 2 else None; t += b / 2; i += 1
 trap(0, 17.6, .7)
-def room(t, d, lo, hi, g): m.f(bp(noise(d), lo, hi) * env(int(d * SR), .05, .1), t, g)
+def room(t, d, lo, hi, g): m.f(bp(noise(d), 250, 2200) * env(int(d * SR), .05, .1), t, .22)  # stadium crowd bed (all clips are on an 11-a-side pitch)
 def amateur(t, g=.35): m.crowd(t, 'cheer', 1.2, g); m.vo('generic_m', 'yay', t + .05, .3, .5)
 # DIRT: wind on the phone mic, nutmeg taps, bicycle, chickens
-room(0, 3.0, 80, 600, .2); [m.thwack(.3 + i * .35, .25) for i in range(3)]; [m.vo('kid', 'yelp', .35 + i * .35, .35, .3) for i in range(3)]
-m.whoosh(1.5, .4, .3); m.thwack(1.75, .8); m.vo('ronaldo', 'siu', 1.8, .5); m.thump(2.3, .4); m.honk(2.32, .25); m.f(osc(glide(900, 1300, .12), .12, 'saw') * dec(.12, 20) * .3, 2.4, .3); m.f(osc(glide(800, 1200, .12), .12, 'saw') * dec(.12, 20) * .3, 2.55, .3); amateur(2.35)
+room(0, 3.0, 80, 600, .2); [m.thwack(.3 + i * .35, .25) for i in range(3)]; [m.vo('generic_m', 'yelp', .35 + i * .35, .35, .3) for i in range(3)]
+m.whoosh(1.5, .4, .3); m.thwack(1.75, .8); m.vo('ronaldo', 'siu', 1.8, .5); m.thump(2.3, .4); m.crowd(2.32, 'cheer', 1.6, .5); m.boom(2.32, .3)
 # CAGE: six taps, keeper spin, thud
 t = 3.0; room(t, 2.6, 300, 2000, .1)
 for i in range(6): m.thwack(t + .2 + i * .183, .3, (-1) ** i * .4)
 m.spring(t + .6, .2, .8); m.vo('generic_m', 'uhoh', t + .9, .4); m.thwack(t + 1.3, .6); m.thump(t + 1.6, .6); m.vo('generic_m', 'oof', t + 1.62, .5); amateur(t + 1.55)
 # FUTSAL: sneaker squeaks, domino clacks, chest thump, SIUUU echo
 t = 5.6; room(t, 2.8, 500, 3000, .08)
-for i in range(6): m.squeak(t + .1 + i * .18, .25)
+for i in range(6): m.footstep(t + .1 + i * .18, .3, .2)
 for i in range(4): m.f(osc(1400 - i * 120, .06, 'sq') * dec(.06, 50) * .4, t + .35 + i * .22, .4)
 m.thump(t + 1.6, .6); m.thwack(t + 1.85, .5); m.vo('ronaldo', 'siu', t + 1.95, .6); m.vo('ronaldo', 'siu', t + 2.25, .3); m.vo('ronaldo', 'siu', t + 2.5, .15); amateur(t + 1.95, .3)
 # BEACH: waves, 8 header pings, POP

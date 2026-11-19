@@ -786,15 +786,15 @@ function star(C, face, pose, ex, x, y, s, o) { if (!o.noShadow) PRO.shadow(ctx, 
   chibi.draw(ctx, C, pose, 'neutral', x, y, s, Object.assign({ f: 1, headFn: (R) => portrait.draw(ctx, face, 0, -R * 0.28, R * 2.1 / 330, { headOnly: true, expr: ex, kit: C.kit.shirt }) }, o)); ctx.restore(); }
 // full-size extras: own hair, skin, kit, number and a real chibi face
 const XTRA = {
-  kid1: [mkKit('#e63946', '#fff', '#1d3557', '#e63946'), '9', '', '#c98a5e', { R: 104, hair: 'spiky', hairCol: '#1a1008', iris: '#2a1a10' }, 0.78],
-  kid2: [mkKit('#2a9d8f', '#fff', '#264653', '#2a9d8f'), '4', '', '#8d5a3b', { R: 104, hair: 'curls', hairCol: '#1a1008', iris: '#2a1a10' }, 0.75],
-  kid3: [mkKit('#f4a261', '#fff', '#3d2b1f', '#f4a261'), '11', '', '#e8b892', { R: 104, hair: 'quiff', hairCol: '#6b4a2a', iris: '#3a2416' }, 0.76],
-  gk1: [mkKit('#22c55e', '#111', '#111', '#22c55e'), '1', 'KEEPER', '#e8b592', { R: 100, hair: 'buzz', hairCol: '#3a2a1c', iris: '#3a2416', beard: 'trim', beardCol: '#3a2a1c' }, 0.95],
-  fut1: [mkKit('#e63946', '#fff', '#fff', '#e63946', '#fff'), '2', '', '#c98a5e', { R: 100, hair: 'fade', hairCol: '#1a1008', iris: '#2a1a10' }, 0.9],
-  fut2: [mkKit('#e63946', '#fff', '#fff', '#e63946', '#fff'), '5', '', '#f1c9a8', { R: 100, hair: 'sidepart', hairCol: '#b88a4a', iris: '#4a7fb5' }, 0.9],
-  fut3: [mkKit('#e63946', '#fff', '#fff', '#e63946', '#fff'), '8', '', '#6b4430', { R: 100, hair: 'buzz', hairCol: '#1a1008', iris: '#2a1a10' }, 0.9],
-  fut4: [mkKit('#e63946', '#fff', '#fff', '#e63946', '#fff'), '10', '', '#e2ad88', { R: 100, hair: 'long', hairCol: '#2a1d14', iris: '#3a2416', beard: 'trim', beardCol: '#2a1d14' }, 0.9],
-  gkf: [mkKit('#7c3aed', '#111', '#111', '#7c3aed'), '1', '', '#e8b892', { R: 100, hair: 'short', hairCol: '#2a1d14', iris: '#3a2416' }, 0.9],
+  kid1: [mkKit('#d62828', '#fff', '#fff', '#d62828', '#fff'), '4', 'XI', '#c98a5e', { R: 100, hair: 'spiky', hairCol: '#1a1008', iris: '#2a1a10' }, 0.92],
+  kid2: [mkKit('#d62828', '#fff', '#fff', '#d62828', '#fff'), '5', 'XI', '#8d5a3b', { R: 100, hair: 'curls', hairCol: '#1a1008', iris: '#2a1a10' }, 0.95],
+  kid3: [mkKit('#d62828', '#fff', '#fff', '#d62828', '#fff'), '6', 'XI', '#e8b892', { R: 100, hair: 'quiff', hairCol: '#6b4a2a', iris: '#3a2416' }, 0.92],
+  gk1: [mkKit('#16a34a', '#111', '#111', '#16a34a'), '1', 'KEEPER', '#e8b592', { R: 100, hair: 'buzz', hairCol: '#3a2a1c', iris: '#3a2416', beard: 'trim', beardCol: '#3a2a1c' }, 0.95],
+  fut1: [mkKit('#d62828', '#fff', '#fff', '#d62828', '#fff'), '2', '', '#c98a5e', { R: 100, hair: 'fade', hairCol: '#1a1008', iris: '#2a1a10' }, 0.9],
+  fut2: [mkKit('#d62828', '#fff', '#fff', '#d62828', '#fff'), '5', '', '#f1c9a8', { R: 100, hair: 'sidepart', hairCol: '#b88a4a', iris: '#4a7fb5' }, 0.9],
+  fut3: [mkKit('#d62828', '#fff', '#fff', '#d62828', '#fff'), '8', '', '#6b4430', { R: 100, hair: 'buzz', hairCol: '#1a1008', iris: '#2a1a10' }, 0.9],
+  fut4: [mkKit('#d62828', '#fff', '#fff', '#d62828', '#fff'), '10', '', '#e2ad88', { R: 100, hair: 'long', hairCol: '#2a1d14', iris: '#3a2416', beard: 'trim', beardCol: '#2a1d14' }, 0.9],
+  gkf: [mkKit('#16a34a', '#111', '#111', '#16a34a'), '1', '', '#e8b892', { R: 100, hair: 'short', hairCol: '#2a1d14', iris: '#3a2416' }, 0.9],
   mate: [mkKit('#f4f4f4', '#d4af37', '#f4f4f4', '#f4f4f4', '#111'), '9', 'MATE', '#8d5a3b', { R: 100, hair: 'curls', hairCol: '#1a1008', iris: '#2a1a10' }, 0.95] };
 function X(who, pose, ex, x, y, o = {}) { const [kit, num, nm, skin, hd, s0] = XTRA[who]; const s = o.s || s0; if (!o.noShadow) PRO.shadow(ctx, x, o.gy || G3, Math.max(0, (o.gy || G3) - y), s);
   const C = Object.assign({}, CH.mate1, { skin, shade: skin, kit, num, name: nm, nameSize: 14, head: hd }); ctx.save(); if (o.rot) { ctx.translate(x, y - 150 * s); ctx.rotate(o.rot); ctx.translate(-x, -(y - 150 * s)); }
@@ -828,6 +828,9 @@ function roofSet(t) { const g = ctx.createLinearGradient(0, 0, 0, 1000); g.addCo
   ctx.fillStyle = '#2b8a3e'; ctx.fillRect(0, 1000, W, H - 1000); speckle(1000, 'rgba(0,40,0,.25)', 'rgba(255,255,255,.08)', 200, 11);
   ctx.strokeStyle = 'rgba(200,200,220,.45)'; ctx.lineWidth = 2; for (let x = -40; x < W + 40; x += 34) { ctx.beginPath(); ctx.moveTo(x, 600); ctx.lineTo(x + 300, 1000); ctx.moveTo(x + 300, 600); ctx.lineTo(x, 1000); ctx.stroke(); }
   for (const x of [80, 1000]) { rr(x - 8, 560, 16, 460, 4, '#777', DARK, 3); const gl = ctx.createRadialGradient(x, 560, 5, x, 900, 600); gl.addColorStop(0, 'rgba(255,255,230,.5)'); gl.addColorStop(1, 'rgba(255,255,230,0)'); ctx.fillStyle = gl; ctx.fillRect(x - 600, 560, 1200, 1400); } }
+function stad(t, label, mode) { pitch(t, label, ['#d62828', '#fff', '#fcd116', '#f5a3c7']);
+  if (mode === 'night') { ctx.fillStyle = 'rgba(10,15,50,.35)'; ctx.fillRect(0, 0, W, H); for (const x of [120, 960]) { const gl = ctx.createRadialGradient(x, 0, 5, x, 600, 900); gl.addColorStop(0, 'rgba(255,255,230,.45)'); gl.addColorStop(1, 'rgba(255,255,230,0)'); ctx.fillStyle = gl; ctx.fillRect(0, 0, W, H); } }
+  if (mode === 'sunset') { ctx.fillStyle = 'rgba(255,140,60,.18)'; ctx.fillRect(0, 0, W, H); } }
 function rainOver(t, a = 0.5) { ctx.strokeStyle = `rgba(200,220,255,${a})`; ctx.lineWidth = 3; const R = rng(Math.floor(t * 30)); for (let i = 0; i < 120; i++) { const x = R() * W, y = R() * H; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - 14, y + 40); ctx.stroke(); } }
 function rec(n, place, t) { ell(70, 290, 14, 14, Math.floor(t * 2) % 2 ? '#e63946' : '#7a1f1f'); txt('REC', 128, 292, 34, '#fff', DARK, 'left'); txt(place, W - 50, 292, 32, '#fff', DARK, 'right'); if (n) pop(1, W / 2, 1800, () => { rr(-170, -42, 340, 84, 24, 'rgba(0,0,0,.7)', '#d4af37', 4); txt(`DREAM DUO #${n}`, 0, 3, 40, '#d4af37', null); }); }
 function feathers(x, y, k) { for (let i = 0; i < 10; i++) { const a = i / 10 * TAU; ctx.save(); ctx.translate(x + Math.cos(a) * 160 * k, y + Math.sin(a) * 100 * k + k * k * 120); ctx.rotate(a + k * 4); ell(0, 0, 18, 7, '#fff', 3); ctx.restore(); } }
@@ -835,24 +838,24 @@ const arc = (A, B, k, h) => [lerp(A[0], B[0], k), lerp(A[1], B[1], k) - Math.sin
 
 // ---------- clips ----------
 // 1 dirt pitch: Messi nutmegs 3 kids, chips, Ronaldo bicycle kick through a goal with no net into the chicken coop
-function s_dirt(z, t) { dirtSet(t); posts(250, 1260, 560, 300);
+function s_dirt(z, t) { stad(t, 'RONALDO + MESSI vs THE XI', 'day'); goal(260, 1260, 560, 300, z > 2.3 && z < 2.8 ? 1 - (z - 2.3) * 2 : 0, t);
   const kids = [['kid1', 760], ['kid2', 620], ['kid3', 480]]; const mx = z < 1.2 ? lerp(950, 330, z / 1.2) : 330;
   kids.forEach(([w, x], i) => { const passed = mx < x - 30; X(w, passed ? SPRAWL : 'stand', passed ? 'shock' : 'angry', x, G3 + 20, { rot: passed ? (i % 2 ? 1.4 : -1.4) : 0, f: -1 }); if (passed && mx > x - 160) burst(x, G3 - 260, 60, 'NUTMEG', 0.6, 20, '#fff'); });
   M10(z < 1.2 ? runPose(t, 22) : z < 1.5 ? KICK2 : FOLD, z < 1.2 ? 'angry' : 'smug', mx, G3, 0.9);
   const jump = z > 1.3 && z < 2.1; const rk = clamp((z - 1.3) / 0.8); R7(jump ? BIKE2 : z >= 2.1 ? RAISE : 'stand', jump ? 'angry' : z >= 2.1 ? 'siuuu' : 'smug', 240, jump ? G3 - Math.sin(rk * Math.PI) * 420 : G3, 1.0, { rot: jump ? -rk * Math.PI * 1.4 : 0 });
-  let b; if (z < 1.2) b = [mx - 80, G3 - 20]; else if (z < 1.75) b = arc([330, G3 - 20], [200, G3 - 520], (z - 1.2) / 0.55, 160); else if (z < 2.3) b = [lerp(200, 880, (z - 1.75) / 0.55), lerp(G3 - 520, 1150, (z - 1.75) / 0.55)]; else b = [880, 1150];
+  let b; if (z < 1.2) b = [mx - 80, G3 - 20]; else if (z < 1.75) b = arc([330, G3 - 20], [200, G3 - 520], (z - 1.2) / 0.55, 160); else if (z < 2.3) b = [lerp(200, 560, (z - 1.75) / 0.55), lerp(G3 - 520, 1110, (z - 1.75) / 0.55)]; else b = [560, 1110];
   fball(b[0], b[1], 30, z * 30); if (z > 1.72 && z < 1.95) burst(220, G3 - 540, 110, 'BICYCLE!', (z - 1.72) / 0.08, 34, '#ffd60a');
-  if (z > 2.3) { feathers(880, 1140, clamp((z - 2.3) / 0.6)); if (z < 2.8) burst(880, 1100, 110, 'BAWK!', (z - 2.3) / 0.08, 36, '#fff'); }
-  HUD(() => rec(1, '📍 VILLAGE PITCH', t)); }
+  if (z > 2.3 && z < 2.8) burst(560, 1040, 120, 'GOLAZO!', (z - 2.3) / 0.08, 40, '#ffd60a');
+  HUD(() => rec(1, '📍 2 vs 11', t)); }
 // 2 cage: six one-twos in one second, the keeper spins into the ground
-function s_cage(z, t) { cageSet(t); goal(260, 1260, 560, 300, z > 1.5 && z < 2.0 ? 1 - (z - 1.5) * 2 : 0, t);
+function s_cage(z, t) { stad(t, 'RONALDO + MESSI vs THE XI', 'day'); goal(260, 1260, 560, 300, z > 1.5 && z < 2.0 ? 1 - (z - 1.5) * 2 : 0, t);
   const spin = z > 0.3 && z < 1.6; X('gk1', spin ? 'stand' : z >= 1.6 ? SPRAWL : AKIMBO, spin ? 'dizzy' : z >= 1.6 ? 'dizzy' : 'smug', 540, 1380, { f: spin && Math.sin(t * 30) > 0 ? -1 : 1, rot: z >= 1.6 ? 1.45 : 0, gy: 1380 }); if (z >= 1.6) stars(540, 1200, t, 80);
   R7(z < 1.3 ? { bArm: [-20, -10], fArm: [20, 10], bLeg: [-14, -8], fLeg: [60, 40 + Math.sin(t * 40) * 20] } : 'stand', 'smug', 330, G3, 1.0); M10(z < 1.3 ? { bArm: [-20, -10], fArm: [20, 10], bLeg: [-14, -8], fLeg: [60, 40 + Math.sin(t * 40 + 1) * 20] } : z < 1.5 ? KICK2 : RAISE, z > 1.5 ? 'siuuu' : 'smug', 760, G3, 0.9);
   if (z > 0.2 && z < 1.3) { const k = ((z - 0.2) / 1.1) * 6, i = Math.floor(k), f = k % 1; const a = i % 2 ? [700, G3 - 30] : [390, G3 - 30], c = i % 2 ? [390, G3 - 30] : [700, G3 - 30]; fball(lerp(a[0], c[0], f), a[1] - Math.sin(f * Math.PI) * 30, 28, z * 40); ctx.strokeStyle = 'rgba(255,255,255,.6)'; ctx.lineWidth = 6; ctx.beginPath(); ctx.moveTo(390, G3 - 30); ctx.lineTo(700, G3 - 30); ctx.stroke(); txt(String(Math.min(6, i + 1)), 545, G3 - 160, 90, '#ffd60a', DARK); }
   else if (z >= 1.3) { const q = clamp((z - 1.3) / 0.25); fball(lerp(700, 400, q), lerp(G3 - 30, 1080, q), 28, z * 30); }
-  if (z > 1.5 && z < 2.0) burst(540, 1060, 120, '6 PASSES · 1 SEC', (z - 1.5) / 0.08, 30, '#fff'); HUD(() => rec(2, '📍 CAGE PITCH', t)); }
+  if (z > 1.5 && z < 2.0) burst(540, 1060, 120, '6 PASSES · 1 SEC', (z - 1.5) / 0.08, 30, '#fff'); HUD(() => rec(2, '📍 2 vs 11', t)); }
 // 3 futsal: Messi through the whole team (dominoes), back-heel, Ronaldo scores with his chest
-function s_futsal(z, t) { futsalSet(t); goal(380, 1240, 320, 220, z > 1.9 && z < 2.4 ? 1 - (z - 1.9) * 2 : 0, t);
+function s_futsal(z, t) { stad(t, 'RONALDO + MESSI vs THE XI', 'night'); goal(260, 1260, 560, 300, z > 1.9 && z < 2.4 ? 1 - (z - 1.9) * 2 : 0, t);
   const mx = z < 1.2 ? lerp(180, 900, z / 1.2) : 900; const opp = [['fut1', 320], ['fut2', 480], ['fut3', 640], ['fut4', 800]];
   opp.forEach(([w, x], i) => { const k = clamp((mx - x + 40) / 120); X(w, k > 0 ? SPRAWL : 'stand', k > 0 ? 'shock' : 'angry', x, G3 + 10, { rot: k * 1.45, f: -1 }); if (k > 0.2 && k < 0.9) burst(x + 70, G3 - 120, 50, 'CLACK', 0.6, 18, '#fff'); });
   X('gkf', z > 1.9 ? SPRAWL : 'stand', z > 1.9 ? 'shock' : 'angry', 540, 1330, { gy: 1330, rot: z > 1.9 ? -1.4 : 0 });
@@ -860,40 +863,40 @@ function s_futsal(z, t) { futsalSet(t); goal(380, 1240, 320, 220, z > 1.9 && z <
   R7(z > 1.55 && z < 1.9 ? CHEST : z >= 1.9 ? RAISE : 'stand', z >= 1.9 ? 'siuuu' : 'angry', 540, G3 + 40, 1.0);
   let b; if (z < 1.2) b = [mx + 60, G3 - 20]; else if (z < 1.6) b = arc([900, G3 - 20], [540, G3 - 300], (z - 1.2) / 0.4, 120); else if (z < 1.9) b = [lerp(540, 600, (z - 1.6) / 0.3), lerp(G3 - 300, 1160, (z - 1.6) / 0.3)]; else b = [600, 1160]; fball(b[0], b[1], 28, z * 30);
   if (z > 1.55 && z < 1.85) burst(540, G3 - 380, 90, 'CHEST!', (z - 1.55) / 0.08, 30, '#ffd60a'); if (z > 1.9) for (let i = 0; i < 3; i++) { ctx.globalAlpha = 1 - i * 0.3; txt('SIUUU', 540 + i * 60, 940 - i * 50 - (z - 1.9) * 80, 60 - i * 10, '#ffd60a', DARK); ctx.globalAlpha = 1; }
-  HUD(() => rec(3, '📍 FUTSAL COURT', t)); }
+  HUD(() => rec(3, '📍 2 vs 11', t)); }
 // 4 beach: header tennis ×8, the last header pops the ball into the goal
-function s_beach(z, t) { beachSet(t); posts(300, 1250, 480, 280);
+function s_beach(z, t) { stad(t, 'RONALDO + MESSI vs THE XI', 'sunset'); goal(260, 1260, 560, 300, z > 2.1 && z < 2.6 ? 1 - (z - 2.1) * 2 : 0, t);
   const n = 8, T0 = 0.1, T1 = 1.7; const k = clamp((z - T0) / (T1 - T0)) * n, i = Math.floor(k), f = k % 1;
   const rj = (i % 2 === 0 && z < T1) ? Math.sin(f * Math.PI) * 120 : 0, mj = (i % 2 === 1 && z < T1) ? Math.sin(f * Math.PI) * 120 : 0;
   R7(z < T1 ? HEAD2 : z < 2.1 ? HEAD2 : RAISE, z > 2.1 ? 'siuuu' : 'angry', 330, G3 - rj - (z > 1.75 && z < 2.1 ? 150 : 0), 1.0); M10(z < T1 ? HEAD2 : FOLD, z > 2.1 ? 'siuuu' : 'angry', 760, G3 - mj, 0.9);
   if (z < T1) { const A = i % 2 ? [740, G3 - 420] : [350, G3 - 470], B = i % 2 ? [350, G3 - 470] : [740, G3 - 420]; const [bx, by] = arc(A, B, f, 260); fball(bx, by, 30, z * 20); pop(1, 540, G3 - 820, () => txt(String(Math.min(8, i + 1)), 0, 0, 110, '#fff', DARK)); }
   else if (z < 2.1) { const q = clamp((z - 1.75) / 0.3); fball(lerp(350, 540, q), lerp(G3 - 620, 1100, q), 30 * (1 + q * 0.4), z * 30); }
   else { for (let j = 0; j < 6; j++) { ctx.save(); ctx.translate(540 + Math.cos(j) * 90 * clamp((z - 2.1) * 3), 1100 + Math.sin(j * 2) * 60); ctx.rotate(j); rr(-20, -10, 40, 20, 4, j % 2 ? '#fff' : '#222', DARK, 2); ctx.restore(); } if (z < 2.5) burst(540, 1100, 120, 'POP!', (z - 2.1) / 0.08, 44, '#ffd60a'); }
-  HUD(() => rec(4, '📍 BEACH', t)); }
+  HUD(() => rec(4, '📍 2 vs 11', t)); }
 // 5 rooftop: free kick curls 360° around Ronaldo, hits the back of his head, goes in; both act like it was planned
-function s_roof(z, t) { roofSet(t); goal(260, 1260, 560, 300, z > 2.0 && z < 2.5 ? 1 - (z - 2.0) * 2 : 0, t);
+function s_roof(z, t) { stad(t, 'RONALDO + MESSI vs THE XI', 'night'); goal(260, 1260, 560, 300, z > 2.0 && z < 2.5 ? 1 - (z - 2.0) * 2 : 0, t);
   const duck = z > 0.9 && z < 1.6; R7(duck ? { bArm: [60, 150], fArm: [70, 160], bLeg: [-40, 20], fLeg: [40, -20] } : z > 2.2 ? FOLD : 'stand', duck ? 'shock' : z > 2.2 ? 'smug' : 'deadpan', 540, G3, 1.0, { sq: duck ? 0.2 : 0 });
   M10(z < 0.5 ? 'stand' : z < 0.8 ? KICK2 : FOLD, z > 2.2 ? 'smug' : 'deadpan', 880, G3 + 60, 0.9);
   if (z > 0.6 && z < 1.7) { const k = (z - 0.6) / 1.1, a = Math.PI * 0.1 + k * TAU; fball(540 + Math.cos(a) * 260, G3 - 260 + Math.sin(a) * 160, 30, z * 30); for (let j = 1; j < 8; j++) { const aa = a - j * 0.18; ell(540 + Math.cos(aa) * 260, G3 - 260 + Math.sin(aa) * 160, 12 - j, 12 - j, `rgba(255,255,255,${0.5 - j * 0.06})`); } }
   else if (z >= 1.7 && z < 2.0) { const q = (z - 1.7) / 0.3; fball(lerp(540, 600, q), lerp(G3 - 430, 1120, q), 30, z * 30); } else if (z >= 2.0) fball(600, 1120, 30, 0);
   if (z > 1.7 && z < 2.0) burst(560, G3 - 450, 90, 'BONK', (z - 1.7) / 0.08, 30, '#fff'); if (z > 2.2) { txt('😎', 540, G3 - 640, 80, '#fff', null); txt('😎', 880, G3 - 560, 70, '#fff', null); burst(540, 980, 110, 'PLANNED.', 0.6, 34, '#ffd60a'); }
-  HUD(() => rec(5, '📍 ROOFTOP CAGE', t)); }
+  HUD(() => rec(5, '📍 2 vs 11', t)); }
 // 6 stadium in the rain: Messi on Ronaldo's shoulders heads the cross, the net rips, the ball leaves the stadium
-function s_rain(z, t) { pitch(t, 'THE BIGGEST STAGE', ['#d4af37', '#111', '#fff']); goal(260, 1250, 560, 300, z > 1.6 ? 1 : 0, t);
+function s_rain(z, t) { stad(t, 'RONALDO + MESSI vs THE XI', 'night'); goal(260, 1250, 560, 300, z > 1.6 ? 1 : 0, t);
   X('mate', z < 0.6 ? runPose(t, 18) : z < 0.9 ? KICK2 : RAISE, 'angry', 980, G3 + 40, { f: -1 });
   R7({ bArm: [-150, -170], fArm: [150, 170], bLeg: [-30, -10], fLeg: [30, 10] }, 'angry', 520, G3, 1.0); M10(z > 1.2 && z < 1.6 ? HEAD2 : RAISE, z > 1.6 ? 'siuuu' : 'angry', 520, G3 - 520, 0.85, { gy: G3, noShadow: true });
   if (z > 0.8 && z < 1.4) { const [bx, by] = arc([960, G3 - 120], [540, G3 - 820], (z - 0.8) / 0.6, 300); fball(bx, by, 30, z * 30); }
   else if (z >= 1.4 && z < 2.6) { const q = (z - 1.4) / 1.2; fball(lerp(540, 520, q), lerp(G3 - 820, -200, q), 30 * (1 - q * 0.5), z * 30); speed(lerp(540, 520, q), lerp(G3 - 820, -200, q) + 60, 0, t, 4, 160); }
   if (z > 1.6) { ctx.strokeStyle = '#fff'; ctx.lineWidth = 5; for (let i = 0; i < 8; i++) { ctx.beginPath(); ctx.moveTo(480 + i * 12, 1000); ctx.lineTo(470 + i * 14 + Math.sin(i) * 30, 930 - (z - 1.6) * 100); ctx.stroke(); } if (z < 2.1) burst(540, 1000, 120, 'RIP!', (z - 1.6) / 0.08, 40, '#fff'); }
   if (z > 1.4 && z < 1.8) burst(540, G3 - 880, 90, 'HEADER!', (z - 1.4) / 0.08, 30, '#ffd60a'); rainOver(t, 0.4);
-  HUD(() => { rec(6, '📍 STADIUM · RAIN', t); if (z > 2.2) stamp("13 BALLON D'ORS ON ONE PITCH 🏆", W / 2, 520, (z - 2.2) / 0.5, -0.05, '#d4af37'); }); }
+  HUD(() => { rec(6, '📍 2 vs 11 · RAIN', t); if (z > 2.2) stamp("13 BALLON D'ORS ON ONE PITCH 🏆", W / 2, 520, (z - 2.2) / 0.5, -0.05, '#d4af37'); }); }
 // 7 the argument: same-time celebrations, head-on crash
-function s_argue(z, t) { pitch(t, 'THE BIGGEST STAGE', ['#d4af37', '#111', '#fff']); goal(260, 1250, 560, 300, 0, t); rainOver(t, 0.25);
+function s_argue(z, t) { stad(t, 'RONALDO + MESSI vs THE XI', 'night'); goal(260, 1250, 560, 300, 0, t); rainOver(t, 0.25);
   const k = clamp((z - 0.9) / 0.6); const hit = z > 1.5; const rx = hit ? 470 : lerp(200, 470, k), mx = hit ? 640 : lerp(900, 640, k);
   if (z < 0.9) { R7({ bArm: [-20, -10], fArm: [150, 165], bLeg: [-12, -6], fLeg: [12, 6] }, 'angry', 300, G3, 1.0); M10({ bArm: [-20, -10], fArm: [150, 165], bLeg: [-12, -6], fLeg: [12, 6] }, 'angry', 780, G3, 0.9); bubble('7️⃣', 300, G3 - 640, z, 60); bubble('🔟', 780, G3 - 580, z - 0.2, 60); }
   else if (!hit) { R7(RAISE, 'siuuu', rx, G3 - Math.sin(k * Math.PI) * 200, 1.0); M10({ bArm: [-20, -10], fArm: [170, 175], bLeg: [-30, 10], fLeg: [30, -10] }, 'siuuu', mx, G3, 0.9); }
   else { R7(SPRAWL, 'shock', rx, G3 + 20, 1.0, { rot: -1.4 }); M10(SPRAWL, 'shock', mx, G3 + 20, 0.9, { rot: 1.4 }); stars(470, G3 - 260, t, 70); stars(660, G3 - 230, t, 60); if (z < 2.0) burst(555, G3 - 300, 150, 'BONK!!', (z - 1.5) / 0.08, 56, '#ffd60a'); }
-  HUD(() => { if (z > 2.1) { pop(eOB((z - 2.1) / 0.12), W / 2, 560, () => { rr(-460, -70, 920, 140, 34, '#fff', DARK, 7); txt("Who's the better half? 👇", 0, 6, 58, DARK, null); }); } if (z > 2.5) pop(eOB((z - 2.5) / 0.12), W / 2, 740, () => { rr(-420, -46, 840, 92, 26, 'rgba(0,0,0,.8)', '#d4af37', 4); txt('Send this to your football buddy 😂', 0, 3, 38, '#fff', null); }); txt('Cartoon parody · they never played together (yet 😏)', W / 2, 1890, 28, '#fff', DARK, 'center', 800); }); }
+  HUD(() => { if (z > 2.1) { pop(eOB((z - 2.1) / 0.12), W / 2, 560, () => { rr(-460, -70, 920, 140, 34, '#fff', DARK, 7); txt("Who's the better half? 👇", 0, 6, 58, DARK, null); }); } if (z > 2.5) pop(eOB((z - 2.5) / 0.12), W / 2, 740, () => { rr(-420, -46, 840, 92, 26, 'rgba(0,0,0,.8)', '#d4af37', 4); txt('Send this to your football buddy 😂', 0, 3, 38, '#fff', null); }); txt('Cartoon parody · they never played on the same team', W / 2, 1890, 28, '#fff', DARK, 'center', 800); }); }
 
 // ---------- camera + HUD ----------
 let HUDQ = []; const HUD = (f) => HUDQ.push(f);
@@ -907,12 +910,12 @@ const shakeAt = (n, z) => SHK[n].reduce((m, [a, d, A]) => z >= a && z < a + d ? 
 const CLIP = +(new URLSearchParams(location.search).get('clip') || 1);
 const CLIPS = { 1: ['dirt', 3.0, s_dirt, 1.2, 2.6], 2: ['cage', 2.6, s_cage, 0.2, 1.9], 3: ['futsal', 2.8, s_futsal, 1.0, 2.2], 4: ['beach', 2.8, s_beach, 1.4, 2.4], 5: ['roof', 3.0, s_roof, 0.6, 2.2], 6: ['rain', 3.4, s_rain, 0.8, 2.0] };
 const [CN, CD, CF, CP0, CP1] = CLIPS[CLIP];
-function hookCap(k) { pop(eOB(k / 0.12), W / 2, 180, () => { rr(-500, -78, 1000, 156, 28, 'rgba(0,0,0,.88)', '#d4af37', 6); txt('RONALDO × MESSI NEVER PLAYED TOGETHER…', 0, -24, 40, '#fff', null); txt(`WHAT IF? 🐐🐐  #${CLIP}/6`, 0, 34, 46, '#d4af37', null); }); }
+function hookCap(k) { pop(eOB(k / 0.12), W / 2, 180, () => { rr(-500, -78, 1000, 156, 28, 'rgba(0,0,0,.88)', '#d4af37', 6); txt('RONALDO + MESSI vs 11 PLAYERS 😤', 0, -24, 42, '#fff', null); txt(`2 vs 11 · WHAT IF? 🐐🐐  #${CLIP}/6`, 0, 34, 44, '#d4af37', null); }); }
 function wMain(z, t) { CF(z, t); HUD(() => { if (window.SEGT < 2.4) hookCap(window.SEGT); }); }
 function wReplay(z, t) { CF(z, t); ctx.fillStyle = 'rgba(20,10,0,.12)'; ctx.fillRect(0, 0, W, H); HUD(() => { pop(1, W / 2, 180, () => { rr(-230, -50, 460, 100, 24, 'rgba(0,0,0,.85)', '#e63946', 5); txt('⏪ REPLAY · 0.5×', 0, 3, 42, '#fff', null); }); }); }
 function wCard(z, t) { CF(CD - 0.02, t); ctx.fillStyle = 'rgba(0,0,0,.35)'; ctx.fillRect(0, 0, W, H); const k = window.SEGT; HUD(() => { pop(eOB(k / 0.12), W / 2, 760, () => { rr(-460, -70, 920, 140, 34, '#fff', DARK, 7); txt('Rate this combo 1–10 👇', 0, 6, 58, DARK, null); });
   if (k > 0.4) pop(eOB((k - 0.4) / 0.12), W / 2, 940, () => { rr(-420, -46, 840, 92, 26, 'rgba(0,0,0,.8)', '#d4af37', 4); txt('Send this to your football buddy 😂', 0, 3, 38, '#fff', null); });
-  if (k > 0.8) pop(eOB((k - 0.8) / 0.12), W / 2, 1100, () => txt(`DREAM DUO #${CLIP}/6 · follow for the next one ⚽`, 0, 0, 34, '#d4af37', DARK)); txt('Cartoon parody · they never played together (yet 😏)', W / 2, 1890, 28, '#fff', DARK, 'center', 800); }); }
+  if (k > 0.8) pop(eOB((k - 0.8) / 0.12), W / 2, 1100, () => txt(`DREAM DUO #${CLIP}/6 · follow for the next one ⚽`, 0, 0, 34, '#d4af37', DARK)); txt('Cartoon parody · they never played on the same team', W / 2, 1890, 28, '#fff', DARK, 'center', 800); }); }
 const LEN = CLIP === 6 ? [[CN, CD, wMain, 1, 0], [CN, CP1 - CP0, wReplay, 2, CP0], ['argue', 4.0, s_argue, 1, 0]] : [[CN, CD, wMain, 1, 0], [CN, CP1 - CP0, wReplay, 2, CP0], [CN, 2.4, wCard, 1, CD - 0.02]];
 const SEG = []; { let t = 0; for (const [n, d, f, sl, off] of LEN) { SEG.push([t, t + d * sl, f, n, sl, off || 0]); t += d * sl; } }
 const DURATION = SEG[SEG.length - 1][1];

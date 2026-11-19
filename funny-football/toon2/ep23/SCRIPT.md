@@ -34,3 +34,8 @@ Comment/share triggers: the question + the "send this" line (inside the video, n
 - Six separate shorts (7–10 s each): hook caption "WHAT IF? #n/6" → the combo → slow-motion REPLAY 0.5× (pitched-down audio) → card "Rate this combo 1–10 👇 / Send this to your football buddy 😂 / DREAM DUO #n/6". #6 ends on the celebration crash.
 - Ronaldo in Al Nassr yellow/blue #7, Messi in Inter Miami pink/black #10 (instantly recognisable). Futsal opponents changed to red so nobody clashes with Ronaldo's yellow.
 - Build: `toon2/ep23/make_clips.sh` (CLIP=N render, master-audio slices, replay, sting).
+
+## v3 (owner, Nov 19): 2 vs 11 on a real 11-a-side pitch
+- All six clips now on a full-size grass stadium (day / night / sunset / rain), no village/cage/futsal/beach/rooftop labels.
+- Opponents = one team "THE XI" in red with white shorts (+ green keeper), clearly different from Ronaldo's yellow and Messi's pink: "the two of them against everyone".
+- Hook: "RONALDO + MESSI vs 11 PLAYERS 😤 · 2 vs 11 · WHAT IF? #n/6". Clip 1 ends in the goal (GOLAZO) instead of the chicken coop.
