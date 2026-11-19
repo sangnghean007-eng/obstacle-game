@@ -18,3 +18,6 @@ Owner: "portray the two characters clearly" + "special combos, but realistic".
 | 6 | **Messi no-look through ball → Ronaldo bullet header… no: volley** | Messi lofts a no-look ball over the defence, Ronaldo volleys it on the half-volley into the roof of the net; then both do their own celebration side by side (SIUUU + finger to the sky) without crashing | big finish, all physically possible |
 Each video: hook "RONALDO + MESSI · 2 vs 11 · #n/6" → combo (real speed) → slow-mo replay with a drawn tactics line (arrow of the pass/run, like TV analysis) → card "Rate this combo 1–10 👇 / Send this to your football buddy 😂".
 No exploding balls, no 360° curls, no standing on shoulders.
+
+## #1 v2 (owner: "monotonous"): broadcast multi-angle edit, 11.6 s
+Cuts: face cards (1.0) → low tracking cam on Messi's dribble (1.3) → close-up Ronaldo's late run (0.6) → wide tactical cam for the cut-back (0.4) → BEHIND-THE-NET cam: the shot flies at the viewer, the net bulges toward the lens (0.9) → keeper close-up on the ground (0.5) → crowd cam with signs (0.7) → celebration close-up (1.0) → tactics replay 0.5× → card.
