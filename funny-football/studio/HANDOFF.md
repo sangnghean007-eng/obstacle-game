@@ -79,3 +79,4 @@ Playwright, Chromium, ffmpeg, numpy and scipy are already available.
 - **Ep21 "Mbappé at Madrid this season" v1 (Nov 19)** `toon2/ep21/`: 12 s meme format (one player, one joke) with the new megaFace() face morph and lowGoal() low-angle goal. Awaiting sign-off.
 - **Ep22 "So Close" v1 (Nov 19)** `toon2/ep22/`: owner-approved script (research → script → video). Mbappé's 2026: WC 4th, Clásico double + 100th goal on Oct 25, Ballon d'Or lost by 28 points on Oct 26, the polite smile. 28 s. Awaiting sign-off.
 - **Ep23 "Dream Duo" v1 (Nov 19)** `toon2/ep23/`: Ronaldo × Messi combo montage (6 phone-filmed clips), 21.6 s, full-size extras. Awaiting sign-off.
+- **Ep23 v2 (Nov 19):** split into 6 one-combo shorts `toon2/ep23/release/dream-duo-<n>-*.mp4` (7–10 s), stars in their own club kits. Post as a daily series #1→#6.

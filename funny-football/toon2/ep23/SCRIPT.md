@@ -29,3 +29,8 @@ Comment/share triggers: the question + the "send this" line (inside the video, n
 - Owner: "build the characters fully, small ones look weird" → all extras are full-size chibis with their own hair, skin, kit and face (XTRA table: 3 village kids, cage keeper, 4 futsal players + keeper, a teammate). No minis.
 - Stadium combo changed: a teammate crosses, Messi stands on Ronaldo's shoulders and heads it (net rips, ball leaves the stadium).
 - Phone look: handheld wobble, REC overlay, location label, COMBO n/6 counter. Sound: trap beat across the montage + per-pitch room tone.
+
+## v2 (owner, Nov 19): one combo per video + own club kits
+- Six separate shorts (7–10 s each): hook caption "WHAT IF? #n/6" → the combo → slow-motion REPLAY 0.5× (pitched-down audio) → card "Rate this combo 1–10 👇 / Send this to your football buddy 😂 / DREAM DUO #n/6". #6 ends on the celebration crash.
+- Ronaldo in Al Nassr yellow/blue #7, Messi in Inter Miami pink/black #10 (instantly recognisable). Futsal opponents changed to red so nobody clashes with Ronaldo's yellow.
+- Build: `toon2/ep23/make_clips.sh` (CLIP=N render, master-audio slices, replay, sting).

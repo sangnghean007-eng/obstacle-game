@@ -489,7 +489,7 @@ function s_leave(z, t) { lockerRoom(t); rr(820, 560, 220, 640, 10, '#2a1d14', DA
   if (z >= 1.4) { rr(130, GF - 120, 140, 120, 14, '#c8102e', DARK, 5); txt('7', 200, GF - 54, 70, '#ffd60a', DARK); }
   if (z > 0.6 && z < 1.6) bubble('👋', rx, GF - 760, z - 0.6, 80);
   P19('por1', SHAKEP(t), 'shock', 150, GF + 60, 0.85); }
-const CHAP = { dirt: ['RONALDO × MESSI NEVER PLAYED TOGETHER… WHAT IF? 🐐🐐', '#d4af37'] };
+const CHAP = {};
 function chapter(n, z) { const c = CHAP[n]; if (!c || !c[0]) return; pop(eOB(z / 0.12), W / 2, 180, () => { ctx.font = `900 50px ${F}`; const w = Math.min(1040, ctx.measureText(c[0]).width + 70); rr(-w / 2, -60, w, 120, 26, 'rgba(0,0,0,.88)', c[1], 6); const fs = Math.min(50, 50 * (w - 60) / ctx.measureText(c[0]).width); txt(c[0], 0, 4, fs, c[1], DARK); }); }
 
 
@@ -776,24 +776,26 @@ function s_end22(z, t) { gala(t, 0.5); const gl = ctx.createRadialGradient(540, 
 const G3 = 1660;
 const mkKit = (shirt, trim, shorts, sock, num = '#fff') => ({ shirt, sleeve: shirt, cuff: trim, collar: trim, shorts, sock, sockShade: sock, sockBand: trim, boot: '#111', num });
 const DUOK = mkKit('#111318', '#d4af37', '#111318', '#111318', '#d4af37');
-const RO23 = Object.assign({}, CR, { kit: DUOK, num: '7', name: 'RONALDO', nameSize: 15 });
-const ME23 = Object.assign({}, LM, { kit: DUOK, num: '10', name: 'MESSI', nameSize: 16 });
+// owner (Nov 19): each in his own club kit so they're instantly recognisable
+const NASK23 = mkKit('#fcd116', '#003a8c', '#003a8c', '#fcd116', '#003a8c'), MIAK23 = mkKit('#f5a3c7', '#111', '#111', '#f5a3c7', '#111');
+const RO23 = Object.assign({}, CR, { kit: NASK23, num: '7', name: 'RONALDO', nameSize: 15 });
+const ME23 = Object.assign({}, LM, { kit: MIAK23, num: '10', name: 'MESSI', nameSize: 16 });
 function R7(pose, ex, x, y, s = 1.0, o = {}) { star(RO23, 'ronaldo', pose, ex, x, y, s, o); }
 function M10(pose, ex, x, y, s = 0.9, o = {}) { star(ME23, 'messi', pose, ex, x, y, s, Object.assign({ f: -1 }, o)); }
 function star(C, face, pose, ex, x, y, s, o) { if (!o.noShadow) PRO.shadow(ctx, x, o.gy || G3, Math.max(0, (o.gy || G3) - y), s); ctx.save(); if (o.rot) { ctx.translate(x, y - 200 * s); ctx.rotate(o.rot); ctx.translate(-x, -(y - 200 * s)); }
-  chibi.draw(ctx, C, pose, 'neutral', x, y, s, Object.assign({ f: 1, headFn: (R) => portrait.draw(ctx, face, 0, -R * 0.28, R * 2.1 / 330, { headOnly: true, expr: ex, kit: '#111318' }) }, o)); ctx.restore(); }
+  chibi.draw(ctx, C, pose, 'neutral', x, y, s, Object.assign({ f: 1, headFn: (R) => portrait.draw(ctx, face, 0, -R * 0.28, R * 2.1 / 330, { headOnly: true, expr: ex, kit: C.kit.shirt }) }, o)); ctx.restore(); }
 // full-size extras: own hair, skin, kit, number and a real chibi face
 const XTRA = {
   kid1: [mkKit('#e63946', '#fff', '#1d3557', '#e63946'), '9', '', '#c98a5e', { R: 104, hair: 'spiky', hairCol: '#1a1008', iris: '#2a1a10' }, 0.78],
   kid2: [mkKit('#2a9d8f', '#fff', '#264653', '#2a9d8f'), '4', '', '#8d5a3b', { R: 104, hair: 'curls', hairCol: '#1a1008', iris: '#2a1a10' }, 0.75],
   kid3: [mkKit('#f4a261', '#fff', '#3d2b1f', '#f4a261'), '11', '', '#e8b892', { R: 104, hair: 'quiff', hairCol: '#6b4a2a', iris: '#3a2416' }, 0.76],
   gk1: [mkKit('#22c55e', '#111', '#111', '#22c55e'), '1', 'KEEPER', '#e8b592', { R: 100, hair: 'buzz', hairCol: '#3a2a1c', iris: '#3a2416', beard: 'trim', beardCol: '#3a2a1c' }, 0.95],
-  fut1: [mkKit('#ffd60a', '#1d3a8a', '#1d3a8a', '#ffd60a', '#1d3a8a'), '2', '', '#c98a5e', { R: 100, hair: 'fade', hairCol: '#1a1008', iris: '#2a1a10' }, 0.9],
-  fut2: [mkKit('#ffd60a', '#1d3a8a', '#1d3a8a', '#ffd60a', '#1d3a8a'), '5', '', '#f1c9a8', { R: 100, hair: 'sidepart', hairCol: '#b88a4a', iris: '#4a7fb5' }, 0.9],
-  fut3: [mkKit('#ffd60a', '#1d3a8a', '#1d3a8a', '#ffd60a', '#1d3a8a'), '8', '', '#6b4430', { R: 100, hair: 'buzz', hairCol: '#1a1008', iris: '#2a1a10' }, 0.9],
-  fut4: [mkKit('#ffd60a', '#1d3a8a', '#1d3a8a', '#ffd60a', '#1d3a8a'), '10', '', '#e2ad88', { R: 100, hair: 'long', hairCol: '#2a1d14', iris: '#3a2416', beard: 'trim', beardCol: '#2a1d14' }, 0.9],
-  gkf: [mkKit('#e63946', '#111', '#111', '#e63946'), '1', '', '#e8b892', { R: 100, hair: 'short', hairCol: '#2a1d14', iris: '#3a2416' }, 0.9],
-  mate: [DUOK, '9', 'MATE', '#8d5a3b', { R: 100, hair: 'curls', hairCol: '#1a1008', iris: '#2a1a10' }, 0.95] };
+  fut1: [mkKit('#e63946', '#fff', '#fff', '#e63946', '#fff'), '2', '', '#c98a5e', { R: 100, hair: 'fade', hairCol: '#1a1008', iris: '#2a1a10' }, 0.9],
+  fut2: [mkKit('#e63946', '#fff', '#fff', '#e63946', '#fff'), '5', '', '#f1c9a8', { R: 100, hair: 'sidepart', hairCol: '#b88a4a', iris: '#4a7fb5' }, 0.9],
+  fut3: [mkKit('#e63946', '#fff', '#fff', '#e63946', '#fff'), '8', '', '#6b4430', { R: 100, hair: 'buzz', hairCol: '#1a1008', iris: '#2a1a10' }, 0.9],
+  fut4: [mkKit('#e63946', '#fff', '#fff', '#e63946', '#fff'), '10', '', '#e2ad88', { R: 100, hair: 'long', hairCol: '#2a1d14', iris: '#3a2416', beard: 'trim', beardCol: '#2a1d14' }, 0.9],
+  gkf: [mkKit('#7c3aed', '#111', '#111', '#7c3aed'), '1', '', '#e8b892', { R: 100, hair: 'short', hairCol: '#2a1d14', iris: '#3a2416' }, 0.9],
+  mate: [mkKit('#f4f4f4', '#d4af37', '#f4f4f4', '#f4f4f4', '#111'), '9', 'MATE', '#8d5a3b', { R: 100, hair: 'curls', hairCol: '#1a1008', iris: '#2a1a10' }, 0.95] };
 function X(who, pose, ex, x, y, o = {}) { const [kit, num, nm, skin, hd, s0] = XTRA[who]; const s = o.s || s0; if (!o.noShadow) PRO.shadow(ctx, x, o.gy || G3, Math.max(0, (o.gy || G3) - y), s);
   const C = Object.assign({}, CH.mate1, { skin, shade: skin, kit, num, name: nm, nameSize: 14, head: hd }); ctx.save(); if (o.rot) { ctx.translate(x, y - 150 * s); ctx.rotate(o.rot); ctx.translate(-x, -(y - 150 * s)); }
   chibi.draw(ctx, C, pose, ex, x, y, s, Object.assign({ f: 1 }, o)); ctx.restore(); }
@@ -827,7 +829,7 @@ function roofSet(t) { const g = ctx.createLinearGradient(0, 0, 0, 1000); g.addCo
   ctx.strokeStyle = 'rgba(200,200,220,.45)'; ctx.lineWidth = 2; for (let x = -40; x < W + 40; x += 34) { ctx.beginPath(); ctx.moveTo(x, 600); ctx.lineTo(x + 300, 1000); ctx.moveTo(x + 300, 600); ctx.lineTo(x, 1000); ctx.stroke(); }
   for (const x of [80, 1000]) { rr(x - 8, 560, 16, 460, 4, '#777', DARK, 3); const gl = ctx.createRadialGradient(x, 560, 5, x, 900, 600); gl.addColorStop(0, 'rgba(255,255,230,.5)'); gl.addColorStop(1, 'rgba(255,255,230,0)'); ctx.fillStyle = gl; ctx.fillRect(x - 600, 560, 1200, 1400); } }
 function rainOver(t, a = 0.5) { ctx.strokeStyle = `rgba(200,220,255,${a})`; ctx.lineWidth = 3; const R = rng(Math.floor(t * 30)); for (let i = 0; i < 120; i++) { const x = R() * W, y = R() * H; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - 14, y + 40); ctx.stroke(); } }
-function rec(n, place, t) { ell(70, 290, 14, 14, Math.floor(t * 2) % 2 ? '#e63946' : '#7a1f1f'); txt('REC', 128, 292, 34, '#fff', DARK, 'left'); txt(place, W - 50, 292, 32, '#fff', DARK, 'right'); if (n) pop(1, W / 2, 1800, () => { rr(-170, -42, 340, 84, 24, 'rgba(0,0,0,.7)', '#d4af37', 4); txt(`COMBO ${n}/6`, 0, 3, 40, '#d4af37', null); }); }
+function rec(n, place, t) { ell(70, 290, 14, 14, Math.floor(t * 2) % 2 ? '#e63946' : '#7a1f1f'); txt('REC', 128, 292, 34, '#fff', DARK, 'left'); txt(place, W - 50, 292, 32, '#fff', DARK, 'right'); if (n) pop(1, W / 2, 1800, () => { rr(-170, -42, 340, 84, 24, 'rgba(0,0,0,.7)', '#d4af37', 4); txt(`DREAM DUO #${n}`, 0, 3, 40, '#d4af37', null); }); }
 function feathers(x, y, k) { for (let i = 0; i < 10; i++) { const a = i / 10 * TAU; ctx.save(); ctx.translate(x + Math.cos(a) * 160 * k, y + Math.sin(a) * 100 * k + k * k * 120); ctx.rotate(a + k * 4); ell(0, 0, 18, 7, '#fff', 3); ctx.restore(); } }
 const arc = (A, B, k, h) => [lerp(A[0], B[0], k), lerp(A[1], B[1], k) - Math.sin(k * Math.PI) * h];
 
@@ -902,16 +904,25 @@ const CAMS = { dirt: [[0, 620, 1350, 1.1], [1.2, 400, 1350, 1.1], [1.8, 450, 125
   roof: [[0, 620, 1350, 1.05], [1.0, 540, 1350, 1.15], [2.0, 560, 1250, 1.05], [3.0, 560, 1250, 1.08]], rain: [[0, 640, 1350, 1.0], [1.2, 540, 1200, 1.05], [2.4, 540, 900, 1.0], [3.4, 540, 1000, 1.0]], argue: [[0, 540, 1350, 1.05], [1.5, 555, 1400, 1.25], [4.0, 555, 1380, 1.15]] };
 const SHK = { dirt: [[1.75, .3, 16], [2.3, .3, 14]], cage: [[1.5, .3, 14]], futsal: [[1.9, .3, 16]], beach: [[2.1, .3, 18]], roof: [[1.7, .25, 14], [2.0, .3, 14]], rain: [[1.6, .5, 22]], argue: [[1.5, .4, 24]] };
 const shakeAt = (n, z) => SHK[n].reduce((m, [a, d, A]) => z >= a && z < a + d ? Math.max(m, A * (1 - (z - a) / d)) : m, 0);
-const LEN = [['dirt', 3.0, s_dirt, 1, 0], ['cage', 2.6, s_cage, 1, 0], ['futsal', 2.8, s_futsal, 1, 0], ['beach', 2.8, s_beach, 1, 0], ['roof', 3.0, s_roof, 1, 0], ['rain', 3.4, s_rain, 1, 0], ['argue', 4.0, s_argue, 1, 0]];
+const CLIP = +(new URLSearchParams(location.search).get('clip') || 1);
+const CLIPS = { 1: ['dirt', 3.0, s_dirt, 1.2, 2.6], 2: ['cage', 2.6, s_cage, 0.2, 1.9], 3: ['futsal', 2.8, s_futsal, 1.0, 2.2], 4: ['beach', 2.8, s_beach, 1.4, 2.4], 5: ['roof', 3.0, s_roof, 0.6, 2.2], 6: ['rain', 3.4, s_rain, 0.8, 2.0] };
+const [CN, CD, CF, CP0, CP1] = CLIPS[CLIP];
+function hookCap(k) { pop(eOB(k / 0.12), W / 2, 180, () => { rr(-500, -78, 1000, 156, 28, 'rgba(0,0,0,.88)', '#d4af37', 6); txt('RONALDO × MESSI NEVER PLAYED TOGETHER…', 0, -24, 40, '#fff', null); txt(`WHAT IF? 🐐🐐  #${CLIP}/6`, 0, 34, 46, '#d4af37', null); }); }
+function wMain(z, t) { CF(z, t); HUD(() => { if (window.SEGT < 2.4) hookCap(window.SEGT); }); }
+function wReplay(z, t) { CF(z, t); ctx.fillStyle = 'rgba(20,10,0,.12)'; ctx.fillRect(0, 0, W, H); HUD(() => { pop(1, W / 2, 180, () => { rr(-230, -50, 460, 100, 24, 'rgba(0,0,0,.85)', '#e63946', 5); txt('⏪ REPLAY · 0.5×', 0, 3, 42, '#fff', null); }); }); }
+function wCard(z, t) { CF(CD - 0.02, t); ctx.fillStyle = 'rgba(0,0,0,.35)'; ctx.fillRect(0, 0, W, H); const k = window.SEGT; HUD(() => { pop(eOB(k / 0.12), W / 2, 760, () => { rr(-460, -70, 920, 140, 34, '#fff', DARK, 7); txt('Rate this combo 1–10 👇', 0, 6, 58, DARK, null); });
+  if (k > 0.4) pop(eOB((k - 0.4) / 0.12), W / 2, 940, () => { rr(-420, -46, 840, 92, 26, 'rgba(0,0,0,.8)', '#d4af37', 4); txt('Send this to your football buddy 😂', 0, 3, 38, '#fff', null); });
+  if (k > 0.8) pop(eOB((k - 0.8) / 0.12), W / 2, 1100, () => txt(`DREAM DUO #${CLIP}/6 · follow for the next one ⚽`, 0, 0, 34, '#d4af37', DARK)); txt('Cartoon parody · they never played together (yet 😏)', W / 2, 1890, 28, '#fff', DARK, 'center', 800); }); }
+const LEN = CLIP === 6 ? [[CN, CD, wMain, 1, 0], [CN, CP1 - CP0, wReplay, 2, CP0], ['argue', 4.0, s_argue, 1, 0]] : [[CN, CD, wMain, 1, 0], [CN, CP1 - CP0, wReplay, 2, CP0], [CN, 2.4, wCard, 1, CD - 0.02]];
 const SEG = []; { let t = 0; for (const [n, d, f, sl, off] of LEN) { SEG.push([t, t + d * sl, f, n, sl, off || 0]); t += d * sl; } }
 const DURATION = SEG[SEG.length - 1][1];
 window.SEGS = SEG.map(s => [s[3], +s[0].toFixed(2)]);
 function render(t) { ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, W, H); window.T2T = t;
-  for (const [a, b, fn, n, sl, off] of SEG) if (t >= a && t < b) { const z = (t - a) / sl + off; const zc = z - off; HUDQ = []; const sh = shakeAt(n, z), C = camK(CAMS[n], z); C[2] *= 1 + sh / 350; C[0] += Math.sin(t * 2.7) * 10 + Math.sin(t * 7.3) * 4; C[1] += Math.cos(t * 2.1) * 8; const hw = W / (2 * C[2]), hh = H / (2 * C[2]); C[0] = clamp(C[0], hw, W - hw); C[1] = clamp(C[1], hh, H - hh);
+  for (const [a, b, fn, n, sl, off] of SEG) if (t >= a && t < b) { const z = (t - a) / sl + off; const zc = z - off; window.SEGT = t - a; HUDQ = []; const sh = shakeAt(n, z), C = camK(CAMS[n], z); C[2] *= 1 + sh / 350; C[0] += Math.sin(t * 2.7) * 10 + Math.sin(t * 7.3) * 4; C[1] += Math.cos(t * 2.1) * 8; const hw = W / (2 * C[2]), hh = H / (2 * C[2]); C[0] = clamp(C[0], hw, W - hw); C[1] = clamp(C[1], hh, H - hh);
     cam(C, () => fn(z, t), sh, t); ctx.setTransform(1, 0, 0, 1, 0, 0);
     PRO.grade(ctx, t, false);
     for (const [a0, d0, A] of SHK[n]) if (A >= 14 && z >= a0 && z < a0 + 0.1) PRO.impact(ctx, (z - a0) / 0.1);
-    if (zc < 0.2 && t > 0.1) PRO.whip(ctx, document.getElementById('c'), zc / 0.2, (SEG.findIndex(q => q[3] === n) % 2) ? -1 : 1);
+    if (window.SEGT < 0.2 && t > 0.1) PRO.whip(ctx, document.getElementById('c'), window.SEGT / 0.2, (SEG.findIndex(q => q[3] === n) % 2) ? -1 : 1);
     chapter(n, zc); for (let i = 0; i < HUDQ.length; i++) HUDQ[i](); break; } }
 window.render = render; window.DURATION = DURATION;
 if (!location.search.includes('render')) { const t0 = performance.now(); (function loop() { render(((performance.now() - t0) / 1000) % DURATION); requestAnimationFrame(loop); })(); }

@@ -8,7 +8,7 @@ const fs = require('fs'), path = require('path');
   const browser = await chromium.launch();
   const page = await browser.newPage({ viewport: { width: 1080, height: 1920 } });
   page.on('pageerror', e => { console.error('PAGE ERROR', e.message); process.exit(1); });
-  await page.goto('file://' + path.resolve(__dirname, 'scene.html') + '?render');
+  await page.goto('file://' + path.resolve(__dirname, 'scene.html') + '?render&clip=' + (process.env.CLIP || 1));
   await page.evaluate(() => document.fonts.load('900 40px Inter'));
   const times = only ? only.split(',').map(Number) : [...Array(Math.round(await page.evaluate(() => DURATION) * fps)).keys()].map(i => i / fps);
   for (let i = 0; i < times.length; i++) {
