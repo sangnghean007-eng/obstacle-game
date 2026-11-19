@@ -24,3 +24,8 @@ User request: "look at the big channels and learn from them". Learn the *ideas a
 2. **Simpler sets, more acting:** fewer UI pills on screen; let poses, faces and physical gags tell the story. Covers can be a single funny image, no text.
 3. **A fast "ALL HIGHLIGHTS of X vs Y 😂" format** for every big match (within 24 h): retell each real moment as a gag in 30–45 s.
 4. **Volume matters:** they post very often; our pipeline should allow a quick 1-day episode alongside bigger ones.
+
+## Study (Nov 19 2026, link from the owner): bodyanimation0 reel Df5L9_2j_RZ
+- Caption: "Vinicius with Real Madrid this season 😂🤣 #vinicius". 13.7 s, ~2,754 likes, 66 comments (embed page, Nov 19). Seen: cover frame + caption only (video not watchable from here).
+- What works: ONE player, ONE joke, ~14 s. The punchline is an extreme facial distortion (a huge red grinning mouth stretched across the face, bulging eyes, awkward "fake smile" pose) rather than a long story. Low camera angle beside the post with strong perspective on the goal and pitch lines, so even a still frame feels cinematic. Meme framing "<player> this season" = instantly relatable for fans who follow the league.
+- Apply: (1) a short format "<player> this season" (12–16 s, one gag, no chapters needed); (2) extreme face morphs for punchlines (giant mouth, eyes popping out, jaw on the floor) instead of only portrait expressions; (3) low/diagonal camera angles with perspective goals and lines. Never copy their art, characters or jokes.
