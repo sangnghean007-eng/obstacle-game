@@ -29,9 +29,10 @@ Cartoon parody · invented lines
 #ronaldo #messi #alnassr #alahli #football
 Pinned comment: Who laughed hardest: Messi, Bruno or the coach? 👇
 
-## Facebook Reels
+## Facebook Reels (v2: 200–400 characters + Arabic line, per FB insight)
 Caption:
-Ronaldo scored his 986th goal, then hit the post from the spot as Al Ahli came back to win 3-1. Meanwhile, at the "watch party"… 😂
+Ronaldo scored his 986th career goal against Al Ahli… then hit the post from the penalty spot, and Al Ahli came back to win 3-1. Al Nassr drop to 2nd behind Al Hilal. Meanwhile, at the "watch party", Messi, Bruno and Jorge Jesus had a very different night 😂
+رونالدو 986 ⚽ الأهلي 3-1 النصر
 Cartoon parody · invented lines, not real quotes
 
 ## X

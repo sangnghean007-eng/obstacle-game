@@ -120,3 +120,9 @@ The Shorts feed (watch time, swipe-away rate) drives most views; metadata mainly
 - Why: FB creator tips (+284% views at 30–45 s for this page) and IG/FB retention (51 s lost most viewers before the payoff). Ep2 at 22 s did well, but the user chose one shared length.
 - **No subtitle files** (user, Nov 17): episodes are near-silent visual comedy, so SRT adds nothing. Ignore FB's "add captions" tip.
 - Post 19:00–23:00 Vietnam time (FB: +83%). Ask for shares + follows in the caption.
+
+### Facebook insight (owner screenshot, 20 Nov 2026)
+- Viewers: 100% non-followers (reach comes from recommendations, not the page).
+- Countries: Sudan 7.7%, Morocco 7.4% plus one cut-off country at 12.5%; long tail 72.7%. Arabic-speaking North/East Africa is a core FB audience → Saudi Pro League / Al Nassr stories fit.
+- Facebook's own tip: captions of 200–400 characters get ~17% more views.
+Rules from now on for Facebook: caption 200–400 characters (story recap + the joke), one short Arabic line with the key names/score (e.g. رونالدو · النصر · الأهلي), still no engagement bait, keep the "Cartoon parody" line.
