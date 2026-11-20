@@ -60,4 +60,13 @@ m.vo('haaland', 'hmph', at('w8', 2.5), .55); twang(at('w8', 2.6), ['A3', 'G3', '
 # SMOKE: whistle, chug away, PFFF of smoke, blink, sad trombone-ish whistle, wind
 m.f(osc(glide(700, 760, .6), .6) * env(int(.6 * SR), .05, .2), at('w9', .1), .2); chug(at('w9', 0), at('w9', 2.4), .22); m.f(lp(noise(1.2), 500) * env(int(1.2 * SR), .1, .6), at('w9', .3), .45); m.vo('haaland', 'oof', at('w9', 1.0), .5)
 m.f(osc(1800, .05) * dec(.05, 40), at('w9', 2.05), .2); m.wahwah(at('w9', 2.3), .2); wind(at('w9', 2.0), 2.8, .12); whistle(at('w9', 2.6), [('A5', .4), ('D5', 1.6)], g=.1)
+# continuous western bed (QA: no dead air): boom-chick bass + muted strum + low drone, quieter under the gags
+def bed(t0, t1, g=.5, bpm=92):
+    b = 60 / bpm; t = t0; i = 0; roots = ['D2', 'A1', 'D2', 'C2', 'D2', 'A1', 'F2', 'A1']
+    while t < t1 - .05:
+        if i % 2 == 0: m.m(pluck(hz(roots[(i // 2) % 8]), .5, .5 * g), t, 1.0)
+        else: m.m(hp(noise(.07), 1800) * dec(.07, 40) * .3 * g, t, 1.0)
+        t += b / 2; i += 1
+    n = int((t1 - t0) * SR); m.m(lp(osc(hz('D2'), t1 - t0, 'saw'), 300) * env(n, 1.0, 1.5) * .06 * g, t0, 1.0)
+bed(0.3, END - 0.2, .55)
 print(round(END, 2)); m.write(sys.argv[1])

@@ -23,3 +23,4 @@ Problem: Ep9–Ep15 reused the same 12 voice WAVs (wail, chuckle, laugh_crowd, s
 | 23 Dream Duo | trap beat glue + per-location room tone (phone video feel) | chickens, domino clacks, header pings, ball POP, net rip, thunder | ronaldo, messi, kids, crowd (vox2) |
 | 25 New Gen vs OG | original synthwave trailer → choir + epic brass for the OGs → tiptoe pizzicato | bass drop, scooter skid, car THUD, record scratch on the bump | yamal, mbappe, haaland, ronaldo, messi (vox2) |
 | 26 13 Years In Line | bossa 'waiting music' that slows/detunes over the years → heist funk → choir | calendar flips, push-up grunts, door bell, poof costume swaps, game beeps | ronaldo, messi, neymar, mbappe, haaland, yamal (vox2) |
+- Ep28 The Duel: spaghetti-western parody: lonely whistle theme, Karplus-Strong twang guitar, boom-chick bass bed, whip cracks, wind/tumbleweed, a bell on every goal, train chug + whistle.
