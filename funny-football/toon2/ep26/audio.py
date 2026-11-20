@@ -3,7 +3,7 @@ door bell, heist funk for the new gen, epic choir when the OGs 'un-age', action 
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'sfx'))
 from fx2 import *
-SEGS = [('q13', 3.2, 1.5), ('q16', 2.0, 1.6), ('q18', 3.2, 1.4), ('q22', 3.4, 1.5), ('q23', 2.4, 1.5), ('qop', 4.0, 1.9), ('qri', 2.6, 1.4), ('qpa', 5.0, 1.8), ('qso', 3.6, 1.2)]
+SEGS = [('q13', 3.2, 1.4), ('hA', 1.3, 1), ('f16', 1.0, 1), ('q16', 2.0, 1.4), ('hB', 1.3, 1), ('f17', 1.0, 1), ('q18', 3.2, 1.3), ('hC', 1.3, 1), ('f22', 1.0, 1), ('q22', 3.4, 1.4), ('hD', 1.4, 1), ('f23', 1.0, 1), ('q23', 2.4, 1.3), ('hE', 1.2, 1), ('f26', 1.2, 1), ('qop', 4.0, 1.7), ('hF', 1.3, 1), ('qri', 2.6, 1.3), ('qpa', 5.0, 1.6), ('hG', 1.3, 1), ('qso', 3.6, 1.1)]
 ST = {}; SLW = {}; _t = 0
 for n, d, sl in SEGS: ST[n] = _t; SLW[n] = sl; _t += d * sl
 END = _t; m = Mix2(END, ep=26); at = lambda n, z: ST[n] + z * SLW[n]
@@ -16,10 +16,13 @@ def bossa(t0, t1, g=.5, bpm=120, det=0.0):
         if i % 2: m.m(hp(noise(.05), 3000) * dec(.05, 50), t, .05 * g)
         if i % 2 == 0: m.xylo(t, [mel[(i // 2) % 8]], .05, .07 * g)
         t += b / 2; i += 1
-bossa(0, at('qop', 0), .7, 116, .12)
+bossa(0, at('f26', 0), .7, 116, .12)
+for n in ('f16', 'f17', 'f22', 'f23', 'f26'): m.f(hp(noise(.35), 1500) * env(int(.35 * SR), .01, .2), at(n, 0), .45); m.ding(at(n, .3), 1046, .25)
+for n in ('hA', 'hB', 'hC', 'hD', 'hE', 'hF', 'hG'): m.thump(at(n, 0), .6); m.f(hp(noise(.06), 1500) * dec(.06, 40), at(n, 0), .5); m.crowd(at(n, .2), 'laugh' if n in ('hA', 'hC', 'hE') else 'cheer', 1.0, .25)
+m.timpani(at('f26', 0), 70, .4, roll=.8)
 for n in ('q16', 'q18', 'q22', 'q23'): m.f(hp(noise(.25), 1800) * env(int(.25 * SR), .01, .1), at(n, 0), .35)
 for i in range(5): m.f(hp(noise(.15), 2000) * env(int(.15 * SR), .01, .05), at('q18', i * .64), .3)
-for n in SEGS: m.pop(at(n[0], 0) + .05, .2, 1200)
+
 # 2013 Neymar fake faint → chair
 m.vo('neymar', 'cry', at('q13', 1.2), .5, 0, 'wail', .5); m.thump(at('q13', 1.3), .3); m.vo('ronaldo', 'hmm', at('q13', 1.6), .35); m.thump(at('q13', 2.2), .3); m.vo('neymar', 'laugh', at('q13', 2.4), .4, 0, 'snicker')
 # 2016 Ronaldo zoom + Euro
