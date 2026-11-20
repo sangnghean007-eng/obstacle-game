@@ -190,3 +190,12 @@ Sources (vendor blogs, unverified numbers): [Socialync](https://www.socialync.io
 - **Comedy inside realism (owner, Nov 19: "no comic situations"):** a realistic play still needs 4–5 character gags: an opponent's over-the-top failure, the stars' rivalry/ego (PASS!!, ASSIST? 🙄, head pat), a victim's silly aftermath (keeper in the net), a crowd joke. Realistic ball, funny people.
 - **Pacing for gags (owner, Nov 19: "too simple and fast"):** don't fire gags at cut speed. Each gag: setup (~0.5 s) → hit → reaction hold (~0.8–1 s) so it lands; add a second-layer detail per gag (flash, steam, a helper arriving). Fast cuts only for the football action itself.
 - **Instant recognition (owner, Nov 20):** every star must be recognisable without thinking: own portrait (never a generic chibi head for a named star), signature hair (Haaland bun, Yamal curls), club colours + name/number, big name labels when they first appear; never cover eyes (no sunglasses).
+- **Pre-export optimisation checklist (owner, Nov 20: "always optimise everything before exporting; you're too superficial"). Do ALL of these before sending any video:**
+  1. **Brief check:** every element the owner named is in (e.g. all characters from the reference: Neymar was missing in Ep25 v1). Re-read the owner's message line by line.
+  2. **Trend link:** if it rides a trend, the link must be obvious on screen (genre HUD, title card, references to the editions), in our own style, no logos/titles.
+  3. **Comedy pass:** ≥1 gag per character + one surprise twist; no beat without a joke or a reaction.
+  4. **Recognition pass:** each star has a portrait + signature hair + name card + club colours; faces never covered or cropped.
+  5. **Frame check:** contact sheet at 1 fps: nothing overlapping faces, labels inside the frame, no flat bands, no hidden legs, no frozen character.
+  6. **Sound pass:** every action has a sound, each character his own voice, music style new.
+  7. **Facts pass:** every on-screen number in facts.md with sources.
+  Only then render (`toon2/render_par.sh`, parallel 60 fps) and send.
