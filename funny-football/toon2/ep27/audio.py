@@ -2,7 +2,7 @@
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'sfx'))
 from fx2 import *
-SEGS = [('g0', 2.0), ('g1', 1.7), ('g2', 1.7), ('g3', 1.8), ('g4', 2.4), ('g5', 4.6), ('g6', 4.6), ('g7', 4.8), ('g8', 4.4)]
+SEGS = [('g0', 2.0), ('g1', 1.7), ('g2', 1.7), ('g3', 1.8), ('g4', 2.4), ('g5', 4.6), ('g6', 4.6), ('g7', 4.8), ('g9', 7.2), ('g8', 4.4)]
 ST = {}; _t = 0
 for n, d in SEGS: ST[n] = _t; _t += d
 END = _t; m = Mix2(END, ep=27); at = lambda n, z: ST[n] + z
@@ -35,6 +35,16 @@ z0 = 'g7'; m.brass_hit([hz('C3'), hz('G3'), hz('C4')], at(z0, .3), 1.0, .28); m.
 [m.vo(w, 'grunt', at(z0, 1.6 + i * .06), .45) for i, w in enumerate(('yamal', 'mbappe', 'haaland'))]; m.whoosh(at(z0, 1.9), .5, .35, True)
 m.vo('ronaldo', 'siu', at(z0, 2.0), .8); m.boom(at(z0, 2.45), .9); m.f(lp(noise(1.2), 300) * dec(1.2, 3), at(z0, 2.45), .55)
 [m.vo(w, 'cry', at(z0, 2.55 + i * .1), .45, -.4 + i * .3, 'wail', .6) for i, w in enumerate(('yamal', 'mbappe', 'haaland'))]; m.thump(at(z0, 3.05), .6); m.crowd(at(z0, 3.1), 'cheer', 1.4, .45)
+# FINAL 3 vs 3
+z0 = 'g9'; m.f(osc(glide(300, 120, .5), .5, 'sq') * env(int(.5 * SR), .01, .1), at(z0, .05), .2); m.boom(at(z0, .1), .4); m.vo('generic_m', 'yay', at(z0, .5), .5)
+trap(at(z0, .8), at(z0, 6.2), 1.0, 160)
+m.vo('yamal', 'grunt', at(z0, 1.0), .5); m.vo('neymar', 'cry', at(z0, 1.3), .6, 0, 'wail', .5); m.whoosh(at(z0, 1.45), .4, .3); m.thump(at(z0, 1.9), .6); m.vo('yamal', 'oof', at(z0, 1.9), .5)
+m.whoosh(at(z0, 2.1), .5, .4, True, .5); m.clang(at(z0, 2.6), .6, .6); m.vo('mbappe', 'ow', at(z0, 2.62), .55); m.vo('messi', 'laugh', at(z0, 2.8), .4, 0, 'snicker')
+for i in range(4): m.footstep(at(z0, 3.3 + i * .1), .5)
+m.spring(at(z0, 3.72), .5, .8); m.vo('haaland', 'yelp', at(z0, 3.8), .55); m.vo('ronaldo', 'laugh', at(z0, 4.0), .45, .3, 'belly', .6)
+m.thwack(at(z0, 4.5), .5); m.thwack(at(z0, 4.95), .5); m.vo('ronaldo', 'siu', at(z0, 5.2), .7); m.thwack(at(z0, 5.3), .9)
+m.boom(at(z0, 5.6), .7); [m.smack(at(z0, 5.6 + i * .04), .6) for i in range(3)]; m.crowd(at(z0, 5.65), 'cheer', 1.8, .55)
+m.brass_hit([hz('C4'), hz('E4'), hz('G4'), hz('C5')], at(z0, 6.2), 1.0, .3); m.boom(at(z0, 6.2), .4)
 # end: OGs laugh, sad waltz as the kids limp away
 z0 = 'g8'; m.vo('ronaldo', 'laugh', at(z0, .2), .55, -.4, 'belly', 1.4); m.vo('neymar', 'laugh', at(z0, .4), .5, -.2, 'giggle', 1.2); m.vo('messi', 'laugh', at(z0, .6), .45, 0, 'snicker')
 for i, n in enumerate(['A4', 'G#4', 'G4', 'F#4', 'F4']): m.kazoo(at(z0, .3 + i * .5), [n], .45, .1)
