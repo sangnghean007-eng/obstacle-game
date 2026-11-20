@@ -1618,17 +1618,17 @@ function w_zip(z, t) { duelBg(t); const tx = z < 0.6 ? lerp(1300, 330, easeOut(z
   if (soot) { ctx.save(); ctx.globalAlpha = 0.72; ell(hx, hy + 10, 120, 130, '#1a1a1a'); ctx.restore(); ctx.save(); ctx.strokeStyle = '#111'; ctx.lineWidth = 8; for (let i = 0; i < 9; i++) { const a = -2.6 + i * 0.27; ctx.beginPath(); ctx.moveTo(hx + Math.cos(a) * 110, hy - 40 + Math.sin(a) * 110); ctx.lineTo(hx + Math.cos(a) * 170, hy - 40 + Math.sin(a) * 170); ctx.stroke(); } ctx.restore(); const blink = z > 3.9 && z < 4.0; for (const d of [-1, 1]) { ell(hx + d * 42, hy + 10, 20, blink ? 3 : 15, '#fff'); if (!blink) ell(hx + d * 42, hy + 12, 7, 7, '#111'); } zipper(hx, hy + 75, 1.0, 1, t); }
   snow(t); tags28(-999, zx);
   HUD(() => { board28('w9', 1); if (z > 3.2) pop(eOB((z - 3.2) / 0.12), W / 2, 560, () => { rr(-400, -70, 800, 140, 34, '#fff', DARK, 7); txt('Ronaldo or Zlatan? 👇', 0, 6, 60, DARK, null); }); txt('Cartoon parody', W / 2, 1890, 30, '#fff', DARK, 'center', 800); }); }
-// ================= Ep29 "THE WATCH PARTY": Messi, Bruno and Martínez watch Al Ahli 3-1 Al Nassr (20 Nov 2026). Facts: ep29/facts.md =================
+// ================= Ep29 "THE WATCH PARTY": Messi, Bruno and coach Jorge Jesus watch Al Ahli 3-1 Al Nassr (20 Nov 2026). Facts: ep29/facts.md =================
 const AHLK = mkKit('#0f7a3d', '#fff', '#fff', '#0f7a3d', '#fff');
 const C_M29 = Object.assign({}, LM, { kit: mkKit('#f5a3c7', '#111', '#111', '#f5a3c7', '#111'), num: '10', name: 'MESSI', nameSize: 16 });
 const C_B29 = Object.assign({}, CH.mate1, { skin: '#e2ad88', shade: '#c48d6a', kit: PORK, num: '8', name: 'BRUNO', nameSize: 16 });
-const C_T29 = Object.assign({}, CH.mate1, { skin: '#d9a27c', shade: '#b9825e', kit: mkKit('#13294b', '#c8102e', '#13294b', '#13294b', '#fff'), num: '', name: 'MISTER', nameSize: 15 });
+const C_T29 = Object.assign({}, CH.mate1, { skin: '#d9a27c', shade: '#b9825e', kit: mkKit('#13294b', '#c8102e', '#13294b', '#13294b', '#fff'), num: '', name: 'JORGE JESUS', nameSize: 11 });
 const C_R29 = Object.assign({}, CR, { kit: NASK, num: '7', name: 'RONALDO', nameSize: 15 });
 const ahl = (nm, skin) => Object.assign({}, CH.mate1, { skin, shade: skin, kit: AHLK, num: '', name: nm, nameSize: nm.length > 6 ? 13 : 16 });
 const C_GAL = ahl('GALENO', '#b9825c'), C_TON = ahl('TONEY', '#5a3a26'), C_IBA = ahl('IBAÑEZ', '#c99470'), C_GK = Object.assign({}, CH.mate1, { kit: mkKit('#ff7a00', '#111', '#111', '#ff7a00', '#111'), num: '', name: '' });
 const MES29 = (p, e, x, y, s = 0.9, o = {}) => who(C_M29, 'messi', p, e, x, y, s, Object.assign({ gy: y }, o));
 const BRU29 = (p, e, x, y, s = 0.95, o = {}) => who(C_B29, 'bruno', p, e, x, y, s, Object.assign({ gy: y }, o));
-const MAR29 = (p, e, x, y, s = 1.0, o = {}) => who(C_T29, 'martinez', p, e, x, y, s, Object.assign({ gy: y }, o));
+const MAR29 = (p, e, x, y, s = 1.0, o = {}) => who(C_T29, 'jesus', p, e, x, y, s, Object.assign({ gy: y }, o));
 const RON29 = (p, e, x, y = GZ, s = 1.05, o = {}) => who(C_R29, 'ronaldo', p, e, x, y, s, Object.assign({ gy: GZ }, o));
 const CLAP29 = (t) => ({ bArm: [40, 100 + Math.sin(t * 20) * 25], fArm: [-40, -100 - Math.sin(t * 20) * 25], bLeg: [80, 0], fLeg: [90, 0] }), CLAPS = (t) => ({ bArm: [40, 100 + Math.sin(t * 6) * 15], fArm: [-40, -100 - Math.sin(t * 6) * 15], bLeg: [80, 0], fLeg: [90, 0] });
 const DANCE29 = (t, k = 0) => ({ bArm: [-150 + Math.sin(t * 10 + k) * 30, -170], fArm: [150 - Math.sin(t * 10 + k) * 30, 170], bLeg: [-20 + Math.sin(t * 10 + k) * 25, -5], fLeg: [20 - Math.sin(t * 10 + k) * 25, 5] });
