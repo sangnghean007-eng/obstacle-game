@@ -1072,9 +1072,9 @@ const C_RO13 = Object.assign({}, CR, { kit: RMA13, num: '7', name: 'RONALDO', na
 function who(C, face, pose, ex, x, y, s, o = {}) { if (!o.noShadow) PRO.shadow(ctx, x, o.gy || GS, Math.max(0, (o.gy || GS) - y), s); ctx.save(); if (o.rot) { ctx.translate(x, y - 200 * s); ctx.rotate(o.rot); ctx.translate(-x, -(y - 200 * s)); }
   if (o.dark) ctx.filter = `brightness(${o.dark})`;
   chibi.draw(ctx, C, pose === 'stand' ? IDLE(T2T, x * 0.01) : pose, face ? 'neutral' : ex, x, y, s, Object.assign({ f: 1 }, face ? { headFn: (R) => portrait.draw(ctx, face, 0, -R * 0.28, R * 2.1 / 330, { headOnly: true, expr: ex, kit: C.kit.shirt }) } : {}, o));
-  if (C === C_HAA && !o.dark) { ell(x - (o.f || 1) * 40 * s, y - 610 * s, 30 * s, 26 * s, '#e6c77a'); }
+  
   ctx.filter = 'none'; ctx.restore(); }
-const YAM = (p, e, x, y, s = 0.95, o = {}) => who(C_YAM, 'yamal_x', p, e, x, y, s, o), MBA = (p, e, x, y, s = 1.0, o = {}) => who(C_MBA, 'mbappe', p, e, x, y, s, o), HAA = (p, e, x, y, s = 1.15, o = {}) => who(C_HAA, null, p, e, x, y, s, o);
+const YAM = (p, e, x, y, s = 0.95, o = {}) => who(C_YAM, 'yamal_d', p, e, x, y, s, o), MBA = (p, e, x, y, s = 1.0, o = {}) => who(C_MBA, 'mbappe', p, e, x, y, s, o), HAA = (p, e, x, y, s = 1.15, o = {}) => who(C_HAA, 'haaland', p, e, x, y, s, o);
 const RO13 = (p, e, x, y, s, o = {}) => who(C_RO13, 'ronaldo', p, e, x, y, s, o), ME13 = (p, e, x, y, s, o = {}) => who(C_ME13, 'messi', p, e, x, y, s, Object.assign({ f: -1 }, o));
 const SWAG = (t, k = 0) => ({ bArm: [-30 + Math.sin(t * 7 + k) * 25, -10], fArm: [30 - Math.sin(t * 7 + k) * 25, 10], bLeg: [-25 + Math.sin(t * 7 + k) * 25, -5], fLeg: [25 - Math.sin(t * 7 + k) * 25, 5] });
 // neon city street at night (detail reaches every edge)
@@ -1099,21 +1099,21 @@ function t_yamal(z, t) { neon(t); const k = clamp(z / 0.7); const x = lerp(-250,
   rr(x - 120, GS - 40, 200, 20, 10, '#333', DARK, 4); ell(x - 110, GS - 10, 26, 26, '#222', 4); ell(x + 70, GS - 10, 26, 26, '#222', 4); rr(x + 60, GS - 300, 14, 270, 6, '#555', DARK, 3);
   YAM(stop ? { bArm: [-20, -10], fArm: [150, 170], bLeg: [-12, -6], fLeg: [12, 6] } : { bArm: [-40, -20], fArm: [60, 80], bLeg: [-10, -4], fLeg: [10, 4] }, 'smug', x, GS - 40, 1.25, { gy: GS });
   if (!stop) speed(x - 200, GS - 300, -1, t, 8, 300); else { for (let i = 0; i < 8; i++) ell(x - 140 - i * 30, GS - 20 - Math.sin(i) * 15, 30 - i * 3, 14, 'rgba(255,255,255,.3)'); }
-  if (z > 0.85) shades(x, GS - 40 - 1.25 * 375 + Math.max(0, 1 - (z - 0.85) * 6) * -120, 1.25);
+  if (z > 0.85) 
   HUD(() => nameCard('YAMAL', 'THE WONDERKID · 19', '#ff3fb4', z - 0.75, 1)); scan(t); }
 function t_mbappe(z, t) { neon(t); const k = clamp(z / 0.6); const x = lerp(1400, 560, easeOut(k)); const stop = z > 0.6;
-  if (!stop) fireball(x + 200, GS - 200, t, 1); MBA(stop ? FOLD : runPose(t, 28), 'smug', x, GS, 1.2, { f: -1 }); if (stop) { for (let i = 0; i < 6; i++) { const q = (t * 2 + i / 6) % 1; ell(x + 120 + i * 40, GS - 40 - q * 200, 20 * (1 - q), 20 * (1 - q), `rgba(255,140,40,${0.6 - q * 0.6})`); } shades(x, GS - 1.2 * 375, 1.2); }
+  if (!stop) fireball(x + 200, GS - 200, t, 1); MBA(stop ? FOLD : runPose(t, 28), 'smug', x, GS, 1.2, { f: -1 }); if (stop) { for (let i = 0; i < 6; i++) { const q = (t * 2 + i / 6) % 1; ell(x + 120 + i * 40, GS - 40 - q * 200, 20 * (1 - q), 20 * (1 - q), `rgba(255,140,40,${0.6 - q * 0.6})`); }  }
   HUD(() => nameCard('MBAPPÉ', 'THE SPEED · ⚡', '#3fe0ff', z - 0.65, -1)); scan(t); }
 function t_haaland(z, t) { neon(t); const up = clamp(z / 0.5), down = clamp((z - 0.9) / 0.25);
   const cy = GS - 200 - up * 520 + down * 520; HAA(down < 1 ? { bArm: [-160, -170], fArm: [160, 170], bLeg: [-20, -10], fLeg: [20, 10] } : FOLD, z > 1.0 ? 'smug' : 'angry', 540, GS, 1.3, { gy: GS });
   ctx.save(); ctx.translate(540, cy); rr(-260, -120, 520, 140, 40, '#c9c9d4', DARK, 7); rr(-170, -200, 320, 100, 30, '#b8b8c4', DARK, 7); rr(-150, -190, 130, 74, 10, '#9fd3ff', DARK, 4); rr(10, -190, 130, 74, 10, '#9fd3ff', DARK, 4); for (const d of [-170, 170]) { ell(d, 20, 54, 54, '#222', 6); ell(d, 20, 20, 20, '#888'); } ell(250, -60, 18, 14, '#fff6c2'); ctx.restore();
-  if (down >= 1 && z < 1.4) burst(540, GS - 40, 150, 'THUD', (z - 1.15) / 0.08, 44, '#fff'); if (z > 1.1) shades(540, GS - 1.3 * 375, 1.3);
+  if (down >= 1 && z < 1.4) burst(540, GS - 40, 150, 'THUD', (z - 1.15) / 0.08, 44, '#fff'); if (z > 1.1) 
   HUD(() => nameCard('HAALAND', 'THE MACHINE · 🤖', '#ffd60a', z - 1.1, 1)); scan(t); }
 function t_walk(z, t) { neon(t); const k = clamp(z / 3.0); const y = lerp(1500, 1760, k), s = lerp(0.75, 1.1, k);
   // slow-motion swagger toward the camera, the city reflected on the wet street
-  MBA(SWAG(t * 0.6, 1), 'smug', 540, y, s * 1.05); shades(540, y - s * 1.05 * 375, s * 1.05);
-  YAM(SWAG(t * 0.6, 0), 'smug', 300, y + 20, s * 0.95); shades(300, y + 20 - s * 0.95 * 375, s * 0.95);
-  HAA(SWAG(t * 0.6, 2), 'smug', 800, y + 10, s * 1.2, { f: -1 }); shades(800, y + 10 - s * 1.2 * 375, s * 1.2);
+  MBA(SWAG(t * 0.6, 1), 'smug', 540, y, s * 1.05); 
+  YAM(SWAG(t * 0.6, 0), 'smug', 300, y + 20, s * 0.95); 
+  HAA(SWAG(t * 0.6, 2), 'smug', 800, y + 10, s * 1.2, { f: -1 }); 
   for (let i = 0; i < 10; i++) { const q = (t * 0.6 + i / 10) % 1; ctx.save(); ctx.translate(100 + (i * 113) % 900, -100 + q * 2000); ctx.rotate(q * 6); rr(-30, -14, 60, 28, 3, '#3fae5a', DARK, 2); ctx.restore(); } scan(t, 0.05); }
 function giants(t, dark, s0 = 2.45) { RO13(AKIMBO, 'smug', 300, GS + 120, s0, { gy: GS + 120, dark, noShadow: true }); ME13(AKIMBO, 'smug', 790, GS + 120, s0 * 0.9, { gy: GS + 120, dark, noShadow: true }); }
 function t_bump(z, t) { neon(t); giants(t, 0.12); const hit = z > 0.5; const back = hit ? clamp((z - 0.5) / 0.3) : 0;
@@ -1122,11 +1122,11 @@ function t_bump(z, t) { neon(t); giants(t, 0.12); const hit = z > 0.5; const bac
 function t_reveal(z, t) { neon(t, 0); const lit = clamp((z - 0.3) / 0.5); if (lit > 0) { for (const [x, y, c] of [[300, 760, '255,215,90'], [790, 820, '255,215,90']]) aura(x, y, t, lit, c); } giants(t, lerp(0.12, 1, lit));
   [['YAM', 360], ['MBA', 560], ['HAA', 760]].forEach(([w, x]) => { const p = { bArm: [-60, -150], fArm: [60, 150], bLeg: [-14, -8], fLeg: [14, 8] }; if (w === 'YAM') YAM(p, 'shock', x, 1800, 0.55, { gy: 1800 }); if (w === 'MBA') MBA(p, 'shock', x, 1800, 0.6, { gy: 1800 }); if (w === 'HAA') HAA(p, 'shock', x, 1800, 0.65, { gy: 1800 }); });
   HUD(() => { if (z > 0.6) pop(eOB((z - 0.6) / 0.15), W / 2, 180, () => { ctx.save(); ctx.shadowColor = '#ffd60a'; ctx.shadowBlur = 30; rr(-420, -70, 840, 140, 20, 'rgba(10,0,20,.85)', '#ffd60a', 8); txt('THE ORIGINALS · 2013', 0, 8, 64, '#ffd60a', null); ctx.restore(); });
-    if (z > 1.2) { pop(eOB((z - 1.2) / 0.15), 300, 330, () => { rr(-190, -40, 380, 80, 12, 'rgba(10,0,20,.8)', '#fff', 4); txt("5× BALLON D'OR", 0, 3, 36, '#fff', null); }); pop(eOB((z - 1.4) / 0.15), 790, 420, () => { rr(-190, -40, 380, 80, 12, 'rgba(10,0,20,.8)', '#fff', 4); txt("8× BALLON D'OR", 0, 3, 36, '#fff', null); }); } }); }
+    if (z > 1.2) { pop(eOB((z - 1.2) / 0.15), 290, 330, () => { rr(-230, -60, 460, 120, 12, 'rgba(10,0,20,.85)', '#fff', 4); txt('RONALDO', 0, -16, 50, '#fff', null); txt("5× BALLON D'OR", 0, 32, 32, '#ffd60a', null); }); pop(eOB((z - 1.4) / 0.15), 790, 470, () => { rr(-230, -60, 460, 120, 12, 'rgba(10,0,20,.85)', '#fff', 4); txt('MESSI', 0, -16, 50, '#fff', null); txt("8× BALLON D'OR", 0, 32, 32, '#ffd60a', null); }); } }); }
 function t_shrink(z, t) { neon(t, 0); aura(300, 760, t, 1); aura(790, 820, t, 1); giants(t, 1);
   // the new gen panic: shades slide off, Mbappé hides his sack, Haaland drops the car on his own foot, then they tiptoe away
   const run = z > 1.4 ? clamp((z - 1.4) / 0.8) : 0;
-  YAM(run ? runPose(t, 26) : SHAKEP(t), 'shock', 360 - run * 600, 1800, 0.55, { gy: 1800, f: run ? -1 : 1 }); if (!run) { shades(360, 1800 - 0.55 * 300 + z * 60, 0.55); ell(380, 1800 - 0.55 * 500, 8, 12, '#8fd3ff'); }
+  YAM(run ? runPose(t, 26) : SHAKEP(t), 'shock', 360 - run * 600, 1800, 0.55, { gy: 1800, f: run ? -1 : 1 }); if (!run) {  ell(380, 1800 - 0.55 * 500, 8, 12, '#8fd3ff'); }
   MBA(run ? runPose(t, 30) : { bArm: [60, 150], fArm: [70, 160], bLeg: [-14, -8], fLeg: [14, 8] }, 'shock', 560 - run * 700, 1800, 0.6, { gy: 1800, f: run ? -1 : 1 });
   HAA(run ? runPose(t, 22) : z > 0.6 ? { bArm: [-160, -170], fArm: [160, 170], bLeg: [-20, -10], fLeg: [90, 120] } : SHAKEP(t), 'shock', 760 + run * 600, 1800, 0.65, { gy: 1800 });
   if (z > 0.5 && z < 0.9) { rr(700, 1760, 160, 50, 16, '#c9c9d4', DARK, 4); burst(780, 1700, 70, 'OUCH', (z - 0.5) / 0.08, 24, '#fff'); }
