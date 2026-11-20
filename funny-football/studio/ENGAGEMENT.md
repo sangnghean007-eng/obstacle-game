@@ -199,3 +199,4 @@ Sources (vendor blogs, unverified numbers): [Socialync](https://www.socialync.io
   6. **Sound pass:** every action has a sound, each character his own voice, music style new.
   7. **Facts pass:** every on-screen number in facts.md with sources.
   Only then render (`toon2/render_par.sh`, parallel 60 fps) and send.
+- **Clarity for multi-beat stories (owner, Nov 20: "too fast, unclear, hard to understand"):** slow every beat so each action reads (≥1.5 s per action), and add a plain-English action caption under the year/chapter for every beat ("Neymar dives → Yamal trips"). If a beat needs the caption to be understood, the caption stays.
