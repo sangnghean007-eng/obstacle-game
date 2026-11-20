@@ -1581,7 +1581,7 @@ function w_g77(z, t) { duelBg(t); const rip = z > 0.4, kick = z > 2.0, hitT = z 
   HUD(() => { board28(z < 2.6 ? 'w5' : 'w6', z < 2.6 ? 1 : z - 2.6); minute28("77' · RONALDO 💪", z - 2.6, '#ffd60a'); }); }
 function w_g79(z, t) { duelBg(t, z > 2.2 ? 1 : 0); const inn = z > 1.9; sideGoal28(110, 1); sideGoal28(970, -1, inn ? Math.max(0, 1 - (z - 1.9) * 2) : 0); post28(t);
   const pass = z < 0.8; chibi.draw(ctx, C_MOU, z < 0.5 ? runPose(t, 16) : z < 0.8 ? KICK2 : 'stand', 'smug', lerp(-120, 120, clamp(z / 0.5)), GZ + 60, 0.85, { f: 1 });
-  const rx = z < 0.7 ? RX28 : z < 1.5 ? lerp(RX28, 700, (z - 0.7) / 0.8) : 700; const pop2 = z > 1.9;
+  const rx = z < 0.7 ? RX28 : z < 1.5 ? lerp(RX28, 520, (z - 0.7) / 0.8) : 520; const pop2 = z > 1.9;
   Z28(z < 1.2 ? HOLSTER : z < 1.9 ? { bArm: [-80, -40], fArm: [80, 40], bLeg: [-30, -10], fLeg: [30, 10] } : 'stand', z < 1.9 ? 'shock' : 'shock', ZX28 + 60, GZ, { messy: pop2, rot: z > 1.0 && z < 1.5 ? (z - 1.0) / 0.5 * TAU : 0 });
   if (pop2 && z < 3.0) { const q = (z - 1.9) / 1.1; ctx.save(); ctx.translate(ZX28 + 60 + q * 200, GZ - 620 - Math.sin(q * Math.PI) * 300 + q * q * 700); ctx.rotate(q * 9); ell(0, 0, 34, 30, '#1e1510', 4); ctx.restore(); if (z < 2.1) burst(ZX28 + 60, GZ - 620, 70, 'POP!', (z - 1.9) / 0.06, 30, '#fff'); }
   const siu = z > 2.3; R28(z < 0.7 ? HOLSTER : z < 1.5 ? runPose(t, 22) : z < 1.9 ? KICK2 : siu ? (z < 3.0 ? P_SIU : { bArm: [-30, -10], fArm: [150, 170], bLeg: [-14, -8], fLeg: [14, 8] }) : 'stand', siu ? 'siuuu' : 'angry', rx, GZ, { bare: 1 }); abs28(rx, GZ, 1.05, t);
