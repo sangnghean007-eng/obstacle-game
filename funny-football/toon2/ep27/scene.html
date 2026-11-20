@@ -1381,6 +1381,7 @@ function g_ron3(z, t) { house('ron', t, 1); const rx = z < 0.6 ? lerp(DOORX, 700
     const q = clamp((z - 4.0) / 0.9); [['ya', 560, -0.3], ['mb', 470, 0], ['ha', 380, 0.3]].forEach(([w, x0, d]) => { st[w] = { x: x0 - q * 260 + d * q * 300, y: lerp(GZ, -300, q * q), p: FLAIL(t), e: 'shock', rot: q * 8 * (d >= 0 ? 1 : -1) }; });
     ctx.strokeStyle = `rgba(255,214,90,${1 - clamp((z - 4.0) / 0.6)})`; ctx.lineWidth = 18; ctx.beginPath(); ctx.ellipse(rx, GZ, 80 + (z - 4.0) * 1600, 24 + (z - 4.0) * 360, 0, 0, TAU); ctx.stroke(); }
   if (z > 4.9) for (let i = 0; i < 3; i++) { const q = (t * 3 + i) % 1; txt('✨', 360 + i * 140, 220 + i * 30, 60 + q * 30, '#fff', null); }
+  if (z > 4.8) { const fl = Math.sin(t * 7) > 0; rP = fl ? { bArm: [-100, -160], fArm: [100, 160], bLeg: [-20, -10], fLeg: [20, 10] } : { bArm: [-70, -30], fArm: [70, 30], bLeg: [-28, -12], fLeg: [28, 12] }; rE = 'siuuu'; ry = GZ - Math.abs(Math.sin(t * 7)) * 18; }
   K3(st, t); RO13(rP, rE, rx, ry, 1.15, { f: -1, gy: GZ }); if (ball) fball(ball[0], ball[1], 30, t * 30);
   for (const [a, x] of [[0.8, 560], [1.15, 590], [1.5, 560]]) if (hitWin(z, a + 0.18, 0.4)) burst(x + 60, GZ - 460, 70, 'CLANG 💪', (z - a - 0.18) / 0.06, 24, '#fff');
   hits.forEach((a, i) => { if (hitWin(z, a, 0.3)) burst([st.ya.x, st.mb.x, st.ha.x][i], GZ - 560, 70, 'BONK', (z - a) / 0.06, 26, '#fff'); });

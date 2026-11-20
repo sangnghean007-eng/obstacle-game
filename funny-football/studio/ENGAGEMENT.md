@@ -209,3 +209,6 @@ Sources (vendor blogs, unverified numbers): [Socialync](https://www.socialync.io
 
 ### Machine QA gate (from a reference reel, Nov 20 2026: "máy tự đo, không đạt làm lại")
 Before ANY video is sent: `python3 toon2/qa.py <video.mp4>` must print QA PASS (loudness -15..-13 LUFS with true peak <= -1 dBTP, no dead air >= 0.3 s, no frozen picture >= 0.6 s, no black frames), then look at `qa/safezones.png`: names, stamps, scores and faces must stay out of the red app-UI zones (top 210 px, bottom 400 px, right rail). Ep27 first run failed 3 of these; all scenes now lift the street 250 px (`LIFT`) above the caption area.
+
+### Cover as the first 0.1 s (owner, Nov 20 2026)
+Every final export: render → `toon2/add_cover.sh <video.mp4> <cover.jpg>` (puts the cover as the first 0.1 s, audio shifted to stay in sync) → `toon2/qa.py` → send. The cover must be a real frame of the episode's hook moment, never a spoiler-free stock image.
