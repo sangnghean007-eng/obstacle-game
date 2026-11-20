@@ -75,4 +75,8 @@ for i, n in enumerate(['A4', 'G#4', 'G4', 'F#4', 'F4']): m.kazoo(at(z0, .3 + i *
 [m.vo(w, 'cry', at(z0, 1.0 + i * .3), .35, .4, 'whimper', 1.2) for i, w in enumerate(('yamal', 'mbappe', 'haaland'))]
 # outro bed to the very end (QA: no dead air)
 m.vo('ronaldo', 'laugh', at(z0, 2.9), .4, -.4, 'point'); m.kazoo(at(z0, 2.8), ['E4'], 1.3, .1); m.m(lp(osc(hz('A2'), 1.6, 'saw'), 600) * env(int(1.6 * SR), .1, .8), at(z0, 2.8), .12)
+# props: twirl swooshes in intros, wood cracks + clatter when the weapons shatter at the final clash
+for n in ('g1', 'g2', 'g3'): m.whoosh(at(n, 1.0), .25, .25, True)
+for i in range(3): m.f(hp(noise(.08), 1800) * dec(.08, 30), at('g9', 1.72 + i * .05), .5)
+for i in range(7): m.f(lp(noise(.05), 2500) * dec(.05, 50), at('g9', 2.2 + i * .09), .25, (-1) ** i * .4)
 print(round(END, 2)); m.write(sys.argv[1])
