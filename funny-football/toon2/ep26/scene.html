@@ -1289,7 +1289,7 @@ function q23(z, t) { shop(t, 2023, 0, 6); const swap = z > 0.4 && z < 0.7; const
   if (swap) for (const x of [QX26.ro, QX26.me, QX26.ne]) { for (let i = 0; i < 8; i++) { const a = i / 8 * TAU; ell(x + Math.cos(a) * 90, GQ26 - 300 + Math.sin(a) * 70, 40, 40, 'rgba(255,255,255,.7)'); } burst(x, GQ26 - 300, 60, 'POOF', 0.6, 24, '#fff'); }
   for (const d of [-40, 40]) { ctx.strokeStyle = '#c9c9d4'; ctx.lineWidth = 12; ctx.beginPath(); ctx.moveTo(QX26.ne + d, GQ26); ctx.lineTo(QX26.ne + d * 1.3, GQ26 - 330); ctx.stroke(); } txt('🤕', QX26.ne + 90, headY(0.88) - 160, 50, '#fff', null);
   if (z > 1.2) { const k = clamp((z - 1.2) / 0.3); ctx.strokeStyle = '#ffd60a'; ctx.lineWidth = 6; ctx.setLineDash([16, 12]); ctx.beginPath(); ctx.moveTo(QX26.ya - 60, headY(0.95) - 180); ctx.lineTo(QX26.me + 80, headY(0.95) - 180); ctx.stroke(); ctx.setLineDash([]); if (k >= 1) pop(eOB((z - 1.5) / 0.12), 380, headY(0.95) - 240, () => { rr(-210, -34, 420, 68, 12, 'rgba(0,0,0,.85)', '#ffd60a', 4); txt('YAMAL > MESSI (height) 📏', 0, 4, 26, '#ffd60a', null); }); }
-  HUD(() => { yearCard('2023', z); if (z > 0.7) pop(eOB((z - 0.7) / 0.12), W / 2, 330, () => { rr(-330, -36, 660, 72, 12, 'rgba(0,0,0,.8)', '#fff', 3); txt('MESSI → MIAMI · RONALDO → SAUDI', 0, 4, 30, '#fff', null); }); }); }
+  HUD(() => { yearCard('2023', z); if (z > 0.7) pop(eOB((z - 0.7) / 0.12), W / 2, 370, () => { rr(-330, -36, 660, 72, 12, 'rgba(0,0,0,.8)', '#fff', 3); txt('MESSI → MIAMI · RONALDO → SAUDI', 0, 4, 30, '#fff', null); }); }); }
 // 2026: doors open, OGs are old, the new gen heist
 function qOpen(z, t) { shop(t, 2026, clamp((z - 0.2) / 0.4), 8); const lift = z > 0.9 && z < 1.9, set = z >= 1.9, dash = z > 2.0 && z < 2.6, grab = z >= 2.6, skate = z > 2.9;
   const oldS = (k) => ({ p: OLDP(t, k), e: 'shock', o: { lean: 0.25 } });
@@ -1304,7 +1304,7 @@ function qOpen(z, t) { shop(t, 2026, clamp((z - 0.2) / 0.4), 8); const lift = z 
   if (grab && !skate) { gameBox(mx + 60, GQ26 - 0.95 * 760, 1); txt('1 LEFT', 870, 1120, 46, '#ffd60a', DARK); }
   // pass to Yamal who skates away
   const yx = skate ? lerp(1300, 1000 - (z - 3.2) * 600, clamp((z - 2.9) / 0.3)) : 1400; if (z > 2.9) { const q = clamp((z - 2.9) / 0.3); if (q < 1) gameBox(lerp(820, yx, q), GQ26 - 700 - Math.sin(q * Math.PI) * 120, 1, q * 5); rr(yx - 90, GQ26 - 30, 180, 18, 8, '#ff5fa2', DARK, 3); ell(yx - 70, GQ26 - 8, 14, 14, '#222'); ell(yx + 70, GQ26 - 8, 14, 14, '#222'); YA26('bar', RAISE, 'smug', yx, GQ26 - 40, 0.95, { gy: GQ26 }); if (q >= 1) gameBox(yx + 10, GQ26 - 40 - 0.95 * 780, 1); }
-  HUD(() => { yearCard('NOV 19 · 2026', z, '#22c55e'); if (z < 0.9) pop(eOB(z / 0.12), W / 2, 330, () => { rr(-330, -36, 660, 72, 12, 'rgba(0,0,0,.8)', '#fff', 3); txt('RONALDO 41 · MESSI 39 · NEYMAR 34', 0, 4, 30, '#fff', null); }); if (z > 3.15) bubble('THANKS GRANDPAS 😎', 640, 820, z - 3.15, 50); }); }
+  HUD(() => { yearCard('NOV 19 · 2026', z, '#22c55e'); if (z < 0.9) pop(eOB(z / 0.12), W / 2, 370, () => { rr(-330, -36, 660, 72, 12, 'rgba(0,0,0,.8)', '#fff', 3); txt('RONALDO 41 · MESSI 39 · NEYMAR 34', 0, 4, 30, '#fff', null); }); if (z > 3.15) bubble('THANKS GRANDPAS 😎', 640, 820, z - 3.15, 50); }); }
 function qRise(z, t) { shop(t, 2026, 1, 8); const look = z < 0.8, off = z > 0.8 && z < 1.4, walk = z >= 1.4; const wx = walk ? (z - 1.4) * 160 : 0;
   const P = look ? OLDP(t) : walk ? SWAG(t * 0.5) : RAISE;
   N26('hil', P, look ? 'shock' : 'angry', 140 + wx, GQ26, 0.95, { lean: look ? 0.25 : 0 }); M26('mia', P, look ? 'shock' : 'angry', 300 + wx, GQ26, 0.88, { lean: look ? 0.25 : 0 }); R26('nas', P, look ? 'shock' : 'angry', 470 + wx, GQ26, 1.0, { lean: look ? 0.25 : 0 });
@@ -1312,7 +1312,7 @@ function qRise(z, t) { shop(t, 2026, 1, 8); const look = z < 0.8, off = z > 0.8 
   if (off) { const k = (z - 0.8) / 0.6; for (const x of [140, 300, 470]) { ctx.save(); ctx.translate(x + k * 300, GQ26 - 500 - k * 700); ctx.rotate(k * 8); rr(-80, -60, 160, 120, 14, '#8a6a4a', DARK, 4); ctx.restore(); ctx.save(); ctx.translate(x - 100 - k * 300, GQ26 - 100 - k * 300); ctx.rotate(-k * 6); walker(0, 0, 0.6); ctx.restore(); } burst(300, 900, 140, 'CRACK', (z - 0.8) / 0.08, 46, '#fff'); }
   if (!look) for (const x of [140, 300, 470]) aura(x + wx, GQ26 - 400, t, 0.8);
   if (walk) { HA26('mci', SHAKEP(t), 'shock', 900, GQ26 + 10, 1.25, { f: -1 }); MB26('rma', SHAKEP(t), 'shock', 760, GQ26 + 20, 0.95, { f: -1 }); }
-  HUD(() => { if (walk) pop(eOB((z - 1.4) / 0.12), W / 2, 330, () => { ctx.save(); ctx.shadowColor = '#ffd60a'; ctx.shadowBlur = 30; rr(-340, -50, 680, 100, 16, 'rgba(0,0,0,.85)', '#ffd60a', 6); txt('THE OGs ARE BACK 🐐', 0, 6, 52, '#ffd60a', null); ctx.restore(); }); }); }
+  HUD(() => { if (walk) pop(eOB((z - 1.4) / 0.12), W / 2, 380, () => { ctx.save(); ctx.shadowColor = '#ffd60a'; ctx.shadowBlur = 30; rr(-340, -50, 680, 100, 16, 'rgba(0,0,0,.85)', '#ffd60a', 6); txt('THE OGs ARE BACK 🐐', 0, 6, 52, '#ffd60a', null); ctx.restore(); }); }); }
 function qPay(z, t) { shop(t, 2026, 1, 8);
   // 0–1.2 Neymar dives, Yamal trips, box flies to Mbappé
   const yx = z < 0.7 ? lerp(1000, 520, z / 0.7) : 520; const trip = z > 0.7;
@@ -1347,6 +1347,15 @@ function qSofa(z, t) { const g = ctx.createLinearGradient(0, 0, 0, H); g.addColo
     if (z > 0.8) pop(eOB((z - 0.8) / 0.12), 540, 1540, () => { rr(-210, -36, 420, 72, 12, 'rgba(0,0,0,.8)', '#fff', 3); txt('Next edition: 2039? 💀', 0, 4, 32, '#fff', null); });
     if (z > 1.5) pop(eOB((z - 1.5) / 0.12), W / 2, 880, () => { rr(-420, -70, 840, 140, 34, '#fff', DARK, 7); txt('Old gen or new gen? 👇', 0, 6, 58, DARK, null); }); txt('Real dates & ages · cartoon parody', W / 2, 1890, 28, '#fff', DARK, 'center', 800); }); }
 
+
+// v2 (owner: "too fast, actions unclear, hard to understand"): everything slowed 1.4–1.9×, plus a plain-English line under the year saying what is happening
+const SUBS = { q13: [[0, 'Everyone queues for EDITION 6 🎮'], [1.2, 'Neymar "faints"… to get a chair 🪑']], q16: [[0, 'Still waiting…'], [0.4, 'Ronaldo pops out… wins EURO 2016 🏆']],
+  q18: [[0, 'Years go by… still "coming soon" 😴'], [1.9, 'The kids keep growing… 📈']], q22: [[0, 'Messi pops out… wins the WORLD CUP 🏆'], [1.4, 'Ronaldo answers… with push-ups 💪']],
+  q23: [[0, 'New clubs. Same queue. 😅']], qop: [[0, 'FINALLY OPEN! Only 1 copy left!'], [0.9, 'Haaland moves the grandpas 💪'], [2.0, 'Mbappé grabs the last copy ⚡'], [2.9, '…and passes it to Yamal 🛹']],
+  qri: [[0, 'The OGs look at each other…'], [0.8, '…and wake up 🔥']], qpa: [[0, 'Neymar dives → Yamal trips 🎭'], [1.3, 'Messi nutmegs Mbappé 🪄'], [2.4, 'Ronaldo outjumps Haaland 🦘'], [3.9, 'OGs win. 🐐']], qso: [] };
+function subs(n, z) { const L = SUBS[n]; if (!L || !L.length) return; let cur = null, z0 = 0; for (const [a, txt1] of L) if (z >= a) { cur = txt1; z0 = a; } if (!cur) return;
+  pop(eOB((z - z0) / 0.12), W / 2, 250, () => { ctx.font = `900 46px ${F}`; const w = Math.min(1040, ctx.measureText(cur).width + 60); rr(-w / 2, -40, w, 80, 18, 'rgba(255,255,255,.95)', DARK, 5); txt(cur, 0, 4, Math.min(46, 46 * (w - 40) / ctx.measureText(cur).width), DARK, null); }); }
+
 // ---------- camera + HUD ----------
 let HUDQ = []; const HUD = (f) => HUDQ.push(f);
 const _cap = caption; caption = (...a) => HUD(() => _cap(...a));
@@ -1373,7 +1382,7 @@ function wCard(z, t) { if (CN === 'v1') celeCam(1.79, t); else CF(CD - 0.02, t);
   if (k > 0.4) pop(eOB((k - 0.4) / 0.12), W / 2, 940, () => { rr(-420, -46, 840, 92, 26, 'rgba(0,0,0,.8)', '#d4af37', 4); txt('Send this to your football buddy 😂', 0, 3, 38, '#fff', null); });
   if (k > 0.8) pop(eOB((k - 0.8) / 0.12), W / 2, 1100, () => txt(`DREAM DUO #${CLIP} · follow for the next one ⚽`, 0, 0, 34, '#d4af37', DARK)); txt('Cartoon parody · they never played on the same team', W / 2, 1890, 28, '#fff', DARK, 'center', 800); }); }
 function fcHook(z, t) { faceCam(z, t); HUD(() => { if (window.SEGT < 2.4) hookCap(window.SEGT); }); }
-const LEN = [['q13', 3.2, q13, 1, 0], ['q16', 2.0, q16, 1, 0], ['q18', 3.2, q18, 1, 0], ['q22', 3.4, q22, 1, 0], ['q23', 2.4, q23, 1, 0], ['qop', 4.0, qOpen, 1, 0], ['qri', 2.6, qRise, 1, 0], ['qpa', 5.0, qPay, 1, 0], ['qso', 3.6, qSofa, 1, 0]];
+const LEN = [['q13', 3.2, q13, 1.5, 0], ['q16', 2.0, q16, 1.6, 0], ['q18', 3.2, q18, 1.4, 0], ['q22', 3.4, q22, 1.5, 0], ['q23', 2.4, q23, 1.5, 0], ['qop', 4.0, qOpen, 1.9, 0], ['qri', 2.6, qRise, 1.4, 0], ['qpa', 5.0, qPay, 1.8, 0], ['qso', 3.6, qSofa, 1.2, 0]];
 const SEG = []; { let t = 0; for (const [n, d, f, sl, off] of LEN) { SEG.push([t, t + d * sl, f, n, sl, off || 0]); t += d * sl; } }
 const DURATION = SEG[SEG.length - 1][1];
 window.SEGS = SEG.map(s => [s[3], +s[0].toFixed(2)]);
@@ -1383,7 +1392,7 @@ function render(t) { ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, W, 
     PRO.grade(ctx, t, false);
     for (const [a0, d0, A] of SHK[n]) if (A >= 14 && z >= a0 && z < a0 + 0.1) PRO.impact(ctx, (z - a0) / 0.1);
     if (window.SEGT < 0.2 && t > 0.1) PRO.whip(ctx, document.getElementById('c'), window.SEGT / 0.2, (SEG.findIndex(q => q[3] === n) % 2) ? -1 : 1);
-    chapter(n, zc); for (let i = 0; i < HUDQ.length; i++) HUDQ[i](); break; } }
+    chapter(n, zc); for (let i = 0; i < HUDQ.length; i++) HUDQ[i](); if (typeof subs === 'function') subs(n, z); break; } }
 window.render = render; window.DURATION = DURATION;
 if (!location.search.includes('render')) { const t0 = performance.now(); (function loop() { render(((performance.now() - t0) / 1000) % DURATION); requestAnimationFrame(loop); })(); }
 </script></body></html>

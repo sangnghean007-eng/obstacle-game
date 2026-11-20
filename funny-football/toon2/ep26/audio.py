@@ -3,10 +3,10 @@ door bell, heist funk for the new gen, epic choir when the OGs 'un-age', action 
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'sfx'))
 from fx2 import *
-SEGS = [('q13', 3.2), ('q16', 2.0), ('q18', 3.2), ('q22', 3.4), ('q23', 2.4), ('qop', 4.0), ('qri', 2.6), ('qpa', 5.0), ('qso', 3.6)]
-ST = {}; _t = 0
-for n, d in SEGS: ST[n] = _t; _t += d
-END = _t; m = Mix2(END, ep=26); at = lambda n, z: ST[n] + z
+SEGS = [('q13', 3.2, 1.5), ('q16', 2.0, 1.6), ('q18', 3.2, 1.4), ('q22', 3.4, 1.5), ('q23', 2.4, 1.5), ('qop', 4.0, 1.9), ('qri', 2.6, 1.4), ('qpa', 5.0, 1.8), ('qso', 3.6, 1.2)]
+ST = {}; SLW = {}; _t = 0
+for n, d, sl in SEGS: ST[n] = _t; SLW[n] = sl; _t += d * sl
+END = _t; m = Mix2(END, ep=26); at = lambda n, z: ST[n] + z * SLW[n]
 def bossa(t0, t1, g=.5, bpm=120, det=0.0):
     b = 60 / bpm; t = t0; i = 0; ch = [['D4', 'F4', 'A4', 'C5'], ['G3', 'B3', 'D4', 'F4'], ['C4', 'E4', 'G4', 'B4'], ['A3', 'C#4', 'E4', 'G4']]; mel = ['A4', 'C5', 'E5', 'D5', 'B4', 'G4', 'A4', 'E4']
     while t < t1 - .02:
@@ -19,6 +19,7 @@ def bossa(t0, t1, g=.5, bpm=120, det=0.0):
 bossa(0, at('qop', 0), .7, 116, .12)
 for n in ('q16', 'q18', 'q22', 'q23'): m.f(hp(noise(.25), 1800) * env(int(.25 * SR), .01, .1), at(n, 0), .35)
 for i in range(5): m.f(hp(noise(.15), 2000) * env(int(.15 * SR), .01, .05), at('q18', i * .64), .3)
+for n in SEGS: m.pop(at(n[0], 0) + .05, .2, 1200)
 # 2013 Neymar fake faint → chair
 m.vo('neymar', 'cry', at('q13', 1.2), .5, 0, 'wail', .5); m.thump(at('q13', 1.3), .3); m.vo('ronaldo', 'hmm', at('q13', 1.6), .35); m.thump(at('q13', 2.2), .3); m.vo('neymar', 'laugh', at('q13', 2.4), .4, 0, 'snicker')
 # 2016 Ronaldo zoom + Euro
