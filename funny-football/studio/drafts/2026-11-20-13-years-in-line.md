@@ -3,7 +3,7 @@ Trend: the new edition (6) of the big crime game came out Nov 19 2026, 13 years 
 Name/logo/font of the game never shown. Say "EDITION 6".
 
 ## Facts (all checkable)
-Edition 5: Sep 17 2013 · Edition 6: Nov 19 2026 (13 years) · Ages 2013 → 2026: Ronaldo 28 → 41, Messi 26 → 39, Neymar 21 → 34, Yamal 6 → 19 (born Jul 13 2007) · Ronaldo Euro 2016 · Messi World Cup 2022 · Messi to Miami 2023 · Ronaldo to Saudi Arabia 2023 · Ronaldo still playing at 41.
+Edition 5: Sep 17 2013 · Edition 6: Nov 19 2026 (13 years) · Ages 2013 → 2026: Ronaldo 28 → 41, Messi 26 → 39, Neymar 21 → 34 · new gen: Mbappé 14 → 27 (b. Dec 20 1998), Haaland 13 → 26 (b. Jul 21 2000), Yamal 6 → 19 (b. Jul 13 2007) · Ronaldo Euro 2016 · Messi World Cup 2022 · Messi to Miami 2023 · Ronaldo to Saudi Arabia 2023 · Ronaldo still playing at 41.
 
 ## Story (one location: a game-shop door at night, a queue, a calendar on the wall)
 | t | Beat | Gag |
@@ -18,3 +18,10 @@ Edition 5: Sep 17 2013 · Edition 6: Nov 19 2026 (13 years) · Ages 2013 → 202
 | 23–28 | Payback combo: Neymar dives in front of Yamal (Yamal trips), Messi nutmegs the game box out of his hands, Ronaldo catches it, SIUUU. Yamal: 😭 "I was SIX!" | |
 | 28–30 | End card: the three OGs on a sofa playing, Ronaldo shouting at the screen. Text: "13 years. Ronaldo is STILL playing. 🐐" · Question: "What did YOU do while waiting? 👇" |
 Characters: Ronaldo, Messi, Neymar, Yamal (all with portraits + name cards on first appearance). 3 speech bubbles max: "THANKS GRANDPAS 😎", "I was SIX!", (Neymar) "🤕".
+
+## v2 (owner: "the young generation is only Yamal?") — the new gen is a trio: Mbappé, Haaland, Yamal
+- 2013: behind the OGs stand three kids: Mbappé 14 (school backpack), Haaland 13 (skinny, bowl cut, eating a huge sandwich), Yamal 6 (lollipop).
+- Time-lapse: the kids grow every flip; Haaland gets HUGE (by 2020 he blocks the light), Mbappé keeps checking his watch ("hurry, I'm fast"), Yamal grows taller than Messi.
+- Nov 19 2026, one copy left: a 3-step heist: Haaland lifts the three OGs (walking frames and all) out of the way like furniture, Mbappé sprints in a blur and grabs the box, passes to Yamal who skates off: "THANKS GRANDPAS 😎".
+- Payback: Neymar dives in front of Yamal (he trips), Messi nutmegs the box out of Mbappé's hands, Ronaldo outjumps Haaland for it (header!), SIUUU. New gen in a pile: "WE WERE KIDS!" 😭
+- End: OGs on the sofa playing, the new gen sitting on the floor waiting for a turn ("Next edition: 2039?"). Question: "Old gen or new gen? 👇"
