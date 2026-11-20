@@ -34,6 +34,7 @@ m.vo('haaland', 'whimper' if False else 'gasp', at('d3', 1.9), .45); m.vo('yamal
 for i, n in enumerate(['E4', 'D4', 'C4', 'B3']): m.kazoo(at('h1', .1 + i * .35), [n], .3, .1)
 for i in range(6): m.footstep(at('h1', i * .23), .25, (-1) ** i * .3)
 m.vo('haaland', 'hmm', at('h1', 1.2), .4); creak(at('h1', 1.5), .4, .25)
+m.vo('mbappe', 'cry', at('h1', 1.9), .4, .2, 'whimper', 1.0); m.m(lp(osc(hz('C2'), 1.6, 'saw'), 400) * env(int(1.6 * SR), .3, .3), at('h1', 1.9), .14)
 # INSIDE: dark… CLICK… they're already here
 m.f(lp(noise(.8), 300) * env(int(.8 * SR), .1, .3), at('h2', 0), .15); m.cork(at('h2', .8), .6); m.boom(at('h2', .82), .5)
 m.brass_hit([hz('C3'), hz('F#3'), hz('C4')], at('h2', .85), .9, .3); [m.vo(w, 'gasp', at('h2', .86 + i * .05), .5, -.3 + i * .3) for i, w in enumerate(('yamal', 'mbappe', 'haaland'))]; m.vo('yamal', 'yelp', at('h2', .95), .55)
