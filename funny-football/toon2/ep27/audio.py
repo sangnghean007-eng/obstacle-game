@@ -2,7 +2,7 @@
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'sfx'))
 from fx2 import *
-SEGS = [('g0', 2.0), ('g1', 1.7), ('g2', 1.7), ('g3', 1.8), ('g4', 2.4), ('g5', 5.8), ('g6', 5.6), ('g7', 6.2), ('g9', 7.4), ('g8', 4.4)]
+SEGS = [('g0', 2.0), ('g1', 1.4), ('g2', 1.4), ('g3', 1.4), ('d1', 2.8), ('g5', 5.8), ('d2', 2.8), ('g6', 5.6), ('d3', 2.8), ('g7', 6.2), ('h1', 2.6), ('h2', 3.8), ('g9', 7.4), ('g8', 4.0)]
 ST = {}; _t = 0
 for n, d in SEGS: ST[n] = _t; _t += d
 END = _t; m = Mix2(END, ep=27); at = lambda n, z: ST[n] + z
@@ -16,7 +16,30 @@ for n in ('A3', 'C4', 'E4', 'A4'): m.m(lp(osc(hz(n), 2.0, 'saw'), 1500) * env(in
 m.boom(.05, .4); m.f(osc(880, .1, 'sq') * env(int(.1 * SR), .005, .03), 1.05, .15); m.f(osc(1320, .12, 'sq') * env(int(.12 * SR), .005, .03), 1.15, .15)
 trap(at('g1', 0), at('g5', .5), .8)
 for n, w in (('g1', 'yamal'), ('g2', 'mbappe'), ('g3', 'haaland')): m.whoosh(at(n, 0), .6, .4, True, -.3); m.thump(at(n, .6), .4); m.vo(w, 'laugh', at(n, .8), .45, 0, 'snicker')
-for i in range(5): m.footstep(at('g4', i * .48), .45, (-1) ** i * .3)
+def creak(t, d=.6, g=.35):
+    n = int(d * SR); m.f(lp(osc(glide(220, 140, d), d, 'saw'), 900) * (1 + .6 * np.sin(np.arange(n) / SR * 2 * np.pi * 23)) * env(n, .05, .15), t, g)
+# DOOR 1 (Neymar): swagger in, KNOCK KNOCK, shout, door creaks open
+for i in range(4): m.footstep(at('d1', i * .2), .45, (-1) ** i * .3)
+for i in range(6): m.thump(at('d1', .9 + i * .12), .45)
+m.vo('yamal', 'hmph', at('d1', 1.15), .6); m.vo('yamal', 'yay', at('d1', 1.35), .5); creak(at('d1', 2.2)); m.f(osc(glide(500, 1600, .4), .4) * env(int(.4 * SR), .02, .1), at('d1', 2.4), .12)
+# DOOR 2 (Messi): bruised limp, Mbappé KICKS the door, BAM BAM
+for i in range(4): m.footstep(at('d2', i * .2), .3, (-1) ** i * .3)
+for i in range(4): m.smack(at('d2', .95 + i * .17), .55, .2); m.thump(at('d2', .95 + i * .17), .35)
+m.vo('mbappe', 'grunt', at('d2', 1.0), .55); m.vo('mbappe', 'ow', at('d2', 1.7), .4); creak(at('d2', 2.2)); m.xylo(at('d2', 2.5), ['G5', 'E5'], .1, .15)
+# DOOR 3 (Ronaldo): nobody wants to knock — shove Haaland, tiny tap tap, gulp, slow ominous creak
+m.whoosh(at('d3', .5), .4, .35); m.vo('haaland', 'no', at('d3', .6), .55, 0, .7); m.thump(at('d3', .95), .35)
+for i in range(3): m.f(lp(noise(.04), 1200) * dec(.04, 60), at('d3', 1.35 + i * .25), .25)
+m.vo('haaland', 'whimper' if False else 'gasp', at('d3', 1.9), .45); m.vo('yamal', 'gasp', at('d3', 1.95), .35); creak(at('d3', 2.15), 1.0, .45); m.timpani(at('d3', 2.3), 55, .5, roll=.4)
+# HOME: limp, sad kazoo, sigh, door
+for i, n in enumerate(['E4', 'D4', 'C4', 'B3']): m.kazoo(at('h1', .1 + i * .35), [n], .3, .1)
+for i in range(6): m.footstep(at('h1', i * .23), .25, (-1) ** i * .3)
+m.vo('haaland', 'hmm', at('h1', 1.2), .4); creak(at('h1', 1.5), .4, .25)
+# INSIDE: dark… CLICK… they're already here
+m.f(lp(noise(.8), 300) * env(int(.8 * SR), .1, .3), at('h2', 0), .15); m.cork(at('h2', .8), .6); m.boom(at('h2', .82), .5)
+m.brass_hit([hz('C3'), hz('F#3'), hz('C4')], at('h2', .85), .9, .3); [m.vo(w, 'gasp', at('h2', .86 + i * .05), .5, -.3 + i * .3) for i, w in enumerate(('yamal', 'mbappe', 'haaland'))]; m.vo('yamal', 'yelp', at('h2', .95), .55)
+for i in range(3): m.cork(at('h2', 1.2 + i * .22), .3)
+m.f(lp(noise(.3), 2000) * dec(.3, 12), at('h2', 1.3), .2); m.timpani(at('h2', 1.5), 70, .6); m.vo('neymar', 'laugh', at('h2', 1.9), .45, -.2, 'giggle', .8); m.slurp(at('h2', 2.4), .5, .3)
+m.timpani(at('h2', 3.0), 60, .5, roll=.8); m.choir([hz('C3'), hz('G3'), hz('C4')], at('h2', 3.0), .8, .2)
 # NEYMAR (5.8): juggling, elastico spin, nutmeg splits, rainbow bonk, samba dance
 z0 = 'g5'
 for i in range(10): m.f(lp(noise(.05), 900) * dec(.05, 40), at(z0, .1 + i * .12), .3, .3)

@@ -1268,11 +1268,11 @@ function g_ron(z, t) { neon(t); const ox = 820; const shake = z > 0.7 && z < 1.6
   if (land) { const q = clamp((z - 2.45) / 0.6); ctx.strokeStyle = `rgba(255,214,90,${1 - q})`; ctx.lineWidth = 18; ctx.beginPath(); ctx.ellipse(ox, GZ, 80 + q * 900, 24 + q * 200, 0, 0, TAU); ctx.stroke(); if (z < 3.0) burst(ox, 1050, 170, 'SIUUU!!', (z - 2.45) / 0.08, 66, '#ffd60a'); }
   HUD(() => { scoreBar(2, 1); if (z > 0.6 && z < 1.6) nameCard('RONALDO', 'EDITION 5 LEGEND', '#c9a227', z - 0.6, -1); if (z > 3.2) { verdict('RONALDO: GAME OVER 💥', z - 3.2, '#c9a227'); scoreBar(3, z - 3.2); } }); }
 // end: OGs together laughing; the battered kids limp away into the distance
-function g_end(z, t) { neon(t); const k = clamp(z / 3.2);
+function g_end(z, t) { hqRoom(t, z - 0.6); const k = clamp(z / 3.2);
   [0, 1, 2].forEach(i => { const x = lerp([620, 780, 940][i], [700, 750, 800][i], k), y = lerp(1700, 1360, k), s = lerp(0.85, 0.25, k); ctx.save(); ctx.globalAlpha = 1 - k * 0.85; const [w, s0] = TRIO[i]; kid(w, { bArm: [-30, -20], fArm: [60, 80], bLeg: [-10 + Math.sin(t * 6 + i) * 18, 0], fLeg: [10 - Math.sin(t * 6 + i) * 18, 0] }, 'shock', x, y, s0 * s, { f: -1, noChain: true, gy: y, rot: Math.sin(t * 6 + i) * 0.08 }); hurt(x, y, s0 * s, 6, t, true); ctx.restore(); });
   NE13(AKIMBO, 'siuuu', 300, GZ + 40, 1.0, { f: 1 }); ME13({ bArm: [-20, -10], fArm: [100, 100], bLeg: [-12, -6], fLeg: [12, 6] }, 'siuuu', 470, GZ + 70, 0.85, { f: 1 }); RO13({ bArm: [60, 140], fArm: [-60, -140], bLeg: [-14, -8], fLeg: [14, 8] }, 'siuuu', 140, GZ + 90, 1.1, { f: 1 });
   laughFx(140, 1150, t); laughFx(300, 1200, t); laughFx(470, 1250, t);
-  HUD(() => { scoreBar(3, 1); if (z > 1.2) pop(eOB((z - 1.2) / 0.12), W / 2, 560, () => { rr(-460, -70, 920, 140, 34, '#fff', DARK, 7); txt('Old gen or new gen? 👇', 0, 6, 60, DARK, null); }); txt('Cartoon parody', W / 2, 1890, 30, '#fff', DARK, 'center', 800); }); }
+  HUD(() => { scoreBar(3, 1); if (z > 1.2) pop(eOB((z - 1.2) / 0.12), W / 2, 760, () => { rr(-460, -70, 920, 140, 34, '#fff', DARK, 7); txt('Old gen or new gen? 👇', 0, 6, 60, DARK, null); }); txt('Cartoon parody', W / 2, 1890, 30, '#fff', DARK, 'center', 800); }); }
 
 
 // ---------- v2 (owner: "still simple; finish with a 3 vs 3 brawl?"): ROUND 4 · 3 vs 3, fighting-game HUD, one clear duel per pair + an OG team combo finisher ----------
@@ -1318,11 +1318,11 @@ const SPLITS = { bArm: [-150, -170], fArm: [150, 170], bLeg: [-95, -95], fLeg: [
 const DUCK = { bArm: [60, 150], fArm: [70, 160], bLeg: [-60, 40], fLeg: [60, -40] };
 const PUNCHP = { bArm: [-60, -30], fArm: [92, 90], bLeg: [-30, -10], fLeg: [30, 10] };
 const SLIDE = { bArm: [-120, -100], fArm: [60, 80], bLeg: [80, 90], fLeg: [95, 100] };
-function K3(state, t) { for (const w of ['ha', 'mb', 'ya']) { const o = state[w]; if (!o || o.hide) continue; kid(w, o.p || 'stand', o.e || 'angry', o.x, o.y || GZ, (o.s || 0.84) * KS[w], { rot: o.rot || 0, f: o.f || 1, gy: GZ, sq: o.sq || 0 }); if (!o.rot && o.lvl) hurt(o.x, o.y || GZ, (o.s || 0.84) * KS[w], o.lvl, t, o.cry); if (o.rot && o.stars) stars(o.x, (o.y || GZ) - 120, t, 50); if (!o.rot && !o.noTag) { const nm = { ya: 'YAMAL', mb: 'MBAPPÉ', ha: 'HAALAND' }[w], col = { ya: '#a50044', mb: '#fff', ha: '#6cabdd' }[w]; ctx.save(); ctx.font = '900 22px Inter, Arial'; const tw = ctx.measureText(nm).width + 18; rr(o.x - tw / 2, GZ + 22, tw, 32, 10, col, DARK, 3); txt(nm, o.x, GZ + 38, 22, w === 'mb' ? DARK : '#fff', null); ctx.restore(); } } }
+function K3(state, t) { for (const w of ['ha', 'mb', 'ya']) { const o = state[w]; if (!o || o.hide) continue; kid(w, o.p || 'stand', o.e || 'angry', o.x, o.y || GZ, (o.s || 0.84) * KS[w], { rot: o.rot || 0, f: o.f || 1, gy: GZ, sq: o.sq || 0 }); if (!o.rot && o.lvl) hurt(o.x, o.y || GZ, (o.s || 0.84) * KS[w], o.lvl, t, o.cry); if (o.rot && o.stars) stars(o.x, (o.y || GZ) - 120, t, 50); if (!o.rot && !o.noTag && !(o.y && o.y < GZ - 30)) { const nm = { ya: 'YAMAL', mb: 'MBAPPÉ', ha: 'HAALAND' }[w], col = { ya: '#a50044', mb: '#fff', ha: '#6cabdd' }[w]; ctx.save(); ctx.font = '900 22px Inter, Arial'; const tw = ctx.measureText(nm).width + 18; rr(o.x - tw / 2, GZ + 22, tw, 32, 10, col, DARK, 3); txt(nm, o.x, GZ + 38, 22, w === 'mb' ? DARK : '#fff', null); ctx.restore(); } } }
 const hitWin = (z, a, d = 0.35) => z > a && z < a + d;
 // NEYMAR: three different skills, three victims
-function g_ney3(z, t) { neon(t); const L = 2;
-  const nx = z < 0.5 ? lerp(1300, 620, z / 0.5) : 620; const juggle = GZ - 120 - Math.abs(Math.sin(t * 8)) * 160;
+function g_ney3(z, t) { house('ney', t, 1); const L = 2;
+  const nx = z < 0.5 ? lerp(DOORX, 620, z / 0.5) : 620; const juggle = GZ - 120 - Math.abs(Math.sin(t * 8)) * 160;
   let nP = z < 0.5 ? runPose(t, 14) : { bArm: [-30, -10], fArm: [30, 10], bLeg: [-14, -8], fLeg: [60, 40 + Math.sin(t * 16) * 30] }, nE = 'smug';
   const st = { ya: { x: 420, p: z < 1.3 ? { bArm: [-20, 20], fArm: [20, -20], bLeg: [-14, -8], fLeg: [14, 8] } : 'stand', e: 'angry', lvl: 0 }, mb: { x: 250, p: CRACK(t), e: 'smug', lvl: 0 }, ha: { x: 110, p: P_CROSS, e: 'smug', lvl: 0 } };
   let ball = z < 1.3 ? [nx - 70, juggle] : null;
@@ -1336,9 +1336,9 @@ function g_ney3(z, t) { neon(t); const L = 2;
   if (z > 4.3) { nP = { bArm: [-150 + Math.sin(t * 12) * 30, -170], fArm: [150 - Math.sin(t * 12) * 30, 170], bLeg: [-20 + Math.sin(t * 12) * 20, -10], fLeg: [20 - Math.sin(t * 12) * 20, 10] }; nE = 'siuuu'; ball = [nx + 120, GZ - 40]; }
   K3(st, t); NE13(nP, nE, nx, GZ, 1.05, { f: -1 }); if (ball) fball(ball[0], ball[1], 30, t * 20);
   if (hitWin(z, 1.4, 0.5)) burst(420, GZ - 620, 90, 'ELASTICO 🌀', (z - 1.4) / 0.06, 30, '#fff'); if (hitWin(z, 2.7, 0.45)) burst(520, GZ - 560, 90, 'NUTMEG + SPLITS', (z - 2.7) / 0.06, 28, '#fff'); if (hitWin(z, 3.95, 0.4)) burst(470, GZ - 700, 80, 'BONK', (z - 3.95) / 0.06, 30, '#fff'); if (hitWin(z, 4.2, 0.4)) burst(530, GZ - 260, 100, 'CRASH', (z - 4.2) / 0.06, 34, '#fff');
-  HUD(() => { if (z > 0.55 && z < 1.4) { nameCard('NEYMAR', 'EDITION 5 LEGEND', '#a50044', z - 0.55, -1); bubble('YOU\'RE OLD 👴😤', 300, 1060, z - 0.6, 46); } if (z > 4.7) { verdict('NEYMAR: 3 SKILLS, 3 VICTIMS 🎩', z - 4.7, '#a50044'); scoreBar(1, z - 4.7); } }); }
+  HUD(() => { if (z > 0.55 && z < 1.4) { nameCard('NEYMAR', 'EDITION 5 LEGEND', '#a50044', z - 0.55, -1); } if (z > 4.7) { verdict('NEYMAR: 3 SKILLS, 3 VICTIMS 🎩', z - 4.7, '#a50044'); scoreBar(1, z - 4.7); } }); }
 // MESSI: he barely moves; they beat each other up
-function g_mes3(z, t) { neon(t); const mx = z < 0.6 ? lerp(1250, 640, z / 0.6) : 640; const lvl = 2;
+function g_mes3(z, t) { house('mes', t, 1); const mx = z < 0.6 ? lerp(DOORX, 640, z / 0.6) : 640; const lvl = 2;
   const st = { ya: { x: 420, p: POINTP, e: 'siuuu', lvl }, mb: { x: 280, p: POINTP, e: 'siuuu', lvl }, ha: { x: 140, p: P_CROSS, e: 'siuuu', lvl } };
   let mP = 'stand', mDy = 0; const laugh = z > 0.6 && z < 1.1;
   // 1.1–2.0 Haaland punches, Messi ducks, the punch lands on Mbappé who came round the other side
@@ -1354,7 +1354,7 @@ function g_mes3(z, t) { neon(t); const mx = z < 0.6 ? lerp(1250, 640, z / 0.6) :
   if (hitWin(z, 1.6)) burst(800, GZ - 560, 100, 'POW! (wrong guy)', (z - 1.6) / 0.06, 28, '#fff'); if (hitWin(z, 2.5)) burst(470, GZ - 500, 90, 'TIMBERRR', (z - 2.5) / 0.06, 30, '#fff'); if (hitWin(z, 3.55)) burst(820, GZ - 560, 90, 'BONK', (z - 3.55) / 0.06, 32, '#fff');
   HUD(() => { scoreBar(1, 1); if (z > 0.6 && z < 1.4) nameCard('MESSI', 'EDITION 5 LEGEND', '#004d98', z - 0.6, -1); if (z > 4.4) { verdict("MESSI: DIDN'T SPILL HIS MATE 🧉", z - 4.4, '#004d98'); scoreBar(2, z - 4.4); } }); }
 // RONALDO: punches bounce off his abs, knuckleball ricochet, SIUUU launches them into the sky
-function g_ron3(z, t) { neon(t); const rx = z < 0.6 ? lerp(1300, 700, z / 0.6) : 700; const lvl = 4;
+function g_ron3(z, t) { house('ron', t, 1); const rx = z < 0.6 ? lerp(DOORX, 700, z / 0.6) : 700; const lvl = 4;
   const st = { ya: { x: 380, p: FISTS(t, 0), e: 'angry', lvl }, mb: { x: 240, p: FISTS(t, 1), e: 'angry', lvl }, ha: { x: 110, p: FISTS(t, 2), e: 'angry', lvl } };
   let rP = z < 0.6 ? runPose(t, 12) : RAISE, rE = 'smug', ry = GZ, ball = null;
   // 0.8–1.8 three punches to the abs, each bounces off, each kid shakes his hand
@@ -1376,7 +1376,7 @@ function g_ron3(z, t) { neon(t); const rx = z < 0.6 ? lerp(1300, 700, z / 0.6) :
   HUD(() => { scoreBar(2, 1); if (z > 0.6 && z < 1.4) nameCard('RONALDO', 'EDITION 5 LEGEND', '#c9a227', z - 0.6, -1); if (z > 4.9) { verdict('RONALDO: ABS OF STEEL 💪', z - 4.9, '#c9a227'); scoreBar(3, z - 4.9); } }); }
 // FINAL: regroup in rage → slow-mo clash → OGs untouched → ULTIMATE GOAT COMBO → launched to the stars → crash into the bins → K.O.
 function binPile(x, y, k) { for (let i = 0; i < 4; i++) { ctx.save(); ctx.translate(x - 150 + i * 100, y); ctx.rotate((i - 1.5) * 0.4 * k); rr(-40, -150, 80, 150, 8, ['#3a7a3a', '#2a5a9a', '#7a3a3a', '#555'][i], DARK, 5); ctx.restore(); } }
-function g_final3(z, t) { neon(t); const OG = { ne: 580, me: 720, ro: 860 };
+function g_final3(z, t) { hqRoom(t); const OG = { ne: 580, me: 720, ro: 860 };
   const rage = z < 1.0, run = z > 1.0 && z < 1.7, clash = z >= 1.7 && z < 2.1, fly = z >= 2.1 && z < 2.8, combo = z >= 2.8 && z < 4.6, up = z >= 4.6 && z < 5.6, down = z >= 5.6;
   const st = {}; const lvl = 6;
   if (rage) { [['ya', 380], ['mb', 250], ['ha', 120]].forEach(([w, x], i) => st[w] = { x, p: FISTS(t, i), e: 'angry', lvl, s: 0.85 }); for (const x of [380, 250, 120]) aura(x, GZ - 300, t, 0.6, '255,60,60'); }
@@ -1406,7 +1406,7 @@ function g_final3(z, t) { neon(t); const OG = { ne: 580, me: 720, ro: 860 };
 let HUDQ = []; const HUD = (f) => HUDQ.push(f);
 const _cap = caption; caption = (...a) => HUD(() => _cap(...a));
 const N = (t) => [t, 540, 960, 1];
-const CAMS = { g9: [[0, 380, 1450, 1.15], [1.0, 540, 1400, 1.0], [1.7, 460, 1350, 1.1], [2.1, 400, 1400, 1.0], [2.8, 640, 1350, 1.0], [4.5, 360, 1400, 1.08], [4.6, 540, 1000, 0.95], [5.6, 380, 1350, 1.05], [7.4, 380, 1350, 1.05]], g0: [N(0), [2.0, 540, 960, 1.05]], g1: [[0, 540, 1350, 1.05], [1.7, 540, 1300, 1.15]], g2: [[0, 540, 1350, 1.05], [1.7, 540, 1300, 1.15]], g3: [[0, 540, 1300, 1.0], [1.8, 540, 1250, 1.12]], g4: [[0, 540, 1300, 1.2], [2.4, 540, 1450, 1.0]],
+const CAMS = { d1: [[0, 540, 960, 1.0], [2.8, 560, 960, 1.04]], d2: [[0, 540, 960, 1.0], [2.8, 560, 960, 1.04]], d3: [[0, 540, 960, 1.0], [2.8, 560, 960, 1.06]], h1: [[0, 540, 960, 1.0], [2.6, 600, 960, 1.05]], h2: [[0, 540, 960, 1.0], [3.8, 540, 960, 1.04]], g9: [[0, 380, 1450, 1.15], [1.0, 540, 1400, 1.0], [1.7, 460, 1350, 1.1], [2.1, 400, 1400, 1.0], [2.8, 640, 1350, 1.0], [4.5, 360, 1400, 1.08], [4.6, 540, 1000, 0.95], [5.6, 380, 1350, 1.05], [7.4, 380, 1350, 1.05]], g0: [N(0), [2.0, 540, 960, 1.05]], g1: [[0, 540, 1350, 1.05], [1.7, 540, 1300, 1.15]], g2: [[0, 540, 1350, 1.05], [1.7, 540, 1300, 1.15]], g3: [[0, 540, 1300, 1.0], [1.8, 540, 1250, 1.12]], g4: [[0, 540, 1300, 1.2], [2.4, 540, 1450, 1.0]],
   g5: [[0, 540, 1380, 1.0], [0.6, 460, 1400, 1.04], [1.3, 500, 1420, 1.06], [2.3, 500, 1420, 1.06], [3.2, 480, 1400, 1.03], [4.3, 540, 1380, 1.0], [5.8, 540, 1350, 1.0]], g6: [[0, 540, 1380, 1.0], [0.6, 460, 1400, 1.04], [1.1, 560, 1400, 1.02], [2.0, 520, 1420, 1.05], [3.0, 640, 1420, 1.04], [4.0, 580, 1400, 1.0], [5.6, 560, 1350, 1.0]],
   g7: [[0, 540, 1380, 1.0], [0.8, 520, 1420, 1.06], [1.9, 500, 1400, 1.02], [3.3, 520, 1400, 1.0], [4.0, 540, 1100, 0.95], [6.2, 540, 1000, 0.95]], g8: [[0, 540, 1350, 1.0], [4.4, 560, 1300, 1.05]], ld: [N(0), [2.4, 540, 960, 1.04]], sr: [[0, 540, 1000, 1.0], [1.0, 500, 1050, 1.04], [1.8, 540, 1000, 1.0]], sm: [[0, 560, 1000, 1.0], [0.6, 600, 1100, 1.05], [1.8, 560, 1150, 1.08]], sn: [[0, 540, 1000, 1.0], [0.55, 500, 1450, 1.35], [0.9, 540, 1000, 1.0], [2.4, 460, 1050, 1.03]],  ti: [N(0), [1.6, 540, 960, 1.05]], ya: [[0, 540, 1350, 1.05], [0.9, 760, 1400, 1.15], [2.2, 760, 1350, 1.1]], mb: [[0, 560, 1350, 1.05], [1.2, 560, 1250, 1.12], [2.0, 560, 1250, 1.15]], ha: [[0, 540, 1250, 1.0], [0.5, 540, 1100, 1.0], [1.3, 640, 1050, 0.95], [2.0, 640, 1150, 1.0]],
   wk: [[0, 540, 1300, 1.25], [2.6, 540, 1450, 1.0]], bp: [[0, 540, 1450, 1.3], [0.5, 540, 1450, 1.45], [1.2, 540, 1500, 1.5]], rv: [[0, 540, 1500, 1.5], [0.3, 540, 1450, 1.4], [1.1, 540, 980, 1.0], [2.0, 540, 980, 1.0]],
@@ -1416,7 +1416,7 @@ const CAMS = { g9: [[0, 380, 1450, 1.15], [1.0, 540, 1400, 1.0], [1.7, 460, 1350
   keeper: [[0, 560, 1300, 1.7], [0.5, 560, 1300, 1.85]], crowd: [N(0), N(0.7)], cele: [[0, 300, 1500, 1.5], [1.0, 360, 1450, 1.35]], v1: [[0, 540, 1100, 1.0], [1.0, 540, 1100, 1.0], [1.05, 760, 1420, 1.1], [2.6, 740, 1420, 1.08], [3.0, 540, 1450, 1.0], [3.5, 540, 1400, 1.02], [4.3, 480, 1480, 1.08]], dirt: [[0, 620, 1350, 1.1], [1.2, 400, 1350, 1.1], [1.8, 450, 1250, 1.0], [2.4, 700, 1200, 1.1], [3.0, 700, 1200, 1.1]], cage: [[0, 540, 1380, 1.05], [1.5, 540, 1300, 1.1], [2.6, 540, 1300, 1.12]],
   futsal: [[0, 400, 1380, 1.1], [1.2, 760, 1380, 1.1], [1.6, 560, 1300, 1.05], [2.8, 560, 1250, 1.1]], beach: [[0, 540, 1300, 1.0], [1.7, 540, 1300, 1.0], [2.1, 540, 1200, 1.1], [2.8, 540, 1200, 1.12]],
   roof: [[0, 620, 1350, 1.05], [1.0, 540, 1350, 1.15], [2.0, 560, 1250, 1.05], [3.0, 560, 1250, 1.08]], rain: [[0, 640, 1350, 1.0], [1.2, 540, 1200, 1.05], [2.4, 540, 900, 1.0], [3.4, 540, 1000, 1.0]], argue: [[0, 540, 1350, 1.05], [1.5, 555, 1400, 1.25], [4.0, 555, 1380, 1.15]] };
-const SHK = { g9: [[0, .3, 14], [1.7, .4, 30], [2.1, .3, 16], [4.55, .5, 30], [5.95, .4, 24], [6.2, .3, 16]], g0: [[0, .3, 12]], g1: [[0.6, .25, 12]], g2: [[0.6, .25, 12]], g3: [[0.6, .25, 14]], g4: [], g5: [[1.4, .2, 10], [2.7, .3, 14], [3.95, .2, 12], [4.2, .3, 16]], g6: [[1.6, .3, 16], [2.5, .3, 18], [3.55, .2, 14]], g7: [[0.98, .15, 10], [1.33, .15, 10], [1.68, .15, 10], [2.53, .2, 12], [2.77, .2, 12], [3.0, .2, 12], [4.0, .6, 30]], g8: [], ld: [[0, .3, 12]], sr: [[1.0, .5, 30]], sm: [[0.9, .2, 10], [1.2, .2, 10], [1.5, .2, 10]], sn: [[0.7, .3, 14], [0.9, 1.2, 14]],  ti: [[0, .3, 14]], ya: [[0.9, .35, 22]], mb: [[0.8, .25, 14]], ha: [[0.6, .9, 6], [1.3, .3, 16]], wk: [], bp: [[0.5, .4, 26]], rv: [[1.3, .5, 10]], sh: [[0.5, .2, 12]], en: [[0.4, .3, 12]], fc2: [], dr1: [[0.35, .2, 10], [0.8, .2, 10]], aw1: [], dr2: [[0.95, .3, 16]], aw2: [], miss: [[1.2, .3, 10]], slap: [[1.0, .45, 30]], goals: [[0.93, .3, 18], [2.43, .3, 18], [3.93, .3, 20]], siu2: [[1.35, .4, 22]], card2: [], slide: [[0.35, .4, 24]], shout: [[0, .7, 6]], track2: [], fish: [[0, .2, 12]], gcam: [[0.45, .4, 26]], crowd: [[0, .7, 8]], cele: [], fc: [], track: [[0.55, .2, 10], [1.2, .2, 10]], ronrun: [], wide: [], keeper: [[0, .3, 12]], v1: [[1.55, .2, 10], [2.2, .2, 10], [3.5, .4, 20]], dirt: [[1.75, .3, 16], [2.3, .3, 14]], cage: [[1.5, .3, 14]], futsal: [[1.9, .3, 16]], beach: [[2.1, .3, 18]], roof: [[1.7, .25, 14], [2.0, .3, 14]], rain: [[1.6, .5, 22]], argue: [[1.5, .4, 24]] };
+const SHK = { d1: [[0.9, .6, 6]], d2: [[0.9, .6, 10]], d3: [], h1: [], h2: [[0.8, .2, 12]], g9: [[0, .3, 14], [1.7, .4, 30], [2.1, .3, 16], [4.55, .5, 30], [5.95, .4, 24], [6.2, .3, 16]], g0: [[0, .3, 12]], g1: [[0.6, .25, 12]], g2: [[0.6, .25, 12]], g3: [[0.6, .25, 14]], g4: [], g5: [[1.4, .2, 10], [2.7, .3, 14], [3.95, .2, 12], [4.2, .3, 16]], g6: [[1.6, .3, 16], [2.5, .3, 18], [3.55, .2, 14]], g7: [[0.98, .15, 10], [1.33, .15, 10], [1.68, .15, 10], [2.53, .2, 12], [2.77, .2, 12], [3.0, .2, 12], [4.0, .6, 30]], g8: [], ld: [[0, .3, 12]], sr: [[1.0, .5, 30]], sm: [[0.9, .2, 10], [1.2, .2, 10], [1.5, .2, 10]], sn: [[0.7, .3, 14], [0.9, 1.2, 14]],  ti: [[0, .3, 14]], ya: [[0.9, .35, 22]], mb: [[0.8, .25, 14]], ha: [[0.6, .9, 6], [1.3, .3, 16]], wk: [], bp: [[0.5, .4, 26]], rv: [[1.3, .5, 10]], sh: [[0.5, .2, 12]], en: [[0.4, .3, 12]], fc2: [], dr1: [[0.35, .2, 10], [0.8, .2, 10]], aw1: [], dr2: [[0.95, .3, 16]], aw2: [], miss: [[1.2, .3, 10]], slap: [[1.0, .45, 30]], goals: [[0.93, .3, 18], [2.43, .3, 18], [3.93, .3, 20]], siu2: [[1.35, .4, 22]], card2: [], slide: [[0.35, .4, 24]], shout: [[0, .7, 6]], track2: [], fish: [[0, .2, 12]], gcam: [[0.45, .4, 26]], crowd: [[0, .7, 8]], cele: [], fc: [], track: [[0.55, .2, 10], [1.2, .2, 10]], ronrun: [], wide: [], keeper: [[0, .3, 12]], v1: [[1.55, .2, 10], [2.2, .2, 10], [3.5, .4, 20]], dirt: [[1.75, .3, 16], [2.3, .3, 14]], cage: [[1.5, .3, 14]], futsal: [[1.9, .3, 16]], beach: [[2.1, .3, 18]], roof: [[1.7, .25, 14], [2.0, .3, 14]], rain: [[1.6, .5, 22]], argue: [[1.5, .4, 24]] };
 const shakeAt = (n, z) => SHK[n].reduce((m, [a, d, A]) => z >= a && z < a + d ? Math.max(m, A * (1 - (z - a) / d)) : m, 0);
 const CLIP = +(new URLSearchParams(location.search).get('clip') || 1);
 const CLIPS = { 1: ['v1', 4.3, s_v1, 2.3, 3.7], 99: ['dirt', 3.0, s_dirt, 1.2, 2.6], 2: ['cage', 2.6, s_cage, 0.2, 1.9], 3: ['futsal', 2.8, s_futsal, 1.0, 2.2], 4: ['beach', 2.8, s_beach, 1.4, 2.4], 5: ['roof', 3.0, s_roof, 0.6, 2.2], 6: ['rain', 3.4, s_rain, 0.8, 2.0] };
@@ -1428,7 +1428,72 @@ function wCard(z, t) { if (CN === 'v1') celeCam(1.79, t); else CF(CD - 0.02, t);
   if (k > 0.4) pop(eOB((k - 0.4) / 0.12), W / 2, 940, () => { rr(-420, -46, 840, 92, 26, 'rgba(0,0,0,.8)', '#d4af37', 4); txt('Send this to your football buddy 😂', 0, 3, 38, '#fff', null); });
   if (k > 0.8) pop(eOB((k - 0.8) / 0.12), W / 2, 1100, () => txt(`DREAM DUO #${CLIP} · follow for the next one ⚽`, 0, 0, 34, '#d4af37', DARK)); txt('Cartoon parody · they never played on the same team', W / 2, 1890, 28, '#fff', DARK, 'center', 800); }); }
 function fcHook(z, t) { faceCam(z, t); HUD(() => { if (window.SEGT < 2.4) hookCap(window.SEGT); }); }
-const LEN = [['g0', 2.0, g_title, 1, 0], ['g1', 1.7, g_intro('ya', 'YAMAL', 'THE WONDERKID · 19', '#ff3fb4', 1), 1, 0], ['g2', 1.7, g_intro('mb', 'MBAPPÉ', 'THE SPEED · ⚡', '#3fe0ff', -1), 1, 0], ['g3', 1.8, g_intro('ha', 'HAALAND', 'THE MACHINE · 🤖', '#ffd60a', 1), 1, 0], ['g4', 2.4, g_walk, 1, 0], ['g5', 5.8, g_ney3, 1, 0], ['g6', 5.6, g_mes3, 1, 0], ['g7', 6.2, g_ron3, 1, 0], ['g9', 7.4, g_final3, 1, 0], ['g8', 4.4, g_end, 1, 0]];
+// ---------- v6 (owner story): knock on each legend's door, get beaten; limp home… the three are already inside ----------
+const HOUSES = { ney: { wall: '#ffdf00', trim: '#009c3b', roof: '#002776', door: '#009c3b', sign: "NEYMAR'S HOUSE", sc: '#009c3b', win: '🪩' }, mes: { wall: '#cfe8ff', trim: '#fff', roof: '#4a90d9', door: '#4a90d9', sign: "MESSI'S HOUSE", sc: '#2f6db5', win: '🧉' }, ron: { wall: '#f4f1ea', trim: '#d4af37', roof: '#1b1b1b', door: '#d4af37', sign: "RONALDO'S HOUSE", sc: '#b8901f', win: '🏋️' }, hq: { wall: '#3a1650', trim: '#ff3fb4', roof: '#1a0a2e', door: '#ff3fb4', sign: 'NEW GANG HQ', sc: '#ff3fb4', win: '💵' } };
+const DOORX = 870, DOORW = 180, DOORH = 340;
+function house(k, t, open = 0, shake = 0) { neon(t); const h = HOUSES[k]; const x0 = 560, y0 = 900, x1 = 1140;
+  ctx.fillStyle = h.roof; ctx.strokeStyle = DARK; ctx.lineWidth = 8; ctx.beginPath(); ctx.moveTo(x0 - 50, y0 + 10); ctx.lineTo(850, y0 - 230); ctx.lineTo(x1 + 60, y0 + 10); ctx.closePath(); ctx.fill(); ctx.stroke();
+  rr(x0, y0, x1 - x0, GZ - y0 + 10, 0, h.wall, DARK, 8);
+  if (k === 'mes') { ctx.fillStyle = '#fff'; ctx.fillRect(x0 + 4, y0 + 280, x1 - x0 - 8, 200); txt('☀️', 640, y0 + 380, 70, '#fff', null); }
+  if (k === 'hq') { ctx.strokeStyle = 'rgba(0,0,0,.35)'; ctx.lineWidth = 3; for (let y = y0 + 40; y < GZ; y += 50) { ctx.beginPath(); ctx.moveTo(x0, y); ctx.lineTo(x1, y); ctx.stroke(); } txt('NG', 640, GZ - 120, 90, '#3fe0ff', DARK); }
+  if (k === 'ron') for (const x of [585, 1050]) rr(x, y0 + 10, 30, GZ - y0, 6, '#d4af37', DARK, 4);
+  rr(620, y0 + 40, 150, 130, 10, '#ffe9a8', DARK, 6); txt(h.win, 695, y0 + 108, 60, '#fff', null); ctx.strokeStyle = h.trim; ctx.lineWidth = 6; ctx.strokeRect(620, y0 + 40, 150, 130);
+  // sign above the door
+  ctx.save(); ctx.shadowColor = h.sc; ctx.shadowBlur = k === 'hq' ? 30 : 0; rr(590, y0 + 200, 470, 84, 14, '#fff', h.sc, 7); ctx.restore(); ctx.font = `900 44px ${F}`; const fs = Math.min(44, 44 * 430 / ctx.measureText(h.sign).width); txt(h.sign, 825, y0 + 244, fs, h.sc, null);
+  // door
+  const dx = DOORX - DOORW / 2 + shake, dy = GZ - DOORH; rr(dx - 12, dy - 12, DOORW + 24, DOORH + 12, 8, h.trim, DARK, 6);
+  if (open > 0) { const g = ctx.createLinearGradient(0, dy, 0, GZ); g.addColorStop(0, '#2a1a10'); g.addColorStop(1, '#ffcf70'); rr(dx, dy, DOORW, DOORH, 4, g, DARK, 5); ctx.save(); ctx.globalAlpha = 0.35 * open; ctx.fillStyle = '#ffe9a8'; ctx.beginPath(); ctx.moveTo(dx, GZ); ctx.lineTo(dx + DOORW, GZ); ctx.lineTo(dx + DOORW + 260, GZ + 120); ctx.lineTo(dx - 260, GZ + 120); ctx.closePath(); ctx.fill(); ctx.restore(); }
+  const dw = DOORW * (1 - 0.85 * open); rr(dx, dy, dw, DOORH, 4, h.door, DARK, 5); if (open < 0.5) { rr(dx + 25, dy + 30, dw - 50, 120, 6, 'rgba(255,255,255,.2)', DARK, 3); ell(dx + dw - 30, dy + 190, 12, 12, '#ffd60a', 3); } }
+function hqRoom(t, crossed = 0, behind = null) { const g = ctx.createLinearGradient(0, 0, 0, 1350); g.addColorStop(0, '#1d0b2e'); g.addColorStop(1, '#3a1650'); ctx.fillStyle = g; ctx.fillRect(0, -400, W, 1750);
+  ctx.strokeStyle = 'rgba(0,0,0,.35)'; ctx.lineWidth = 3; for (let y = 100; y < 1350; y += 56) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); for (let x = (y / 56 % 2) * 60; x < W; x += 120) { ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x, y + 56); ctx.stroke(); } }
+  // graffiti + neon sign
+  txt('💸', 140, 980, 80, '#fff', null); txt('NG', 960, 1050, 110, '#3fe0ff', DARK); ctx.save(); ctx.rotate(-0.05); txt('#1', 180, 1200, 70, '#ffd60a', DARK); ctx.restore();
+  ctx.save(); ctx.shadowColor = '#ff3fb4'; ctx.shadowBlur = 40; rr(250, 760, 580, 130, 20, 'rgba(10,0,20,.85)', '#ff3fb4', 7); txt('NEW GANG HQ', 540, 828, 70, '#ff3fb4', null); ctx.restore();
+  if (crossed > 0) { const q = clamp(crossed / 0.3); ctx.strokeStyle = '#ffd60a'; ctx.lineWidth = 16; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(290, 800); ctx.lineTo(290 + 190 * q, 860); ctx.stroke(); if (crossed > 0.3) { ctx.save(); ctx.translate(380, 700); ctx.rotate(-0.15); txt('OG', 0, 0, 110 * clamp((crossed - 0.3) / 0.15 + 0.3, 0, 1), '#ffd60a', DARK); ctx.restore(); } }
+  // floor + couch
+  ctx.fillStyle = '#2b1a2e'; ctx.fillRect(0, 1350, W, H); for (let x = 0; x < W; x += 120) { ctx.strokeStyle = 'rgba(0,0,0,.3)'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(x, 1350); ctx.lineTo(x - 200, 2400); ctx.stroke(); }
+  if (behind) behind(); rr(450, 1330, 520, 300, 40, '#c2185b', DARK, 7); rr(420, 1420, 90, 260, 30, '#a0144a', DARK, 6); rr(910, 1420, 90, 260, 30, '#a0144a', DARK, 6); rr(480, 1520, 460, 110, 24, '#d81b60', DARK, 6); }
+function darkness(a) { if (a <= 0) return; ctx.fillStyle = `rgba(5,0,15,${a})`; ctx.fillRect(-100, -500, W + 200, H + 1200); }
+const LIMP = (t, i) => ({ bArm: [-30, -20], fArm: [60, 80], bLeg: [-10 + Math.sin(t * 6 + i) * 18, 0], fLeg: [10 - Math.sin(t * 6 + i) * 18, 0] });
+const KNOCK = (t) => ({ bArm: [-20, -10], fArm: [70, Math.sin(t * 22) > 0 ? 20 : 90], bLeg: [-14, -8], fLeg: [14, 8] });
+// door scenes: d = 'ney' | 'mes' | 'ron'
+function g_door(d) { return (z, t) => {
+  const knockT = d === 'ron' ? [1.3, 2.0] : [0.9, 1.6], knocking = z > knockT[0] && z < knockT[1]; const open = clamp((z - 2.2) / 0.5);
+  house(d, t, open, knocking && d !== 'ron' ? Math.sin(t * 60) * 5 : 0);
+  const lvl = { ney: 0, mes: 2, ron: 4 }[d], fin = { ney: [420, 250, 110], mes: [420, 280, 140], ron: [380, 240, 110] }[d];
+  const st = {};
+  if (d === 'ney') { // cocky swagger in, Yamal pounds the door
+    ['ya', 'mb', 'ha'].forEach((w, i) => { const x0 = [-120, -260, -400][i]; const x = z < 0.8 ? lerp(x0, i === 0 ? 690 : fin[i], z / 0.8) : i === 0 ? (z < 1.9 ? 690 : lerp(690, fin[0], clamp((z - 1.9) / 0.3))) : fin[i]; st[w] = { x, p: z < 0.8 ? SWAG(t * 0.8, i) : i === 0 ? (knocking ? KNOCK(t) : z > 2.2 ? FISTS(t) : 'stand') : i === 1 ? CRACK(t) : P_CROSS, e: i === 0 && z > 0.8 ? 'angry' : 'smug', lvl, f: 1 }; }); }
+  if (d === 'mes') { // bruised but still cocky: Mbappé kicks the door
+    ['ya', 'mb', 'ha'].forEach((w, i) => { const x0 = [-120, -260, -400][i]; const lead = i === 1; const x = z < 0.8 ? lerp(x0, lead ? 690 : fin[i], z / 0.8) : lead ? (z < 1.9 ? 690 : lerp(690, fin[1], clamp((z - 1.9) / 0.3))) : fin[i]; st[w] = { x, p: z < 0.8 ? LIMP(t, i) : lead ? (knocking ? (Math.sin(t * 18) > 0 ? { bArm: [-60, -30], fArm: [40, 20], bLeg: [-10, -6], fLeg: [95, 90] } : 'stand') : FISTS(t, 1)) : POINTP, e: 'angry', lvl, f: 1 }; }); }
+  if (d === 'ron') { // nobody wants to knock: Mbappé + Yamal shove Haaland to the door, tiny tap
+    const push = clamp((z - 0.5) / 0.7);
+    st.ha = { x: z < 0.5 ? lerp(-300, fin[2], z / 0.5) : z < 1.3 ? lerp(fin[2], 690, push) : z < 2.0 ? 690 : lerp(690, fin[2], clamp((z - 2.0) / 0.3)), p: z < 0.5 ? LIMP(t, 2) : z < 1.3 ? P_HIT : knocking ? { bArm: [-20, -10], fArm: [80, Math.sin(t * 10) > 0 ? 70 : 90], bLeg: [-14, -8], fLeg: [14, 8] } : SHAKEP(t), e: 'shock', lvl, cry: z > 1.3, f: 1 };
+    st.mb = { x: z < 0.5 ? lerp(-420, fin[1], z / 0.5) : z < 1.3 ? lerp(fin[1], 560, push) : z < 2.0 ? 560 : lerp(560, fin[1], clamp((z - 2.0) / 0.3)), p: z < 0.5 ? LIMP(t, 1) : z < 1.3 ? PUNCHP : SHAKEP(t), e: z < 1.3 ? 'angry' : 'shock', lvl, f: 1 };
+    st.ya = { x: z < 0.5 ? lerp(-540, fin[0] - 80, z / 0.5) : z < 1.3 ? lerp(fin[0] - 80, 430, push) : z < 2.0 ? 430 : lerp(430, fin[0], clamp((z - 2.0) / 0.3)), p: z < 0.5 ? LIMP(t, 0) : z < 1.3 ? PUNCHP : SHAKEP(t), e: z < 1.3 ? 'angry' : 'shock', lvl, f: 1 }; }
+  K3(st, t);
+  if (knocking) { const k = (z - knockT[0]); const words = d === 'ron' ? 'tap… tap…' : d === 'mes' ? 'BAM! BAM!' : 'KNOCK KNOCK!'; burst(DOORX, GZ - 200, d === 'ron' ? 90 : 120, words, k / 0.08, d === 'ron' ? 30 : 40, d === 'ron' ? '#fff' : '#ffd60a', -0.1); }
+  if (open > 0) { for (let i = 0; i < 2; i++) ell(DOORX - 30 + i * 50, GZ - 260, 10, 6 + 4 * Math.sin(t * 3), '#fff'); }
+  HUD(() => { if (d !== 'ney') scoreBar(d === 'mes' ? 1 : 2, 1); const call = { ney: 'NEYMAR! COME OUT! 😤', mes: 'MESSI! COME OUT! 👊', ron: 'r-ronaldo… come out?? 🥺' }[d]; const cz = knockT[0] + 0.3; if (z > cz && z < 2.6) bubble(call, 540, 700, z - cz, d === 'ron' ? 40 : 46); });
+  scan(t, 0.04); }; }
+// back home: limp to the HQ, open the door
+function g_home(z, t) { const open = clamp((z - 1.5) / 0.4); house('hq', t, open);
+  ['ya', 'mb', 'ha'].forEach((w, i) => { const x = lerp([-150, -300, -450][i], [760, 620, 480][i], clamp(z / 1.4)); const gone = clamp((z - 1.9 - i * 0.15) / 0.3); if (gone >= 1) return; ctx.save(); ctx.globalAlpha = 1 - gone; kid(w, LIMP(t, i), 'shock', x + gone * 80, GZ, TRIO[i][1] * 0.85, { f: 1, rot: Math.sin(t * 6 + i) * 0.08 }); hurt(x + gone * 80, GZ, TRIO[i][1] * 0.85, 6, t, true); ctx.restore(); });
+  HUD(() => { scoreBar(3, 1); pop(eOB(z / 0.15), W / 2, 420, () => { rr(-300, -44, 600, 88, 16, 'rgba(10,0,20,.85)', '#ff3fb4', 4); txt('HOME… FINALLY 😮‍💨', 0, 4, 44, '#ff3fb4', null); }); }); scan(t, 0.04); }
+// inside: lights on — the three legends are already on the couch
+function g_inside(z, t) { const on = z > 0.8; const rise = clamp((z - 3.0) / 0.6); hqRoom(t, 0, () => { if (rise < 0.5) RO13(CRACK(t), 'smug', 700, 1560, 1.1, { f: -1, gy: 1560, noShadow: true }); });
+  const OG = { ne: 580, me: 720, ro: 860 };
+  if (rise < 0.5) { NE13(SITM, 'smug', 540, 1650, 0.95, { f: -1, gy: 1650 }); popcorn(500, 1440, 0.5); ME13(SITM, 'deadpan', 860, 1650, 0.85, { f: -1, gy: 1650 }); txt('🧉', 820, 1430, 50, '#fff', null); }
+  else { NE13(AKIMBO, 'smug', OG.ne, GZ, 1.0, { f: -1, gy: GZ }); ME13(AKIMBO, 'smug', OG.me, GZ, 0.85, { f: -1, gy: GZ }); aura(OG.ne, GZ - 320, t, rise); aura(OG.me, GZ - 300, t, rise); }
+  if (rise >= 0.5) { RO13(CRACK(t), 'smug', OG.ro, GZ, 1.1, { f: -1, gy: GZ }); aura(OG.ro, GZ - 340, t, rise); }
+  const st = {}; const fin = [380, 250, 120];
+  ['ya', 'mb', 'ha'].forEach((w, i) => { const x = lerp(-200 - i * 150, fin[i], clamp(z / 0.7)); st[w] = { x, p: z < 0.7 ? LIMP(t, i) : on ? SHAKEP(t) : 'stand', e: on ? 'shock' : 'sad', lvl: 6, cry: !on }; });
+  if (on) { const j = clamp((z - 0.8) / 0.25); st.ya = { x: lerp(380, 150, j), y: GZ - Math.sin(Math.min(1, j) * Math.PI * 0.5) * 230, p: { bArm: [-150, -170], fArm: [150, 170], bLeg: [-60, 30], fLeg: [60, -30] }, e: 'shock', lvl: 6 }; }
+  K3(st, t); darkness(z < 0.8 ? 0.82 : 0);
+  if (z > 0.8 && z < 1.0) { ctx.fillStyle = `rgba(255,255,255,${0.5 * (1 - (z - 0.8) / 0.2)})`; ctx.fillRect(-100, -500, W + 200, H + 1200); }
+  if (z < 0.8) for (const x of [540, 700, 860]) { ell(x - 18, GZ - 330, 9, 5, '#ffd60a'); ell(x + 18, GZ - 330, 9, 5, '#ffd60a'); }
+  HUD(() => { scoreBar(3, 1); if (z > 0.8 && z < 1.4) burst(540, 600, 150, 'CLICK 💡', (z - 0.8) / 0.08, 46, '#fff'); if (z > 1.5) verdict('THEY WERE ALREADY HOME 😱', z - 1.5, '#ff3fb4'); }); }
+const LEN = [['g0', 2.0, g_title, 1, 0], ['g1', 1.4, g_intro('ya', 'YAMAL', 'THE WONDERKID · 19', '#ff3fb4', 1), 1, 0], ['g2', 1.4, g_intro('mb', 'MBAPPÉ', 'THE SPEED · ⚡', '#3fe0ff', -1), 1, 0], ['g3', 1.4, g_intro('ha', 'HAALAND', 'THE MACHINE · 🤖', '#ffd60a', 1), 1, 0], ['d1', 2.8, g_door('ney'), 1, 0], ['g5', 5.8, g_ney3, 1, 0], ['d2', 2.8, g_door('mes'), 1, 0], ['g6', 5.6, g_mes3, 1, 0], ['d3', 2.8, g_door('ron'), 1, 0], ['g7', 6.2, g_ron3, 1, 0], ['h1', 2.6, g_home, 1, 0], ['h2', 3.8, g_inside, 1, 0], ['g9', 7.4, g_final3, 1, 0], ['g8', 4.0, g_end, 1, 0]];
 const SEG = []; { let t = 0; for (const [n, d, f, sl, off] of LEN) { SEG.push([t, t + d * sl, f, n, sl, off || 0]); t += d * sl; } }
 const DURATION = SEG[SEG.length - 1][1];
 window.SEGS = SEG.map(s => [s[3], +s[0].toFixed(2)]);
