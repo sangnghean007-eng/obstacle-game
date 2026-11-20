@@ -1079,13 +1079,14 @@ const YAM = (p, e, x, y, s = 0.95, o = {}) => who(C_YAM, 'yamal_d', p, e, x, y, 
 const RO13 = (p, e, x, y, s, o = {}) => who(C_RO13, 'ronaldo', p, e, x, y, s, o), ME13 = (p, e, x, y, s, o = {}) => who(C_ME13, 'messi', p, e, x, y, s, Object.assign({ f: -1 }, o));
 const SWAG = (t, k = 0) => ({ bArm: [-30 + Math.sin(t * 7 + k) * 25, -10], fArm: [30 - Math.sin(t * 7 + k) * 25, 10], bLeg: [-25 + Math.sin(t * 7 + k) * 25, -5], fLeg: [25 - Math.sin(t * 7 + k) * 25, 5] });
 // neon city street at night (detail reaches every edge)
+const LIFT = 250; // QA safe zones: lift the street above the phone app's caption/username area
 function neon(t, wet = 1) { const g = ctx.createLinearGradient(0, 0, 0, 1300); g.addColorStop(0, '#2a0f4a'); g.addColorStop(0.6, '#c2185b'); g.addColorStop(1, '#ff8a3d'); ctx.fillStyle = g; ctx.fillRect(0, -400, W, 1700);
   ell(540, 1150, 260, 260, 'rgba(255,200,120,.55)'); for (let i = 0; i < 6; i++) { ctx.fillStyle = 'rgba(42,15,74,.5)'; ctx.fillRect(280, 1000 + i * 40, 520, 12); }
   for (let i = 0; i < 70; i++) { ctx.fillStyle = `rgba(255,255,255,${0.2 + 0.3 * Math.sin(t * 2 + i)})`; ctx.fillRect((i * 263) % W, -380 + (i * 97) % 700, 3, 3); }
   for (let i = 0; i < 9; i++) { const h = 500 + (i * 137) % 600, x = i * 125 - 30; ctx.fillStyle = '#1a0a2e'; ctx.fillRect(x, 1300 - h, 118, h); for (let r = 0; r < h / 46 - 1; r++) for (let c = 0; c < 3; c++) if ((r * 3 + c + i) % 3) { ctx.fillStyle = (r + c + i) % 4 ? 'rgba(255,90,200,.7)' : 'rgba(80,220,255,.7)'; ctx.fillRect(x + 12 + c * 34, 1300 - h + 18 + r * 46, 22, 26); } }
   for (const [x, txt1, col] of [[150, 'SOCCER 365', '#ff3fb4'], [820, 'GOAL', '#3fe0ff']]) { ctx.save(); ctx.shadowColor = col; ctx.shadowBlur = 30; rr(x - 120, 820, 240, 90, 14, 'rgba(10,0,20,.7)', col, 6); txt(txt1, x, 868, 46, col, null); ctx.restore(); }
   for (const x of [60, 1010]) { ctx.strokeStyle = '#2a1030'; ctx.lineWidth = 22; ctx.beginPath(); ctx.moveTo(x, 1500); ctx.quadraticCurveTo(x + 30, 1100, x + 10, 860); ctx.stroke(); for (let k = 0; k < 7; k++) { ctx.save(); ctx.translate(x + 10, 860); ctx.rotate(k / 7 * TAU); ctx.fillStyle = '#2a1030'; ctx.beginPath(); ctx.ellipse(110, 0, 120, 26, 0, 0, TAU); ctx.fill(); ctx.restore(); } }
-  const s = ctx.createLinearGradient(0, 1300, 0, H); s.addColorStop(0, '#2b1640'); s.addColorStop(1, '#120a20'); ctx.fillStyle = s; ctx.fillRect(0, 1300, W, H - 1300);
+  const s = ctx.createLinearGradient(0, 1300, 0, H); s.addColorStop(0, '#2b1640'); s.addColorStop(1, '#120a20'); ctx.fillStyle = s; ctx.fillRect(0, 1300, W, H - 1300 + 500);
   if (wet) for (let i = 0; i < 14; i++) { ctx.fillStyle = i % 2 ? 'rgba(255,90,200,.18)' : 'rgba(80,220,255,.16)'; ctx.fillRect((i * 83) % W, 1330 + (i * 41) % 560, 120 + (i % 3) * 60, 6); }
   ctx.strokeStyle = 'rgba(255,214,90,.7)'; ctx.lineWidth = 10; ctx.setLineDash([80, 60]); ctx.beginPath(); ctx.moveTo(0, 1840); ctx.lineTo(W, 1840); ctx.stroke(); ctx.setLineDash([]);
   for (let i = 0; i < 6; i++) { const q = ((t * 0.3 + i / 6) % 1); txt('💵', (i * 211 + t * 40) % W, -300 + q * 1900, 40, '#fff', null); } }
@@ -1220,12 +1221,12 @@ function kid(w, p, e, x, y, s, o = {}) { const C = Object.assign({}, w === 'ya' 
 // hurt overlay: level 0..6 (bruises stack across the three fights)
 function hurt(x, y, s, lvl, t, cry) { if (lvl > 0) hurtFx(x + 5, y - s * 400, s, lvl, t, cry); }
 function trio(t, xs, y, opts) { TRIO.forEach(([w, s0], i) => { const o = opts[i] || {}; const s = (o.s || 1) * s0; kid(w, o.p || 'stand', o.e || 'smug', xs[i], (o.y || y), s, { f: o.f || 1, rot: o.rot || 0, gy: o.gy || y, sq: o.sq || 0 }); if (!o.rot) hurt(xs[i], o.y || y, s, o.lvl || 0, t, o.cry); else if (o.lvl) stars(xs[i], (o.y || y) - 120, t, 50); }); }
-function scoreBar(n, k) { pop(1 + (k < 0.15 ? 0.3 * (1 - k / 0.15) : 0), W / 2, 150, () => { rr(-360, -58, 720, 116, 26, 'rgba(10,0,20,.88)', '#ffd60a', 6); txt(`OGs ${n} · NEW GEN 0`, 0, 6, 62, '#ffd60a', null); }); }
+function scoreBar(n, k) { pop(1 + (k < 0.15 ? 0.3 * (1 - k / 0.15) : 0), W / 2, 270, () => { rr(-360, -58, 720, 116, 26, 'rgba(10,0,20,.88)', '#ffd60a', 6); txt(`OGs ${n} · NEW GEN 0`, 0, 6, 62, '#ffd60a', null); }); }
 function verdict(l1, k, col = '#e63946') { if (k <= 0) return; pop(k < 0.12 ? 1.6 - 0.6 * eOB(k / 0.12) : 1, W / 2, 560, () => { ctx.rotate(-0.04); ctx.font = `900 70px ${F}`; const tw = ctx.measureText(l1).width, fs = Math.min(70, 70 * 900 / tw), w = Math.min(980, tw + 90); rr(-w / 2, -70, w, 140, 18, 'rgba(255,255,255,.96)', col, 12); txt(l1, 0, 6, fs, col, null); }); }
 const FISTS = (t, k = 0) => ({ bArm: [-110 + Math.sin(t * 14 + k) * 12, -150], fArm: [110 - Math.sin(t * 14 + k) * 12, 150], bLeg: [-20, -10], fLeg: [20, 10] });
 const SWING = (t, k = 0) => ({ bArm: [-60, -30], fArm: [Math.sin(t * 22 + k) > 0 ? 100 : 30, 90], bLeg: [-30, -10], fLeg: [30, 10] });
 // ---------- shots ----------
-function g_title(z, t) { neon(t); ctx.fillStyle = 'rgba(0,0,0,.45)'; ctx.fillRect(0, 0, W, H);
+function g_title(z, t) { neon(t); ctx.fillStyle = 'rgba(0,0,0,.45)'; ctx.fillRect(0, -400, W, H + 800);
   HUD(() => { pop(eOB(z / 0.25), W / 2, 820, () => { ctx.save(); ctx.shadowColor = '#ff3fb4'; ctx.shadowBlur = 40; txt('EDITION 6', 0, -60, 150, '#fff', '#ff3fb4'); ctx.restore(); txt('THE NEW GANG · 2026', 0, 80, 64, '#3fe0ff', DARK); }); if (z > 1.0) pop(eOB((z - 1.0) / 0.15), W / 2, 1120, () => { rr(-260, -40, 520, 80, 14, 'rgba(10,0,20,.8)', '#ffd60a', 4); txt('PRESS START ▶', 0, 3, 40, '#ffd60a', null); }); }); scan(t); if (z < 0.08) flash(z / 0.08); }
 function g_intro(w, name, tag, col, side) { return (z, t) => { neon(t); const k = clamp(z / 0.6); const x = side > 0 ? lerp(-260, 540, easeOut(k)) : lerp(1340, 540, easeOut(k)); const s = TRIO.find(q => q[0] === w)[1] * 1.3;
   if (k < 1) speed(x - side * 220, GZ - 300, -side, t, 8, 300); kid(w, k < 1 ? runPose(t, 24) : (w === 'ha' ? FOLD : w === 'mb' ? FOLD : { bArm: [-20, -10], fArm: [150, 170], bLeg: [-12, -6], fLeg: [12, 6] }), 'smug', x, GZ, s, { f: side > 0 ? 1 : -1 });
@@ -1375,7 +1376,7 @@ function g_ron3(z, t) { neon(t); const rx = z < 0.6 ? lerp(1300, 700, z / 0.6) :
   HUD(() => { scoreBar(2, 1); if (z > 0.6 && z < 1.4) nameCard('RONALDO', 'EDITION 5 LEGEND', '#c9a227', z - 0.6, -1); if (z > 4.9) { verdict('RONALDO: ABS OF STEEL 💪', z - 4.9, '#c9a227'); scoreBar(3, z - 4.9); } }); }
 // FINAL: regroup in rage → slow-mo clash → OGs untouched → ULTIMATE GOAT COMBO → launched to the stars → crash into the bins → K.O.
 function binPile(x, y, k) { for (let i = 0; i < 4; i++) { ctx.save(); ctx.translate(x - 150 + i * 100, y); ctx.rotate((i - 1.5) * 0.4 * k); rr(-40, -150, 80, 150, 8, ['#3a7a3a', '#2a5a9a', '#7a3a3a', '#555'][i], DARK, 5); ctx.restore(); } }
-function g_final3(z, t) { neon(t); const OG = { ne: 640, me: 800, ro: 960 };
+function g_final3(z, t) { neon(t); const OG = { ne: 580, me: 720, ro: 860 };
   const rage = z < 1.0, run = z > 1.0 && z < 1.7, clash = z >= 1.7 && z < 2.1, fly = z >= 2.1 && z < 2.8, combo = z >= 2.8 && z < 4.6, up = z >= 4.6 && z < 5.6, down = z >= 5.6;
   const st = {}; const lvl = 6;
   if (rage) { [['ya', 380], ['mb', 250], ['ha', 120]].forEach(([w, x], i) => st[w] = { x, p: FISTS(t, i), e: 'angry', lvl, s: 0.85 }); for (const x of [380, 250, 120]) aura(x, GZ - 300, t, 0.6, '255,60,60'); }
@@ -1392,7 +1393,7 @@ function g_final3(z, t) { neon(t); const OG = { ne: 640, me: 800, ro: 960 };
   if (combo) { const c = z - 2.8; if (c < 0.5) { nP = { bArm: [-40, -20], fArm: [40, 20], bLeg: [-14, -8], fLeg: [160, 175] }; ball = [lerp(OG.ne - 40, OG.me - 40, c / 0.5), GZ - 60 - Math.sin(c / 0.5 * Math.PI) * 420]; } else if (c < 0.9) { mP = KICK2; const r = (c - 0.5) / 0.4; ball = [lerp(OG.me - 40, OG.ro, r), GZ - 60 - Math.sin(r * Math.PI) * 600 - r * 300]; } else if (c < 1.3) { rP = { bArm: [-100, -130], fArm: [100, 130], bLeg: [20, 60], fLeg: [120, 150] }; rY = GZ - Math.sin((c - 0.9) / 0.4 * Math.PI) * 360; ball = [OG.ro, GZ - 700]; } else { const r = clamp((c - 1.3) / 0.5); ball = [lerp(OG.ro - 40, 260, r), lerp(GZ - 700, GZ - 320, r)]; fireball(ball[0] + 120, ball[1] - 20, t, 1.6); } }
   K3(st, t); NE13(nP, combo ? 'angry' : 'smug', OG.ne, GZ, 0.85, { f: -1 }); ME13(mP, combo ? 'angry' : 'smug', OG.me, GZ, 0.74, { f: -1 }); RO13(rP, combo ? 'angry' : 'smug', OG.ro, rY, 0.95, { f: -1, gy: GZ, rot: combo && z - 2.8 > 0.9 && z - 2.8 < 1.3 ? -(z - 3.7) / 0.4 * Math.PI * 1.3 : 0 });
   if (ball) fball(ball[0], ball[1], combo && z - 2.8 > 1.3 ? 60 : 32, t * 30);
-  if (clash) { ctx.fillStyle = `rgba(255,255,255,${1 - (z - 1.7) / 0.4})`; ctx.fillRect(0, 0, W, H); burst(540, 1250, 240, 'CLASH!!', (z - 1.7) / 0.06, 84, '#ffd60a'); }
+  if (clash) { ctx.fillStyle = `rgba(255,255,255,${1 - (z - 1.7) / 0.4})`; ctx.fillRect(0, -400, W, H + 800); burst(540, 1250, 240, 'CLASH!!', (z - 1.7) / 0.06, 84, '#ffd60a'); }
   if (z > 4.55 && z < 5.0) { for (let i = 0; i < 12; i++) { const a = i / 12 * TAU; ell(260 + Math.cos(a) * 200 * (z - 4.55) * 4, GZ - 320 + Math.sin(a) * 160 * (z - 4.55) * 4, 60, 60, `rgba(255,${120 + i * 10},40,${1 - (z - 4.55) * 2})`); } burst(260, GZ - 400, 200, 'BOOM!!', (z - 4.55) / 0.06, 74, '#ff8c1a'); }
   if (up && z > 5.2) for (let i = 0; i < 3; i++) txt('✨', 380 + (i - 1) * 140, 160, 80, '#fff', null);
   if (down && z < 6.1) burst(320, GZ - 300, 160, 'CRASH!!', (z - 5.95) / 0.06, 56, '#fff');
@@ -1433,7 +1434,7 @@ const DURATION = SEG[SEG.length - 1][1];
 window.SEGS = SEG.map(s => [s[3], +s[0].toFixed(2)]);
 function render(t) { ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, W, H); window.T2T = t;
   for (const [a, b, fn, n, sl, off] of SEG) if (t >= a && t < b) { const z = (t - a) / sl + off; const zc = z - off; window.SEGT = t - a; HUDQ = []; const sh = shakeAt(n, z), C = camK(CAMS[n], z); C[2] *= 1 + sh / 350; C[0] += Math.sin(t * 2.7) * 10 + Math.sin(t * 7.3) * 4; C[1] += Math.cos(t * 2.1) * 8; const hw = W / (2 * C[2]), hh = H / (2 * C[2]); C[0] = clamp(C[0], hw, W - hw); C[1] = clamp(C[1], hh, H - hh);
-    cam(C, () => fn(z, t), sh, t); ctx.setTransform(1, 0, 0, 1, 0, 0);
+    cam(C, () => { ctx.translate(0, -LIFT); fn(z, t); }, sh, t); ctx.setTransform(1, 0, 0, 1, 0, 0);
     PRO.grade(ctx, t, false);
     for (const [a0, d0, A] of SHK[n]) if (A >= 14 && z >= a0 && z < a0 + 0.1) PRO.impact(ctx, (z - a0) / 0.1);
     if (window.SEGT < 0.2 && t > 0.1) PRO.whip(ctx, document.getElementById('c'), window.SEGT / 0.2, (SEG.findIndex(q => q[3] === n) % 2) ? -1 : 1);

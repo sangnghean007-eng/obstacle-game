@@ -49,4 +49,6 @@ m.slide_whistle(at(z0, 5.6), False, .4, .3); m.clang(at(z0, 5.95), .5); m.clang(
 z0 = 'g8'; m.vo('ronaldo', 'laugh', at(z0, .2), .55, -.4, 'belly', 1.4); m.vo('neymar', 'laugh', at(z0, .4), .5, -.2, 'giggle', 1.2); m.vo('messi', 'laugh', at(z0, .6), .45, 0, 'snicker')
 for i, n in enumerate(['A4', 'G#4', 'G4', 'F#4', 'F4']): m.kazoo(at(z0, .3 + i * .5), [n], .45, .1)
 [m.vo(w, 'cry', at(z0, 1.0 + i * .3), .35, .4, 'whimper', 1.2) for i, w in enumerate(('yamal', 'mbappe', 'haaland'))]
+# outro bed to the very end (QA: no dead air)
+m.vo('ronaldo', 'laugh', at(z0, 2.9), .4, -.4, 'point'); m.kazoo(at(z0, 2.8), ['E4'], 1.3, .1); m.m(lp(osc(hz('A2'), 1.6, 'saw'), 600) * env(int(1.6 * SR), .1, .8), at(z0, 2.8), .12)
 print(round(END, 2)); m.write(sys.argv[1])
