@@ -3,7 +3,7 @@
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'sfx'))
 from fx2 import *
-SEGS = [('w0', 3.0), ('w1', 3.0), ('w2', 4.0), ('w3', 5.0), ('w4', 5.4), ('w5', 2.0), ('w6', 5.0), ('w7', 4.6), ('w8', 5.5), ('w9', 4.8)]
+SEGS = [('w0', 3.0), ('w2', 3.5), ('w3', 4.0), ('w4', 4.8), ('w5', 1.5), ('w6', 4.0), ('w7', 4.4), ('wz', 4.6)]
 ST = {}; _t = 0
 for n, d in SEGS: ST[n] = _t; _t += d
 END = _t; m = Mix2(END, ep=28); at = lambda n, z: ST[n] + z
@@ -24,15 +24,12 @@ def chug(t0, t1, g=.25):
     t = t0
     while t < t1: m.f(lp(noise(.12), 900) * dec(.12, 25), t, g); t += .18
 # OPEN: wind, tumbleweed, the whistle theme, whip
-wind(0, 6.5, .14); m.whip(at('w0', .2), .5); whistle(at('w0', .4), [('A5', .5), ('D6', .5), ('A5', .35), ('D6', .35), ('A5', 1.2)])
+wind(0, 3.5, .14); m.whip(at('w0', .2), .5); whistle(at('w0', .4), [('A5', .5), ('D6', .5), ('A5', .35), ('D6', .35), ('A5', 1.2)])
 twang(at('w0', 1.0), ['D3', 'A3', 'D4'], .25); m.f(lp(noise(2.4), 600) * env(int(2.4 * SR), .3, .4), at('w0', .3), .08)
-# STAKES: ball spin on the finger, neck crack x2, slow strummed bass
-for i in range(8): m.f(hp(noise(.03), 3000) * dec(.03, 60), at('w1', .3 + i * .12), .12)
-for k in (1.65, 2.05): m.f(hp(noise(.05), 1500) * dec(.05, 40), at('w1', k), .55); m.vo('generic_m', 'grunt', at('w1', k + .02), .3)
-twang(at('w1', .2), ['D3', 'F3', 'A3', 'C4', 'A3'], .5, .22)
+m.vo('haaland', 'laugh', at('w0', 1.7), .45, .3, 'snicker'); m.f(lp(noise(.2), 800) * dec(.2, 10), at('w0', 1.65), .3)
 # 50' Ronaldo: tension pluck, the shot (whip + whoosh), net, bell, crowd groan
 twang(at('w2', .1), ['D3', 'D3', 'D3'], .3, .2); m.whip(at('w2', 1.0), .7); m.whoosh(at('w2', 1.02), .35, .4, True); m.thump(at('w2', 1.4), .6); bell(at('w2', 1.42))
-m.crowd(at('w2', 1.6), 'gasp', 1.0, .3); m.vo('ronaldo', 'laugh', at('w2', 1.9), .4, -.3, 'snicker'); whistle(at('w2', 2.3), [('D6', .3), ('F6', .3), ('A5', .8)], g=.12)
+m.crowd(at('w2', 1.6), 'gasp', 1.0, .3); m.vo('ronaldo', 'laugh', at('w2', 1.9), .4, -.3, 'snicker'); m.vo('haaland', 'hmm', at('w2', 2.1), .4, .3); whistle(at('w2', 2.3), [('D6', .3), ('F6', .3), ('A5', .8)], g=.12)
 # 68' Zlatan header: corner whistle, crowd rising, BONK, Ronaldo spins, bell, roar
 m.f(lp(osc(2900, .35, 'sq'), 5000) * (1 + .5 * np.sign(np.sin(np.arange(int(.35 * SR)) / SR * 2 * np.pi * 30))) * env(int(.35 * SR), .01, .05), at('w3', .1), .08); m.crowd(at('w3', .6), 'cheer', 1.0, .18); m.vo('haaland', 'grunt', at('w3', 1.55), .6); m.bonk(at('w3', 1.6), .8); m.whoosh(at('w3', 1.65), .45, .4)
 m.spring(at('w3', 1.8), .35); m.thump(at('w3', 2.1), .6); bell(at('w3', 2.12)); m.crowd(at('w3', 2.2), 'cheer', 2.2, .55); m.vo('ronaldo', 'yelp', at('w3', 1.9), .45)
@@ -50,16 +47,15 @@ m.f(hp(noise(.35), 1500) * env(int(.35 * SR), .01, .1), at('w6', .4), .55); m.vo
 m.whip(at('w6', 2.0), .7); m.whoosh(at('w6', 2.02), .3, .4, True); m.f(osc(2600, .3) * dec(.3, 12), at('w6', 2.3), .3); m.vo('generic_m', 'gasp', at('w6', 2.32), .4); m.thump(at('w6', 2.6), .6); bell(at('w6', 2.62)); m.crowd(at('w6', 2.7), 'gasp', 1.2, .3)
 # 79': counter run, hat-trick, POP the man-bun, SIUUU, whistle theme triumphant
 for i in range(5): m.footstep(at('w7', .7 + i * .16), .4)
-m.whip(at('w7', 1.5), .7); m.thump(at('w7', 1.9), .7); bell(at('w7', 1.92)); bell(at('w7', 2.1), .25); m.cork(at('w7', 1.95), .45); m.vo('ronaldo', 'siu', at('w7', 2.3), .8); m.boom(at('w7', 2.35), .5)
+m.whip(at('w7', 1.5), .7); m.thump(at('w7', 1.9), .7); bell(at('w7', 1.92)); bell(at('w7', 2.1), .25); m.cork(at('w7', 1.95), .45); m.vo('ronaldo', 'siu', at('w7', 2.3), .8); m.vo('haaland', 'yelp', at('w7', 3.35), .45, .3); m.boom(at('w7', 2.35), .5)
 whistle(at('w7', 3.0), [('D6', .3), ('A6', .3), ('D7', .9)], g=.13); twang(at('w7', 3.0), ['D3', 'A3', 'D4', 'F#4', 'A4'], .1, .24)
-# TRAIN: chug in, whistle, footsteps, the quote (Zlatan hmph)
-chug(at('w8', 0), at('w8', 1.1), .3); m.f(osc(glide(700, 760, .8), .8) * env(int(.8 * SR), .05, .2) + .5 * osc(glide(880, 950, .8), .8) * env(int(.8 * SR), .05, .2), at('w8', .9), .2)
-m.f(lp(noise(.8), 1500) * dec(.8, 3), at('w8', 1.0), .25)
-for i in range(5): m.footstep(at('w8', 1.25 + i * .22), .3)
-m.vo('haaland', 'hmph', at('w8', 2.5), .55); twang(at('w8', 2.6), ['A3', 'G3', 'F3', 'E3'], .4, .2)
-# SMOKE: whistle, chug away, PFFF of smoke, blink, sad trombone-ish whistle, wind
-m.f(osc(glide(700, 760, .6), .6) * env(int(.6 * SR), .05, .2), at('w9', .1), .2); chug(at('w9', 0), at('w9', 2.4), .22); m.f(lp(noise(1.2), 500) * env(int(1.2 * SR), .1, .6), at('w9', .3), .45); m.vo('haaland', 'oof', at('w9', 1.0), .5)
-m.f(osc(1800, .05) * dec(.05, 40), at('w9', 2.05), .2); m.wahwah(at('w9', 2.3), .2); wind(at('w9', 2.0), 2.8, .12); whistle(at('w9', 2.6), [('A5', .4), ('D5', 1.6)], g=.1)
+# ZIP: train rolls in, ZZZIP the mouth, "mmmff", train leaves and smokes him
+chug(at('wz', 0), at('wz', .7), .3); m.f(osc(glide(700, 760, .6), .6) * env(int(.6 * SR), .05, .2), at('wz', .5), .18)
+for i in range(3): m.footstep(at('wz', .6 + i * .2), .3)
+m.zip(at('wz', 1.4), .6, False); m.zip(at('wz', 1.5), .4, False); m.vo('ronaldo', 'laugh', at('wz', 1.75), .4, -.2, 'snicker')
+for i in range(3): m.vo('haaland', 'hmm', at('wz', 1.95 + i * .35), .4, .3)
+chug(at('wz', 2.6), at('wz', 4.2), .22); m.f(osc(glide(700, 760, .6), .6) * env(int(.6 * SR), .05, .2), at('wz', 2.6), .2); m.f(lp(noise(1.0), 500) * env(int(1.0 * SR), .1, .5), at('wz', 2.8), .45)
+m.f(osc(1800, .05) * dec(.05, 40), at('wz', 3.92), .2); m.wahwah(at('wz', 3.3), .2); whistle(at('wz', 3.5), [('A5', .4), ('D5', .7)], g=.1)
 # continuous western bed (QA: no dead air): boom-chick bass + muted strum + low drone, quieter under the gags
 def bed(t0, t1, g=.5, bpm=92):
     b = 60 / bpm; t = t0; i = 0; roots = ['D2', 'A1', 'D2', 'C2', 'D2', 'A1', 'F2', 'A1']
