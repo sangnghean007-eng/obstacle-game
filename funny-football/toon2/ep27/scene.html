@@ -1216,7 +1216,7 @@ function t_end2(z, t) { neon(t, 0); for (const x of [GX.ro, GX.ne, GX.me]) aura(
 const GZ = 1730;
 function chain(x, y, s) { ctx.save(); ctx.strokeStyle = '#ffd60a'; ctx.lineWidth = 9 * s; ctx.beginPath(); ctx.arc(x, y - 300 * s, 70 * s, 0.25 * Math.PI, 0.75 * Math.PI); ctx.stroke(); ell(x, y - 222 * s, 18 * s, 18 * s, '#ffd60a', 3); txt('$', x, y - 220 * s, 22 * s, DARK, null); ctx.restore(); }
 const TRIO = [['ya', 0.9], ['mb', 0.98], ['ha', 1.15]];
-function kid(w, p, e, x, y, s, o = {}) { const C = Object.assign({}, w === 'ya' ? C_YAM : w === 'mb' ? C_MBA : C_HAA, { kit: GANGK[w], num: '', name: '' }); who(C, w === 'ya' ? 'yamal_d' : w === 'mb' ? 'mbappe' : 'haaland', p, e, x, y, s, o); if (Math.abs(o.rot || 0) < 0.2) gear(w, x, y + (o.dy || 0), s, T2T, o.f || 1); }
+function kid(w, p, e, x, y, s, o = {}) { const C = Object.assign({}, w === 'ya' ? C_YAM : w === 'mb' ? C_MBA : C_HAA); who(C, w === 'ya' ? 'yamal_d' : w === 'mb' ? 'mbappe' : 'haaland', p, e, x, y, s, o); if (Math.abs(o.rot || 0) < 0.2) gear(w, x, y + (o.dy || 0), s, T2T, o.f || 1); }
 // hurt overlay: level 0..6 (bruises stack across the three fights)
 function hurt(x, y, s, lvl, t, cry) { if (lvl > 0) hurtFx(x + 5, y - s * 400, s, lvl, t, cry); }
 function trio(t, xs, y, opts) { TRIO.forEach(([w, s0], i) => { const o = opts[i] || {}; const s = (o.s || 1) * s0; kid(w, o.p || 'stand', o.e || 'smug', xs[i], (o.y || y), s, { f: o.f || 1, rot: o.rot || 0, gy: o.gy || y, sq: o.sq || 0 }); if (!o.rot) hurt(xs[i], o.y || y, s, o.lvl || 0, t, o.cry); else if (o.lvl) stars(xs[i], (o.y || y) - 120, t, 50); }); }
@@ -1304,9 +1304,6 @@ function g_final(z, t) { neon(t); const OGX = { ne: 620, me: 790, ro: 950 };
 // ---------- v3 gang look (owner: "not gang gang enough") ----------
 const GANGK = { ya: mkKit('#ff3fb4', '#111', '#111', '#111', '#fff'), mb: mkKit('#111', '#3fe0ff', '#111', '#111', '#3fe0ff'), ha: mkKit('#1b1b1b', '#ffd60a', '#2a2a2a', '#111', '#ffd60a') };
 function gear(w, x, y, s, t, f = 1) { const hy = y - s * 318; ctx.save(); ctx.translate(x, hy); ctx.scale(s * f, s);
-  if (w === 'ya') { ctx.fillStyle = '#ff3fb4'; ctx.strokeStyle = DARK; ctx.lineWidth = 6; ctx.beginPath(); ctx.moveTo(-120, -95); ctx.lineTo(-95, -175); ctx.lineTo(95, -175); ctx.lineTo(120, -95); ctx.closePath(); ctx.fill(); ctx.stroke(); rr(-150, -105, 300, 26, 12, '#ff3fb4', DARK, 6); txt('NG', 0, -132, 34, '#111', null); }
-  if (w === 'mb') { ctx.fillStyle = '#111'; ctx.strokeStyle = DARK; ctx.lineWidth = 6; ctx.beginPath(); ctx.ellipse(0, -110, 125, 70, 0, Math.PI, 0); ctx.closePath(); ctx.fill(); ctx.stroke(); rr(-150, -118, 120, 22, 10, '#111', '#3fe0ff', 5); txt('⚡', 40, -140, 40, '#3fe0ff', null); }
-  if (w === 'ha') { ctx.translate(0, -50); ctx.fillStyle = '#d62828'; ctx.strokeStyle = DARK; ctx.lineWidth = 5; rr(-130, -120, 260, 40, 10, '#d62828', DARK, 5); for (let i = 0; i < 6; i++) ell(-100 + i * 40, -100, 6, 6, '#fff'); ctx.beginPath(); ctx.moveTo(110, -110); ctx.lineTo(170, -80 + Math.sin(t * 8) * 10); ctx.lineTo(150, -60); ctx.closePath(); ctx.fill(); ctx.stroke(); }
   ctx.restore();
   // chunky chain + pendant
   ctx.save(); ctx.strokeStyle = '#ffd60a'; ctx.lineWidth = 12 * s; ctx.setLineDash([10 * s, 6 * s]); ctx.beginPath(); ctx.arc(x, y - 225 * s, 72 * s, 0.2 * Math.PI, 0.8 * Math.PI); ctx.stroke(); ctx.setLineDash([]); rr(x - 26 * s, y - 172 * s, 52 * s, 52 * s, 10 * s, '#ffd60a', DARK, 3); txt(w === 'ya' ? '19' : w === 'mb' ? 'K' : '9', x, y - 144 * s, 26 * s, DARK, null); ctx.restore(); }
@@ -1320,7 +1317,7 @@ const SPLITS = { bArm: [-150, -170], fArm: [150, 170], bLeg: [-95, -95], fLeg: [
 const DUCK = { bArm: [60, 150], fArm: [70, 160], bLeg: [-60, 40], fLeg: [60, -40] };
 const PUNCHP = { bArm: [-60, -30], fArm: [92, 90], bLeg: [-30, -10], fLeg: [30, 10] };
 const SLIDE = { bArm: [-120, -100], fArm: [60, 80], bLeg: [80, 90], fLeg: [95, 100] };
-function K3(state, t) { for (const w of ['ha', 'mb', 'ya']) { const o = state[w]; if (!o || o.hide) continue; kid(w, o.p || 'stand', o.e || 'angry', o.x, o.y || GZ, (o.s || 0.84) * KS[w], { rot: o.rot || 0, f: o.f || 1, gy: GZ, sq: o.sq || 0 }); if (!o.rot && o.lvl) hurt(o.x, o.y || GZ, (o.s || 0.84) * KS[w], o.lvl, t, o.cry); if (o.rot && o.stars) stars(o.x, (o.y || GZ) - 120, t, 50); } }
+function K3(state, t) { for (const w of ['ha', 'mb', 'ya']) { const o = state[w]; if (!o || o.hide) continue; kid(w, o.p || 'stand', o.e || 'angry', o.x, o.y || GZ, (o.s || 0.84) * KS[w], { rot: o.rot || 0, f: o.f || 1, gy: GZ, sq: o.sq || 0 }); if (!o.rot && o.lvl) hurt(o.x, o.y || GZ, (o.s || 0.84) * KS[w], o.lvl, t, o.cry); if (o.rot && o.stars) stars(o.x, (o.y || GZ) - 120, t, 50); if (!o.rot && !o.noTag) { const nm = { ya: 'YAMAL', mb: 'MBAPPÉ', ha: 'HAALAND' }[w], col = { ya: '#a50044', mb: '#fff', ha: '#6cabdd' }[w]; ctx.save(); ctx.font = '900 30px Inter, Arial'; const tw = ctx.measureText(nm).width + 30; rr(o.x - tw / 2, GZ + 22, tw, 44, 14, col, DARK, 4); txt(nm, o.x, GZ + 45, 30, w === 'mb' ? DARK : '#fff', null); ctx.restore(); } } }
 const hitWin = (z, a, d = 0.35) => z > a && z < a + d;
 // NEYMAR: three different skills, three victims
 function g_ney3(z, t) { neon(t); const L = 2;

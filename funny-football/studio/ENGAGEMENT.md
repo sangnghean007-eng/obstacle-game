@@ -202,3 +202,7 @@ Sources (vendor blogs, unverified numbers): [Socialync](https://www.socialync.io
 - **Clarity for multi-beat stories (owner, Nov 20: "too fast, unclear, hard to understand"):** slow every beat so each action reads (≥1.5 s per action), and add a plain-English action caption under the year/chapter for every beat ("Neymar dives → Yamal trips"). If a beat needs the caption to be understood, the caption stays.
 - **Acting layer (Nov 20, owner: "stiff"):** include `toon2/anim.js` after chibi_cast.js in every scene: pose springs with overshoot (no more snapping between poses), velocity lean, squash & stretch on jumps/landings, head follow-through. Pass {snap:true} for very fast hits, {noAnim:true} to bypass.
 - **Beat structure for time stories (owner, Nov 20: "no pauses or emphasis per year"):** each era = calendar-flip title card (~1 s: year + 'X years later…') → the action (slowed) → a freeze-frame HOLD (~1.3 s, punch-in, big verdict stamp like 'RONALDO: EURO ✅ · GAME: still ❌'). The stamp states the point of the beat so nobody misses it.
+
+### Style never beats recognition (owner, Ep27: "Gang nhưng phải nhận ra được nhân vật chứ")
+- Costume gags (gang, era, disguise) are ADD-ONS: chains, rings, swagger, poses. Never cover the signature hair/head (Yamal curls, Mbappé bald, Haaland bun) and never replace the club kit colours.
+- In group fights every star keeps a small name tag under the feet so the viewer never has to guess who got hit.
