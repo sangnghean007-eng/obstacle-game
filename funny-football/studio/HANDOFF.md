@@ -82,3 +82,4 @@ Playwright, Chromium, ffmpeg, numpy and scipy are already available.
 - **Ep23 v2 (Nov 19):** split into 6 one-combo shorts `toon2/ep23/release/dream-duo-<n>-*.mp4` (7–10 s), stars in their own club kits. Post as a daily series #1→#6.
 - **Ep24 Dream Duo (realistic) #1 (Nov 19)** `toon2/ep24/`: Messi byline slalom → cut-back → Ronaldo first-time finish, 9.5 s, face-cam intro + tactics-arrow replay. Built one at a time (owner); #2–#6 follow after feedback.
 - **Ep24 #2 "The Slap" (Nov 19):** owner's story (awe → miss → slap → goals → double SIUUU), 19.4 s.
+- **Ep25 "New Gen vs OG" v1 (Nov 20)** `toon2/ep25/`: owner idea, game-launch-week trend, 17.6 s.

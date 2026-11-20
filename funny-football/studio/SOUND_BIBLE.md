@@ -21,3 +21,4 @@ Problem: Ep9–Ep15 reused the same 12 voice WAVs (wail, chuckle, laugh_crowd, s
 | 21 Mbappé This Season | bright ukulele-style strum → cut → tremolo strings | phone buzz, record scratch, trembling squeaks, wah-wah | mbappe, crowd (vox2) |
 | 22 So Close | lounge jazz (walking bass, brushes, vibes) at the gala | tape rewind, lucky-bounce boing/ting/bonk, record scratch at the reveal, stiff claps, glass crack | mbappe, kane, crowd (vox2) |
 | 23 Dream Duo | trap beat glue + per-location room tone (phone video feel) | chickens, domino clacks, header pings, ball POP, net rip, thunder | ronaldo, messi, kids, crowd (vox2) |
+| 25 New Gen vs OG | original synthwave trailer → choir + epic brass for the OGs → tiptoe pizzicato | bass drop, scooter skid, car THUD, record scratch on the bump | yamal, mbappe, haaland, ronaldo, messi (vox2) |
