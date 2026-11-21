@@ -1,0 +1,160 @@
+<!doctype html><html><head><meta charset="utf-8"><title>General Mbappé</title><style>html,body{margin:0;background:#000}</style></head><body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../pro.js"></script><script src="../fx.js"></script><script src="../shots.js"></script><script src="../chibi.js"></script><script src="../chibi_cast.js"></script><script src="../rig2.js"></script><script src="../castimg.js"></script><script src="../cast/skins.js"></script>
+<script>
+// Ep33 "GENERAL MBAPPÉ" (owner's idea, 22 Nov 2026): Real Madrid's 9 straight wins (facts.md) — General Mbappé inspects the 9 beaten captains,
+// shows each the score and slaps once per Real Madrid goal (26 in all). Twist (true): he missed a penalty v Celta, so Celta's captain slaps back.
+// Button: the 10th spot is PSV (Tuesday 24 Nov, Bernabéu) — the PSV captain runs. Captains are generic (kit colours + armband), not real faces.
+const W = 1080, H = 1920, cv = document.getElementById('c'), ctx = cv.getContext('2d');
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v)), lerp = (a, b, k) => a + (b - a) * k, eOut = k => 1 - (1 - clamp(k)) ** 3, eIn = k => clamp(k) ** 2;
+const eBack = k => { k = clamp(k); const c = 1.7; return 1 + (c + 1) * (k - 1) ** 3 + c * (k - 1) ** 2; };
+const FONT = '"Bangers","Impact",Inter,sans-serif', INK = '#1a1410';
+CASTIMG.preload(['mbappe']);
+function card(s, x, y, size, o = {}) { ctx.save(); ctx.font = `400 ${size}px ${FONT}`; const tw = ctx.measureText(s).width, pw = tw + size * 0.9, ph = size * 1.35;
+  ctx.translate(x, y); ctx.rotate(o.rot || 0); const sc = o.pop != null ? eBack(o.pop) : 1; ctx.scale(sc, sc);
+  ctx.fillStyle = 'rgba(0,0,0,.18)'; ctx.beginPath(); ctx.roundRect(-pw / 2 + 8, -ph / 2 + 10, pw, ph, 18); ctx.fill();
+  ctx.fillStyle = o.bg || '#fffaf0'; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.beginPath(); ctx.roundRect(-pw / 2, -ph / 2, pw, ph, 18); ctx.fill(); ctx.stroke();
+  if (o.tail) { ctx.beginPath(); ctx.moveTo(o.tail * 40 - 30, ph / 2 - 3); ctx.lineTo(o.tail * 110, ph / 2 + 70); ctx.lineTo(o.tail * 40 + 30, ph / 2 - 3); ctx.fill(); ctx.stroke(); ctx.fillRect(o.tail * 40 - 27, ph / 2 - 8, 54, 8); }
+  ctx.fillStyle = o.col || INK; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(s, 0, 4); ctx.restore(); }
+function stamp(s, x, y, size, k, col = '#c0281c') { if (k <= 0) return; ctx.save(); ctx.translate(x, y); ctx.rotate(-0.07); const sc = 1.6 - 0.6 * eOut(k * 2.5); ctx.scale(sc, sc); ctx.globalAlpha = clamp(k * 4);
+  ctx.font = `400 ${size}px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineWidth = 16; ctx.strokeStyle = '#fffaf0'; ctx.strokeText(s, 0, 0); ctx.fillStyle = col; ctx.fillText(s, 0, 0);
+  const tw = ctx.measureText(s).width; ctx.lineWidth = 7; ctx.strokeStyle = col; ctx.strokeRect(-tw / 2 - 30, -size * 0.65, tw + 60, size * 1.3); ctx.restore(); }
+
+// ---- look: bright stadium parade ground, comic halftone vignette (≠ Ep32's paper-ink look)
+const BG = {}; function stadium(t, blur = 0) { if (!BG[blur]) { const c = document.createElement('canvas'); c.width = W + 1600; c.height = H + 1600; const g = c.getContext('2d'); g.translate(800, 800);
+    const sky = g.createLinearGradient(0, -800, 0, 900); sky.addColorStop(0, '#2b6cb0'); sky.addColorStop(1, '#a7d3f2'); g.fillStyle = sky; g.fillRect(-800, -800, W + 1600, H + 1600);
+    g.fillStyle = '#1c2333'; g.fillRect(-800, 560, W + 1600, 520); for (let k = 0; k < 4; k++) { g.fillStyle = `rgba(255,255,255,${0.08 + k * 0.02})`; g.fillRect(-800, 600 + k * 110, W + 1600, 6); }
+    for (let i = -6; i < 14; i++) { g.fillStyle = '#e8e8e8'; g.fillRect(i * 160, 420, 10, 140); g.fillStyle = '#fffbe0'; g.beginPath(); g.ellipse(i * 160 + 5, 410, 40, 16, 0, 0, 7); g.fill(); }
+    for (let i = 0; i < 16; i++) { g.fillStyle = i % 2 ? '#3f9e45' : '#4aae4f'; g.fillRect(-800, 1080 + i * 90, W + 1600, 90); }
+    g.strokeStyle = 'rgba(255,255,255,.85)'; g.lineWidth = 10; g.beginPath(); g.moveTo(-800, 1180); g.lineTo(W + 800, 1180); g.stroke();
+    if (blur) { const f = 1 + blur * 0.7, sm = document.createElement('canvas'); sm.width = c.width / f; sm.height = c.height / f; sm.getContext('2d').drawImage(c, 0, 0, sm.width, sm.height); g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, c.width, c.height); g.drawImage(sm, 0, 0, c.width, c.height); }
+    BG[blur] = c; }
+  ctx.drawImage(BG[blur], -800, -800); FX.crowd(ctx, t, { y0: 640, rows: 6, rowH: 70, cols: ['#ffffff', '#f2f2f2', '#c9a227', '#1b2a5c'], jump: 0.15, flags: true, phones: true, w: 1500, x0: -210, density: 0.8 }); }
+function post() { ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); const v = ctx.createRadialGradient(540, 960, 520, 540, 960, 1250); v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,0,.42)'); ctx.fillStyle = v; ctx.fillRect(0, 0, W, H); ctx.restore(); }
+// ---- cast
+const kit = (shirt, trim, shorts, sock, num, boot = '#111') => ({ shirt, sleeve: shirt, cuff: trim, collar: trim, shorts, sock, sockShade: sock, sockBand: trim, boot, num });
+const shadeOf = h => '#' + [1, 3, 5].map(i => Math.round(parseInt(h.slice(i, i + 2), 16) * 0.8).toString(16).padStart(2, '0')).join('');
+const BASE = { ronaldo: CH.ronaldo, messi: Object.assign({}, CH.messi, { kit: kit('#f5a3c7', '#111', '#111111', '#f5a3c7', '#111') }),
+  mbappe: Object.assign({}, CH.mate2, { kit: kit('#f7f7f7', '#c9a227', '#f7f7f7', '#f7f7f7', '#1b2a5c', '#f2f2f2'), num: '10', numSize: 56, name: 'MBAPPÉ' }),
+  yamal: Object.assign({}, CH.mate1, { kit: Object.assign(kit('#a50044', '#004d98', '#004d98', '#004d98', '#ffd60a'), { stripes: '#004d98' }), num: '10', numSize: 56, name: 'YAMAL' }) };
+const CC = {}; for (const k in BASE) CC[k] = Object.assign({}, BASE[k], { arm: BASE[k].arm * 0.82, armW: BASE[k].armW * 1.35, skin: CAST_SKIN[k], shade: shadeOf(CAST_SKIN[k]) });
+const SC = { ronaldo: 1.3, messi: 1.22, mbappe: 1.26, yamal: 1.24 };
+// local→world for a chibi drawn with (x, y, s, f, lean): used for arm IK and contact points
+const lay = n => { const C = CC[n], hipY = -C.leg * 0.95, shY = hipY - C.torsoH; return { hipY, shY, fs: [C.shoulderW * 0.8, shY + 30], bs: [-C.shoulderW * 0.72, shY + 30] }; };
+function W2(o, lx, ly) { const s = o.s, f = o.f || 1, r = o.lean || 0, X = lx * s * f, Y = ly * s; return [o.x + X * Math.cos(r) - Y * Math.sin(r), o.y + X * Math.sin(r) + Y * Math.cos(r)]; }
+function reach(n, o, side, tx, ty) { const L = lay(n), p = side === 'f' ? L.fs : L.bs, S = W2(o, p[0], p[1]), r = o.lean || 0, f = o.f || 1;
+  const dx = tx - S[0], dy = ty - S[1], lx = (dx * Math.cos(-r) - dy * Math.sin(-r)) / f, ly = dx * Math.sin(-r) + dy * Math.cos(-r);
+  const a = Math.atan2(lx, ly) * 180 / Math.PI; return [a - 10, a + 10]; }
+const along = (o, H) => [o.x + Math.sin(o.lean || 0) * H, o.y - Math.cos(o.lean || 0) * H];
+// draw with life: breathing, sway, head bob, arms that never freeze
+function CB(n, o, t, ph = 0) { const k = o.life ?? 1, sw = Math.sin(t * 2.1 + ph);
+  const pose = o.pose || { bArm: [-18 + sw * 6 * k, -8], fArm: [18 - sw * 6 * k, 8], bLeg: [-8, -4], fLeg: [8, 4] };
+  const q = Object.assign({ s: SC[n] }, o);
+  chibi.draw(ctx, CC[n], pose, 'neutral', q.x + (o.lean ? 0 : Math.sin(t * 0.9 + ph) * 5 * k), q.y - (o.hop || 0), q.s, { f: o.f || 1, lean: (o.lean || 0) + Math.sin(t * 1.3 + ph) * 0.015 * k, sq: (o.sq || 0) + Math.sin(t * 3.1 + ph) * 0.012 * k,
+    headTilt: (o.tilt || 0) + Math.sin(t * 1.7 + ph) * 0.06 * k, hands: o.hands, headFn: (o.headFn || CASTIMG.head(ctx, n, o.expr || 'smug', { collar: CC[n].kit.collar })) }); }
+
+// General Mbappé: peaked cap over the caricature head, medals + sash on the chest, a score paddle in the back hand
+function capHead(e) { const base = CASTIMG.head(ctx, 'mbappe', e, { collar: CC.mbappe.kit.collar }); return (R) => { base(R); ctx.save(); ctx.translate(0, -R * 1.38); ctx.rotate(-0.06);
+  ctx.fillStyle = '#1b2a5c'; ctx.strokeStyle = INK; ctx.lineWidth = 7; ctx.beginPath(); ctx.ellipse(0, -R * 0.1, R * 0.95, R * 0.34, 0, Math.PI, 0); ctx.lineTo(R * 0.8, R * 0.12); ctx.lineTo(-R * 0.8, R * 0.12); ctx.closePath(); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#c9a227'; ctx.fillRect(-R * 0.8, R * 0.02, R * 1.6, R * 0.12); ctx.strokeRect(-R * 0.8, R * 0.02, R * 1.6, R * 0.12);
+  ctx.fillStyle = '#111'; ctx.beginPath(); ctx.ellipse(R * 0.1, R * 0.16, R * 0.85, R * 0.14, 0.05, 0, Math.PI); ctx.fill();
+  ctx.fillStyle = '#ffd60a'; ctx.beginPath(); for (let k = 0; k < 10; k++) { const a = k * Math.PI / 5 - Math.PI / 2, r = k % 2 ? R * 0.08 : R * 0.18; ctx.lineTo(Math.cos(a) * r, -R * 0.18 + Math.sin(a) * r); } ctx.closePath(); ctx.fill(); ctx.lineWidth = 3; ctx.stroke(); ctx.restore(); }; }
+let SIGN = '1-0', SIGN2 = 'VILLARREAL';
+const D2 = a => a * Math.PI / 180, goL = (p, a, l) => [p[0] + Math.sin(D2(a)) * l, p[1] + Math.cos(D2(a)) * l];
+function handWorld(C, o, side, ang) { const hipY = -C.leg * 0.95, shY = hipY - C.torsoH, root = side === 'f' ? [C.shoulderW * 0.8, shY + 30] : [-C.shoulderW * 0.72, shY + 30];
+  const e = goL(goL(root, ang[0], C.arm * 0.5), ang[1], C.arm * 0.5); return W2(o, e[0], e[1]); }
+function board(x, y, l1, l2, o = {}) { ctx.save(); ctx.translate(x, y); ctx.rotate(o.rot || -0.05); const h = o.h || 170; ctx.font = `400 ${o.f2 || 30}px ${FONT}`; const w = Math.max(o.w || 250, ctx.measureText(l2).width + 44); ctx.fillStyle = '#7a5230'; ctx.fillRect(-7, -h * 0.9, 14, h * 0.95);
+  ctx.fillStyle = '#fffaf0'; ctx.strokeStyle = INK; ctx.lineWidth = 8; ctx.beginPath(); ctx.roundRect(-w / 2, -h * 0.9 - h, w, h, 16); ctx.fill(); ctx.stroke();
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = o.col || '#1b2a5c'; ctx.font = `400 ${o.f1 || 96}px ${FONT}`; ctx.fillText(l1, 0, -h * 0.9 - h * 0.58);
+  ctx.font = `400 ${o.f2 || 30}px ${FONT}`; ctx.fillStyle = '#c0281c'; ctx.fillText(l2, 0, -h * 0.9 - h * 0.17); ctx.restore(); }
+const SIGNARM = [-150, -172];   // back arm raised up and out: the score is held high, beside the head
+const PADDLE_UNUSED = { hand: 'b', draw(x, y) { ctx.save(); ctx.translate(x, y); ctx.fillStyle = '#7a5230'; ctx.fillRect(-7, -150, 14, 160); ctx.fillStyle = '#fffaf0'; ctx.strokeStyle = INK; ctx.lineWidth = 8;
+  ctx.beginPath(); ctx.roundRect(-105, -290, 210, 150, 16); ctx.fill(); ctx.stroke(); ctx.fillStyle = '#1b2a5c'; ctx.font = `400 86px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(SIGN, 0, -228);
+  ctx.font = `400 26px ${FONT}`; ctx.fillStyle = '#c0281c'; ctx.fillText('REAL vs ' + SIGN2, 0, -168); ctx.restore(); } };
+function medals(o) { const L = lay('mbappe'), [cx, cy] = W2(o, -CC.mbappe.shoulderW * 0.35, L.shY + 58); const s = o.s; ctx.save(); ctx.translate(cx, cy); ctx.scale(s, s);
+  ctx.strokeStyle = '#c0281c'; ctx.lineWidth = 16; ctx.beginPath(); ctx.moveTo(-40, -50); ctx.lineTo(120, 150); ctx.stroke();
+  ['#1b2a5c', '#c0281c', '#2f8f46'].forEach((c, i) => { ctx.fillStyle = c; ctx.fillRect(-30 + i * 22, 0, 18, 24); ctx.fillStyle = '#ffd60a'; ctx.beginPath(); ctx.arc(-21 + i * 22, 36, 10, 0, 7); ctx.fill(); ctx.strokeStyle = INK; ctx.lineWidth = 3; ctx.stroke(); }); ctx.restore(); }
+// slap: front arm winds back, snaps to the target face, returns; returns { pose, hit } for the moment t
+function slapPose(t, times, o, tx, ty, back = { bArm: [30, 150], bLeg: [-12, -4], fLeg: [16, 6] }) {
+  let fArm = [20, 10], hit = -1; for (const s of times) { const k = t - s; if (k > -0.16 && k < 0.22) { const strike = reach('mbappe', o, 'f', tx, ty);
+      fArm = k < -0.04 ? [-70, -110] : k < 0.06 ? strike : [lerp(strike[0], 20, (k - 0.06) / 0.16), lerp(strike[1], 10, (k - 0.06) / 0.16)]; if (k >= -0.04 && k < 0.12) hit = k; } }
+  return { pose: Object.assign({ fArm }, back), hit }; }
+const CAPT = { villarreal: ['#ffe11f', '#0b4a9e', '#0b4a9e', '#ffe11f', '#0b4a9e'], roma: ['#8e1f2f', '#f0bc42', '#8e1f2f', '#111', '#f0bc42'], sevilla: ['#ffffff', '#d4001a', '#ffffff', '#ffffff', '#d4001a'],
+  leipzig: ['#ffffff', '#dd0741', '#ffffff', '#ffffff', '#dd0741'], barcelona: ['#a50044', '#004d98', '#004d98', '#004d98', '#ffd60a', '#004d98'], racing: ['#ffffff', '#00843d', '#111111', '#00843d', '#00843d'],
+  aek: ['#ffd400', '#111111', '#111111', '#ffd400', '#111'], valencia: ['#ffffff', '#111111', '#111111', '#111111', '#111'], celta: ['#8ac3ee', '#c8102e', '#ffffff', '#8ac3ee', '#c8102e'], psv: ['#e30613', '#ffffff', '#111111', '#e30613', '#ffffff', '#ffffff'] };
+const MATES = ['mate1', 'mate2', 'mate3', 'mate4'];
+function reachC(C, o, side, tx, ty) { const hipY = -C.leg * 0.95, shY = hipY - C.torsoH, p = side === 'f' ? [C.shoulderW * 0.8, shY + 30] : [-C.shoulderW * 0.72, shY + 30], S = W2(o, p[0], p[1]), r = o.lean || 0, f = o.f || 1;
+  const dx = tx - S[0], dy = ty - S[1], lx = (dx * Math.cos(-r) - dy * Math.sin(-r)) / f, ly = dx * Math.sin(-r) + dy * Math.cos(-r), a = Math.atan2(lx, ly) * 180 / Math.PI; return [a - 8, a + 8]; }
+const mbHead = m => { const C = CC.mbappe, shY = -C.leg * 0.95 - C.torsoH; return W2(Object.assign({ f: 1 }, m), 10, shY - C.head.R * 0.9); };
+function captainC(team, i) { const k = CAPT[team]; const base = CH[MATES[i % 4]]; return Object.assign({}, base, { kit: Object.assign(kit(k[0], k[1], k[2], k[3], k[4]), k[5] ? { stripes: k[5] } : {}), num: '', name: team.toUpperCase(), arm: base.arm * 0.82, armW: base.armW * 1.35 }); }
+function captain(team, i, x, y, s, f, expr, t, o = {}) { const C = captainC(team, i), q = { x, y, s, f, lean: o.lean || 0 }; const sh = Math.sin(t * 40 + i) * (o.shake || 0);
+  chibi.draw(ctx, C, o.pose || { bArm: [-18, -8], fArm: [18, 8], bLeg: [-8, -4], fLeg: [8, 4] }, expr, x + sh, y - (o.hop || 0), s, { f, lean: q.lean, headTilt: o.tilt || 0, sq: o.sq || 0, hands: o.hands, prop: o.prop });
+  const hipY = -C.leg * 0.95, shY = hipY - C.torsoH, [ax, ay] = W2(q, C.shoulderW * 0.8, shY + 70); // captain's armband
+  ctx.save(); ctx.translate(ax + sh, ay); ctx.rotate(q.lean); ctx.fillStyle = '#ffd60a'; ctx.strokeStyle = INK; ctx.lineWidth = 4; ctx.fillRect(-24 * s, -14 * s, 48 * s, 28 * s); ctx.strokeRect(-24 * s, -14 * s, 48 * s, 28 * s);
+  ctx.fillStyle = INK; ctx.font = `400 ${24 * s}px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('C', 0, 1); ctx.restore();
+  const R = C.head.R, headY = shY - R * 0.72; return [x, y + headY * s]; }
+let SLAPS = 0; const ALL = [];
+function hud(t) { ctx.save(); ctx.translate(880, 300); ctx.rotate(0.04); ctx.fillStyle = '#c0281c'; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.beginPath(); ctx.roundRect(-150, -46, 300, 92, 14); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#fff'; ctx.font = `400 54px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; const n = ALL.filter(s => s <= t).length; ctx.fillText(`SLAPS ${n}/26`, 0, 4); ctx.restore(); }
+function slapFx(x, y, t, s0, n = 10) { FX.burst(ctx, 'sparks', x, y, t, s0, { n }); const k = t - s0; if (k >= 0 && k < 0.25) { ctx.save(); ctx.translate(x, y - 40); ctx.rotate(-0.2); ctx.scale(1.4 - k * 2, 1.4 - k * 2);
+  ctx.font = `400 70px ${FONT}`; ctx.lineWidth = 12; ctx.strokeStyle = '#fff'; ctx.textAlign = 'center'; ctx.strokeText('SLAP!', 0, 0); ctx.fillStyle = '#c0281c'; ctx.fillText('SLAP!', 0, 0); ctx.restore(); } }
+const GZ = 1560, MB = s => ({ x: 430, y: GZ, s: s || 1.3 });
+// one inspection shot: General Mbappé (left) slaps captain (right) once per Real goal
+function inspect(team, idx, score, z, t, t0, slapAt, o = {}) { SIGN = score; SIGN2 = team.toUpperCase(); stadium(t, o.blur || 0);
+  const m = MB(o.ms), cx = o.cx || 840, cs = o.cs || 1.3; const hd = captainC(team, idx), head = [cx, GZ + (-hd.leg * 0.95 - hd.torsoH - hd.head.R * 0.72) * cs];
+  const sp = slapPose(t, slapAt, m, head[0] - 40, head[1] + 10, { bArm: SIGNARM, bLeg: [-12, -4], fLeg: [16, 6] }); let tilt = 0, hitK = 1e9;
+  for (const s of slapAt) { const k = t - s; if (k >= 0 && k < 0.5) { tilt = Math.sin(clamp(k / 0.5) * Math.PI) * 0.45 * (1 - k); hitK = Math.min(hitK, k); } }
+  const nHit = slapAt.filter(s => t >= s).length, expr = nHit === 0 ? 'bored' : nHit >= slapAt.length ? 'dizzy' : 'shock';
+  captain(team, idx, cx, GZ, cs, -1, o.expr || expr, t, { tilt: o.tilt ?? tilt, shake: nHit === 0 ? 1.5 : 0, lean: o.lean || 0, pose: o.cpose, hands: o.chands, prop: o.cprop });
+  { const hw0 = handWorld(CC.mbappe, Object.assign({ f: 1 }, m), 'b', (o.mpose || sp.pose).bArm); board(hw0[0], hw0[1], SIGN, 'REAL vs ' + SIGN2); }   // sign first: its stick stays behind the head
+  chibi.draw(ctx, CC.mbappe, o.mpose || sp.pose, 'neutral', m.x, m.y, m.s, { f: 1, sq: Math.sin(t * 3) * 0.01, headTilt: o.mtilt || 0, lean: o.mlean || 0, headFn: capHead(o.mexpr || (nHit ? 'smug' : 'deadpan')), hands: { f: 'open', b: 'grab' } });
+  medals(m); for (const s of slapAt) slapFx(head[0] - 20, head[1], t, s); }
+const T = { vil: [3.3], rom: [5.0, 5.45, 5.9, 6.35], sev: [7.45, 7.75, 8.05, 8.35], lei: [9.05, 9.3, 9.55, 9.8], bar: [11.0, 12.1], rac: [13.6, 14.0, 14.4], aek: [13.75, 14.15, 14.55], val: [13.9, 14.3, 14.7], cel: [15.9, 16.4] };
+for (const k in T) ALL.push(...T[k]); ALL.sort((a, b) => a - b);
+const SEG = [
+  // 1 HOOK: the line-up of 9 beaten captains, General Mbappé in front
+  [0, 2.6, 'wide', (z, t) => SHOT.wide(ctx, () => { stadium(t, 0); const teams = ['villarreal', 'roma', 'sevilla', 'leipzig', 'barcelona', 'racing', 'aek', 'valencia', 'celta'];
+      teams.forEach((tm, i) => captain(tm, i, 70 + i * 117, 1260, 0.6, 1, 'bored', t, { shake: 1.2 }));
+      SIGN = '9 W'; SIGN2 = 'EVERYONE'; const m = { x: 540 + Math.sin(t * 2) * 60, y: 1660, s: 1.15 };
+      const pz = { bArm: SIGNARM, fArm: [70 + Math.sin(t * 4) * 10, 110], bLeg: [-14 + Math.sin(t * 6) * 10, -4], fLeg: [14 - Math.sin(t * 6) * 10, 4] };
+      chibi.draw(ctx, CC.mbappe, pz, 'neutral', m.x, m.y, m.s, { f: 1, headFn: capHead('smug'), hands: { b: 'grab', f: 'point' } });
+      medals(Object.assign({ f: 1 }, m)); const hw = handWorld(CC.mbappe, Object.assign({ f: 1 }, m), 'b', pz.bArm); board(hw[0], hw[1], '9 W', 'IN A ROW'); }, { x: 540, y: 1150, zoom: 0.95 }),
+    (z) => { card('9 WINS IN A ROW 🎖️', 540, 270, 76, { pop: 0.7 + z / 0.3, rot: -0.02 }); if (z > 0.6) card('General Mbappé inspects the troops', 540, 385, 52, { pop: (z - 0.6) / 0.3, bg: '#ffe9a8' }); }],
+  [2.6, 4.4, 'cu', (z, t) => SHOT.cu(ctx, () => inspect('villarreal', 0, '1-0', z, t, 2.6, T.vil), { x: 590, y: 1180, zoom: 1.22 }), (z) => {}],
+  [4.4, 7.0, 'low', (z, t) => SHOT.low(ctx, () => inspect('roma', 1, '4-3', z, t, 4.4, T.rom), { x: 590, y: 1300, lift: 200, zoom: 1.1 }), (z) => {}],
+  [7.0, 8.8, 'dutch', (z, t) => SHOT.dutch(ctx, () => inspect('sevilla', 2, '4-1', z, t, 7.0, T.sev), { x: 590, y: 1180, zoom: 1.15, rot: -0.12 }), (z) => {}],
+  [8.8, 10.4, 'xcu', (z, t) => SHOT.xcu(ctx, () => inspect('leipzig', 3, '4-1', z, t, 8.8, T.lei), { x: 760, y: 1000, zoom: 2.1 }), (z) => { card('LEIPZIG 4-1', 540, 1400, 70, { pop: z / 0.3 }); }],
+  // the Clásico: second slap in slow motion
+  [10.4, 13.0, 'slowmo', (z, t) => { const tt = z < 1.4 ? t : 11.8 + (z - 1.4) * 0.35; SHOT.cu(ctx, () => inspect('barcelona', 0, '2-1', z, tt, 10.4, T.bar), { x: 590, y: 1180, zoom: 1.25 + z * 0.04 }); if (z > 1.4 && z < 2.3) SHOT.speedlines(ctx, t, { alpha: 0.3 }); },
+    (z) => { if (z > 1.6) stamp('CLÁSICO ✅', 540, 400, 100, z - 1.6); }],
+  // Racing, AEK, Valencia at once
+  [13.0, 15.2, 'split', (z, t) => SHOT.split(ctx, [
+      { shot: 'wide', draw: () => inspect('racing', 1, '3-0', z, t, 13, T.rac, { ms: 1.2, cs: 1.2 }), opts: { x: 590, y: 1120, zoom: 0.75 } },
+      { shot: 'wide', draw: () => inspect('aek', 2, '3-2', z, t, 13, T.aek, { ms: 1.2, cs: 1.2 }), opts: { x: 590, y: 1120, zoom: 0.75 } },
+      { shot: 'wide', draw: () => inspect('valencia', 3, '3-0', z, t, 13, T.val, { ms: 1.2, cs: 1.2 }), opts: { x: 590, y: 1120, zoom: 0.75 } }], { border: '#111' }), (z) => {}],
+  // Celta: the twist — "you missed a penalty"
+  [15.2, 19.0, 'cu', (z, t) => SHOT.cu(ctx, () => { const back = z > 2.4, k = z - 2.4;
+      const lx = back ? lerp(840, 640, eOut(clamp(k / 0.12))) - (k > 0.35 ? lerp(0, -200, eOut((k - 0.35) / 0.4)) : 0) : 840;   // lunge in, then back
+      const strikeA = reachC(captainC('celta', 3), { x: lx, y: GZ, s: 1.3, f: -1 }, 'f', ...mbHead(MB()).map((v, i) => v + (i ? 10 : 30)));
+      const cpose = back ? { bArm: [-18, -8], fArm: k < 0.1 ? [150, 170] : k < 0.3 ? strikeA : [30, 20], bLeg: [-14, -4], fLeg: [14, 6] } : z > 1.6 ? { bArm: [-18, -8], fArm: [150, 172], bLeg: [-8, -4], fLeg: [8, 4] } : undefined;
+      const spun = back && k > 0.18; inspect('celta', 3, '2-1', z, t, 15.2, T.cel, { cx: lx, expr: z > 1.6 ? 'angry' : undefined, cpose, chands: { f: z > 1.6 && !back ? 'grab' : 'open' }, mexpr: spun ? 'shock' : z > 1.6 ? 'deadpan' : undefined, mtilt: spun ? Math.sin(k * 20) * 0.5 : 0, mlean: spun ? -0.25 * Math.sin(clamp(k) * Math.PI) : 0 });
+      if (z > 1.6 && !back) { const C = captainC('celta', 3), hw = handWorld(C, { x: 840, y: GZ, s: 1.3, f: -1 }, 'f', cpose.fArm); board(hw[0], hw[1], 'PENALTY', 'MISSED ❌', { f1: 64, f2: 40, w: 290, col: '#c0281c', rot: 0.05 }); }
+      if (back) slapFx(520, 980, t, 15.2 + 2.62, 12); }, { x: 590, y: 1180, zoom: 1.22 }),
+    (z) => { if (z > 2.62) stamp('REVENGE SLAP', 520, 470, 90, z - 2.62); }],
+  // button: the 10th spot — PSV on Tuesday
+  [19.0, 23.0, 'wide', (z, t) => SHOT.wide(ctx, () => { stadium(t, 0); const run = z > 1.6 ? eIn((z - 1.6) / 0.9) : 0;
+      captain('psv', 2, 760 + run * 700, GZ, 1.25, run > 0 ? 1 : -1, run > 0 ? 'scared' in chibi.EXPR ? 'scared' : 'shock' : 'shock', t, { shake: run ? 0 : 4, hop: run ? Math.abs(Math.sin(z * 20)) * 30 : 0, pose: run ? chibi.POSES[Math.floor(z * 10) % 2 ? 'run1' : 'run2'] : undefined });
+      SIGN = '10?'; SIGN2 = 'PSV — TUESDAY'; const m = { x: 330, y: GZ, s: 1.3 };
+      const pz = { bArm: SIGNARM, fArm: [20, 10], bLeg: [-12, -4], fLeg: [16, 6] }; chibi.draw(ctx, CC.mbappe, pz, 'neutral', m.x, m.y, m.s, { f: 1, headFn: capHead(z < 1.2 ? 'shock' : 'smug'), hands: { b: 'grab' }, headTilt: z < 1.2 ? Math.sin(z * 14) * 0.2 : 0 }); medals(m);
+      const hw = handWorld(CC.mbappe, Object.assign({ f: 1 }, m), 'b', pz.bArm); board(hw[0], hw[1], '10?', 'PSV — TUESDAY');
+      if (z < 1.2) for (let k = 0; k < 4; k++) { const a = t * 6 + k * 1.57; ctx.font = '50px serif'; ctx.textAlign = 'center'; ctx.fillText('⭐', 330 + Math.cos(a) * 110, 820 + Math.sin(a) * 30); } }, { x: 560, y: 1180, zoom: 1.0 }),
+    (z) => { card('Tuesday: PSV 👀', 540, 400, 84, { pop: (z - 0.4) / 0.3 }); if (z > 2.4) stamp('NEXT!', 760, 560, 110, z - 2.4); }],
+];
+window.DURATION = 23; window.render = function (t) { window.T2T = t; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.filter = 'none'; ctx.clearRect(0, 0, W, H);
+  const seg = SEG.find(s => t >= s[0] && t < s[1]) || SEG[SEG.length - 1]; const z = t - seg[0];
+  const hs = ALL.concat([17.82]).reduce((m, a) => Math.max(m, t >= a && t < a + 0.18 ? 14 * (1 - (t - a) / 0.18) : 0), 0);
+  ctx.save(); ctx.translate(Math.sin(t * 91) * hs, Math.cos(t * 77) * hs); seg[3](z, t); ctx.restore();
+  if (z < 0.14 && t > 0.1) PRO.whip(ctx, cv, z / 0.14, SEG.indexOf(seg) % 2 ? -1 : 1); post(); ctx.setTransform(1, 0, 0, 1, 0, 0);
+  if (!window.NO_HUD) { seg[4](z, t); if (t > 2.6) hud(t); }
+  ctx.font = '600 28px Inter'; ctx.fillStyle = 'rgba(255,255,255,.8)'; ctx.textAlign = 'center'; if (t > 21.5) ctx.fillText('Cartoon parody', 540, 232); };
+if (!location.search.includes('render')) { const t0 = performance.now(); (window.CAST_READY || Promise.resolve()).then(() => (function loop() { render(((performance.now() - t0) / 1000) % 23); requestAnimationFrame(loop); })()); }
+</script></body></html>
