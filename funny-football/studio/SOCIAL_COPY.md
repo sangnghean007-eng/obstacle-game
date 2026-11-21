@@ -131,3 +131,9 @@ Rules from now on for Facebook: caption 200–400 characters (story recap + the 
 ## YouTube TAGS — mandatory in every POSTS.md (owner, 21 Nov 2026: "tag Youtube đâu")
 - Every YouTube post has: title (ends with 3 hashtags incl. #shorts) + description + **Tags field** (comma-separated, ≤500 characters): full names + short names of every player, clubs (current, from facts.md), the gag/format keyword, generic 'football funny / football cartoon / soccer cartoon / football memes / football shorts', and 'soccer 365'.
 - Plus upload settings: Category Comedy · Not made for kids · Altered/synthetic content disclosure = Yes when AI-drawn faces are used · Language English.
+
+
+## INSTAGRAM + X — mandatory in every POSTS.md (owner, 21 Nov 2026)
+- Instagram Reels: caption (hook line, 1–2 story lines, one comment prompt, parody line, 5–8 hashtags), cover, alt text, 'AI info' label when AI faces are used.
+- X: ≤280 characters, native video upload, 2–3 hashtags, media alt text.
+- Full set per episode: YouTube (title + description + Tags + settings) · TikTok · Instagram · X · Facebook (+ Arabic line).

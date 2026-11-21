@@ -18,6 +18,30 @@ Ronaldo catches Messi. Ronaldo catches Mbappé. Yamal calls himself the next GOA
 Cartoon parody · invented lines
 #ronaldo #messi #yamal #mbappe #football #footballfunny #trustfall
 
+
+## Instagram (Reels)
+Caption:
+Trust fall challenge with the legends 😂
+Leo ✅ Kylian ✅ … then Yamal said the words "next GOAT" 🫠
+Tag the friend who would step back too 👇
+
+Cartoon parody · invented lines · not real events
+.
+#ronaldo #messi #yamal #mbappe #footballfunny #footballcartoon #soccermemes #trustfall
+Cover: cover-9x16.jpg (set "Edit cover" → add from camera roll; keep the Grid crop centred on Ronaldo + Yamal)
+Alt text: Cartoon of Ronaldo catching Messi and Mbappé in a trust fall, then stepping back so Yamal falls face-first on the grass.
+Settings: Share to Feed on · Audio name "Soccer 365 – Trust Fall" · Label: AI info / "Made with AI" on (AI-drawn faces).
+
+## X (Twitter) — 145/280 characters, upload the mp4 natively (no link)
+Ronaldo catches Messi ✅
+Ronaldo catches Mbappé ✅
+Yamal: "I'm the next GOAT 😎"
+Ronaldo: 🚶‍♂️
+
+GOATs only 🐐 (cartoon parody)
+#Ronaldo #Messi #Yamal
+Alt text (media): Cartoon parody: Ronaldo catches Messi and Mbappé, steps back when Yamal falls.
+
 ## Facebook (200–400 characters + one Arabic line)
 Trust fall challenge with the legends 😂 Ronaldo catches Messi, catches Mbappé… then Yamal walks up and says "I'm the next GOAT" — and Ronaldo just takes one step back. GOATs only 🐐 Cartoon parody, invented lines.
 تحدي السقوط مع الأساطير 😂 رونالدو يمسك الجميع… إلا "الماعز القادم"!
