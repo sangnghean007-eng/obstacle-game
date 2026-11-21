@@ -88,6 +88,13 @@ Playwright, Chromium, ffmpeg, numpy and scipy are already available.
 
 - RULE 0 (21 Nov 2026): facts first, then exaggerate. See ENGAGEMENT.md top.
 
+
+## RULE 0b — TỰ THẤY LỖI THÌ TỰ SỬA (owner, 21 Nov 2026: "Tất cả bạn đều thấy nhưng không sửa là sao" · "Ghi nhớ và luôn làm theo")
+- Every flaw I can see myself (in a frame sheet, a close-up, a safe-zone sheet, a QA report) gets FIXED before anything is sent. Never list it as "known flaws left", never ask the owner which one to fix.
+- Ask the owner ONLY about taste/direction that cannot be seen in the frames (which story, which style) — never about defects.
+- Review checklist on every frame sheet before sending: joints/seams · hands have fingers · names/text readable on a phone · head-to-body proportion · face style matches body style · nothing frozen · catches/contacts actually touch · faces and text outside the app UI zones · nothing mirrored (shirt numbers) · nothing out of frame at the key moment.
+- If a fix is not possible (tool limit, credits), say so plainly with the reason — never present the item as done.
+
 ## OVERHAUL (21 Nov 2026) — read ENGAGEMENT.md "OVERHAUL RULES" first
 - New docs: UNIVERSE.md (recurring cast), GAG_BANK.md (used + 60 fresh gags), FORMATS_V2.md "Format v3" (12 formats + 5 style packs), EPISODES.csv + toon2/novelty.py (14-axis novelty gate).
 - Milestones: M1 docs → M1a novelty → M1b sound engine v2 → M2 rig2/fx → M3 styles/shots/sets/timeline → M4 Ep31 group-chat pilot → M4b daily task with vidIQ/Metricool/Drive → M5 QA extensions.
