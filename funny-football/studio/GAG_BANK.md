@@ -23,6 +23,12 @@ Columns: id | gag | technique (rule-of-3, misdirection, escalation, cutaway, dea
 | U16 | Phone call to summon help | Ep15, Ep20 |
 | U17 | Weapons (bat, nunchucks, mallet) breaking | Ep27 |
 | U18 | Bubble taunts face-to-face | Ep19, Ep28 |
+| U19 | Bus parked across the goal (parking the bus, literal) | Ep31 |
+| U20 | VAR monitor eats popcorn | Ep31 |
+| U21 | Group renamed to the play-offs | Ep31 |
+| U22 | Hotel booking cancelled (callback) | Ep31 |
+| U23 | Net left with a smoking ball-shaped hole | Ep31 |
+| U24 | 'X is typing…' = a goal is coming | Ep31 |
 
 ## FRESH (60 — pick ≥4 per episode, mix groups)
 ### A. Impact (physics, escalation)
@@ -50,7 +56,6 @@ Columns: id | gag | technique (rule-of-3, misdirection, escalation, cutaway, dea
 ### C. Living objects
 | C01 | The ball refuses to go in, runs away from the goal on tiny legs | anticlimax | M |
 | C02 | Corner flag faints when the ball comes near | deadpan | S |
-| C03 | VAR screen gets popcorn and sits down to watch | cutaway | M |
 | C04 | Trophy hides behind the winner | misdirection | S |
 | C05 | Referee's whistle refuses to blow for one team, blows for the other | sound gag | M |
 | C06 | Microphone flees from a press conference | 4th-wall | M |
@@ -63,7 +68,6 @@ Columns: id | gag | technique (rule-of-3, misdirection, escalation, cutaway, dea
 | D04 | Player hides behind the goalpost — completely hidden (impossible) | visual pun | S |
 | D05 | Celebration knee-slide leaves a trench, the groundsman cries | escalation | M |
 | D06 | Crowd's Mexican wave throws a player into the stands | escalation | L |
-| D07 | Shot so fast the net is left with a ball-shaped hole and smoke | escalation | S |
 | D08 | Gravity reverses for the losing team | absurd | L |
 ### E. Time / editing
 | E01 | Freeze frame "You're probably wondering how I got here" (parody text) | cutaway | M |
