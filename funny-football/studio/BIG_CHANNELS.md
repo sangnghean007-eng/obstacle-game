@@ -36,3 +36,11 @@ User request: "look at the big channels and learn from them". Learn the *ideas a
 - Why it spreads: instant payoff (the skill happens in the first 1–2 s of each clip), "could be me/my kid" relatability, the feeling of "unknown kid better than pros", and the share reflex ("look at this"). Very few comments because there is nothing to argue about; the value is shares and saves.
 - What it is NOT: it is other people's footage. We must not repost or copy clips (copyright + not our brand). Lesson to transfer, not the content.
 - Apply to Soccer 365: (1) put the payoff in the first 1–2 s and repeat payoffs every 2–3 s; (2) design for SHARES ("send this to the friend who…") more than comments; (3) a cartoon "skills montage" format is possible: our characters doing absurd impossible skills, 2 s each, no captions needed.
+
+## Study: "A Different Ending for Two Legends 💔" (hand-drawn caricature short, 187K likes, 5.7K comments, owner screen recording 21 Nov 2026)
+- Zero on-screen text; the post title carries the idea. Pure visual storytelling.
+- ONE symbolic object carries the whole story: the shirt (#10 handed to Messi with love vs #7 left on a hook in a dark locker room and quietly taken).
+- Light = emotion: bright blue crowds/family/teammates vs a dark empty room at night.
+- Long held shots (3–5 s), little motion, faces carry it. Ends on the opening frame → seamless loop.
+- Ambiguous/provocative ending → comment war between fan bases.
+Applied in Ep30 v2: shirt symbolism (framed #10 tribute vs Ronaldo grabbing his #7 back: "NOT YET." — kept to the facts: he chose to continue), most captions removed.

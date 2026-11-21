@@ -3,7 +3,7 @@ Ronaldo scenes = same theme in minor, empty-stadium room tone, one ball echo. He
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'sfx'))
 from fx2 import *
-SEGS = [('e0', 2.5), ('e1', 2.5), ('e2', 3.0), ('e3', 3.0), ('e4', 2.5), ('e5', 2.5), ('e6', 3.5), ('e7', 3.0), ('e8', 2.5), ('e9', 2.5), ('e10', 4.5), ('e11', 3.0)]
+SEGS = [('e0', 2.5), ('e1', 2.5), ('e2', 3.0), ('e3', 3.0), ('e4', 2.5), ('e5', 2.5), ('e6', 3.5), ('e7', 3.0), ('e8', 3.0), ('e9', 3.5), ('e10', 4.0), ('e11', 2.5)]
 ST = {}; _t = 0
 for n, d in SEGS: ST[n] = _t; _t += d
 END = _t; m = Mix2(END, ep=30); at = lambda n, z: ST[n] + z
@@ -32,5 +32,6 @@ m.thump(at('e1', 1.2), .25); m.f(osc(1900, .8) * dec(.8, 4) + .5 * osc(2650, .8)
 m.thump(at('e4', 1.0), .5); m.crowd(at('e4', 1.05), 'cheer', 1.4, .35); m.whoosh(at('e6', .3), 1.2, .25, True)
 for n in ('e2', 'e9'):
     for i in range(3): m.thump(at(n, .4 + i * .8), .22)
+m.thump(at('e9', 1.5), .5); m.f(hp(noise(.2), 1500) * env(int(.2 * SR), .01, .1), at('e9', 1.6), .3); m.timpani(at('e9', 2.2), 60, .4)
 m.sparkle(at('e10', 2.2), .8, .2); m.vo('messi', 'laugh', at('e10', 2.5), .25, -.3, 'snicker')
 print(round(END, 2)); m.write(sys.argv[1])
