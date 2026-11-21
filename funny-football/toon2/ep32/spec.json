@@ -1,0 +1,7 @@
+{"logline": "Mbappé promises Yamal 'don't worry bro, I'll catch you' for a trust fall, catches him, notices the Barça shirt and drops him; Yamal gets his revenge the same way.",
+ "style": "ink", "prev_style": "comic", "hook_frame0": "bubble 'Don't worry bro, I'll catch you 🤝' with Yamal about to fall",
+ "beats": [{"shot": "wide", "idea": "the promise", "text": "I'll catch you"}, {"shot": "low", "idea": "Yamal falls like a plank", "text": "trust fall…"}, {"shot": "cu", "idea": "he actually catches him", "text": "CAUGHT"},
+  {"shot": "xcu", "idea": "Mbappé sees the Barça shirt", "text": "…wait. BARÇA?"}, {"shot": "slowmo", "idea": "drops him, shrug", "text": "BONK"}, {"shot": "high", "idea": "bird's-eye: everyone laughing around Yamal", "text": "HAHAHAHA"}, {"shot": "dutch", "idea": "revenge: Yamal drops Mbappé", "text": "CLÁSICO RIVALS"}],
+ "techniques": ["misdirection", "anticlimax", "deadpan", "callback", "rule-of-3"], "gags": ["trust fall dropped because of the rival shirt", "revenge trust fall"],
+ "twist": "he catches him first, then drops him only after seeing the Barça shirt", "callback": "Yamal repeats the promise and drops Mbappé ('oops… MADRID')", "ending": "reversal",
+ "hidden_details": ["teammates in both kits laughing in the background", "stars spin over Yamal in the bird's-eye shot", "handheld phone shake like a real prank video"], "meme_frame": "Mbappé shrugging over Yamal on the grass"}

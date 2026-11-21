@@ -1,0 +1,53 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Trust Fall</title><style>html,body{margin:0;background:#000}</style></head><body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../chibi.js"></script><script src="../chibi_cast.js"></script><script src="../anim.js"></script><script src="../portrait.js"></script><script src="../pro.js"></script>
+<script src="../rig2.js"></script><script src="../fx.js"></script><script src="../styles.js"></script><script src="../shots.js"></script><script src="../sets.js"></script><script src="../timeline.js"></script>
+<script>
+// Ep32 "TRUST FALL" — Clásico rivals (Mbappé: Real Madrid, Yamal: Barcelona; facts: ep32/facts.md). Pure gag, ink style, phone-filmed park prank.
+const W = 1080, H = 1920, cv = document.getElementById('c'), ctx = cv.getContext('2d'); const STYLE = STYLES.ink;
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v)), lerp = (a, b, k) => a + (b - a) * k, eOut = k => 1 - (1 - clamp(k)) ** 3, eIn = k => clamp(k) ** 2;
+const kit = (shirt, trim, shorts, sock, num, stripes) => ({ shirt, sleeve: shirt, cuff: trim, collar: trim, shorts, sock, sockShade: sock, sockBand: trim, boot: '#111', num, stripes });
+const BAR = kit('#a50044', '#004d98', '#004d98', '#004d98', '#ffd60a', '#004d98'), RMA = kit('#f7f7f7', '#c9a227', '#f7f7f7', '#f7f7f7', '#1b2a5c');
+const C_Y = Object.assign({}, CH.mate1, { skin: '#b9825c', shade: '#9c6a48', kit: BAR, num: '10', name: 'YAMAL', nameSize: 16 });
+const C_M = Object.assign({}, CH.mate1, { skin: '#8a5a3c', shade: '#6c432b', kit: RMA, num: '10', name: 'MBAPPÉ', nameSize: 15 });
+const mates = [Object.assign({}, CH.mate1, { kit: BAR, num: '', name: '', skin: '#e3b08c' }), Object.assign({}, CH.mate1, { kit: RMA, num: '', name: '', skin: '#6b4330' }), Object.assign({}, CH.mate1, { kit: BAR, num: '', name: '', skin: '#f0c9ae' }), Object.assign({}, CH.mate1, { kit: RMA, num: '', name: '', skin: '#d9a27c' })];
+const head = (face, kitc) => (o) => (R) => portrait.draw(ctx, face, 0, -R * 0.28, R * 2.1 / 330, { headOnly: true, expr: o.e, kit: kitc, turn: o.turn || 0 });
+const YA = (p, e, x, y, s = 1.1, o = {}) => chibi.draw(ctx, C_Y, p, 'neutral', x, y, s, Object.assign({ f: -1 }, o, { headFn: head('yamal_d', '#a50044')(Object.assign({ e }, o)) }));
+const MB = (p, e, x, y, s = 1.15, o = {}) => chibi.draw(ctx, C_M, p, 'neutral', x, y, s, Object.assign({ f: 1 }, o, { headFn: head('mbappe', '#f7f7f7')(Object.assign({ e }, o)) }));
+const GZ = 1560, ARMS = { bArm: [70, 100], fArm: [80, 110], bLeg: [-14, -8], fLeg: [14, 8] }, HOLD = { bArm: [100, 80], fArm: [110, 90], bLeg: [-20, -8], fLeg: [20, 8] }, OPEN = { bArm: [-60, -120], fArm: [60, 120], bLeg: [-14, -8], fLeg: [14, 8] };
+const PLANK = { bArm: [-10, -6], fArm: [10, 6], bLeg: [-4, -2], fLeg: [4, 2] }, CROSSED = { bArm: [70, -110], fArm: [-70, 110], bLeg: [-8, -4], fLeg: [8, 4] }, SHRUG = { bArm: [-40, -150], fArm: [40, 150], bLeg: [-12, -6], fLeg: [12, 6] };
+function park(t) { // phone-filmed park: trees, fence, grass, laughing teammates
+  const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#cfe3c6'); g.addColorStop(0.45, '#9cc28d'); g.addColorStop(1, '#6f9a58'); ctx.fillStyle = g; ctx.fillRect(-600, -600, W + 1200, H + 1200);
+  for (let i = 0; i < 8; i++) { const x = i * 160 - 40; ctx.fillStyle = '#5e7f45'; ctx.beginPath(); ctx.arc(x, 520 + (i % 3) * 30, 170, 0, 7); ctx.fill(); ctx.fillStyle = '#6b4a2a'; ctx.fillRect(x - 14, 600, 28, 260); }
+  ctx.fillStyle = '#8a6a44'; for (let x = -100; x < W + 100; x += 36) ctx.fillRect(x, 780, 22, 180); ctx.fillRect(-100, 800, W + 200, 16); ctx.fillRect(-100, 900, W + 200, 16);
+  ctx.fillStyle = '#7da862'; ctx.fillRect(-600, 960, W + 1200, H); ctx.strokeStyle = 'rgba(60,90,40,.5)'; ctx.lineWidth = 3; for (let i = 0; i < 260; i++) { const x = (i * 97) % W, y = 980 + (i * 61) % 900; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + 6, y - 14); ctx.stroke(); } }
+function laughers(t, k) { mates.forEach((C, i) => { const x = [110, 260, 830, 980][i], y = 1240 + (i % 2) * 30, ph = Math.sin(t * 14 + i) * k; chibi.draw(ctx, C, k > 0.1 ? { bArm: [60, 150 + ph * 20], fArm: [70, 160 - ph * 20], bLeg: [-14, -8], fLeg: [14, 8] } : 'stand', k > 0.1 ? 'happy' : 'neutral', x, y - Math.abs(ph) * 18, 0.62, { f: i < 2 ? 1 : -1, sq: Math.abs(ph) * 0.05 }); if (k > 0.1) { ctx.font = '700 46px "Caveat", cursive'; ctx.fillStyle = '#2a1d12'; ctx.textAlign = 'center'; ctx.fillText(['HAHA', 'LOL', '😂', 'HAHAHA'][i], x, y - 300 - Math.abs(ph) * 30); } }); }
+function tag(n, x, y, c) { ctx.save(); ctx.font = '700 44px "Caveat", cursive'; ctx.textAlign = 'center'; ctx.fillStyle = c; ctx.fillText(n, x, y); ctx.restore(); }
+// yamal falling as a plank: pivot at the heels
+function yamalFall(ang, x, y, s, e) { ctx.save(); ctx.translate(x, y); ctx.rotate(ang); ctx.translate(-x, -y); YA(PLANK, e, x, y, s, { noAnim: true }); ctx.restore(); }
+function world(z, t, st) { park(t); laughers(t, st.laugh || 0); st.draw && st.draw(); }
+const SEG = [
+  [0, 2.8, 'wide', (z, t) => SHOT.wide(ctx, () => world(z, t, { draw: () => { YA(CROSSED, 'smug', 690, GZ, 1.1); MB(z > 0.4 ? ARMS : 'stand', 'smug', 300, GZ, 1.15, { turn: 0.3, hands: { f: 'open', b: 'open' } }); tag('MBAPPÉ', 300, GZ + 70, '#1b2a5c'); tag('YAMAL', 690, GZ + 70, '#a50044'); } }), { y: 1180, zoom: 0.95 }),
+    (z) => { STYLE.bubble(ctx, "Don't worry bro,", 520, 470, 64); STYLE.bubble(ctx, "I'll catch you 🤝", 520, 590, 64); }],
+  [2.8, 5.0, 'low', (z, t) => SHOT.low(ctx, () => world(z, t, { draw: () => { MB(ARMS, 'smug', 300, GZ, 1.15, { hands: { f: 'open', b: 'open' } }); yamalFall(-eIn(z / 2.2) * 0.95, 690, GZ, 1.1, z > 0.6 ? 'shock' : 'smug'); } }), { y: 1300, lift: 260 }),
+    (z) => { STYLE.cap(ctx, 'trust fall…', 540, 360, 64); }],
+  [5.0, 7.0, 'cu', (z, t) => SHOT.cu(ctx, () => world(z, t, { draw: () => { MB(HOLD, 'smug', 380, GZ, 1.15, { hands: { f: 'grab', b: 'grab' } }); ctx.save(); ctx.translate(520, GZ - 200); ctx.rotate(-1.45); ctx.translate(-520, -(GZ - 200)); YA(PLANK, 'happy', 520, GZ - 200 + 300, 1.0, { noAnim: true, hands: { f: 'thumb', b: 'thumb' } }); ctx.restore(); } }), { x: 430, y: 1250, zoom: 1.6 }),
+    (z) => { if (z > 0.3) STYLE.stamp(ctx, 'CAUGHT ✅', 540, 430, 96); }],
+  [7.0, 8.6, 'xcu', (z, t) => SHOT.xcu(ctx, () => world(z, t, { draw: () => { MB(HOLD, z > 0.6 ? 'deadpan' : 'smug', 380, GZ, 1.15, { turn: -0.2 }); ctx.save(); ctx.translate(520, GZ - 200); ctx.rotate(-1.45); ctx.translate(-520, -(GZ - 200)); YA(PLANK, 'happy', 520, GZ - 200 + 300, 1.0, { noAnim: true }); ctx.restore(); } }), { x: z < 0.6 ? 380 : 560, y: z < 0.6 ? 1120 : 1360, zoom: 3.0 }),
+    (z) => { if (z > 0.6) STYLE.cap(ctx, '…wait. BARÇA?', 540, 360, 64); }],
+  [8.6, 11.0, 'slowmo', (z, t) => { const tt = SHOT.slow(z, 0.3, 0.35); SHOT.cu(ctx, () => world(z, t, { draw: () => { MB(z < 0.3 ? HOLD : z < 1.7 ? OPEN : SHRUG, z < 1.7 ? 'smug' : 'deadpan', 380, GZ, 1.15, { hands: { f: 'open', b: 'open' }, turn: z > 1.7 ? -0.3 : 0 }); const q = clamp((tt - 0.3) / 0.45); const y = lerp(GZ - 200 + 300, GZ + 160, eIn(q)); ctx.save(); ctx.translate(520, y - 300); ctx.rotate(-1.45 - q * 0.12); ctx.translate(-520, -(y - 300)); YA(PLANK, q < 1 ? 'shock' : 'dizzy', 520, y, 1.0, { noAnim: true }); ctx.restore(); if (q >= 1) { FX.burst(ctx, 'dust', 470, GZ + 20, t, 8.6 + 0.3 + 0.45 / 0.35, { ground: GZ + 40 }); FX.burst(ctx, 'grass', 470, GZ + 20, t, 8.6 + 0.3 + 0.45 / 0.35, { ground: GZ + 40 }); } } }), { x: 430, y: 1300, zoom: 1.45 }); SHOT.speedlines(ctx, t, { n: 10, alpha: 0.25, len: 120 }); },
+    (z) => { if (z > 1.6) STYLE.stamp(ctx, 'BONK', 540, 430, 110); }],
+  [11.0, 13.2, 'high', (z, t) => SHOT.high(ctx, () => { ctx.fillStyle = '#7da862'; ctx.fillRect(-600, -600, W + 1200, H + 1200); for (let i = 0; i < 400; i++) { ctx.strokeStyle = 'rgba(60,90,40,.4)'; ctx.lineWidth = 3; const x = (i * 97) % W, y = (i * 61) % H; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + 6, y - 14); ctx.stroke(); }
+      SET.topPlayer(ctx, 540, 1000, '#a50044', '#1a120c', 3.0, { rot: 1.4, label: 'YAMAL', skin: '#b9825c' }); for (let k = 0; k < 4; k++) { const a = t * 6 + k * 1.57; ctx.font = '50px serif'; ctx.textAlign = 'center'; ctx.fillText('⭐', 540 + Math.cos(a) * 120, 900 + Math.sin(a) * 50); }
+      [[330, 720, '#f7f7f7', 'MBAPPÉ'], [300, 1250, '#a50044', ''], [790, 1260, '#f7f7f7', ''], [780, 740, '#a50044', ''], [540, 1420, '#f7f7f7', '']].forEach(([x, y, k, l], i) => SET.topPlayer(ctx, x + Math.sin(t * 9 + i) * 6, y, k, '#2a1a12', 2.1, { label: l, skin: '#d9a27c', swing: Math.sin(t * 12 + i) })); }, { zoom: 1.0 }),
+    (z) => { STYLE.cap(ctx, 'HAHAHAHA 😂', 540, 360, 70); }],
+  [13.2, 16.5, 'dutch', (z, t) => SHOT.dutch(ctx, () => world(z, t, { laugh: 0.6, draw: () => { const fall = z > 1.4; YA(fall ? OPEN : ARMS, z > 1.0 ? 'smug' : 'angry', 600, GZ, 1.1, { f: -1, hands: { f: 'open', b: 'open' } }); if (!fall) MB(CROSSED, 'smug', 380, GZ, 1.15); else { const q = clamp((z - 1.4) / 0.9); ctx.save(); ctx.translate(380, GZ); ctx.rotate(-eIn(q) * 1.45); ctx.translate(-380, -GZ); MB(PLANK, q < 1 ? 'shock' : 'dizzy', 380, GZ, 1.15, { noAnim: true }); ctx.restore(); if (q >= 1) FX.burst(ctx, 'dust', 160, GZ + 40, t, 13.2 + 2.3, { ground: GZ + 40, n: 10 }); } } }), { x: 480, y: 1260, zoom: 1.2, rot: 0.16 }),
+    (z) => { STYLE.bubble(ctx, z < 1.4 ? 'your turn 😇' : 'oops… MADRID 🤷', 560, 520, 52); if (z > 2.5) STYLE.stamp(ctx, 'CLÁSICO RIVALS 😂', 540, 760, 86); }],
+];
+window.DURATION = 16.5; window.render = function (t) { window.T2T = t; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.filter = 'none'; ctx.clearRect(0, 0, W, H);
+  const seg = SEG.find(s => t >= s[0] && t < s[1]) || SEG[SEG.length - 1]; const z = t - seg[0];
+  const hs = [[10.2, 22], [15.5, 18]].reduce((m, [a, A]) => Math.max(m, t >= a && t < a + 0.3 ? A * (1 - (t - a) / 0.3) : 0), 0) + Math.sin(t * 3) * 3; // handheld phone feel
+  ctx.save(); ctx.translate(Math.sin(t * 2.1) * 6 + Math.sin(t * 91) * hs, Math.cos(t * 1.7) * 5 + Math.cos(t * 77) * hs); ctx.rotate(Math.sin(t * 0.9) * 0.006); seg[3](z, t); ctx.restore();
+  if (z < 0.16 && t > 0.1) PRO.whip(ctx, cv, z / 0.16, SEG.indexOf(seg) % 2 ? -1 : 1); STYLE.post(ctx, cv, t); ctx.setTransform(1, 0, 0, 1, 0, 0); seg[4](z, t);
+  ctx.font = '600 26px Inter'; ctx.fillStyle = 'rgba(42,29,18,.7)'; ctx.textAlign = 'center'; if (t > 15.5) ctx.fillText('Cartoon parody', 540, 1890); };
+if (!location.search.includes('render')) { const t0 = performance.now(); (function loop() { render(((performance.now() - t0) / 1000) % 16.5); requestAnimationFrame(loop); })(); }
+</script></body></html>
