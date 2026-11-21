@@ -19,7 +19,7 @@
     ots(ctx, draw, o = {}) { // foreground head + shoulder silhouette (blurred), subject sharp behind
       ctx.save(); cam(ctx, o.x ?? 540, o.y ?? 1250, o.zoom ?? 1.5); draw(ctx); ctx.restore();
       ctx.save(); ctx.filter = 'blur(10px)'; const side = o.side ?? -1, fx = side < 0 ? 120 : W - 120; ctx.fillStyle = o.fg || '#2a1a12';
-      ctx.beginPath(); ctx.ellipse(fx, H * 0.62, 330, 380, 0, 0, 7); ctx.fill(); ctx.fillStyle = o.shirt || '#13294b'; ctx.beginPath(); ctx.ellipse(fx + side * -40, H * 1.02, 560, 380, 0, 0, 7); ctx.fill(); if (o.hair) { ctx.fillStyle = o.hair; ctx.beginPath(); ctx.ellipse(fx, H * 0.5, 320, 220, 0, Math.PI, 0); ctx.fill(); } ctx.restore(); },
+      ctx.globalAlpha = 0.92; ctx.beginPath(); ctx.ellipse(fx + side * 60, H * 0.7, 250, 300, 0, 0, 7); ctx.fill(); ctx.fillStyle = o.shirt || '#13294b'; ctx.beginPath(); ctx.ellipse(fx + side * 20, H * 1.05, 480, 330, 0, 0, 7); ctx.fill(); if (o.hair) { ctx.fillStyle = o.hair; ctx.beginPath(); ctx.ellipse(fx + side * 60, H * 0.6, 250, 190, 0, Math.PI, 0); ctx.fill(); } ctx.restore(); },
     dutch(ctx, draw, o = {}) { ctx.save(); cam(ctx, o.x ?? 540, o.y ?? 1100, o.zoom ?? 1.25, o.rot ?? -0.24); draw(ctx); ctx.restore(); },
     split(ctx, panels, o = {}) { // panels: [{ draw, shot:'cu', opts }], vertical stack (default) or side by side
       const n = panels.length, vert = o.vertical ?? true, gap = 14;
