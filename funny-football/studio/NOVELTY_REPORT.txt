@@ -1,0 +1,23 @@
+29 episodes in the registry
+
+format    office sitcom ×1 · dictionary cards ×1 · news reaction ×1
+style     chibi-flat ×28 · chibi-old ×1
+music     trap ×5 · piano ×3 · chiptune ×2
+setting   stadium ×12 · street ×5 · pitch ×3
+shots     side ×28 · wide ×8 · close-up ×2
+ending    question ×27 · cliffhanger ×2
+cover     two-shot ×11 · close-up ×7 · wide ×6
+lead      ronaldo ×20 · messi ×15 · mbappe ×5
+palette   red ×5 · neon ×5 · green ×3
+
+Last 10 episodes, pairwise max similarity:
+  Ep21  most like Ep22  39%
+  Ep22  most like Ep21  39%
+  Ep23  most like Ep20  57%  ← too similar
+  Ep24  most like Ep5   54%  ← too similar
+  Ep25  most like Ep26  59%  ← too similar
+  Ep26  most like Ep25  59%  ← too similar
+  Ep27  most like Ep25  46%  ← too similar
+  Ep28  most like Ep15  54%  ← too similar
+  Ep29  most like Ep13  39%
+  Ep30  most like Ep11  56%  ← too similar
