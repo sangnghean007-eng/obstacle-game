@@ -126,3 +126,8 @@ The Shorts feed (watch time, swipe-away rate) drives most views; metadata mainly
 - Countries: Sudan 7.7%, Morocco 7.4% plus one cut-off country at 12.5%; long tail 72.7%. Arabic-speaking North/East Africa is a core FB audience → Saudi Pro League / Al Nassr stories fit.
 - Facebook's own tip: captions of 200–400 characters get ~17% more views.
 Rules from now on for Facebook: caption 200–400 characters (story recap + the joke), one short Arabic line with the key names/score (e.g. رونالدو · النصر · الأهلي), still no engagement bait, keep the "Cartoon parody" line.
+
+
+## YouTube TAGS — mandatory in every POSTS.md (owner, 21 Nov 2026: "tag Youtube đâu")
+- Every YouTube post has: title (ends with 3 hashtags incl. #shorts) + description + **Tags field** (comma-separated, ≤500 characters): full names + short names of every player, clubs (current, from facts.md), the gag/format keyword, generic 'football funny / football cartoon / soccer cartoon / football memes / football shorts', and 'soccer 365'.
+- Plus upload settings: Category Comedy · Not made for kids · Altered/synthetic content disclosure = Yes when AI-drawn faces are used · Language English.

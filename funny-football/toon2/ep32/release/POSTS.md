@@ -9,6 +9,10 @@ Trust fall challenge: Leo ✅ Kylian ✅ … and then someone said "next GOAT" �
 Cartoon parody · invented lines · not real events.
 #shorts #ronaldo #messi #yamal #mbappe #football
 
+Tags (YouTube Studio → Tags field, 377/500 characters):
+ronaldo, cristiano ronaldo, messi, lionel messi, lamine yamal, yamal, mbappe, kylian mbappe, trust fall, trust fall challenge, ronaldo vs messi, goat, next goat, ronaldo funny, messi funny, yamal funny, football funny, football cartoon, soccer cartoon, football animation, football memes, soccer memes, al nassr, inter miami, real madrid, barcelona, football shorts, soccer 365
+Upload settings: Category Comedy · Not made for kids · Altered/synthetic content: Yes (AI-drawn caricature faces) · Language English · Comments on.
+
 ## TikTok / Reels
 Ronaldo catches Messi. Ronaldo catches Mbappé. Yamal calls himself the next GOAT… 🫠 Who should catch him next? 👇
 Cartoon parody · invented lines

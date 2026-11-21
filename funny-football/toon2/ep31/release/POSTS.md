@@ -13,6 +13,10 @@ Cartoon parody · invented chat.
 Tags: haaland, erling haaland, odegaard, denmark vs norway, denmark 2-3 norway, nations league, haaland penalty, haaland 68 goals, norway, denmark, football cartoon, football funny, soccer 365
 Pinned comment: Who's in YOUR group chat that ruins everything? 😂👇
 
+Tags (YouTube Studio → Tags field, 253/500 characters):
+haaland, erling haaland, norway, denmark, denmark vs norway, norway football, world cup qualifiers, group chat, haaland goal, football funny, football cartoon, soccer cartoon, football animation, football memes, soccer memes, football shorts, soccer 365
+Upload settings: Category Comedy · Not made for kids · Altered/synthetic content: Yes (AI-drawn caricature faces) · Language English · Comments on.
+
 ## TikTok
 Caption: POV: you're 2-0 up and Haaland starts typing in your group chat 😭🤖 #haaland #football #nationsleague #denmark #norway
 Pinned comment: "VAR joined the group" 💀
