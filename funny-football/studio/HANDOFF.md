@@ -92,3 +92,8 @@ Playwright, Chromium, ffmpeg, numpy and scipy are already available.
 - New docs: UNIVERSE.md (recurring cast), GAG_BANK.md (used + 60 fresh gags), FORMATS_V2.md "Format v3" (12 formats + 5 style packs), EPISODES.csv + toon2/novelty.py (14-axis novelty gate).
 - Milestones: M1 docs → M1a novelty → M1b sound engine v2 → M2 rig2/fx → M3 styles/shots/sets/timeline → M4 Ep31 group-chat pilot → M4b daily task with vidIQ/Metricool/Drive → M5 QA extensions.
 - Work autonomously; never wait for approval between milestones.
+
+## 21 Nov 2026 (late) — AI puppets
+Ep32 v3 rebuilt on AI cut-out puppets (toon2/puppet.js, toon2/cast/make_puppet.py; see studio/LIKENESS.md "Puppet pipeline").
+Cast ready: Mbappé, Yamal, Ronaldo. Messi, Haaland, Jesus sheets queued (ElevenLabs free plan daily image cap) — reminder set for 22 Nov.
+Old versions kept: ep32/scene_v2_chibi.html. QA length rule is now 15–30 s (data rule).

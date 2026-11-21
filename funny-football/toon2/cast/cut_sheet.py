@@ -14,6 +14,17 @@ def cut(src):
     lab, _ = ndimage.label(white)
     border = set(np.unique(np.concatenate([lab[0], lab[-1], lab[:, 0], lab[:, -1]]))) - {0}
     fg = ~np.isin(lab, list(border))
+    # NOTE: a white kit with no outline at the bottom of a bust (Mbappé's busts) fades into the background and cannot be
+    # cut; puppet.js clips busts at the neck and draws the collar/shoulders instead (PUPPET.bust kit option).
+    # enclosed holes (gap between arm and torso, between legs) are background too: the AI background is neutral
+    # white (~251, B >= R) while white kit fabric is warmer (~246, R > B), so only true holes are removed.
+    imf = im.astype(float)
+    for i, s in enumerate(ndimage.find_objects(lab)):
+        if i + 1 in border or s is None: continue
+        m = lab[s] == i + 1
+        if m.sum() < 250: continue
+        px = imf[s][m]; mu = px.mean(0)
+        if mu.mean() >= 248.5 and mu[2] >= mu[0] - 0.5: fg[s][m] = False
     fg = ndimage.binary_erosion(fg, iterations=1)                       # trim the white halo
     blobs, n = ndimage.label(ndimage.binary_dilation(fg, iterations=int(os.environ.get("DIL", 2))))  # join hair curls / loose bits
     sl = ndimage.find_objects(blobs)

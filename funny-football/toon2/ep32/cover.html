@@ -1,0 +1,69 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Trust Fall cover</title><style>html,body{margin:0;background:#000}</style></head><body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../pro.js"></script><script src="../fx.js"></script><script src="../styles.js"></script><script src="../shots.js"></script><script src="../puppet.js"></script>
+<script>
+// Ep32 "TRUST FALL" v3 — Clásico rivals (Mbappé: Real Madrid, Yamal: Barcelona; facts: ep32/facts.md). Phone-filmed park prank.
+// v3 (21 Nov 2026): heroes are AI cut-out puppets (cast/*, puppet.js), not code chibis; light ink look keeps the kit colours;
+// timings are unchanged so audio.py still hits every beat (bonks 10.2 s and 15.5 s).
+const W = 1080, H = 1920, cv = document.getElementById('c'), ctx = cv.getContext('2d');
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v)), lerp = (a, b, k) => a + (b - a) * k, eOut = k => 1 - (1 - clamp(k)) ** 3, eIn = k => clamp(k) ** 2;
+const eBack = k => { k = clamp(k); const c = 1.7; return 1 + (c + 1) * (k - 1) ** 3 + c * (k - 1) ** 2; };
+PUPPET.load(['mbappe', 'yamal']);
+const GZ = 1600, FONT = '"Caveat","Comic Sans MS",cursive', INK = '#2a1d12';
+// ---- light ink look: hand-drawn boil + paper grain, colours kept (the kits are how people recognise the players)
+const paper = (() => { const c = document.createElement('canvas'); c.width = 540; c.height = 960; const g = c.getContext('2d'); const d = g.createImageData(540, 960); let r = 7;
+  for (let i = 0; i < d.data.length; i += 4) { r = (r * 16807) % 2147483647; const v = 236 + (r % 20); d.data[i] = v; d.data[i + 1] = v - 6; d.data[i + 2] = v - 18; d.data[i + 3] = 255; } g.putImageData(d, 0, 0); return c; })();
+const snap = document.createElement('canvas'); snap.width = W; snap.height = H; const sg = snap.getContext('2d');
+function post(t) { sg.clearRect(0, 0, W, H); sg.drawImage(cv, 0, 0); ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0);
+  const k = Math.floor(t * 30 / 3); let r = (k * 9301 + 49297) % 233280; const rnd = () => (r = (r * 9301 + 49297) % 233280) / 233280;
+  for (let y = 0; y < H; y += 64) { const dx = (rnd() - 0.5) * 3; ctx.drawImage(snap, 0, y, W, 64, dx, y, W, 64); }
+  ctx.globalCompositeOperation = 'multiply'; ctx.globalAlpha = 0.55; ctx.drawImage(paper, 0, 0, W, H);
+  ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1; const v = ctx.createRadialGradient(540, 960, 500, 540, 960, 1250); v.addColorStop(0, 'rgba(40,25,10,0)'); v.addColorStop(1, 'rgba(40,25,10,.38)'); ctx.fillStyle = v; ctx.fillRect(0, 0, W, H); ctx.restore(); }
+// ---- text: big, hand-lettered, always on a paper card so it reads on a phone in 1 s
+function card(s, x, y, size, o = {}) { ctx.save(); ctx.font = `700 ${size}px ${FONT}`; const tw = ctx.measureText(s).width, pw = tw + size * 0.9, ph = size * 1.35;
+  ctx.translate(x, y); ctx.rotate(o.rot || 0); const sc = o.pop != null ? eBack(o.pop) : 1; ctx.scale(sc, sc);
+  ctx.fillStyle = 'rgba(0,0,0,.18)'; ctx.beginPath(); ctx.roundRect(-pw / 2 + 8, -ph / 2 + 10, pw, ph, 18); ctx.fill();
+  ctx.fillStyle = o.bg || '#fffaf0'; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.beginPath(); ctx.roundRect(-pw / 2, -ph / 2, pw, ph, 18); ctx.fill(); ctx.stroke();
+  if (o.tail) { ctx.beginPath(); ctx.moveTo(o.tail * 40 - 30, ph / 2 - 3); ctx.lineTo(o.tail * 110, ph / 2 + 70); ctx.lineTo(o.tail * 40 + 30, ph / 2 - 3); ctx.fill(); ctx.stroke(); ctx.fillRect(o.tail * 40 - 27, ph / 2 - 8, 54, 8); }
+  ctx.fillStyle = o.col || INK; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(s, 0, 4); ctx.restore(); }
+function stamp(s, x, y, size, k, col = '#c0281c') { if (k <= 0) return; ctx.save(); ctx.translate(x, y); ctx.rotate(-0.07); const sc = 1.6 - 0.6 * eOut(k * 2.5); ctx.scale(sc, sc); ctx.globalAlpha = clamp(k * 4);
+  ctx.font = `700 ${size}px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineWidth = 16; ctx.strokeStyle = '#fffaf0'; ctx.strokeText(s, 0, 0); ctx.fillStyle = col; ctx.fillText(s, 0, 0);
+  const tw = ctx.measureText(s).width; ctx.lineWidth = 7; ctx.strokeStyle = col; ctx.strokeRect(-tw / 2 - 30, -size * 0.65, tw + 60, size * 1.3); ctx.restore(); }
+// ---- the park + the friends filming it (silhouettes with phones: they never compete with the two faces)
+const PARK = {}; // the park never changes: drawn once per blur level into a cache (a full-canvas blur every frame cost ~1 s/frame)
+function park(t, blur = 0) { if (!PARK[0]) { const c = document.createElement('canvas'); c.width = W + 1800; c.height = H + 1800; const g = c.getContext('2d'); g.translate(900, 900); parkDraw(g, 0); PARK[0] = c; }
+  if (!PARK[blur]) { const f = 1 + blur * 0.7, sm = document.createElement('canvas'); sm.width = Math.round((W + 1800) / f); sm.height = Math.round((H + 1800) / f); // blur = shrink + smooth upscale
+    sm.getContext('2d').drawImage(PARK[0], 0, 0, sm.width, sm.height); const c = document.createElement('canvas'); c.width = W + 1800; c.height = H + 1800; const g = c.getContext('2d'); g.imageSmoothingQuality = 'high'; g.drawImage(sm, 0, 0, c.width, c.height); PARK[blur] = c; }
+  ctx.drawImage(PARK[blur], -900, -900); }
+function parkDraw(ctx) { ctx.save();
+  const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#d9ead0'); g.addColorStop(0.42, '#a9cf95'); g.addColorStop(1, '#6d9a52'); ctx.fillStyle = g; ctx.fillRect(-900, -900, W + 1800, H + 1800);
+  for (let i = -2; i < 10; i++) { const x = i * 150 - 30; ctx.fillStyle = i % 2 ? '#6f9452' : '#5d8344'; ctx.beginPath(); ctx.arc(x, 640 + (i % 3) * 34, 180, 0, 7); ctx.fill(); ctx.fillStyle = '#6b4a2a'; ctx.fillRect(x - 15, 720, 30, 300); }
+  ctx.fillStyle = '#8a6a44'; for (let x = -400; x < W + 400; x += 38) ctx.fillRect(x, 880, 22, 170); ctx.fillRect(-400, 900, W + 800, 14); ctx.fillRect(-400, 990, W + 800, 14);
+  ctx.fillStyle = '#80ad64'; ctx.fillRect(-900, 1040, W + 1800, H + 900); ctx.strokeStyle = 'rgba(50,85,35,.45)'; ctx.lineWidth = 3;
+  for (let i = 0; i < 320; i++) { const x = ((i * 97) % (W + 600)) - 300, y = 1060 + (i * 61) % 1100; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + 6, y - 16); ctx.stroke(); } ctx.restore(); }
+const FR = document.createElement('canvas'); FR.width = W / 6; FR.height = H / 6; const frg = FR.getContext('2d');
+function friends(t, laugh, blur = 3) { const main = ctx; frg.setTransform(1 / 6, 0, 0, 1 / 6, 0, 0); frg.clearRect(0, 0, W, H); // drawn at 1/6 size and scaled up = cheap soft blur
+  { const ctx = frg; friendsDraw(ctx, t, laugh); }
+  main.save(); main.globalAlpha = 0.75; main.filter = 'saturate(.6)'; main.imageSmoothingQuality = 'high'; main.drawImage(FR, 0, 0, W, H); main.restore();
+  if (laugh > 0.2) { ctx.save(); ctx.font = `700 58px ${FONT}`; ctx.textAlign = 'center'; ctx.fillStyle = INK; ['HAHA', '😂', 'LOL', 'HAHAHA'].forEach((s, i) => ctx.fillText(s, [90, 235, 850, 1000][i], 880 - Math.abs(Math.sin(t * 9 + i)) * 30)); ctx.restore(); } }
+function friendsDraw(ctx, t, laugh) { ctx.save(); // 4 friends: 2 Barça, 2 Madrid — they all film, they all laugh
+  [[90, 1180, '#a50044', 1], [235, 1150, '#f4f4f4', 1], [850, 1160, '#f4f4f4', -1], [1000, 1190, '#a50044', -1]].forEach(([x, y, k, f], i) => {
+    const j = laugh * Math.abs(Math.sin(t * 13 + i * 1.7)) * 22; y -= j; ctx.fillStyle = '#3a2a1e'; ctx.beginPath(); ctx.arc(x, y - 250, 46, 0, 7); ctx.fill();
+    ctx.fillStyle = k; ctx.beginPath(); ctx.roundRect(x - 62, y - 205, 124, 170, 30); ctx.fill(); if (k === '#a50044') { ctx.fillStyle = '#004d98'; ctx.fillRect(x - 20, y - 205, 22, 170); }
+    ctx.fillStyle = '#2b2b33'; ctx.fillRect(x - 50, y - 35, 40, 130); ctx.fillRect(x + 10, y - 35, 40, 130);
+    ctx.save(); ctx.translate(x + f * 40, y - 255); ctx.rotate(f * 0.15); ctx.fillStyle = '#111'; ctx.fillRect(-26, -44, 52, 88); ctx.fillStyle = `rgba(150,210,255,${0.6 + 0.3 * Math.sin(t * 7 + i)})`; ctx.fillRect(-21, -38, 42, 76); ctx.restore(); });
+  ctx.restore(); }
+// ---- heroes
+const idle = (t, k = 1) => ({ sq: Math.sin(t * 3.2) * 0.008 * k, tilt: Math.sin(t * 1.7) * 0.03 * k });
+const MB = (o, t) => PUPPET.draw(ctx, 'mbappe', Object.assign({ h: 900 }, idle(t), o));
+const YA = (o, t) => PUPPET.draw(ctx, 'yamal', Object.assign({ h: 860 }, idle(t + 1), o));
+function phoneHUD(t) { ctx.save(); ctx.font = '700 40px Inter, sans-serif'; ctx.fillStyle = '#e02020'; if (Math.floor(t * 2) % 2) { ctx.beginPath(); ctx.arc(110, 258, 15, 0, 7); ctx.fill(); }
+  ctx.fillText('REC', 138, 272); ctx.fillStyle = 'rgba(255,255,255,.9)'; const s = Math.floor(t); ctx.fillText(`00:${String(s).padStart(2, '0')}`, 870, 272); ctx.restore(); }
+
+window.DURATION = 1; window.render = function (t) { ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, W, H); t = 10.6;
+  SHOT.cu(ctx, () => { park(t); friends(t, 0.8);
+    MB({ x: 400, y: GZ, armL: 95, armR: 100, expr: 'deadpan', tilt: -0.12 }, t);
+    YA({ x: 940, y: GZ, h: 800, rot: -1.57, armL: 55, armR: 55, legL: 8, legR: 8, expr: 'shock' }, t);
+    for (let k = 0; k < 4; k++) { const a = k * 1.57; ctx.font = '60px serif'; ctx.textAlign = 'center'; ctx.fillText('⭐', 220 + Math.cos(a) * 110, 1400 + Math.sin(a) * 40); } }, { x: 580, y: 1180, zoom: 1.2 });
+  post(t); ctx.setTransform(1, 0, 0, 1, 0, 0);
+  card("\"I'll catch you bro\" 🤝", 540, 300, 84, { rot: -0.03 }); stamp('BONK', 760, 520, 150, 1); };
+</script></body></html>

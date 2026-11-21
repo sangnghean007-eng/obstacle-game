@@ -17,3 +17,18 @@ Credits used so far: 570 of the 2,000 free-credit budget.
 - Cutting: `python3 toon2/cast/cut_sheet.py toon2/cast/<name>/sheet.png` finds the 9 figures automatically (DIL=2 default; raise to 4 if curly hair splits into bits).
 - Rendering: cast PNGs are file:// images, so Chromium must run with `--allow-file-access-from-files` (range_render.js does) or the canvas is tainted and style post-processing fails.
 - Use in a scene: `<script src="../castimg.js">`, `CASTIMG.preload([...])`, then `headFn: CASTIMG.head(ctx, name, expr, codePortraitFallback)`. Ep32 v2 is the first episode on AI heads.
+
+## Puppet pipeline (v3, 21 Nov 2026) — the default for hero characters
+Owner feedback "Đừng hời hợt": an AI head on a code chibi body looked pasted on. Heroes are now **whole AI cut-out puppets**.
+1. `python3 toon2/cast/cut_sheet.py toon2/cast/<name>/sheet.png` — 9 cuts; also removes enclosed background holes (arm/torso gaps).
+2. Add the character to `RIGS` in `toon2/cast/make_puppet.py` (view with arms hanging; arm polygons start at the sleeve hem;
+   pivots: shoulders inside the sleeve, hips under the shorts, neck), run it, and check `cast/<name>/puppet_check.png`.
+3. In a scene: `<script src="../puppet.js">`, `PUPPET.load([...])`, `PUPPET.draw(ctx, name, { x, y, h, rot, armL, armR, legL, legR, tilt, expr })`;
+   close-ups: `PUPPET.bust(ctx, name, expr, x, y, size, { kit, stripes })`.
+Rules learned:
+- Arms are drawn **behind** the torso and rotate from inside the sleeve; keep arm angles ≤ ~100° or the cut shows.
+- Never `flip` a puppet with a shirt number (the "10" mirrors to "01"): re-block the shot instead.
+- When a puppet lies flat, its whole length must be inside the frame — check the face at the landing frame.
+- Mbappé's busts have no usable shirt (white kit fades into the white sheet background): `bust(..., { kit: '#f7f7f7', stripes: '#111' })` draws it.
+- Background people stay blurred silhouettes, so nothing competes with the two faces.
+- Ink style at full strength (58 % sepia) kills the kit colours; Ep32 uses a light ink pass (boil + paper grain, colours kept).
