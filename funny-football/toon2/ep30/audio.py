@@ -3,7 +3,7 @@ Ronaldo scenes = same theme in minor, empty-stadium room tone, one ball echo. He
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'sfx'))
 from fx2 import *
-SEGS = [('e0', 2.5), ('e1', 2.5), ('e2', 3.0), ('e3', 3.0), ('e4', 2.5), ('e5', 2.5), ('e6', 3.5), ('e7', 3.0), ('e8', 3.0), ('e9', 3.5), ('e10', 4.0), ('e11', 2.5)]
+SEGS = [('e0', 2.5), ('e1', 3.0), ('e2', 3.0), ('e3', 3.0), ('e4', 2.5), ('e5', 3.0), ('e6', 3.5), ('e7', 2.5), ('e8', 3.0), ('e9', 2.5), ('e10', 3.5), ('e11', 2.5)]
 ST = {}; _t = 0
 for n, d in SEGS: ST[n] = _t; _t += d
 END = _t; m = Mix2(END, ep=30); at = lambda n, z: ST[n] + z
@@ -26,12 +26,16 @@ phrase('e10', ['F2', 'A2', 'C3', 'E3'], ['C5', 'E5', 'G5', 'A5', 'C6', 'E6'], 1.
 def applause(t, d, g=.18): m.crowd(t, 'cheer', d, g)
 for n in ('e0', 'e2', 'e4', 'e6', 'e8'): applause(ST[n] + .1, dict(SEGS)[n] - .2, .12 if n != 'e2' else .2)
 for n in ('e1', 'e3', 'e5', 'e7', 'e9', 'e10'): nn = int(dict(SEGS)[n] * SR); m.f(lp(noise(dict(SEGS)[n]), 400) * env(nn, .2, .2), ST[n], .05)
-# ball sounds on the Ronaldo side (echoey), the post, the quiet goal
-m.thump(at('e1', 1.2), .25); m.f(osc(1900, .8) * dec(.8, 4) + .5 * osc(2650, .8) * dec(.8, 5), at('e3', 1.0), .18); m.thump(at('e3', 0.7), .4); m.thump(at('e7', 1.0), .45); m.vo('ronaldo', 'siu', at('e7', 1.4), .25)
+# Ronaldo side: bench clock ticks, footsteps out, phone REC beep, notification pings, the light switch
+for i in range(6): m.f(osc(1200, .03) * dec(.03, 60), at('e1', .3 + i * .45), .08)
+for i in range(8): m.footstep(at('e3', .2 + i * .32), .25, .3)
+m.f(lp(noise(.5), 600) * dec(.5, 6), at('e3', 2.6), .25)
+m.f(osc(880, .12) * env(int(.12 * SR), .01, .05), at('e5', .4), .15)
+for i in range(6): m.f(osc(1567, .08) * dec(.08, 30), at('e7', .4 + i * .3), .08)
+m.f(hp(noise(.04), 2500) * dec(.04, 60), at('e9', 1.8), .4)
 # Messi: his last goal net + roar, the toss "whoosh", heartbeat in close-ups
 m.thump(at('e4', 1.0), .5); m.crowd(at('e4', 1.05), 'cheer', 1.4, .35); m.whoosh(at('e6', .3), 1.2, .25, True)
 for n in ('e2', 'e9'):
     for i in range(3): m.thump(at(n, .4 + i * .8), .22)
-m.thump(at('e9', 1.5), .5); m.f(hp(noise(.2), 1500) * env(int(.2 * SR), .01, .1), at('e9', 1.6), .3); m.timpani(at('e9', 2.2), 60, .4)
-m.sparkle(at('e10', 2.2), .8, .2); m.vo('messi', 'laugh', at('e10', 2.5), .25, -.3, 'snicker')
+m.crowd(at('e10', 0.1), 'cheer', 3.0, .12)
 print(round(END, 2)); m.write(sys.argv[1])

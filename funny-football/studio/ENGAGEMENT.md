@@ -212,3 +212,6 @@ Before ANY video is sent: `python3 toon2/qa.py <video.mp4>` must print QA PASS (
 
 ### Cover as the first 0.1 s (owner, Nov 20 2026)
 Every final export: render → `toon2/add_cover.sh <video.mp4> <cover.jpg>` (puts the cover as the first 0.1 s, audio shifted to stay in sync) → `toon2/qa.py` → send. The cover must be a real frame of the episode's hook moment, never a spoiler-free stock image.
+
+### Facts go stale fast (owner, 21 Nov 2026: "Kiểm tra lại thông tin đi")
+I used a July 2026 report ("Ronaldo will continue") when he had already retired from Portugal on 5 Nov 2026. Before any script: search the LATEST news (sort by date, last 30 days) for every person's current status (club, national team, retired?, coach), and write the date of each fact in facts.md. Never rely on an earlier search in the same session for status questions.
