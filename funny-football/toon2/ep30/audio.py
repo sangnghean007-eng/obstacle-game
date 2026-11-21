@@ -28,9 +28,10 @@ for n in ('e0', 'e2', 'e4', 'e6', 'e8'): applause(ST[n] + .1, dict(SEGS)[n] - .2
 for n in ('e1', 'e3', 'e5', 'e7', 'e9', 'e10'): nn = int(dict(SEGS)[n] * SR); m.f(lp(noise(dict(SEGS)[n]), 400) * env(nn, .2, .2), ST[n], .05)
 # Ronaldo side: bench clock ticks, footsteps out, phone REC beep, notification pings, the light switch
 for i in range(6): m.f(osc(1200, .03) * dec(.03, 60), at('e1', .3 + i * .45), .08)
-for i in range(8): m.footstep(at('e3', .2 + i * .32), .25, .3)
-m.f(lp(noise(.5), 600) * dec(.5, 6), at('e3', 2.6), .25)
-m.f(osc(880, .12) * env(int(.12 * SR), .01, .05), at('e5', .4), .15)
+for i in range(7): m.f(hp(noise(.05), 3000) * dec(.05, 50), at('e3', .2 + i * .37), .25)
+m.timpani(at('e3', .9), 55, .45)
+for i in range(8): m.footstep(at('e5', .2 + i * .32), .25, .3)
+m.f(lp(noise(.5), 600) * dec(.5, 6), at('e5', 2.6), .25)
 for i in range(6): m.f(osc(1567, .08) * dec(.08, 30), at('e7', .4 + i * .3), .08)
 m.f(hp(noise(.04), 2500) * dec(.04, 60), at('e9', 1.8), .4)
 # Messi: his last goal net + roar, the toss "whoosh", heartbeat in close-ups

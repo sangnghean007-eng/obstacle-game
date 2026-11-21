@@ -1783,12 +1783,12 @@ function phone30(x, y, s, t, screenFn) { ctx.save(); ctx.translate(x, y); ctx.sc
 function e_rBench(z, t) { benchScene(t); RO30P(SITM, z > 1.5 ? 'sad' : 'deadpan', 470, GZ - 40, 1.0, { gy: GZ - 60 }); const mins = Math.min(90, Math.floor(z / 2.6 * 90));
   rr(730, 1010, 240, 110, 14, '#111', '#fff', 5); txt(`${mins}'`, 850, 1067, 64, '#ffd60a', null); cap30('BENCHED FOR ALL 90 MINUTES', z - 0.8, '#cfe0ff', 'rgba(0,10,30,.75)'); }
 function e_rWalk(z, t) { emptyArena(t); rr(820, 900, 220, 560, 10, '#141c34', '#3a4a66', 8); txt('EXIT', 930, 950, 40, '#3fe07a', null); const x = lerp(420, 900, clamp(z / 2.6)); ctx.save(); ctx.globalAlpha = 1 - clamp((z - 2.3) / 0.5);
-  RO30P(runPose(t * 0.5, 8), 'sad', x, GZ, 1.05, { f: 1 }); rr(x - 110, GZ - 260, 80, 110, 14, '#222', DARK, 4); ctx.restore(); cap30('HE WALKED OUT OF THE CAMP', z - 0.6, '#cfe0ff', 'rgba(0,10,30,.75)'); }
+  RO30P(runPose(t * 0.5, 8), 'sad', x, GZ, 1.05, { f: 1 }); rr(x - 110, GZ - 260, 80, 110, 14, '#222', DARK, 4); ctx.restore(); cap30('HE PACKED HIS BAG AND LEFT THE CAMP', z - 0.6, '#cfe0ff', 'rgba(0,10,30,.75)'); }
 function e_rPhone(z, t) { hotelRoom(t); RO30P({ bArm: [-30, -10], fArm: [120, 100], bLeg: [80, 0], fLeg: [90, 0] }, 'sad', 470, 1560, 1.05, { gy: 1560, f: 1 });
   phone30(690, 1110, 0.9, t, () => { ctx.fillStyle = '#e63946'; ell(-50, -130, 8, 8, '#e63946'); txt('REC', -20, -130, 22, '#fff', null, 'left'); });
   cap30('5 NOV 2026 · HIS GOODBYE: A PHONE VIDEO', z - 0.5, '#cfe0ff', 'rgba(0,10,30,.75)'); }
 function e_rQuote(z, t) { hotelRoom(t); phone30(540, 1100, 2.1, t, () => { ctx.save(); ctx.translate(0, -30); portrait.draw(ctx, 'ronaldo', 0, 0, 0.22, { expr: 'sad', kit: '#c8102e', trim: '#046a38' }); ctx.restore(); rr(-80, 90, 160, 60, 8, 'rgba(0,0,0,.6)', null); ctx.font = `800 13px ${F}`; txt('"I leave with my', 0, 108, 13, '#fff', null); txt('head held high"', 0, 128, 13, '#fff', null);
-    for (let i = 0; i < 8; i++) { const q = ((z * 0.7 + i / 8) % 1); txt('❤️', 60 + Math.sin(i) * 15, 150 - q * 300, 18, '#fff', null); } }); cap30('234 GAMES · 146 GOALS', z - 0.8, '#ffd60a', 'rgba(0,10,30,.75)'); }
+    for (let i = 0; i < 8; i++) { const q = ((z * 0.7 + i / 8) % 1); txt('❤️', 60 + Math.sin(i) * 15, 150 - q * 300, 18, '#fff', null); } }); cap30('5 NOV 2026 · 234 GAMES · 146 GOALS', z - 0.8, '#ffd60a', 'rgba(0,10,30,.75)'); }
 function e_rShirt(z, t) { locker(t); const sx = 540, sy = 1050; ctx.strokeStyle = '#888'; ctx.lineWidth = 6; ctx.beginPath(); ctx.moveTo(sx, sy - 170); ctx.lineTo(sx, sy - 120); ctx.stroke(); ell(sx, sy - 175, 14, 8, '#999', 3); jersey(sx, sy, 1.15, '#c8102e', '#ffd60a', '7', 'RONALDO', Math.sin(t * 1.5) * 0.03);
   const off = clamp((z - 1.8) / 0.25); if (off > 0) { ctx.fillStyle = `rgba(0,0,0,${0.85 * off})`; ctx.fillRect(-600, -500, 2400, 2800); } if (z > 1.8 && z < 2.0) txt('click', 860, 900, 36, '#fff', null); }
 function e_split(z, t) { // left: Messi's stadium, right: Ronaldo's phone in the dark
@@ -1797,7 +1797,19 @@ function e_split(z, t) { // left: Messi's stadium, right: Ronaldo's phone in the
   ctx.fillStyle = '#fff'; ctx.fillRect(536, -500, 8, 2800);
   cap30('ONE GOT A STADIUM. ONE GOT A PHONE.', z - 0.6, '#fff', 'rgba(0,0,0,.75)'); }
 function e_end3(z, t) { e_split(3.5, t); HUD(() => { pop(eOB(z / 0.15), W / 2, 600, () => { rr(-470, -90, 940, 180, 34, 'rgba(0,0,0,.8)', '#ffd60a', 6); txt('Two legends. Two goodbyes.', 0, -25, 52, '#fff', null); txt('Who deserved better? 👇', 0, 45, 46, '#ffd60a', null); }); txt('Cartoon tribute · Oct–Nov 2026', W / 2, 1890, 28, '#fff', DARK, 'center', 800); }); }
-const LEN = [['e0', 2.5, e_m0, 1, 0], ['e1', 3.0, e_rBench, 1, 0], ['e2', 3.0, e_m1, 1, 0], ['e3', 3.0, e_rWalk, 1, 0], ['e4', 2.5, e_m2, 1, 0], ['e5', 3.0, e_rPhone, 1, 0], ['e6', 3.5, e_m3, 1, 0], ['e7', 2.5, e_rQuote, 1, 0], ['e8', 3.0, e_frame, 1, 0], ['e9', 2.5, e_rShirt, 1, 0], ['e10', 3.5, e_split, 1, 0], ['e11', 2.5, e_end3, 1, 0]];
+
+// v4: the real sequence — warm-up and never on (Norway), "Apologise for what?" (press conference), walkout
+const C_JJ = Object.assign({}, CH.mate1, { skin: '#d49a72', shade: '#b47c58', kit: mkKit('#13294b', '#c8102e', '#13294b', '#13294b', '#fff'), num: '', name: 'JORGE JESUS', nameSize: 11 });
+const JJ = (p, e, x, y = GZ, s = 1.0, o = {}) => who(C_JJ, 'jesus', p, e, x, y, s, Object.assign({ gy: y, f: -1 }, o));
+function e_rWarm(z, t) { emptyArena(t); rr(-100, GZ - 20, 1300, 12, 4, 'rgba(255,255,255,.6)', null); const mins = Math.min(90, 46 + Math.floor(z / 2.6 * 44));
+  RO30P({ bArm: [-60 + Math.sin(t * 9) * 40, -20], fArm: [60 - Math.sin(t * 9) * 40, 20], bLeg: [-20 + Math.sin(t * 9) * 25, 0], fLeg: [20 - Math.sin(t * 9) * 25, 0] }, z > 1.6 ? 'sad' : 'neutral', 330, GZ - Math.abs(Math.sin(t * 9)) * 20, 1.0); if (z > 1.2) { const q = (t * 1.4) % 1; ell(400, GZ - 520 + q * 120, 8, 12, `rgba(150,210,255,${1 - q})`); }
+  JJ(P_CROSS, 'deadpan', 760, GZ, 1.0); rr(730, 1010, 240, 110, 14, '#111', '#fff', 5); txt(`${mins}'`, 850, 1067, 64, '#ffd60a', null);
+  cap30('WARMED UP FROM HALF-TIME. NEVER CAME ON.', z - 0.5, '#cfe0ff', 'rgba(0,10,30,.8)'); }
+function e_rPresser(z, t) { ctx.fillStyle = '#10203a'; ctx.fillRect(-600, -500, 2400, 2800); for (let i = 0; i < 6; i++) for (let j = 0; j < 8; j++) txt('🇵🇹', 80 + j * 130, 700 + i * 130, 40, '#fff', null); ctx.fillStyle = 'rgba(16,32,58,.75)'; ctx.fillRect(-600, -500, 2400, 2800);
+  rr(140, 1380, 800, 300, 16, '#1d2d4a', DARK, 6); JJ({ bArm: [-30, -10], fArm: [100, 60 + Math.sin(t * 6) * 15], bLeg: [80, 0], fLeg: [90, 0] }, z > 0.8 ? 'smug' : 'deadpan', 520, 1560, 1.25, { f: 1 }); rr(720, 1300, 24, 100, 6, '#222', DARK, 3); ell(732, 1295, 24, 20, '#333', 3);
+  for (let i = 0; i < 5; i++) if (((t * 3 + i * 0.37) % 1) < 0.08) { ctx.fillStyle = 'rgba(255,255,255,.5)'; ctx.fillRect(-600, -500, 2400, 2800); }
+  cap30('PROMISED: AN APOLOGY AT THE PRESS CONFERENCE', z - 0.2, '#cfe0ff', 'rgba(0,10,30,.8)'); HUD(() => { if (z > 0.9) bubble('"APOLOGISE FOR WHAT?"', 540, 575, z - 0.9, 50); }); }
+const LEN = [['e0', 2.5, e_m0, 1, 0], ['e1', 3.0, e_rWarm, 1, 0], ['e2', 3.0, e_m1, 1, 0], ['e3', 3.0, e_rPresser, 1, 0], ['e4', 2.5, e_m2, 1, 0], ['e5', 3.0, e_rWalk, 1, 0], ['e6', 3.5, e_m3, 1, 0], ['e7', 2.5, e_rQuote, 1, 0], ['e8', 3.0, e_frame, 1, 0], ['e9', 2.5, e_rShirt, 1, 0], ['e10', 3.5, e_split, 1, 0], ['e11', 2.5, e_end3, 1, 0]];
 const SEG = []; { let t = 0; for (const [n, d, f, sl, off] of LEN) { SEG.push([t, t + d * sl, f, n, sl, off || 0]); t += d * sl; } }
 const DURATION = SEG[SEG.length - 1][1];
 window.SEGS = SEG.map(s => [s[3], +s[0].toFixed(2)]);
