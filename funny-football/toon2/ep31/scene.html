@@ -1,0 +1,107 @@
+<!doctype html><html><head><meta charset="utf-8"><title>The Group Chat</title><style>html,body{margin:0;background:#000}</style></head><body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../chibi.js"></script><script src="../chibi_cast.js"></script><script src="../anim.js"></script><script src="../portrait.js"></script><script src="../pro.js"></script>
+<script src="../rig2.js"></script><script src="../fx.js"></script><script src="../styles.js"></script><script src="../shots.js"></script><script src="../sets.js"></script><script src="../timeline.js"></script>
+<script>
+// Ep31 "THE GROUP CHAT" — Denmark 2-3 Norway, 17 Nov 2026 (facts: ep31/facts.md). New pipeline: comic style, group-chat format, 8 shot types.
+const W = 1080, H = 1920, cv = document.getElementById('c'), ctx = cv.getContext('2d'); const STYLE = STYLES.comic; const FONT = '"Bangers","Impact",Inter,sans-serif';
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v)), lerp = (a, b, k) => a + (b - a) * k, eOut = k => 1 - (1 - clamp(k)) ** 3, eBack = k => EASE.back(clamp(k));
+const kit = (shirt, trim, shorts, sock, num) => ({ shirt, sleeve: shirt, cuff: trim, collar: trim, shorts, sock, sockShade: sock, sockBand: trim, boot: '#111', num });
+const NOR = kit('#f4f4f4', '#c8102e', '#13294b', '#f4f4f4', '#c8102e'), DEN = kit('#c8102e', '#fff', '#fff', '#c8102e', '#fff'), GK = kit('#ffd60a', '#111', '#111', '#ffd60a', '#111');
+const C_HA = Object.assign({}, CH.mate1, { skin: '#f3d3bd', shade: '#ddb398', shoulderW: 92, waistW: 68, torsoH: 160, leg: 132, arm: 156, kit: NOR, num: '9', name: 'HAALAND', nameSize: 15 });
+const C_OD = Object.assign({}, CH.mate1, { skin: '#f0c9ae', shade: '#d6a487', kit: NOR, num: '10', name: 'ØDEGAARD', nameSize: 12, head: Object.assign({}, CH.mate1.head, { hair: 'short', hairCol: '#4a3324' }) });
+const C_GK = Object.assign({}, CH.mate1, { kit: GK, num: '1', name: '', head: Object.assign({}, CH.mate1.head, { hairCol: '#c9a46a' }) });
+const C_DF = Object.assign({}, CH.mate1, { kit: DEN, num: '', name: '' });
+const HA = (p, e, x, y, s = 1.1, o = {}) => chibi.draw(ctx, C_HA, p, 'neutral', x, y, s, Object.assign({ f: 1 }, o, { headFn: (R) => portrait.draw(ctx, 'haaland', 0, -R * 0.28, R * 2.1 / 330, { headOnly: true, expr: e, kit: '#f4f4f4', turn: o.turn || 0 }) }));
+const OD = (p, e, x, y, s = 1, o = {}) => chibi.draw(ctx, C_OD, p, e, x, y, s, Object.assign({ f: 1 }, o));
+const GKd = (p, e, x, y, s = 1, o = {}) => chibi.draw(ctx, C_GK, p, e, x, y, s, Object.assign({ f: -1 }, o));
+const DF = (p, e, x, y, s = 1, o = {}) => chibi.draw(ctx, C_DF, p, e, x, y, s, Object.assign({ f: -1 }, o));
+const GZ = 1600, KICK = { bArm: [-60, -30], fArm: [60, 30], bLeg: [-40, -20], fLeg: [100, 80] }, STRIDE = (t) => chibi.mix('run1', 'run2', (Math.sin(t * 7) + 1) / 2), DIVE = { bArm: [-150, -170], fArm: [150, 170], bLeg: [-40, -10], fLeg: [40, 10] };
+function ball(x, y, r = 30, a = 0) { ctx.save(); ctx.translate(x, y); ctx.rotate(a); ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(0, 0, r, 0, 7); ctx.fill(); ctx.lineWidth = 5; ctx.strokeStyle = '#111'; ctx.stroke(); ctx.fillStyle = '#111'; for (let i = 0; i < 5; i++) { const a2 = i * 1.256; ctx.beginPath(); ctx.arc(Math.cos(a2) * r * 0.55, Math.sin(a2) * r * 0.55, r * 0.22, 0, 7); ctx.fill(); } ctx.restore(); }
+function goal(x, y, w = 560, h = 300, bulge = 0, hole = 0) { ctx.save(); ctx.strokeStyle = 'rgba(255,255,255,.75)'; ctx.lineWidth = 3; for (let i = 0; i <= 14; i++) { const xx = x - w / 2 + i * w / 14; ctx.beginPath(); ctx.moveTo(xx, y - h); ctx.quadraticCurveTo(xx, y - h / 2 + bulge * 40, xx, y); ctx.stroke(); } for (let j = 0; j <= 8; j++) { const yy = y - h + j * h / 8; ctx.beginPath(); ctx.moveTo(x - w / 2, yy); ctx.quadraticCurveTo(x, yy + bulge * 50, x + w / 2, yy); ctx.stroke(); }
+  if (hole) { ctx.fillStyle = '#1b3d22'; ctx.beginPath(); ctx.arc(x + 120, y - h * 0.55, 46, 0, 7); ctx.fill(); FX.burst(ctx, 'smoke', x + 120, y - h * 0.55, T2T, hole); }
+  ctx.lineWidth = 18; ctx.strokeStyle = '#fff'; ctx.beginPath(); ctx.moveTo(x - w / 2, y); ctx.lineTo(x - w / 2, y - h); ctx.lineTo(x + w / 2, y - h); ctx.lineTo(x + w / 2, y); ctx.stroke(); ctx.lineWidth = 5; ctx.strokeStyle = '#111'; ctx.stroke(); ctx.restore(); }
+function tag(name, x, y, col = '#c8102e') { ctx.save(); ctx.font = `900 34px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; const w = ctx.measureText(name).width + 34; ctx.fillStyle = col; ctx.strokeStyle = '#111'; ctx.lineWidth = 5; ctx.beginPath(); ctx.roundRect(x - w / 2, y, w, 52, 14); ctx.fill(); ctx.stroke(); ctx.fillStyle = '#fff'; ctx.fillText(name, x, y + 27); ctx.restore(); }
+function scoreTag(s, k) { if (k <= 0) return; ctx.save(); const sc = k < 0.15 ? 1.6 - 0.6 * eOut(k / 0.15) : 1; ctx.translate(540, 1820); ctx.scale(sc, sc); ctx.fillStyle = '#111'; ctx.beginPath(); ctx.roundRect(-300, -60, 600, 120, 20); ctx.fill(); ctx.font = `900 64px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#ffd60a'; ctx.fillText(s, 0, 4); ctx.restore(); }
+
+// ---------------- the group chat ----------------
+const DK = { 'Rasmus Højlund': '#e63946', 'Pierre-Emile Højbjerg': '#ff9f1c', 'Erling Haaland': '#13294b', 'Martin Ødegaard': '#2a9d8f' };
+const MSGS = [ // t (global s), who, text, kind: msg | sys | sticker | notif
+  [0.15, 'Rasmus Højlund', '⚽ 1-0 🇩🇰'], [0.75, 'Pierre-Emile Højbjerg', '⚽ 2-0 😎😎'], [1.45, 'Pierre-Emile Højbjerg', 'EZ. book the quarter-final hotel 🏨'], [2.2, 'Rasmus Højlund', '🐐🍾'],
+  [7.6, 'sys', "37' · 2-1 😬"], [8.0, 'Rasmus Højlund', 'relax 😅'], [8.45, 'Pierre-Emile Højbjerg', "we're parking the bus 🚌"],
+  [15.05, 'sys', "83' · 2-2 😳"], [15.45, 'Pierre-Emile Højbjerg', '…'], [15.85, 'sys', '🖥️ VAR joined the group'],
+  [24.6, 'sys', "90+6' · 2-3"], [25.3, 'sys', "Højbjerg renamed the group to “PLAY-OFFS IN MARCH 😭”"], [26.3, 'notif', '🏨 Booking cancelled: quarter-final hotel'], [27.4, 'Erling Haaland', '68 GOALS 🤖'], [28.6, 'sys', 'Erling Haaland left the group 👋'],
+];
+const TYPING = [[2.6, 3.5, 'Erling Haaland'], [8.9, 9.25, 'Erling Haaland'], [9.0, 9.25, 'Martin Ødegaard'], [16.2, 16.55, 'Erling Haaland']];
+const TITLES = [[0, 'DENMARK SQUAD 🇩🇰'], [25.3, 'PLAY-OFFS IN MARCH 😭']];
+function chat(t) { const title = TITLES.filter(x => t >= x[0]).pop()[1];
+  ctx.fillStyle = '#efe7dc'; ctx.fillRect(0, 0, W, H); ctx.globalAlpha = 0.07; for (let i = 0; i < 70; i++) { ctx.font = '60px serif'; ctx.fillText(['⚽', '🇩🇰', '🏆', '📣'][i % 4], (i * 173) % W, (i * 271) % H); } ctx.globalAlpha = 1;
+  // messages (newest at the bottom, scroll up)
+  const shown = MSGS.filter(m => t >= m[0]); let y = 1700; const items = [];
+  for (let i = shown.length - 1; i >= 0 && y > 360; i--) { const [t0, who, text] = shown[i]; const sys = who === 'sys' || who === 'notif'; ctx.font = sys ? `800 42px Inter, sans-serif` : `600 58px Inter, sans-serif`;
+    const lines = wrap(text, sys ? 860 : 700); const h = sys ? 36 + lines.length * 52 : 100 + lines.length * 68; y -= h + 26; items.push({ t0, who, lines, y, h, sys }); }
+  const nw = items[0]; const slide = nw ? (nw.h + 26) * (1 - eOut((t - nw.t0) / 0.22)) : 0; for (const it of items) it.y += slide;
+  for (const it of items) { const k = clamp((t - it.t0) / 0.18), sc = it.t0 > t - 0.18 ? 0.6 + 0.4 * eBack(k) : 1; ctx.save();
+    if (it.sys) { ctx.font = `800 42px Inter, sans-serif`; const w = Math.max(...it.lines.map(l => ctx.measureText(l).width)) + 60; ctx.translate(540, it.y + it.h / 2); ctx.scale(sc, sc); ctx.fillStyle = it.who === 'notif' ? '#ffe08a' : '#d4ecf7'; ctx.beginPath(); ctx.roundRect(-w / 2, -it.h / 2, w, it.h, 22); ctx.fill(); ctx.lineWidth = 4; ctx.strokeStyle = '#111'; ctx.stroke(); ctx.fillStyle = '#111'; ctx.textAlign = 'center'; it.lines.forEach((l, j) => ctx.fillText(l, 0, -it.h / 2 + 44 + j * 52)); }
+    else { const me = false; ctx.font = `600 58px Inter, sans-serif`; const w = Math.max(380, Math.max(...it.lines.map(l => ctx.measureText(l).width)) + 80); const x0 = 150; ctx.translate(x0, it.y); ctx.scale(sc, sc);
+      ctx.fillStyle = DK[it.who] || '#555'; ctx.beginPath(); ctx.arc(-70, it.h - 40, 42, 0, 7); ctx.fill(); ctx.lineWidth = 4; ctx.strokeStyle = '#111'; ctx.stroke(); ctx.fillStyle = '#fff'; ctx.font = `900 34px ${FONT}`; ctx.textAlign = 'center'; ctx.fillText(it.who.split(' ').map(s => s[0]).join(''), -70, it.h - 38);
+      ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.roundRect(0, 0, w, it.h, 30); ctx.fill(); ctx.lineWidth = 5; ctx.strokeStyle = '#111'; ctx.stroke(); ctx.textAlign = 'left'; ctx.font = `800 30px Inter, sans-serif`; ctx.fillStyle = DK[it.who] || '#555'; ctx.fillText(it.who, 32, 40);
+      ctx.font = `600 58px Inter, sans-serif`; ctx.fillStyle = '#111'; it.lines.forEach((l, j) => ctx.fillText(l, 32, 112 + j * 68)); ctx.font = '600 24px Inter'; ctx.fillStyle = '#4fb6ec'; ctx.textAlign = 'right'; ctx.fillText('✓✓ ' + (it.who === 'Erling Haaland' ? '' : 'Seen by Erling'), w - 24, it.h - 18); }
+    ctx.restore(); }
+  // header (drawn after the messages so they scroll under it)
+  ctx.fillStyle = '#1f6f5c'; ctx.fillRect(0, 0, W, 300); ctx.fillStyle = '#c8102e'; ctx.beginPath(); ctx.arc(130, 210, 62, 0, 7); ctx.fill(); ctx.lineWidth = 6; ctx.strokeStyle = '#fff'; ctx.stroke(); ctx.fillStyle = '#fff'; ctx.fillRect(122, 150, 16, 120); ctx.fillRect(70, 202, 120, 16);
+  ctx.font = `900 50px ${FONT}`; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#fff'; ctx.fillText(title, 220, 190);
+  const typ = TYPING.filter(x => t >= x[0] && t < x[1]).map(x => x[2]); ctx.font = `700 34px Inter, sans-serif`; ctx.fillStyle = typ.length ? '#9ff3d8' : '#d8efe7'; ctx.fillText(typ.length ? `${typ.join(', ')} ${typ.length > 1 ? 'are' : 'is'} typing${'.'.repeat(1 + Math.floor(t * 4) % 3)}` : 'Rasmus, Pierre-Emile, + 24', 220, 250);
+  // input bar
+  ctx.fillStyle = '#f7f7f7'; ctx.fillRect(0, 1760, W, 160); ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.roundRect(40, 1790, 860, 96, 48); ctx.fill(); ctx.lineWidth = 4; ctx.strokeStyle = '#bbb'; ctx.stroke(); ctx.fillStyle = '#1f6f5c'; ctx.beginPath(); ctx.arc(980, 1838, 52, 0, 7); ctx.fill(); ctx.fillStyle = '#999'; ctx.font = '500 40px Inter'; ctx.fillText('Message', 90, 1840); }
+function wrap(s, maxW) { const words = s.split(' '); const out = []; let cur = ''; for (const w of words) { const n = cur ? cur + ' ' + w : w; if (ctx.measureText(n).width > maxW && cur) { out.push(cur); cur = w; } else cur = n; } out.push(cur); return out; }
+
+// ---------------- cutaways ----------------
+function g37(z, t) { SHOT.low(ctx, () => { SET.stadium(ctx, t, { night: 1, cols: ['#c8102e', '#fff', '#c8102e', '#f4f4f4'], jump: z > 2.2 ? 0.2 : 0, seed: 31 }); goal(820, GZ, 520, 300, z > 2.4 ? Math.max(0, 1 - (z - 2.4) * 2) : 0);
+    const run = z < 2.0; const hx = lerp(80, 560, eOut(z / 2.0)); for (let i = 0; i < 6 && run; i++) FX.burst(ctx, 'grass', hx - 40, GZ, t, Math.floor(z * 3) / 3 + 3.5, { n: 5, ground: GZ });
+    const shake = Math.abs(Math.sin(z * 12)) * (run ? 8 : 0); HA(run ? STRIDE(t) : z < 2.3 ? KICK : { bArm: [-30, -10], fArm: [30, 10], bLeg: [-14, -8], fLeg: [14, 8] }, z < 2.3 ? 'angry' : 'smug', hx, GZ + shake, 1.35, { turn: 0.3, hands: { f: 'fist', b: 'fist' } });
+    const wind = clamp((z - 2.2) / 0.3); GKd(wind > 0 ? DIVE : 'stand', wind > 0 ? 'shock' : 'shock', 820 + wind * 120, GZ - wind * 30, 0.95, { rot: wind * 1.3 });
+    if (z > 2.0) { const q = clamp((z - 2.0) / 0.35); ball(lerp(hx + 90, 900, q), lerp(GZ - 30, GZ - 200, q) - Math.sin(q * Math.PI) * 60, 30, t * 30); if (q < 1) SHOT.speedlines(ctx, t, { n: 10, alpha: 0.35, len: 160 }); } else ball(hx + 90, GZ - 30 - Math.abs(Math.sin(t * 7)) * 30, 30, t * 10); tag('HAALAND', hx, GZ + 30, '#13294b'); }, { x: 460, y: 1250, zoom: 1.05, lift: 300 });
+  if (z > 2.4) { STYLE.stamp(ctx, 'GOAL!', 540, 560, 110); scoreTag("37' · 2-1", (z - 2.4) / 1.0); } }
+function bus(t) { // bird's-eye: a literal bus across the Danish goal, Norway players around
+  SHOT.high(ctx, () => { SET.pitchTop(ctx, t); ctx.save(); ctx.translate(540, 300); rrect(-280, -70, 560, 140, 24, '#ffd60a'); for (let i = 0; i < 6; i++) rrect(-240 + i * 82, -48, 60, 96, 10, '#9fd3ff'); ctx.fillStyle = '#111'; ctx.font = `900 38px ${FONT}`; ctx.textAlign = 'center'; ctx.fillText('NOR 96', 0, 92); ctx.restore();
+    for (const [x, y, k, l] of [[380, 520, '#c8102e', ''], [700, 540, '#c8102e', ''], [540, 820, '#f4f4f4', 'HAALAND'], [300, 900, '#f4f4f4', 'ØDEGAARD']]) SET.topPlayer(ctx, x, y + Math.sin(t * 3 + x) * 6, k, k === '#c8102e' ? '#5a3a26' : '#ecd9a0', 1.6, { label: l, swing: Math.sin(t * 8 + x) }); }, { zoom: 1.1, y: 760 });
+  STYLE.cap(ctx, "WE'RE PARKING THE BUS 🚌", 540, 1500, 58); }
+function rrect(x, y, w, h, r, f) { ctx.beginPath(); ctx.roundRect(x, y, w, h, r); ctx.fillStyle = f; ctx.fill(); ctx.lineWidth = 6; ctx.strokeStyle = '#111'; ctx.stroke(); }
+function g83(z, t) { SHOT.ots(ctx, () => { SET.stadium(ctx, t, { night: 1, cols: ['#c8102e', '#fff'], seed: 32, jump: z > 2.3 ? 0.4 : 0 });
+    ctx.save(); ctx.translate(540, 1420); rrect(-420, -170, 840, 230, 30, '#ffd60a'); for (let i = 0; i < 6; i++) rrect(-370 + i * 125, -130, 95, 110, 12, '#9fd3ff'); ctx.restore(); goal(540, GZ - 40, 600, 280, z > 2.1 ? Math.max(0, 1 - (z - 2.1) * 2) : 0);
+    const kx = 250; OD(z < 1.0 ? STRIDE(t) : z < 1.4 ? KICK : { bArm: [-150, -170], fArm: [150, 170], bLeg: [-14, -8], fLeg: [14, 8] }, z < 1.4 ? 'angry' : 'happy', kx, GZ + 120, 1.15); tag('ØDEGAARD', kx, GZ + 150, '#13294b');
+    if (z >= 1.4) { const q = clamp((z - 1.4) / 0.7); ball(lerp(kx + 80, 700, q) + Math.sin(q * Math.PI) * 420, lerp(GZ + 90, GZ - 160, q) - Math.sin(q * Math.PI) * 520, 30, t * 30); } else ball(kx + 80, GZ + 90, 30, 0); }, { x: 500, y: 1250, zoom: 1.0, side: 1, shirt: '#ffd60a', fg: '#e8c3a0', hair: '#7a5a3a' });
+  if (z > 2.1) { STYLE.stamp(ctx, 'ROUND THE BUS!', 540, 520, 92); scoreTag("83' · 2-2", (z - 2.1) / 1.0); } }
+function varScene(z, t) { SHOT.dutch(ctx, () => { STYLE.bg(ctx, t, ['#9fd3ff', '#2a6fdb']); ctx.save(); ctx.translate(540, 1050); rrect(-360, -260, 720, 470, 26, '#111'); ctx.fillStyle = '#2f8a3d'; ctx.fillRect(-330, -230, 660, 410);
+    // replay on the monitor: a defender's arm meets the ball
+    DF({ bArm: [-30, -10], fArm: [120, 140], bLeg: [-12, -6], fLeg: [12, 6] }, 'shock', -60, 150, 0.6); ball(40 + Math.sin(t * 2) * 6, -40, 22, 0); ctx.strokeStyle = '#ffd60a'; ctx.lineWidth = 8; ctx.beginPath(); ctx.arc(30, -40, 60 + Math.sin(t * 8) * 6, 0, 7); ctx.stroke();
+    ctx.fillStyle = '#e63946'; ctx.font = `900 54px ${FONT}`; ctx.textAlign = 'center'; ctx.fillText('VAR', -250, -180); rrect(-60, 220, 120, 120, 8, '#333'); ctx.restore();
+    // the monitor has arms and eats popcorn
+    ctx.save(); ctx.strokeStyle = '#111'; ctx.lineWidth = 18; ctx.beginPath(); ctx.moveTo(180, 1150); ctx.quadraticCurveTo(110, 1320, 300, 1380); ctx.moveTo(900, 1150); ctx.quadraticCurveTo(980, 1250, 760 + Math.sin(t * 10) * 30, 820 + Math.abs(Math.sin(t * 10)) * 60); ctx.stroke(); ctx.restore();
+    ctx.save(); ctx.translate(300, 1390); rrect(-80, -110, 160, 150, 10, '#fff'); for (let i = -1; i <= 1; i++) { ctx.fillStyle = '#e63946'; ctx.fillRect(i * 50 - 10, -110, 20, 150); } for (let i = 0; i < 7; i++) { ctx.fillStyle = '#fff3c4'; ctx.beginPath(); ctx.arc(-60 + i * 20, -120 - (i % 2) * 14, 18, 0, 7); ctx.fill(); ctx.strokeStyle = '#111'; ctx.lineWidth = 3; ctx.stroke(); } ctx.restore(); });
+  STYLE.cap(ctx, 'VAR JOINED THE GROUP', 540, 330, 56); if (z > 1.2) STYLE.stamp(ctx, 'HANDBALL!', 540, 560, 110); }
+function eyes(z, t) { SHOT.xcu(ctx, () => { SET.stadium(ctx, t, { night: 1, cols: ['#c8102e', '#fff'], seed: 33 }); HA('stand', 'angry', 540, GZ, 1.2, { turn: 0 }); }, { x: 540, y: 1135, zoom: 3.6 });
+  ctx.save(); ctx.globalAlpha = 0.6; ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W, 300); ctx.fillRect(0, H - 300, W, 300); ctx.restore(); STYLE.cap(ctx, "90+6' · PENALTY", 540, 200, 60); }
+function pen(z, t) { const tt = SHOT.slow(z, 1.0, 0.3); SHOT.cu(ctx, () => { SET.stadium(ctx, t, { night: 1, cols: ['#c8102e', '#fff', '#f4f4f4'], seed: 34, jump: z > 2.4 ? 0.7 : 0 }); goal(760, GZ - 20, 560, 300, 0, z > 2.2 ? 20.5 + 2.2 : 0);
+    const shot = tt > 0.95; GKd(z > 1.6 ? DIVE : chibi.mix('stand', 'shield', (Math.sin(t * 5) + 1) / 2), 'shock', 800 - (z > 1.6 ? 220 : 0), GZ - 40 - (z > 1.6 ? 120 : 0), 0.85, { rot: z > 1.6 ? -1.2 : 0 });
+    HA(tt < 0.7 ? 'stand' : tt < 1.0 ? STRIDE(t * 0.4) : KICK, 'angry', lerp(150, 330, clamp(tt / 1.0)), GZ + 60, 1.25, { turn: 0.25 });
+    if (shot) { const q = clamp((z - 1.0) / 1.2); ball(lerp(430, 880, q), lerp(GZ + 30, GZ - 185, q), 30, t * 10); if (q < 1) { SHOT.speedlines(ctx, t, { n: 14, alpha: 0.3, len: 120 }); FX.burst(ctx, 'sparks', lerp(430, 880, q), lerp(GZ + 30, GZ - 185, q), t, 20.5 + 1.0 + Math.floor(q * 4) * 0.3); } } else ball(430, GZ + 30, 30, 0);
+    if (z > 2.2) { FX.burst(ctx, 'confetti', 540, 700, t, 20.5 + 2.2); } }, { x: 560, y: 1300, zoom: 1.35 });
+  if (z > 2.3) { STYLE.stamp(ctx, 'GOAL!!!', 540, 520, 140); scoreTag("90+6' · 2-3", (z - 2.3) / 1.0); } else if (z > 0.3) STYLE.cap(ctx, 'SLOW-MO…', 540, 330, 50); }
+function finale(z, t) { SHOT.split(ctx, [{ shot: 'cu', draw: () => { ctx.fillStyle = '#efe7dc'; ctx.fillRect(0, 0, W, H); ctx.save(); ctx.translate(540, 1150); rrect(-260, -460, 520, 920, 60, '#111'); ctx.fillStyle = '#1f6f5c'; ctx.fillRect(-230, -420, 460, 840); ctx.strokeStyle = '#fff'; ctx.lineWidth = 5; for (const [a, b] of [[[-200, -300], [60, 40]], [[60, 40], [-120, 380]], [[60, 40], [220, 200]]]) { ctx.beginPath(); ctx.moveTo(...a); ctx.lineTo(...b); ctx.stroke(); } ctx.fillStyle = '#fff'; ctx.font = `900 46px ${FONT}`; ctx.textAlign = 'center'; ctx.fillText('PLAY-OFFS', 0, -320); ctx.fillText('IN MARCH 😭', 0, -260); ctx.restore(); }, opts: { y: 1150, zoom: 1.1 } },
+    { shot: 'cu', draw: () => { SET.stadium(ctx, t, { night: 1, cols: ['#f4f4f4', '#c8102e', '#13294b'], seed: 35, jump: 0.8 }); ctx.save(); ctx.translate(540, 1500); rrect(-340, -150, 680, 210, 30, '#ffd60a'); for (let i = 0; i < 5; i++) rrect(-300 + i * 125, -120, 95, 100, 12, '#9fd3ff'); ctx.restore(); HA({ bArm: [-150, -170], fArm: [150, 170], bLeg: [-14, -8], fLeg: [14, 8] }, 'siuuu', 540, 1350 - Math.abs(Math.sin(t * 6)) * 40, 0.9, { hands: { f: 'thumb', b: 'fist' } }); FX.burst(ctx, 'confetti', 540, 700, t, Math.floor(t)); }, opts: { y: 1250, zoom: 1.0 } }]);
+  ctx.save(); ctx.font = '600 26px Inter'; ctx.fillStyle = 'rgba(0,0,0,.6)'; ctx.textAlign = 'center'; ctx.fillText('Cartoon parody · invented chat', 540, 1895); ctx.restore(); }
+
+// ---------------- sequence ----------------
+const SEG = [[0, 3.5, 'chat'], [3.5, 7.5, g37], [7.5, 9.2, 'chat'], [9.2, 11.2, bus], [11.2, 15, g83], [15, 16.5, 'chat'], [16.5, 19, varScene], [19, 20.5, eyes], [20.5, 24.5, pen], [24.5, 30, 'chat'], [30, 32, finale]];
+const HITS = [[5.9, 18], [13.3, 16], [17.7, 10], [22.8, 26]];
+window.SEGS = SEG.map(s => [typeof s[2] === 'string' ? s[2] : s[2].name, s[0]]);
+window.DURATION = 32; window.render = function (t) { window.T2T = t; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.filter = 'none'; ctx.clearRect(0, 0, W, H);
+  const seg = SEG.find(s => t >= s[0] && t < s[1]) || SEG[SEG.length - 1]; const z = t - seg[0];
+  const sh = HITS.reduce((m, [a, A]) => Math.max(m, t >= a && t < a + 0.35 ? A * (1 - (t - a) / 0.35) : 0), 0); ctx.save(); ctx.translate(Math.sin(t * 91) * sh, Math.cos(t * 77) * sh);
+  if (seg[2] === 'chat') { const zoomIn = 1 + 0.03 * Math.sin(t * 0.8); ctx.translate(W / 2, H / 2); ctx.scale(zoomIn, zoomIn); ctx.translate(-W / 2, -H / 2); chat(t); } else seg[2](z, t);
+  ctx.restore(); for (const [a, A] of HITS) if (A >= 14 && t >= a && t < a + 0.1) PRO.impact(ctx, (t - a) / 0.1);
+  if (z < 0.18 && t > 0.1) PRO.whip(ctx, cv, z / 0.18, SEG.indexOf(seg) % 2 ? -1 : 1); STYLE.post(ctx, cv, t);
+  if (t > 31.85) { ctx.globalAlpha = (t - 31.85) / 0.15; chat(0.05); ctx.globalAlpha = 1; } };
+if (!location.search.includes('render')) { const t0 = performance.now(); (function loop() { render(((performance.now() - t0) / 1000) % 32); requestAnimationFrame(loop); })(); }
+</script></body></html>

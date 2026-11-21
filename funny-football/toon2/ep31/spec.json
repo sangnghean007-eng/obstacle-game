@@ -1,0 +1,22 @@
+{
+  "logline": "Denmark lead Norway 2-0 and start partying in their group chat, but every time Haaland is typing, Norway score; at 96' VAR joins the chat, Haaland converts, and the group is renamed PLAY-OFFS IN MARCH.",
+  "style": "comic", "prev_style": "chibi-flat",
+  "hook_frame0": "chat: '2-0 😎 EZ' + 'Erling Haaland is typing…'",
+  "beats": [
+    {"shot": "screen", "idea": "Danish chat celebrates 2-0", "text": "EZ. book the hotel"},
+    {"shot": "low", "idea": "giant Haaland scores 37'", "text": "37' · 2-1"},
+    {"shot": "screen", "idea": "they park the bus", "text": "parking the bus"},
+    {"shot": "high", "idea": "a literal bus across the goal", "text": "WE'RE PARKING THE BUS"},
+    {"shot": "ots", "idea": "Ødegaard curls it round the bus 83'", "text": "83' · 2-2"},
+    {"shot": "dutch", "idea": "VAR joins the chat, eats popcorn, handball", "text": "HANDBALL!"},
+    {"shot": "xcu", "idea": "Haaland's stare before the penalty", "text": "90+6' · PENALTY"},
+    {"shot": "slowmo", "idea": "penalty leaves a smoking hole, 2-3; chat renamed, hotel cancelled; split ending loops", "text": "90+6' · 2-3"}
+  ],
+  "techniques": ["misdirection", "rule-of-3", "visual pun", "cutaway", "sound gag", "callback"],
+  "gags": ["bus parked across the goal", "VAR monitor eats popcorn", "group renamed to the play-offs", "hotel booking cancelled", "net left with a smoking ball-shaped hole"],
+  "twist": "VAR joins the group chat",
+  "callback": "the quarter-final hotel booked at 2-0 is cancelled at 2-3",
+  "ending": "loop",
+  "hidden_details": ["'Seen by Erling' on every Danish message", "bus number plate NOR 96", "goat sticker in the chat"],
+  "meme_frame": "VAR monitor with popcorn + HANDBALL!"
+}

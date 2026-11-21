@@ -238,3 +238,7 @@ I used a July 2026 report ("Ronaldo will continue") when he had already retired 
 - Exaggerate REAL traits only (LIKENESS profile in UNIVERSE.md); "cover the name" test must pass; score ≥8/10.
 ## Gates (all must pass before sending; fail → fix → re-run)
 1 Facts (Rule 0) · 2 Script (logline, ≤8 beats, stranger test, 4 acts, ≥4 techniques, no reused gag, format not in last 4) · 2b Likeness ≥8/10 · 3 Picture (recognisable, ≥5 shot types, no repeat adjacent shot, style ≠ previous, nobody frozen >0.6 s, no text on faces/safe zones, each beat readable in 1.5 s) · 4 Technical + sound (qa.py PASS, cover 0.1 s, 30–45 s, <50 MB, hook ≥2×, no 3-s loop-only music, hits within 1 frame) · 5 Self-score ≥8/10 on funny, surprise, beauty, clarity · 6 Viral (hook frame 0, change every ≤3 s, seamless loop, ≥2 easter eggs, meme-able frame, two-sided ending, title scored) · 7 Novelty (novelty.py PASS on 14 axes, logged in EPISODES.csv).
+## Machine gates (M5, 21 Nov 2026) — run all three before sending
+1. `python3 toon2/novelty.py <candidate.csv>` → NOVELTY PASS (gate 7)
+2. `python3 toon2/script_gate.py toon2/epNN/spec.json` → SCRIPT GATE PASS (gates 2, 3-shot list, 6-checklist)
+3. `python3 toon2/qa.py <video.mp4>` → QA PASS (gate 4, incl. the new music-variation check)

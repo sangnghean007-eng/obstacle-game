@@ -34,6 +34,18 @@ def main(src, out):
     e = run(['ffmpeg', '-hide_banner', '-i', src, '-vf', 'blackdetect=d=0.03:pix_th=0.08', '-map', '0:v', '-f', 'null', '-'])
     bl = re.findall(r'black_start:([\d.]+) black_end:([\d.]+)', e)
     res.append(('blank', 'PASS' if not bl else 'FAIL', ', '.join(f'{float(a):.2f}-{float(b):.2f}s' for a, b in bl) or 'none'))
+    # music variation: no 3-s stretch may be a near-copy of the 3 s before it (owner: "sound must not be monotonous")
+    try:
+        import numpy as np, subprocess as sp
+        raw = sp.run(['ffmpeg', '-v', 'error', '-i', src, '-ac', '1', '-ar', '8000', '-f', 's16le', '-'], capture_output=True).stdout
+        a = np.frombuffer(raw, dtype='<i2').astype(float); win = 3 * 8000; reps = []
+        def fp(x):
+            sp_ = np.abs(np.fft.rfft(x * np.hanning(len(x))))[: 2000]; return sp_ / (np.linalg.norm(sp_) + 1e-9)
+        for i in range(win, len(a) - win, 8000):
+            c = float(fp(a[i:i + win]) @ fp(a[i - win:i]))
+            if c > 0.985: reps.append(i / 8000)
+        res.append(('variation', 'PASS' if len(reps) < 3 else 'WARN', f'{len(reps)} near-identical 3-s stretches' + (f' at {", ".join(f"{r:.0f}s" for r in reps[:5])}' if reps else '')))
+    except Exception as e: res.append(('variation', 'WARN', f'not measured ({e})'))
     # safe-zone sheet: shade the parts of a 1080x1920 frame that phone apps cover (worst case of Reels/TikTok/Shorts)
     shade = ("drawbox=x=0:y=0:w=1080:h=210:color=red@0.35:t=fill,"      # status bar + top tabs
              "drawbox=x=0:y=1520:w=1080:h=400:color=red@0.35:t=fill,"    # username, caption, music, comment bar
