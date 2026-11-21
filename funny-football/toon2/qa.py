@@ -4,7 +4,7 @@ Every number is measured from the final mp4, so "it looks fine to me" is never t
     python3 toon2/qa.py path/to/video.mp4 [out_dir]
 
 Checks (FAIL = fix and re-render, WARN = look at it):
-  length       30–45 s (WARN outside: the owner allows longer only when clarity needs it)
+  length       15–30 s (DATA RULE 21 Nov 2026: our winners and outliers are 12–21 s; default 18–25 s)
   loudness     integrated -15..-13 LUFS, true peak <= -1.0 dBTP
   silence      no dead air >= 0.3 s (music bed must never drop out)
   still        no fully frozen picture >= 0.6 s (designed holds still need a pop, bob or particles)
@@ -20,7 +20,7 @@ def run(args):
 def main(src, out):
     os.makedirs(out, exist_ok=True); res = []
     dur = float(subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', src], capture_output=True, text=True).stdout)
-    res.append(('length', 'PASS' if 30 <= dur <= 45 else 'WARN', f'{dur:.1f} s'))
+    res.append(('length', 'PASS' if 15 <= dur <= 30 else 'WARN', f'{dur:.1f} s'))
     e = run(['ffmpeg', '-hide_banner', '-i', src, '-af', 'ebur128=peak=true', '-f', 'null', '-'])
     I = float(re.findall(r'I:\s+(-?[\d.]+) LUFS', e)[-1]); TP = float(re.findall(r'Peak:\s+(-?[\d.]+) dBFS', e)[-1])
     res.append(('loudness', 'PASS' if -15 <= I <= -13 and TP <= -1.0 else 'FAIL', f'{I} LUFS, true peak {TP} dBTP'))

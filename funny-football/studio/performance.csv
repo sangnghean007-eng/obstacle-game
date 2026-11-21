@@ -24,3 +24,5 @@ date,platform,episode,hours_after_post,views,engagements,new_follows,earnings_us
 2026-11-21,youtube,"Ep19 Portugal Without Ronaldo (XeeDl80BO4I, 24s)",28d window,1187,6,0,,20.3s,"avg % viewed 84.7 (vidIQ Studio 2026-10-20..11-21)"
 2026-11-21,youtube,"Quiz 01 (t_sILLK6RGo, 32s)",28d window,980,7,0,,27.3s,"avg % viewed 85.4 (vidIQ Studio 2026-10-20..11-21)"
 2026-11-21,youtube,"Dead and buried 2-4 (2srbuc68Co4, 24s)",28d window,923,13,1,,15.6s,"avg % viewed 64.8 (vidIQ Studio 2026-10-20..11-21)"
+2026-11-21,selfscore,"Ep31 The Group Chat (32 s)",pre-post,,,,,,"gate5 funny 8 · surprise 8 · look 7 · clarity 8 (look <8: code faces; Haaland sheet pending). Gates: facts PASS, script_gate PASS, novelty PASS, qa PASS (length now WARN >30 s vs data rule). vidIQ title 88 (switched)."
+2026-11-21,selfscore,"Ep32 Trust Fall v2 AI heads (16.6 s)",pre-post,,,,,,"gate5 funny 8 · surprise 8 · look 9 · clarity 9. Mbappé+Yamal AI cast heads (likeness 8.5/9). Gates: facts PASS, script_gate PASS, novelty PASS, qa PASS. vidIQ title 98. Test: short (16.6 s) vs Ep31 32 s."

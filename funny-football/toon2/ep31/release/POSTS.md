@@ -2,7 +2,7 @@
 Denmark 2-3 Norway, 17 Nov 2026 (Nations League). Cartoon parody · invented chat. Post today, 19:00–23:00 VN.
 
 ## YouTube Shorts
-Title: Denmark Celebrated 2-0 in the Group Chat… Then Haaland Started Typing 😭 #shorts #haaland #football
+Title: Haaland Was Typing… Denmark Left the Group Chat 😭 #shorts #haaland #football
 Description:
 2-0 up. Hotel booked. Group chat partying 😎
 Then: "Erling Haaland is typing…" ⚽

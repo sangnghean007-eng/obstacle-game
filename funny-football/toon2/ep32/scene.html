@@ -1,6 +1,6 @@
 <!doctype html><html><head><meta charset="utf-8"><title>Trust Fall</title><style>html,body{margin:0;background:#000}</style></head><body><canvas id="c" width="1080" height="1920"></canvas>
 <script src="../chibi.js"></script><script src="../chibi_cast.js"></script><script src="../anim.js"></script><script src="../portrait.js"></script><script src="../pro.js"></script>
-<script src="../rig2.js"></script><script src="../fx.js"></script><script src="../styles.js"></script><script src="../shots.js"></script><script src="../sets.js"></script><script src="../timeline.js"></script>
+<script src="../rig2.js"></script><script src="../fx.js"></script><script src="../styles.js"></script><script src="../shots.js"></script><script src="../sets.js"></script><script src="../timeline.js"></script><script src="../castimg.js"></script>
 <script>
 // Ep32 "TRUST FALL" — Clásico rivals (Mbappé: Real Madrid, Yamal: Barcelona; facts: ep32/facts.md). Pure gag, ink style, phone-filmed park prank.
 const W = 1080, H = 1920, cv = document.getElementById('c'), ctx = cv.getContext('2d'); const STYLE = STYLES.ink;
@@ -11,8 +11,9 @@ const C_Y = Object.assign({}, CH.mate1, { skin: '#b9825c', shade: '#9c6a48', kit
 const C_M = Object.assign({}, CH.mate1, { skin: '#8a5a3c', shade: '#6c432b', kit: RMA, num: '10', name: 'MBAPPÉ', nameSize: 15 });
 const mates = [Object.assign({}, CH.mate1, { kit: BAR, num: '', name: '', skin: '#e3b08c' }), Object.assign({}, CH.mate1, { kit: RMA, num: '', name: '', skin: '#6b4330' }), Object.assign({}, CH.mate1, { kit: BAR, num: '', name: '', skin: '#f0c9ae' }), Object.assign({}, CH.mate1, { kit: RMA, num: '', name: '', skin: '#d9a27c' })];
 const head = (face, kitc) => (o) => (R) => portrait.draw(ctx, face, 0, -R * 0.28, R * 2.1 / 330, { headOnly: true, expr: o.e, kit: kitc, turn: o.turn || 0 });
-const YA = (p, e, x, y, s = 1.1, o = {}) => chibi.draw(ctx, C_Y, p, 'neutral', x, y, s, Object.assign({ f: -1 }, o, { headFn: head('yamal_d', '#a50044')(Object.assign({ e }, o)) }));
-const MB = (p, e, x, y, s = 1.15, o = {}) => chibi.draw(ctx, C_M, p, 'neutral', x, y, s, Object.assign({ f: 1 }, o, { headFn: head('mbappe', '#f7f7f7')(Object.assign({ e }, o)) }));
+CASTIMG.preload(['mbappe', 'yamal']);
+const YA = (p, e, x, y, s = 1.1, o = {}) => chibi.draw(ctx, C_Y, p, 'neutral', x, y, s, Object.assign({ f: -1 }, o, { headFn: CASTIMG.head(ctx, 'yamal', e, head('yamal_d', '#a50044')(Object.assign({ e }, o))) }));
+const MB = (p, e, x, y, s = 1.15, o = {}) => chibi.draw(ctx, C_M, p, 'neutral', x, y, s, Object.assign({ f: 1 }, o, { headFn: CASTIMG.head(ctx, 'mbappe', e, head('mbappe', '#f7f7f7')(Object.assign({ e }, o))) }));
 const GZ = 1560, ARMS = { bArm: [70, 100], fArm: [80, 110], bLeg: [-14, -8], fLeg: [14, 8] }, HOLD = { bArm: [100, 80], fArm: [110, 90], bLeg: [-20, -8], fLeg: [20, 8] }, OPEN = { bArm: [-60, -120], fArm: [60, 120], bLeg: [-14, -8], fLeg: [14, 8] };
 const PLANK = { bArm: [-10, -6], fArm: [10, 6], bLeg: [-4, -2], fLeg: [4, 2] }, CROSSED = { bArm: [70, -110], fArm: [-70, 110], bLeg: [-8, -4], fLeg: [8, 4] }, SHRUG = { bArm: [-40, -150], fArm: [40, 150], bLeg: [-12, -6], fLeg: [12, 6] };
 function park(t) { // phone-filmed park: trees, fence, grass, laughing teammates
