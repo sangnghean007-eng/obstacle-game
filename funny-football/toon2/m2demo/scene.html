@@ -1,0 +1,32 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Rig v2 Demo</title><style>html,body{margin:0;background:#000}</style></head><body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../chibi.js"></script><script src="../chibi_cast.js"></script><script src="../anim.js"></script><script src="../portrait.js"></script><script src="../pro.js"></script><script src="../rig2.js"></script><script src="../fx.js"></script>
+<script>
+const W = 1080, H = 1920, ctx = document.getElementById('c').getContext('2d'); const F = 'Inter, "DejaVu Sans", sans-serif', DARK = '#1a0f08', TAU = Math.PI * 2;
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v)), lerp = (a, b, k) => a + (b - a) * k, easeOut = k => 1 - (1 - k) ** 3;
+const ARG = { shirt: '#74acdf', stripes: '#ffffff', sleeve: '#74acdf', cuff: '#fff', collar: '#111', shorts: '#111', sock: '#fff', sockShade: '#ddd', sockBand: '#74acdf', boot: '#ffd21f', num: '#111' };
+const POR = { shirt: '#c8102e', sleeve: '#c8102e', cuff: '#046a38', collar: '#046a38', shorts: '#046a38', sock: '#c8102e', sockShade: '#9b0c23', sockBand: '#046a38', boot: '#fff', num: '#ffd400' };
+const likeC = (k) => Object.assign({}, CH[k], LIKE[k], { head: Object.assign({}, CH[k].head, LIKE[k].head) });
+const CR = Object.assign(likeC('ronaldo'), { kit: POR, num: '7', name: 'RONALDO' }), LM = Object.assign(likeC('messi'), { kit: ARG, num: '10', name: 'MESSI' });
+const head = (name, kit) => (R, e) => portrait.draw(ctx, name, 0, -R * 0.28, R * 2.1 / 330, { headOnly: true, expr: typeof e === 'string' ? e : 'neutral', kit });
+const RON = (p, e, x, y, s, o = {}) => chibi.draw(ctx, CR, p, 'neutral', x, y, s, Object.assign({ f: 1, headFn: head('ronaldo', '#c8102e') }, o, { headFn: (R) => portrait.draw(ctx, 'ronaldo', 0, -R * 0.28, R * 2.1 / 330, { headOnly: true, expr: e, kit: '#c8102e' }) }));
+const MES = (p, e, x, y, s, o = {}) => chibi.draw(ctx, LM, p, 'neutral', x, y, s, Object.assign({ f: -1 }, o, { headFn: (R) => portrait.draw(ctx, 'messi', 0, -R * 0.28, R * 2.1 / 330, { headOnly: true, expr: e, kit: '#74acdf' }) }));
+function txt(s, x, y, size, fill = '#fff', stroke = DARK) { ctx.font = `900 ${size}px ${F}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineJoin = 'round'; if (stroke) { ctx.lineWidth = size * 0.22; ctx.strokeStyle = stroke; ctx.strokeText(s, x, y); } ctx.fillStyle = fill; ctx.fillText(s, x, y); }
+function label(s, sub) { ctx.save(); ctx.fillStyle = 'rgba(0,0,0,.7)'; ctx.beginPath(); ctx.roundRect(90, 230, 900, sub ? 170 : 110, 24); ctx.fill(); txt(s, 540, 285, 54, '#ffd60a', null); if (sub) txt(sub, 540, 355, 34, '#fff', null); ctx.restore(); }
+function pitch(t, dark = 0) { const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#0d1630'); g.addColorStop(1, '#1d2c4f'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); FX.crowd(ctx, t, { y0: 260, rows: 9, cols: ['#c8102e', '#fff', '#046a38', '#74acdf'], wave: 2.2, flags: 1, phones: 1, seed: 4 });
+  const gg = ctx.createLinearGradient(0, 860, 0, H); gg.addColorStop(0, '#3a9d4a'); gg.addColorStop(1, '#2a7a36'); ctx.fillStyle = gg; ctx.fillRect(0, 860, W, H - 860); for (let i = 0; i < 8; i++) { ctx.fillStyle = 'rgba(255,255,255,.05)'; ctx.fillRect(i * 140, 860, 70, H); } if (dark) FX.darken(ctx, dark); }
+const GZ = 1600;
+function seg0(z, t) { pitch(t); label('LIVING CROWD', 'Mexican wave · flags · phone lights'); }
+function seg1(z, t) { pitch(t, 0.35); const kinds = ['fist', 'open', 'point', 'thumb', 'grab', 'clap']; const k = kinds[Math.min(5, Math.floor(z / 0.5))];
+  RON({ bArm: [-30, -10], fArm: k === 'clap' ? [70, 140] : [110, 160], bLeg: [-12, -6], fLeg: [12, 6] }, 'smug', 540, GZ, 1.5, { hands: { f: k, b: k === 'clap' ? 'clap' : 'fist' } }); label('HANDS · 6 SHAPES', k.toUpperCase()); }
+function seg2(z, t) { pitch(t, 0.25); const hit = 0.5; MES(z < hit ? { bArm: [-60, -30], fArm: [60, 30], bLeg: [-40, -20], fLeg: [100, 80] } : 'stand', z < hit ? 'angry' : 'smug', 260, GZ, 1.15);
+  if (z < hit) RON('stand', 'smug', 640, GZ, 1.15); else { const r = RIG2.ragdoll(t, hit + 6, { x0: 560, y0: GZ, vx: 60, vy: -1300, spin: 7, ground: GZ, bounce: .5 }); ctx.save(); ctx.translate(r.x, r.y - 200); ctx.rotate(r.rot); ctx.translate(-r.x, -(r.y - 200)); RON(r.pose, 'shock', r.x, r.y, 1.15, { noAnim: true }); ctx.restore(); FX.burst(ctx, 'dust', 640, GZ, t, hit + 6, { ground: GZ }); FX.burst(ctx, 'sweat', 640, GZ - 450, t, hit + 6); FX.burst(ctx, 'grass', r.x, GZ, t, hit + 6.9, { ground: GZ }); }
+  label('RAGDOLL PHYSICS', 'knocked back · bounces · rolls · settles'); }
+function seg3(z, t) { pitch(t, 0.3); const xAt = (tt) => lerp(-200, 1300, clamp((tt - 9) / 3)); const draw = (tt, ghost) => { const x = xAt(tt); MES(chibi.mix('run1', 'run2', (Math.sin(tt * 22) + 1) / 2), 'angry', x, GZ, 1.2, { f: 1, noAnim: ghost, sq: RIG2.stretch(-500 * 3) }); };
+  draw.ctx = ctx; RIG2.motion(draw, t, 4, 1 / 30, 0.16); RIG2.flow(ctx, (tt) => [xAt(tt) - 70, GZ - 195 - Math.abs(Math.sin(tt * 22)) * 10], t, { col: '#ffffff', w: 26, n: 8, len: 30, dir: 1, gravity: 0.04, wind: -60 }); FX.burst(ctx, 'dust', xAt(t) - 60, GZ, t, Math.floor(t * 6) / 6, { n: 6, ground: GZ });
+  label('MOTION SMEAR · FLOWING SCARF', 'ghost trail + Verlet chain'); }
+function seg4(z, t) { pitch(t, 0.7); FX.godrays(ctx, 540, -100, t, { a0: 1.2, n: 8, alpha: 0.07 }); FX.spot(ctx, 540, GZ - 300, 520, 0.6); FX.shadow(ctx, 540, GZ, 900, 0, 1.4);
+  RON(z > 0.6 ? { bArm: [-150, -170], fArm: [150, 170], bLeg: [-14, -8], fLeg: [14, 8] } : 'stand', z > 0.6 ? 'siuuu' : 'smug', 540, GZ - (z > 0.6 && z < 1.1 ? Math.sin((z - 0.6) / 0.5 * Math.PI) * 220 : 0), 1.4, { hands: { f: 'fist', b: 'fist' } });
+  FX.burst(ctx, 'confetti', 540, 600, t, 12.6); FX.burst(ctx, 'sparks', 540, GZ - 400, t, 12.6); FX.flash(ctx, (t - 12.6) / 0.25); label('LIGHT · SPOT · GOD RAYS · FLASH', 'confetti + sparks'); }
+const SEG = [[0, 3, seg0], [3, 6, seg1], [6, 9, seg2], [9, 12, seg3], [12, 15, seg4]];
+window.DURATION = 15; window.render = function (t) { window.T2T = t; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; for (const [a, b, fn] of SEG) if (t >= a && t < b) { fn(t - a, t); break; } };
+</script></body></html>

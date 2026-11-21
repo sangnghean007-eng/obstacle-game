@@ -23,7 +23,7 @@
       // muscle shading along the lower side of the limb
       ctx.save(); ctx.globalAlpha = 0.22; stroke(P.map(p => [p[0] + w * 0.18, p[1] + w * 0.12]), w * 0.45, '#000'); ctx.restore();
       const sl = [P[0], [P[0][0] + (P[1][0] - P[0][0]) * 0.55, P[0][1] + (P[1][1] - P[0][1]) * 0.55]]; stroke(sl, w * 1.25, C.kit.sleeve || C.kit.shirt); stroke([sl[1], sl[1]], w * 1.25, C.kit.cuff || C.kit.shirt);
-      ell(P[2][0], P[2][1], hr, hr, C.kit.gloves || C.skin, 0); ell(P[2][0] - hr * 0.3, P[2][1] - hr * 0.35, hr * 0.35, hr * 0.25, 'rgba(255,255,255,.35)', 0);
+      const hp = C.hands && C.hands[side]; if (hp && window.RIG2) RIG2.hand(ctx, P[2][0], P[2][1], hr * 1.35, C.kit.gloves || C.skin, hp, Math.atan2(P[2][0] - P[1][0], P[2][1] - P[1][1]), INK); else { ell(P[2][0], P[2][1], hr, hr, C.kit.gloves || C.skin, 0); ell(P[2][0] - hr * 0.3, P[2][1] - hr * 0.35, hr * 0.35, hr * 0.25, 'rgba(255,255,255,.35)', 0); }
       if (C.prop && C.prop.hand === side) C.prop.draw(P[2][0], P[2][1]);
     }
     return P[2];
@@ -187,7 +187,7 @@
   // draw(ctx, char, pose, expr, x, y, s, opts) — opts: { f: 1 right / -1 left, sq: squash (+ = flatter), lean: radians, t }
   function draw(c2d, C0, pose, expr, x, y, s, o = {}) {
     ctx = c2d; const C = layout(Object.assign({}, C0)), P = typeof pose === 'string' ? POSES[pose] : pose, e = typeof expr === 'string' ? (EXPR[expr] || {}) : expr, t = o.t ?? (window.T2T || 0);
-    C.prop = o.prop; C.f = o.f || 1;
+    C.prop = o.prop; C.f = o.f || 1; if (o.hands) C.hands = o.hands;
     ctx.save(); ctx.translate(x, y); ctx.rotate(o.lean || 0); const sq = o.sq || 0; ctx.scale(s * (o.f || 1) * (1 + sq), s * (1 - sq));
     const br = Math.sin(t * 3.2 + (C.blinkSeed || 0)) * (o.still ? 0 : 1);
     const bs = [-C.shoulderW * 0.72, C.shoulderY + 30], fs = [C.shoulderW * 0.8, C.shoulderY + 30];
