@@ -137,3 +137,9 @@ Rules from now on for Facebook: caption 200–400 characters (story recap + the 
 - Instagram Reels: caption (hook line, 1–2 story lines, one comment prompt, parody line, 5–8 hashtags), cover, alt text, 'AI info' label when AI faces are used.
 - X: ≤280 characters, native video upload, 2–3 hashtags, media alt text.
 - Full set per episode: YouTube (title + description + Tags + settings) · TikTok · Instagram · X · Facebook (+ Arabic line).
+
+
+## FACEBOOK FORMAT (owner, 21 Nov 2026: "tiếng anh viết lung tung")
+- Line 1 = a short title. Then the story in 3–4 short lines (one beat per line, ✅/emoji at the end), one punchline line, the Arabic line, and '(Cartoon parody — invented scene)' on its own line.
+- No run-on sentences, no em-dash chains, no parody label glued to the joke.
+- Arabic: natural football Arabic, never word-for-word. GOAT = الأفضل في التاريخ / الأعظم (NOT الماعز). Check every Arabic line for meaning, not just grammar.

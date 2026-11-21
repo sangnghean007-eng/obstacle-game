@@ -42,6 +42,15 @@ GOATs only 🐐 (cartoon parody)
 #Ronaldo #Messi #Yamal
 Alt text (media): Cartoon parody: Ronaldo catches Messi and Mbappé, steps back when Yamal falls.
 
-## Facebook (200–400 characters + one Arabic line)
-Trust fall challenge with the legends 😂 Ronaldo catches Messi, catches Mbappé… then Yamal walks up and says "I'm the next GOAT" — and Ronaldo just takes one step back. GOATs only 🐐 Cartoon parody, invented lines.
-تحدي السقوط مع الأساطير 😂 رونالدو يمسك الجميع… إلا "الماعز القادم"!
+## Facebook (owner: clean lines, no run-on; Arabic line written as natural Arabic, never a word-for-word 'GOAT' = goat)
+Ronaldo's Trust Fall Challenge 😂
+
+Messi falls — Ronaldo catches him ✅
+Mbappé falls — Ronaldo catches him ✅
+Yamal: "I'm the next GOAT 😎"
+Ronaldo takes one step back… 🫠
+
+Only the real GOATs get caught 🐐
+تحدي رونالدو: يمسك ميسي ومبابي… لكن يامال قال "أنا الأفضل القادم" فتركه يسقط 😂
+
+(Cartoon parody — invented scene)
