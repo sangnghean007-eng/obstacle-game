@@ -29,6 +29,8 @@ Columns: id | gag | technique (rule-of-3, misdirection, escalation, cutaway, dea
 | U22 | Hotel booking cancelled (callback) | Ep31 |
 | U23 | Net left with a smoking ball-shaped hole | Ep31 |
 | U24 | 'X is typing…' = a goal is coming | Ep31 |
+| U25 | Trust fall dropped after seeing the rival shirt | Ep32 |
+| U26 | Revenge trust fall ('oops… MADRID') | Ep32 |
 
 ## FRESH (60 — pick ≥4 per episode, mix groups)
 ### A. Impact (physics, escalation)

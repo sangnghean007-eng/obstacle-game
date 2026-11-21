@@ -41,7 +41,7 @@ const SEG = [
       [[330, 720, '#f7f7f7', 'MBAPPÉ'], [300, 1250, '#a50044', ''], [790, 1260, '#f7f7f7', ''], [780, 740, '#a50044', ''], [540, 1420, '#f7f7f7', '']].forEach(([x, y, k, l], i) => SET.topPlayer(ctx, x + Math.sin(t * 9 + i) * 6, y, k, '#2a1a12', 2.1, { label: l, skin: '#d9a27c', swing: Math.sin(t * 12 + i) })); }, { zoom: 1.0 }),
     (z) => { STYLE.cap(ctx, 'HAHAHAHA 😂', 540, 360, 70); }],
   [13.2, 16.5, 'dutch', (z, t) => SHOT.dutch(ctx, () => world(z, t, { laugh: 0.6, draw: () => { const fall = z > 1.4; YA(fall ? OPEN : ARMS, z > 1.0 ? 'smug' : 'angry', 600, GZ, 1.1, { f: -1, hands: { f: 'open', b: 'open' } }); if (!fall) MB(CROSSED, 'smug', 380, GZ, 1.15); else { const q = clamp((z - 1.4) / 0.9); ctx.save(); ctx.translate(380, GZ); ctx.rotate(-eIn(q) * 1.45); ctx.translate(-380, -GZ); MB(PLANK, q < 1 ? 'shock' : 'dizzy', 380, GZ, 1.15, { noAnim: true }); ctx.restore(); if (q >= 1) FX.burst(ctx, 'dust', 160, GZ + 40, t, 13.2 + 2.3, { ground: GZ + 40, n: 10 }); } } }), { x: 480, y: 1260, zoom: 1.2, rot: 0.16 }),
-    (z) => { STYLE.bubble(ctx, z < 1.4 ? 'your turn 😇' : 'oops… MADRID 🤷', 560, 520, 52); if (z > 2.5) STYLE.stamp(ctx, 'CLÁSICO RIVALS 😂', 540, 760, 86); }],
+    (z) => { STYLE.bubble(ctx, z < 1.4 ? 'your turn 😇' : 'oops… MADRID 🤷', 560, 500, 56); if (z > 2.5) STYLE.stamp(ctx, 'CLÁSICO RIVALS 😂', 540, 330, 86); }],
 ];
 window.DURATION = 16.5; window.render = function (t) { window.T2T = t; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.filter = 'none'; ctx.clearRect(0, 0, W, H);
   const seg = SEG.find(s => t >= s[0] && t < s[1]) || SEG[SEG.length - 1]; const z = t - seg[0];
