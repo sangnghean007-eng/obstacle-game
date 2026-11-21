@@ -44,3 +44,6 @@ User request: "look at the big channels and learn from them". Learn the *ideas a
 - Long held shots (3–5 s), little motion, faces carry it. Ends on the opening frame → seamless loop.
 - Ambiguous/provocative ending → comment war between fan bases.
 Applied in Ep30 v2: shirt symbolism (framed #10 tribute vs Ronaldo grabbing his #7 back: "NOT YET." — kept to the facts: he chose to continue), most captions removed.
+
+## vidIQ outliers scan (21 Nov 2026, football cartoon Shorts, this month)
+FC BOOM 3D "HELP RONALDO Stay On Top" 2.6M (35×, 53 s, interactive "help" framing) · Omar Momani "Portugal Without Ronaldo… They Want Him Back" 278K (3.6×, 21 s) · CarFooToon "Portugal 1-4 Denmark" 126K (2.4×, 12 s) · "Haaland rooftop dance with Mbappé, Bellingham & Yamal" 1.5M (14 s). Lesson: news-reaction cartoons within 48 h + very short (12–21 s) dominate; long-form 50 s only works with an interactive hook.
