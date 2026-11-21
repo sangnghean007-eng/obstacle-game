@@ -24,3 +24,9 @@ Problem: Ep9–Ep15 reused the same 12 voice WAVs (wail, chuckle, laugh_crowd, s
 | 25 New Gen vs OG | original synthwave trailer → choir + epic brass for the OGs → tiptoe pizzicato | bass drop, scooter skid, car THUD, record scratch on the bump | yamal, mbappe, haaland, ronaldo, messi (vox2) |
 | 26 13 Years In Line | bossa 'waiting music' that slows/detunes over the years → heist funk → choir | calendar flips, push-up grunts, door bell, poof costume swaps, game beeps | ronaldo, messi, neymar, mbappe, haaland, yamal (vox2) |
 - Ep28 The Duel: spaghetti-western parody: lonely whistle theme, Karplus-Strong twang guitar, boom-chick bass bed, whip cracks, wind/tumbleweed, a bell on every goal, train chug + whistle.
+
+## Sound engine v2 (21 Nov 2026, overhaul M1b)
+- `toon2/sfx/music.py`: `Song(genre, key, minor, seed).form([(section, bars)…]).render()` → stems (drums, bass, chords, lead, fx). 12 genres (phonk, trap, funk, western, chiptune, orchestral, latin, dancehall, lofi, surf, noirjazz, trailer). Real structure (intro/build/drop/break/outro), seeded call-and-answer hook per episode, humanised timing, riser into drops, crash + impact on drops.
+- `toon2/sfx/mix.py`: `Desk` buses (music, drums, bass, fx, vox, crowd) with EQ, compression, sidechain ducking (`duck`), convolution room reverb (`room`: stadium/hall/room/phone/tunnel), constant-power pan, gain staging on stems, master glue + soft clip, stems export.
+- Channel sting `toon2/sfx/demo/soccer365-sting.wav` (2.5 s: whistle → ball thump → 3-note bell → crowd swell): use at the start or end of every episode.
+- Every episode exports `release/<name>-sound.wav` (15–30 s loop) + stems for reuse.
