@@ -30,7 +30,9 @@ Columns: id | gag | technique (rule-of-3, misdirection, escalation, cutaway, dea
 | U23 | Net left with a smoking ball-shaped hole | Ep31 |
 | U24 | 'X is typing…' = a goal is coming | Ep31 |
 | U25 | Trust fall dropped after seeing the rival shirt | Ep32 |
-| U26 | Revenge trust fall ('oops… MADRID') | Ep32 |
+| U26 | Revenge trust fall ('oops… MADRID') | Ep32 v3 (replaced) |
+| U27 | Trust fall: two catches, then the catcher steps back | Ep32 v5 |
+| U28 | Face-plant close-up, grass in the face | Ep32 v5 |
 
 ## FRESH (60 — pick ≥4 per episode, mix groups)
 ### A. Impact (physics, escalation)

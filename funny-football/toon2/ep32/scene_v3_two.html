@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset="utf-8"><title>Trust Fall cover</title><style>html,body{margin:0;background:#000}</style></head><body><canvas id="c" width="1080" height="1920"></canvas>
+<!doctype html><html><head><meta charset="utf-8"><title>Trust Fall</title><style>html,body{margin:0;background:#000}</style></head><body><canvas id="c" width="1080" height="1920"></canvas>
 <script src="../pro.js"></script><script src="../fx.js"></script><script src="../styles.js"></script><script src="../shots.js"></script><script src="../puppet.js"></script>
 <script>
 // Ep32 "TRUST FALL" v3 — Clásico rivals (Mbappé: Real Madrid, Yamal: Barcelona; facts: ep32/facts.md). Phone-filmed park prank.
@@ -55,15 +55,60 @@ function friendsDraw(ctx, t, laugh) { ctx.save(); // 4 friends: 2 Barça, 2 Madr
 // ---- heroes
 const idle = (t, k = 1) => ({ sq: Math.sin(t * 3.2) * 0.008 * k, tilt: Math.sin(t * 1.7) * 0.03 * k });
 const MB = (o, t) => PUPPET.draw(ctx, 'mbappe', Object.assign({ h: 900 }, idle(t), o));
-const YA = (o, t) => PUPPET.draw(ctx, 'yamal', Object.assign({ h: 860 }, idle(t + 1), o));
+const YA = (o, t) => PUPPET.draw(ctx, 'yamal', Object.assign({ h: 800 }, idle(t + 1), o));
+const YX = 940, MX = 400; // fall line: Yamal's feet at YX so his face is still in frame when he lands flat
 function phoneHUD(t) { ctx.save(); ctx.font = '700 40px Inter, sans-serif'; ctx.fillStyle = '#e02020'; if (Math.floor(t * 2) % 2) { ctx.beginPath(); ctx.arc(110, 258, 15, 0, 7); ctx.fill(); }
   ctx.fillText('REC', 138, 272); ctx.fillStyle = 'rgba(255,255,255,.9)'; const s = Math.floor(t); ctx.fillText(`00:${String(s).padStart(2, '0')}`, 870, 272); ctx.restore(); }
-
-window.DURATION = 1; window.render = function (t) { ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, W, H); t = 10.6;
-  SHOT.cu(ctx, () => { park(t); friends(t, 0.8);
-    MB({ x: 400, y: GZ, armL: 95, armR: 100, expr: 'deadpan', tilt: -0.12 }, t);
-    YA({ x: 940, y: GZ, h: 800, rot: -1.57, armL: 55, armR: 55, legL: 8, legR: 8, expr: 'shock' }, t);
-    for (let k = 0; k < 4; k++) { const a = k * 1.57; ctx.font = '60px serif'; ctx.textAlign = 'center'; ctx.fillText('⭐', 220 + Math.cos(a) * 110, 1400 + Math.sin(a) * 40); } }, { x: 580, y: 1180, zoom: 1.2 });
-  post(t); ctx.setTransform(1, 0, 0, 1, 0, 0);
-  card("\"I'll catch you bro\" 🤝", 540, 300, 84, { rot: -0.03 }); stamp('BONK', 760, 520, 150, 1); };
+const SEG = [
+  // 1 HOOK — Yamal already leaning back, Mbappé's promise in giant letters (frame 0 says what the video is)
+  [0, 2.8, 'cu', (z, t) => SHOT.cu(ctx, () => { park(t, 2); friends(t, 0, 5);
+      MB({ x: 360, y: GZ, armL: lerp(5, 30, eOut(z / 1.2)), armR: lerp(5, 35, eOut(z / 1.2)), expr: z > 1.6 ? 'laugh' : 'smug' }, t);
+      YA({ x: 730, y: GZ, rot: -0.05 - 0.04 * Math.sin(z * 3), armL: 15, armR: 15, expr: z < 1.4 ? 'smug' : 'deadpan' }, t); }, { x: 540, y: 1140, zoom: 1.22 }),
+    (z, t) => { card("Don't worry bro,", 540, 262, 76, { pop: 0.7 + z / 0.35, rot: -0.02 }); card("I'll catch you 🤝", 560, 362, 76, { pop: z < 0.4 ? 0.7 : 0.7 + (z - 0.4) / 0.35, rot: 0.02, tail: -1 }); }],
+  // 2 the fall — worm's-eye, Yamal tips back like a plank
+  [2.8, 5.0, 'low', (z, t) => SHOT.low(ctx, () => { park(t); friends(t, 0, 4); const q = eIn(clamp((z - 0.3) / 1.6));
+      MB({ x: MX, y: GZ, armL: 40, armR: lerp(35, 70, q), expr: 'smug' }, t);
+      YA({ x: YX, y: GZ, rot: -q * 0.78, armL: 8, armR: 8, legL: 0, legR: 0, expr: q > 0.35 ? 'shock' : 'smug' }, t); }, { x: 660, y: 1300, lift: 200, zoom: 1.25 }),
+    (z) => { card('trust fall… 😬', 540, 280, 84, { pop: z / 0.3 }); }],
+  // 3 he actually catches him
+  [5.0, 7.0, 'wide', (z, t) => SHOT.wide(ctx, () => { park(t); friends(t, 0); const b = Math.sin(clamp(z / 0.4) * Math.PI) * 18;
+      MB({ x: MX, y: GZ, armL: 40, armR: 72, expr: 'laugh', sq: -0.02 }, t);
+      YA({ x: YX, y: GZ - b, rot: -0.78, armL: 10, armR: 25, expr: 'laugh' }, t); }, { x: 640, y: 1180, zoom: 1.0 }),
+    (z) => { stamp('CAUGHT ✅', 540, 380, 120, z - 0.15, '#1f7a3a'); }],
+  // 4 the realisation — extreme close-up: Mbappé looks down… Barça stripes
+  [7.0, 8.6, 'xcu', (z, t) => { park(t, 8); const look = z > 0.55;
+      if (!look) PUPPET.bust(ctx, 'mbappe', 'smug', 540 + Math.sin(t * 2) * 6, 900, 820, { rot: 0.04, kit: '#f7f7f7', stripes: '#111' });
+      else { // what he sees: the shirt, huge
+        ctx.save(); ctx.translate(540, 1150); ctx.rotate(-0.25); for (let i = -6; i < 7; i++) { ctx.fillStyle = i % 2 ? '#a50044' : '#004d98'; ctx.fillRect(i * 120 - 60, -900, 120, 1800); } ctx.restore();
+        PUPPET.bust(ctx, 'mbappe', 'shock', 540, 760 + (1 - eOut((z - 0.55) / 0.2)) * 200, 700, { kit: '#f7f7f7', stripes: '#111' }); } },
+    (z) => { if (z > 0.62) card('…wait. BARÇA?', 540, 1370, 96, { pop: (z - 0.62) / 0.25, rot: -0.03 }); }],
+  // 5 slow-mo drop + shrug, BONK at 10.2
+  [8.6, 11.0, 'slowmo', (z, t) => { const tt = SHOT.slow(z, 0.25, 0.4), q = eIn(clamp((tt - 0.25) / 0.55)), land = 1.6;
+      SHOT.cu(ctx, () => { park(t); friends(t, z > land ? 0.7 : 0);
+        MB({ x: MX, y: GZ, armL: z < 0.25 ? 40 : lerp(40, 95, eOut((z - 0.25) / 0.4)), armR: z < 0.25 ? 72 : lerp(72, 100, eOut((z - 0.25) / 0.4)), expr: z < land ? 'smug' : 'deadpan', tilt: z > land ? -0.12 : 0 }, t);
+        const rot = -0.78 - q * 0.79, drop = z > land ? Math.max(0, 1 - (z - land) * 5) * Math.abs(Math.sin((z - land) * 30)) * 14 : 0;
+        if (z < land) for (let g = 3; g >= 1; g--) { ctx.save(); ctx.globalAlpha = 0.12 * g; YA({ x: YX, y: GZ, rot: -0.78 - eIn(clamp((SHOT.slow(z - g * 0.05, 0.25, 0.4) - 0.25) / 0.55)) * 0.79, armL: 30, armR: 30, expr: 'shock', shadow: false }, t); ctx.restore(); }
+        YA({ x: YX, y: GZ - drop, rot, armL: 30 + q * 25, armR: 30 + q * 25, legL: 8, legR: 8, expr: 'shock' }, t);
+        if (z > land) FX.burst(ctx, 'dust', 700, GZ - 10, t, 8.6 + land, { ground: GZ + 20, n: 14 }); }, { x: 580, y: 1180, zoom: 1.2 });
+      if (z < land) SHOT.speedlines(ctx, t, { alpha: 0.25, col: '#fffaf0' }); },
+    (z) => { if (z > 1.6) stamp('BONK', 770, 330, 140, z - 1.6); }],
+  // 6 over the phone: the friends film Yamal flat on the grass (Yamal's face stays readable: no bird's-eye)
+  [11.0, 13.2, 'ots', (z, t) => { SHOT.ots(ctx, () => { park(t); YA({ x: 1080, y: 1500, rot: -1.57, armL: 110, armR: 20, legL: 5, legR: 15, expr: z < 1.1 ? 'shock' : 'angry', tilt: 0, shadow: false }, t);
+        for (let k = 0; k < 4; k++) { const a = t * 5 + k * 1.57; ctx.font = '56px serif'; ctx.textAlign = 'center'; ctx.fillText('⭐', 330 + Math.cos(a) * 120, 1270 + Math.sin(a) * 40); } }, { x: 560, y: 1380, zoom: 1.4, side: 1, fg: '#3a2a1e', shirt: '#f4f4f4' });
+      phoneHUD(t); },
+    (z) => { card('HAHAHAHA 😂', 540, 420, 96, { pop: z / 0.3, rot: 0.03 }); }],
+  // 7 callback: Yamal's turn — same words, same drop. 'oops… MADRID'
+  [13.2, 16.5, 'dutch', (z, t) => SHOT.dutch(ctx, () => { park(t); friends(t, z > 2.2 ? 0.8 : 0.3); const fall = z > 1.3, q = eIn(clamp((z - 1.3) / 0.95));
+      const back = eOut(clamp((z - 1.2) / 0.35)); YA({ x: 300 - back * 40, y: GZ - back * 90, h: 860 - back * 120, armL: fall ? lerp(40, 100, eOut((z - 1.3) / 0.4)) : 40, armR: fall ? lerp(40, 100, eOut((z - 1.3) / 0.4)) : 40, expr: z < 1.3 ? 'smug' : 'laugh' }, t);
+      MB({ x: 880, y: GZ, h: 780, rot: -q * 1.48, armL: 10 + q * 60, armR: 10 + q * 60, expr: q > 0 ? 'shock' : 'deadpan' }, t);
+      if (q >= 1) FX.burst(ctx, 'dust', 330, GZ - 10, t, 13.2 + 2.25, { ground: GZ + 20, n: 12 }); }, { x: 520, y: 1220, zoom: 1.05, rot: -0.12 }),
+    (z) => { card(z < 1.3 ? 'your turn 😇' : 'oops… MADRID 🤷', 480, 300, 88, { pop: (z < 1.3 ? z : z - 1.3) / 0.3, tail: -1 }); if (z > 2.4) stamp('CLÁSICO RIVALS 😂', 620, 455, 84, z - 2.4); }],
+];
+window.DURATION = 16.5; window.render = function (t) { ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.filter = 'none'; ctx.clearRect(0, 0, W, H);
+  const seg = SEG.find(s => t >= s[0] && t < s[1]) || SEG[SEG.length - 1]; const z = t - seg[0];
+  const hs = [[10.2, 22], [15.5, 18]].reduce((m, [a, A]) => Math.max(m, t >= a && t < a + 0.3 ? A * (1 - (t - a) / 0.3) : 0), 0) + Math.sin(t * 3) * 3; // handheld phone feel + hit shake
+  ctx.save(); ctx.translate(Math.sin(t * 2.1) * 6 + Math.sin(t * 91) * hs, Math.cos(t * 1.7) * 5 + Math.cos(t * 77) * hs); ctx.rotate(Math.sin(t * 0.9) * 0.006); seg[3](z, t); ctx.restore();
+  if (z < 0.16 && t > 0.1) PRO.whip(ctx, cv, z / 0.16, SEG.indexOf(seg) % 2 ? -1 : 1); post(t); ctx.setTransform(1, 0, 0, 1, 0, 0); seg[4](z, t);
+  ctx.font = '600 28px Inter'; ctx.fillStyle = 'rgba(42,29,18,.75)'; ctx.textAlign = 'center'; if (t > 15.3) ctx.fillText('Cartoon parody', 540, 232); };
+if (!location.search.includes('render')) { const t0 = performance.now(); (window.CAST_READY || Promise.resolve()).then(() => (function loop() { render(((performance.now() - t0) / 1000) % 16.5); requestAnimationFrame(loop); })()); }
 </script></body></html>

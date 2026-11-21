@@ -18,6 +18,10 @@
     else if (kind === 'thumb') { finger(-r * 0.15, -r * 0.2, r * 1.7, Math.PI, r * 0.6); fill(() => ctx.ellipse(0, r * 0.3, r * 1.05, r * 0.9, 0, 0, 7)); ctx.strokeStyle = 'rgba(0,0,0,.4)'; ctx.lineWidth = Math.max(2, r * 0.1); for (const k of [0.1, 0.45, 0.8]) { ctx.beginPath(); ctx.moveTo(r * 0.2, r * (k - 0.1)); ctx.lineTo(r * 0.9, r * (k - 0.1)); ctx.stroke(); } }
     else if (kind === 'grab') { for (const a of [-0.6, -0.2, 0.2, 0.6]) finger(Math.sin(a) * r * 0.7, r * 0.5, r * 1.0, -a * 0.5 + 0.5); fill(() => ctx.ellipse(0, r * 0.2, r, r * 0.9, 0, 0, 7)); }
     else if (kind === 'clap') { fill(() => ctx.ellipse(0, r * 0.4, r * 0.7, r * 1.4, 0, 0, 7)); ctx.strokeStyle = 'rgba(0,0,0,.3)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(0, -r * 0.6); ctx.lineTo(0, r * 1.5); ctx.stroke(); }
+    else if (kind === 'relax') { // cartoon hand: small palm, 4 long fingers side by side with a slight curl, thumb out to the side
+      for (const [x, l, a] of [[-0.45, 1.45, 0.1], [-0.15, 1.7, 0.03], [0.15, 1.65, -0.03], [0.44, 1.35, -0.1]]) finger(x * r, r * 0.1, r * l, a, r * 0.36);
+      finger(-r * 0.6, -r * 0.05, r * 1.15, 0.9, r * 0.4); fill(() => ctx.ellipse(0, r * 0.05, r * 0.72, r * 0.6, 0, 0, 7)); }
+    else if (kind === 'wave') { for (const [a, l] of [[-0.6, 1.4], [-0.2, 1.7], [0.2, 1.65], [0.6, 1.4]]) finger(Math.sin(a) * r * 0.65, r * 0.4, r * l, -a * 1.2); finger(-r * 0.85, 0, r * 1.15, 1.4); fill(() => ctx.ellipse(0, r * 0.3, r * 0.95, r * 0.85, 0, 0, 7)); }
     else fill(() => ctx.ellipse(0, 0, r, r, 0, 0, 7));
     ctx.restore();
   }

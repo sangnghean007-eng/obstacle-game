@@ -8,8 +8,8 @@ from scipy import ndimage
 
 BODIES = ['front', 'threequarter', 'side']; HEADS = ['smug', 'shock', 'angry', 'laugh', 'deadpan', 'cry']
 
-def cut(src):
-    im = np.array(Image.open(src).convert('RGB')); out = os.path.dirname(src)
+def cut(src, out=None):
+    im = np.array(Image.open(src).convert('RGB')); out = out or os.path.dirname(src); os.makedirs(out, exist_ok=True)
     white = im.min(axis=2) > 232
     lab, _ = ndimage.label(white)
     border = set(np.unique(np.concatenate([lab[0], lab[-1], lab[:, 0], lab[:, -1]]))) - {0}
@@ -28,13 +28,14 @@ def cut(src):
     fg = ndimage.binary_erosion(fg, iterations=1)                       # trim the white halo
     blobs, n = ndimage.label(ndimage.binary_dilation(fg, iterations=int(os.environ.get("DIL", 2))))  # join hair curls / loose bits
     sl = ndimage.find_objects(blobs)
-    figs = sorted([(int((blobs == i + 1).sum()), s) for i, s in enumerate(sl)], key=lambda t: -t[0])[:9]
-    figs = [s for _, s in figs]
+    figs = sorted([(int((blobs == i + 1).sum()), s) for i, s in enumerate(sl)], key=lambda t: -t[0])
+    tall = [s for _, s in figs if s[0].stop - s[0].start > im.shape[0] * 0.6]
+    figs = [s for _, s in figs[:9 if tall else 6]]      # head-only sheets (caricature busts) have 6 figures and no bodies
     bodies = sorted([s for s in figs if s[0].stop - s[0].start > im.shape[0] * 0.6], key=lambda s: s[1].start)
     heads = [s for s in figs if s not in bodies]
     mid = np.median([(s[0].start + s[0].stop) / 2 for s in heads])
     heads = sorted(heads, key=lambda s: ((s[0].start + s[0].stop) / 2 > mid, s[1].start))
-    assert len(bodies) == 3 and len(heads) == 6, (len(bodies), len(heads))
+    assert len(bodies) in (0, 3) and len(heads) == 6, (len(bodies), len(heads))
     for name, s in list(zip(BODIES, bodies)) + list(zip(HEADS, heads)):
         lbl = np.bincount(blobs[s].ravel())[1:].argmax() + 1                # the blob that owns this box
         a = ((blobs[s] == lbl) & fg[s]).astype(np.uint8) * 255
@@ -42,4 +43,4 @@ def cut(src):
         rgba = rgba[ys.min():ys.max() + 1, xs.min():xs.max() + 1]
         Image.fromarray(rgba).save(os.path.join(out, name + '.png')); print(name, rgba.shape[1], 'x', rgba.shape[0])
 
-if __name__ == '__main__': cut(sys.argv[1])
+if __name__ == '__main__': cut(sys.argv[1], sys.argv[2] if len(sys.argv) > 2 else None)

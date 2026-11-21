@@ -1,65 +1,70 @@
 {
- "logline": "Mbappé promises Yamal 'don't worry bro, I'll catch you' for a trust fall, catches him, notices the Barça shirt and drops him; Yamal gets his revenge the same way.",
+ "logline": "Ronaldo catches Messi and Mbappé in a trust-fall challenge, but when Yamal calls himself 'the next GOAT', Ronaldo steps back and Yamal face-plants.",
  "style": "ink",
  "prev_style": "comic",
- "hook_frame0": "giant card 'Don't worry bro, I'll catch you 🤝' over Mbappé and Yamal (AI puppets) from frame 0",
+ "hook_frame0": "'TRUST FALL CHALLENGE 🙌' card while Messi already tips back into Ronaldo's arms",
  "beats": [
   {
    "shot": "wide",
-   "idea": "the promise",
-   "text": "I'll catch you"
-  },
-  {
-   "shot": "low",
-   "idea": "Yamal falls like a plank",
-   "text": "trust fall…"
+   "idea": "Ronaldo catches Messi",
+   "text": "LEO ✅"
   },
   {
    "shot": "cu",
-   "idea": "he actually catches him",
-   "text": "CAUGHT"
+   "idea": "Mbappé wants in",
+   "text": "Me next!"
+  },
+  {
+   "shot": "low",
+   "idea": "Ronaldo catches Mbappé",
+   "text": "KYLIAN ✅"
+  },
+  {
+   "shot": "cu",
+   "idea": "Yamal brags",
+   "text": "I'm the next GOAT"
   },
   {
    "shot": "xcu",
-   "idea": "Mbappé sees the Barça shirt",
-   "text": "…wait. BARÇA?"
+   "idea": "Ronaldo's stare",
+   "text": "…next GOAT?"
   },
   {
-   "shot": "slowmo",
-   "idea": "drops him, shrug",
+   "shot": "wide",
+   "idea": "Ronaldo steps back, Yamal falls",
    "text": "BONK"
   },
   {
-   "shot": "ots",
-   "idea": "over a friend's phone (REC): Yamal flat on the grass, stars",
-   "text": "HAHAHAHA"
+   "shot": "xcu",
+   "idea": "face in the grass",
+   "text": "😵‍💫"
   },
   {
    "shot": "dutch",
-   "idea": "revenge: Yamal drops Mbappé",
-   "text": "CLÁSICO RIVALS"
+   "idea": "Ronaldo and Messi, arms round shoulders",
+   "text": "GOATs ONLY"
   }
  ],
  "techniques": [
+  "rule-of-3",
   "misdirection",
   "anticlimax",
   "deadpan",
-  "callback",
-  "rule-of-3"
+  "callback"
  ],
  "gags": [
-  "trust fall dropped because of the rival shirt",
-  "revenge trust fall"
+  "trust fall: two catches then a step back",
+  "face-plant close-up in the grass",
+  "'next GOAT' brag punished"
  ],
- "twist": "he catches him first, then drops him only after seeing the Barça shirt",
- "callback": "Yamal repeats the promise and drops Mbappé ('oops… MADRID')",
- "ending": "reversal",
+ "twist": "the third faller is not caught because he called himself the next GOAT",
+ "callback": "GOATs ONLY — the challenge was only ever for the two GOATs",
+ "ending": "button",
  "hidden_details": [
-  "friends in both kits filming on phones in the background",
-  "REC timer on the phone shot counts the real seconds",
-  "Mbappé's '10' and Yamal's '10' — both number 10s",
-  "stars spin over Yamal's head"
+  "Mbappé and Yamal laugh in the queue at Messi's catch, then become the joke",
+  "friends film everything on phones",
+  "Yamal's crying face has grass stains"
  ],
- "meme_frame": "Mbappé shrugging over Yamal on the grass",
- "version": "v3 AI cut-out puppets (21 Nov 2026)"
+ "meme_frame": "Ronaldo saying 'Nah 🙅' while Yamal falls",
+ "version": "v5 chibi bodies + AI caricature heads (21 Nov 2026, owner's story)"
 }

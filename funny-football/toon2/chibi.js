@@ -23,19 +23,24 @@
       // muscle shading along the lower side of the limb
       ctx.save(); ctx.globalAlpha = 0.22; stroke(P.map(p => [p[0] + w * 0.18, p[1] + w * 0.12]), w * 0.45, '#000'); ctx.restore();
       const sl = [P[0], [P[0][0] + (P[1][0] - P[0][0]) * 0.55, P[0][1] + (P[1][1] - P[0][1]) * 0.55]]; stroke(sl, w * 1.25, C.kit.sleeve || C.kit.shirt); stroke([sl[1], sl[1]], w * 1.25, C.kit.cuff || C.kit.shirt);
-      const hp = C.hands && C.hands[side]; if (hp && window.RIG2) RIG2.hand(ctx, P[2][0], P[2][1], hr * 1.35, C.kit.gloves || C.skin, hp, Math.atan2(P[2][0] - P[1][0], P[2][1] - P[1][1]), INK); else { ell(P[2][0], P[2][1], hr, hr, C.kit.gloves || C.skin, 0); ell(P[2][0] - hr * 0.3, P[2][1] - hr * 0.35, hr * 0.35, hr * 0.25, 'rgba(255,255,255,.35)', 0); }
+      const hp = (C.hands && C.hands[side]) || 'relax'; /* every hand has fingers (owner: no mitten hands) */ if (hp && window.RIG2) RIG2.hand(ctx, P[2][0], P[2][1], hr * 1.3, C.kit.gloves || C.skin, hp, Math.atan2(P[2][0] - P[1][0], P[2][1] - P[1][1]), INK); else { ell(P[2][0], P[2][1], hr, hr, C.kit.gloves || C.skin, 0); ell(P[2][0] - hr * 0.3, P[2][1] - hr * 0.35, hr * 0.35, hr * 0.25, 'rgba(255,255,255,.35)', 0); }
       if (C.prop && C.prop.hand === side) C.prop.draw(P[2][0], P[2][1]);
     }
     return P[2];
   }
+  function bootPath(f, w, g) { ctx.beginPath(); ctx.moveTo(f[0] - w * 0.55 - g, f[1] + w * 0.44 + g); ctx.lineTo(f[0] - w * 0.55 - g, f[1] - w * 0.4 - g); ctx.quadraticCurveTo(f[0] - w * 0.5, f[1] - w * 0.6 - g, f[0] + w * 0.2, f[1] - w * 0.45 - g);
+    ctx.quadraticCurveTo(f[0] + w * 1.4 + g, f[1] - w * 0.3 - g, f[0] + w * 1.4 + g, f[1] + w * 0.2); ctx.lineTo(f[0] + w * 1.35 + g, f[1] + w * 0.44 + g); ctx.closePath(); }
   function leg(C, root, ang, pass) {
     const [a1, a2] = ang, P = limbPts(root, a1, a2, C.leg * 0.5, C.leg * 0.5), w = C.legW, f = P[2];
-    if (pass === 'ink') { stroke(P, w + 2 * OL, INK); blob(() => ctx.ellipse(f[0] + w * 0.35, f[1] + w * 0.05, w * 0.95 + OL / 2, w * 0.55 + OL / 2, 0, 0, Math.PI * 2), INK, 0); }
+    if (pass === 'ink') { stroke(P, w + 2 * OL, INK); bootPath(f, w, OL * 0.6); ctx.fillStyle = INK; ctx.fill(); }
     else {
       stroke(P, w, C.skin);
       const s0 = [P[1][0] + (P[0][0] - P[1][0]) * 0.1, P[1][1] + (P[0][1] - P[1][1]) * 0.1]; stroke([s0, P[1], P[2]], w * 1.04, C.kit.sock);
       stroke([s0, [s0[0] + (P[2][0] - s0[0]) * 0.07, s0[1] + (P[2][1] - s0[1]) * 0.07]], w * 1.06, C.kit.sockBand || C.kit.sockShade || C.kit.sock);
-      ell(f[0] + w * 0.35, f[1] + w * 0.05, w * 0.95, w * 0.55, C.kit.boot, 0); ell(f[0] + w * 0.6, f[1] - w * 0.15, w * 0.35, w * 0.14, 'rgba(255,255,255,.55)', 0);
+      bootPath(f, w, 0); ctx.fillStyle = C.kit.boot; ctx.fill();   // football boot: rounded toe, flat sole, studs, laces
+      ctx.fillStyle = 'rgba(0,0,0,.35)'; ctx.fillRect(f[0] - w * 0.5, f[1] + w * 0.3, w * 1.85, w * 0.14);
+      ctx.fillStyle = INK; for (const k of [-0.25, 0.35, 0.95]) ctx.fillRect(f[0] + w * k, f[1] + w * 0.44, w * 0.18, w * 0.16);
+      ctx.strokeStyle = 'rgba(255,255,255,.75)'; ctx.lineWidth = Math.max(2, w * 0.07); for (const k of [0.05, 0.3]) { ctx.beginPath(); ctx.moveTo(f[0] + w * k, f[1] - w * 0.35); ctx.lineTo(f[0] + w * (k + 0.2), f[1] - w * 0.15); ctx.stroke(); }
     }
   }
 
@@ -156,10 +161,15 @@
     if (K.pattern === 'hawaii') shade(T, K.flower || '#ffd60a', () => { for (let i = 0; i < 14; i++) { const fx = -sw + ((i * 71) % (sw * 2)), fy = sy + ((i * 53) % (hy - sy)); for (let p = 0; p < 5; p++) { ctx.moveTo(fx + Math.cos(p * 1.256) * 12 + 9, fy + Math.sin(p * 1.256) * 12); ctx.arc(fx + Math.cos(p * 1.256) * 12, fy + Math.sin(p * 1.256) * 12, 9, 0, Math.PI * 2); } } });
     shade(T, 'rgba(0,0,0,.16)', () => { ctx.moveTo(sw * 0.35, sy - 20); ctx.quadraticCurveTo(sw * 0.15, (sy + hy) / 2, sw * 0.3, hy + 20); ctx.lineTo(sw + 20, hy + 20); ctx.lineTo(sw + 20, sy - 20); ctx.closePath(); });
     shade(T, 'rgba(255,255,255,.16)', () => ctx.ellipse(-sw * 0.45, sy + (hy - sy) * 0.25, sw * 0.3, (hy - sy) * 0.2, -0.3, 0, Math.PI * 2));
+    ctx.save(); ctx.beginPath(); T(); ctx.clip(); ctx.beginPath(); ctx.moveTo(sw * 0.35, sy - 20); ctx.quadraticCurveTo(sw * 0.15, (sy + hy) / 2, sw * 0.3, hy + 20); ctx.lineTo(sw + 20, hy + 20); ctx.lineTo(sw + 20, sy - 20); ctx.closePath(); ctx.clip();
+    ctx.strokeStyle = 'rgba(20,10,5,.28)'; ctx.lineWidth = 3; for (let k = -hy; k < sw * 2; k += 13) { ctx.beginPath(); ctx.moveTo(k + sy, sy - 20); ctx.lineTo(k + sy - (hy - sy + 40) * 0.6, hy + 20); ctx.stroke(); } ctx.restore();   // comic hatching
+    stroke([[-sw * 0.82, sy + 52], [-sw * 0.62, sy + (hy - sy) * 0.55], [-sw * 0.7, hy - 6]], 3.5, 'rgba(20,10,5,.35)'); stroke([[sw * 0.8, sy + 56], [sw * 0.58, sy + (hy - sy) * 0.6]], 3.5, 'rgba(20,10,5,.35)');   // fabric folds
     if (C.pecs) { stroke([[-sw * 0.6, sy + (hy - sy) * 0.38], [-sw * 0.1, sy + (hy - sy) * 0.45], [sw * 0.05, sy + (hy - sy) * 0.3]], 4, 'rgba(0,0,0,.25)'); stroke([[sw * 0.15, sy + (hy - sy) * 0.42], [sw * 0.55, sy + (hy - sy) * 0.36]], 4, 'rgba(0,0,0,.2)'); }
     blob(() => { ctx.moveTo(-36, sy - 8); ctx.quadraticCurveTo(10, sy + 34, 56, sy - 8); }, null, OL);
     blob(() => { ctx.moveTo(-36, sy - 8); ctx.quadraticCurveTo(10, sy + 34, 56, sy - 8); ctx.lineTo(46, sy - 8); ctx.quadraticCurveTo(10, sy + 18, -26, sy - 8); ctx.closePath(); }, K.collar, OL * 0.6);
-    if (C.num || C.name) { ctx.font = `900 ${C.numSize || 64}px Inter, sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineJoin = 'round'; ctx.lineWidth = 8; ctx.strokeStyle = INK; const nx = sw * 0.3, ny = sy + (hy - sy) * 0.45; ctx.save(); ctx.translate(nx, ny); ctx.scale(C.f < 0 ? -1 : 1, 1); ctx.fillStyle = K.num; if (C.num) { ctx.strokeText(C.num, 0, 0); ctx.fillText(C.num, 0, 0); } if (C.name) { ctx.font = `900 ${C.nameSize || 24}px Inter, sans-serif`; ctx.lineWidth = 5; ctx.strokeText(C.name, 0, (C.numSize || 64) * 0.62); ctx.fillText(C.name, 0, (C.numSize || 64) * 0.62); } ctx.restore(); }
+    if (C.num || C.name) { ctx.font = `900 ${C.numSize || 64}px Inter, sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineJoin = 'round'; ctx.lineWidth = 8; ctx.strokeStyle = INK; const nx = 0, ny = sy + (hy - sy) * 0.44; ctx.save(); ctx.translate(nx, ny); ctx.scale(C.f < 0 ? -1 : 1, 1); ctx.fillStyle = K.num; if (C.num) { ctx.strokeText(C.num, 0, 0); ctx.fillText(C.num, 0, 0); } if (C.name) { // printed on the shirt like a real kit: white letters, thick black edge — readable on every kit colour
+      let fs = 34; ctx.font = `900 ${fs}px Inter, sans-serif`; const maxW = sw * 1.15, tw0 = ctx.measureText(C.name).width; if (tw0 > maxW) { fs = Math.floor(fs * maxW / tw0); ctx.font = `900 ${fs}px Inter, sans-serif`; }
+      const y2 = (C.numSize || 64) * 0.5 + fs * 0.8 + 4; ctx.lineWidth = Math.max(6, fs * 0.28); ctx.strokeStyle = '#111'; ctx.strokeText(C.name, 0, y2); ctx.fillStyle = '#fff'; ctx.fillText(C.name, 0, y2); } ctx.restore(); }
     blob(T, null);
   }
   function shorts(C) { const K = C.kit, ww = C.waistW, hy = C.hipY, L = C.legW; blob(() => { ctx.moveTo(-ww - 4, hy - 6); ctx.lineTo(ww + 4, hy - 6); ctx.lineTo(ww + L * 0.45, hy + C.leg * 0.32); ctx.lineTo(L * 0.2, hy + C.leg * 0.32); ctx.lineTo(0, hy + C.leg * 0.12); ctx.lineTo(-L * 0.2, hy + C.leg * 0.32); ctx.lineTo(-ww - L * 0.45, hy + C.leg * 0.32); ctx.closePath(); }, K.shorts); }

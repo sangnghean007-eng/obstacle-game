@@ -11,16 +11,20 @@ from scipy import ndimage
 HERE = os.path.dirname(os.path.abspath(__file__))
 RIGS = {
     'mbappe': dict(view='threequarter', headY=150, neck=(120, 150), legY=420, legSplit=110, armSkinBelow=250,
-                   armL=[(0, 250), (62, 258), (60, 300), (58, 330), (64, 400), (68, 452), (0, 452)], shL=(32, 262),
-                   armR=[(168, 242), (200, 242), (223, 300), (223, 452), (180, 452), (178, 330), (172, 255)], shR=(186, 252),
+                   armL=[(0, 135), (60, 140), (68, 255), (60, 300), (58, 330), (64, 400), (68, 452), (0, 452)], shL=(42, 172), hem=258,
+                   armR=[(166, 160), (195, 168), (223, 300), (223, 452), (180, 452), (178, 330), (172, 255), (165, 205)], shR=(178, 186),
                    hipL=(70, 432), hipR=(145, 432)),
     'yamal': dict(view='front', headY=160, neck=(110, 160), legY=430, legSplit=110,
-                  armL=[(0, 258), (58, 258), (52, 266), (40, 278), (42, 452), (0, 452)], shL=(28, 268),
-                  armR=[(160, 258), (217, 258), (217, 452), (175, 452), (177, 278), (165, 266)], shR=(190, 268),
+                  armL=[(0, 158), (50, 158), (60, 192), (52, 266), (40, 278), (42, 452), (0, 452)], shL=(46, 190), hem=266,
+                  armR=[(167, 158), (217, 158), (217, 452), (175, 452), (177, 278), (165, 266), (157, 192)], shR=(172, 190),
                   hipL=(70, 440), hipR=(150, 440)),
+    'messi': dict(view='front', headY=215, neck=(101, 215), legY=462, legSplit=101,
+                  armL=[(0, 225), (40, 225), (50, 280), (46, 330), (42, 462), (0, 462)], shL=(40, 252), hem=330,
+                  armR=[(162, 225), (202, 225), (202, 462), (160, 462), (156, 330), (152, 280)], shR=(162, 252),
+                  hipL=(65, 472), hipR=(138, 472)),
     'ronaldo': dict(view='front', headY=148, neck=(120, 148), legY=430, legSplit=117,
-                    armL=[(0, 250), (62, 250), (58, 258), (48, 266), (45, 425), (0, 425)], shL=(35, 262),
-                    armR=[(172, 250), (233, 250), (233, 425), (195, 425), (193, 266), (180, 258)], shR=(200, 262),
+                    armL=[(0, 148), (56, 148), (66, 200), (58, 258), (48, 266), (45, 425), (0, 425)], shL=(48, 180), hem=258,
+                    armR=[(177, 148), (233, 148), (233, 425), (195, 425), (193, 266), (180, 258), (171, 200)], shR=(186, 180),
                     hipL=(70, 445), hipR=(165, 445)),
 }
 EXPR = ['smug', 'shock', 'angry', 'laugh', 'deadpan', 'cry']
@@ -61,8 +65,27 @@ def build(name, R):
     legL = legs & (X < R['legSplit']); legR = legs & (X >= R['legSplit'])
     torso = rest & (Y >= R['headY'] - 4) & ~((Y >= R['legY'] + 30))  # torso keeps the shorts; legs start under the hem
     parts = dict(torso=torso, head=head, armL=armL, armR=armR, legL=legL, legR=legR); rig = dict(view=R['view'], size=[w, h], parts={})
+    imgs = {k: im.copy() for k in parts}
+    # JOINT REPAIR — arms are cut WITH their sleeves and turn at the top of the shoulder, drawn over the torso.
+    # The torso gets the sleeve's area back as a plain shoulder (nearest shirt colour + ink edge), so a raised arm never leaves a hole.
+    src = torso & ~skin & (im[:, :, :3].max(axis=2) > 110)                      # copy shirt colour only (not neck skin, not ink)
+    dist, (iy, ix) = ndimage.distance_transform_edt(~src, return_indices=True)
+    fill = (armL | armR) & (Y < R['hem'] + 6) & (dist <= 9)                      # a rounded shoulder, not the whole sleeve
+    t = imgs['torso']; t[fill, :3] = im[iy[fill], ix[fill], :3]; t[fill, 3] = 255
+    tor2 = torso | fill; edge = fill & ~ndimage.binary_erosion(tor2, iterations=2); t[edge, :3] = 30
+    # armpit side under the sleeve: shirt in deep shadow cut by the polygon looks like a grey scrap when the arm lifts —
+    # repaint it with the lit shirt colour and give the new side an ink edge
+    pol = poly_mask(A.shape, R['armL']) | poly_mask(A.shape, R['armR'])
+    zone = ndimage.binary_dilation(pol, iterations=10) & tor2 & (Y >= R['hem'] - 4) & (Y < R['hem'] + 70) & ~skin
+    t[zone, :3] = im[iy[zone], ix[zone], :3]
+    side = zone & ~ndimage.binary_erosion(tor2, iterations=3); t[side, :3] = 30
+    # thin leftovers of the armpit (shadow/gap scraps) are dropped: keep only the solid body (opening removes 1-6 px slivers)
+    solid = ndimage.binary_opening(tor2, iterations=4); lab, n = ndimage.label(solid)
+    if n > 1: solid = lab == (np.bincount(lab.ravel())[1:].argmax() + 1)
+    tor2 = tor2 & ndimage.binary_dilation(solid, iterations=4)
+    parts['torso'] = tor2
     for k, m in parts.items():
-        b = bbox(m); rgba = im.copy(); rgba[:, :, 3] = np.where(m, im[:, :, 3], 0)
+        b = bbox(m); rgba = imgs[k]; rgba[:, :, 3] = np.where(m, rgba[:, :, 3], 0)
         Image.fromarray(rgba[b[1]:b[3], b[0]:b[2]]).save(os.path.join(d, f'p_{k}.png')); rig['parts'][k] = dict(box=b)
     rig['pivot'] = dict(neck=R['neck'], shL=R['shL'], shR=R['shR'], hipL=R['hipL'], hipR=R['hipR'])
     rig['head'] = head_metrics(head, 0.7)

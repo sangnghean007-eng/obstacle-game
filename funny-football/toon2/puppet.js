@@ -45,8 +45,8 @@
     const sq = o.sq || 0; ctx.scale(s * (o.flip ? -1 : 1) * (1 + sq), s * (1 - sq)); ctx.translate(-w / 2, -h);
     part(ctx, pp, 'legL', pv.hipL, rad(o.legL || 0)); part(ctx, pp, 'legR', pv.hipR, -rad(o.legR || 0));
     const arms = () => { part(ctx, pp, 'armL', pv.shL, rad(o.armL || 0)); part(ctx, pp, 'armR', pv.shR, -rad(o.armR || 0)); };
-    if (!o.armsFront) arms();            // arms hang from inside the sleeves: drawn behind the torso so the cut never shows
-    part(ctx, pp, 'torso'); if (o.armsFront) arms();
+    if (o.armsBack) arms();              // arms (with sleeves) turn at the shoulder top, normally drawn over the torso
+    part(ctx, pp, 'torso'); if (!o.armsBack) arms();
     head(ctx, pp, o);
     if (o.expr) { const hb = R.parts.head.box; ctx.save(); ctx.beginPath(); ctx.rect(hb[0] - 10, pv.neck[1] + 2, hb[2] - hb[0] + 20, 40); ctx.clip(); part(ctx, pp, 'torso'); ctx.restore(); } // collar over the bust's neck
     ctx.restore(); return true;
@@ -69,5 +69,15 @@
     ctx.beginPath(); for (const p of edge.slice(2, 7)) ctx.lineTo(...p); ctx.lineWidth = 9; ctx.strokeStyle = o.kit; ctx.stroke(); ctx.lineWidth = 3; ctx.strokeStyle = '#111'; ctx.stroke(); // collar band
     ctx.restore(); return true;
   }
-  window.PUPPET = { load, draw, bust, P };
+  // ---- geometry helpers (same transform as draw(); ignores sq/bob): world position of a rig point, and arm reach (IK)
+  function world(n, o, px, py) { const pp = P[n]; if (!pp) return [o.x, o.y]; const [w, h] = pp.R.size, s = (o.h || 600) / h, f = o.flip ? -1 : 1;
+    let x = (px - w / 2) * s * f, y = (py - h) * s; const r = o.rot || 0; return [o.x + x * Math.cos(r) - y * Math.sin(r), o.y + x * Math.sin(r) + y * Math.cos(r)]; }
+  const shoulder = (n, o, side) => { const pv = P[n].R.pivot[side === 'L' ? 'shL' : 'shR']; return world(n, o, pv[0], pv[1]); };
+  function armLen(n, o, side) { const R = P[n].R, b = R.parts['arm' + side].box, pv = R.pivot[side === 'L' ? 'shL' : 'shR']; return (b[3] - pv[1] - 8) * (o.h || 600) / R.size[1]; }
+  // degrees for o.armL / o.armR so the hand points at (tx,ty); clamp keeps the cut-out believable
+  function reach(n, o, side, tx, ty) { const [sx, sy] = shoulder(n, o, side); const phi = Math.atan2(-(tx - sx), ty - sy) - (o.rot || 0); // canvas angle from "hanging"
+    const deg = phi * 180 / Math.PI * (o.flip ? -1 : 1); return side === 'L' ? deg : -deg; }
+  // point on a body at fraction f of its height from the feet (the faller's upper back), for a given rotation
+  function along(n, o, f) { const r = o.rot || 0, L = (o.h || 600) * f; return [o.x + Math.sin(r) * L, o.y - Math.cos(r) * L]; }
+  window.PUPPET = { load, draw, bust, P, world, shoulder, armLen, reach, along };
 })();

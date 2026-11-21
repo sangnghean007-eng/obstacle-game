@@ -104,3 +104,9 @@ Playwright, Chromium, ffmpeg, numpy and scipy are already available.
 Ep32 v3 rebuilt on AI cut-out puppets (toon2/puppet.js, toon2/cast/make_puppet.py; see studio/LIKENESS.md "Puppet pipeline").
 Cast ready: Mbappé, Yamal, Ronaldo. Messi, Haaland, Jesus sheets queued (ElevenLabs free plan daily image cap) — reminder set for 22 Nov.
 Old versions kept: ep32/scene_v2_chibi.html. QA length rule is now 15–30 s (data rule).
+
+## 21 Nov 2026 (night) — Ep32 v5 look = chibi body + AI caricature head (owner's pick)
+- Faces: extreme-caricature head sheets (vidIQ image tool; ElevenLabs free plan is capped per day and blocked a Messi sheet), cut with `toon2/cast/cut_heads.py` into `cast/<name>/caric/` (neck trimmed by skin colour, colours flattened to match the chibi bodies; originals in `caric_full/`).
+- Bodies: chibi.js now has fingers on every hand (rig2 'relax'/'wave'), kit-print names (white + black edge) under the number, comic hatching + fabric folds, football boots. Limbs use the head's skin colour (`cast/skins.js`). Use `CASTIMG.head(ctx, name, expr, { collar })`.
+- Contacts: ep32/scene.html has chibi arm IK (`reach`) and catch geometry (`geo`) — reuse for any hug/catch/push.
+- Next episode: Ronaldo must rest (novelty lead rule).

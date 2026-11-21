@@ -1,13 +1,14 @@
 <!doctype html><html><head><meta charset="utf-8"><title>Trust Fall</title><style>html,body{margin:0;background:#000}</style></head><body><canvas id="c" width="1080" height="1920"></canvas>
-<script src="../pro.js"></script><script src="../fx.js"></script><script src="../styles.js"></script><script src="../shots.js"></script><script src="../puppet.js"></script>
+<script src="../pro.js"></script><script src="../fx.js"></script><script src="../styles.js"></script><script src="../shots.js"></script><script src="../chibi.js"></script><script src="../chibi_cast.js"></script><script src="../rig2.js"></script><script src="../castimg.js"></script><script src="../cast/skins.js"></script>
 <script>
-// Ep32 "TRUST FALL" v3 — Clásico rivals (Mbappé: Real Madrid, Yamal: Barcelona; facts: ep32/facts.md). Phone-filmed park prank.
-// v3 (21 Nov 2026): heroes are AI cut-out puppets (cast/*, puppet.js), not code chibis; light ink look keeps the kit colours;
-// timings are unchanged so audio.py still hits every beat (bonks 10.2 s and 15.5 s).
+// Ep32 "TRUST FALL" v4 (owner's story, 21 Nov 2026): Ronaldo catches Messi, catches Mbappé… Yamal calls himself 'the next GOAT'
+// and Ronaldo steps aside: face-plant. Kits as of Nov 2026 (facts.md): Ronaldo Al Nassr 7, Messi Inter Miami 10, Mbappé Real Madrid 10, Yamal Barça 10.
+// v5 look (owner's pick): code chibi bodies + extreme AI caricature heads (cast/*/caric), fingers on every hand, names printed on the shirts;
+// arm IK so every catch really lands in the hands; everyone keeps moving (no frozen poses).
 const W = 1080, H = 1920, cv = document.getElementById('c'), ctx = cv.getContext('2d');
 const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v)), lerp = (a, b, k) => a + (b - a) * k, eOut = k => 1 - (1 - clamp(k)) ** 3, eIn = k => clamp(k) ** 2;
 const eBack = k => { k = clamp(k); const c = 1.7; return 1 + (c + 1) * (k - 1) ** 3 + c * (k - 1) ** 2; };
-PUPPET.load(['mbappe', 'yamal']);
+CASTIMG.preload(['ronaldo', 'messi', 'mbappe', 'yamal']);
 const GZ = 1600, FONT = '"Caveat","Comic Sans MS",cursive', INK = '#2a1d12';
 // ---- light ink look: hand-drawn boil + paper grain, colours kept (the kits are how people recognise the players)
 const paper = (() => { const c = document.createElement('canvas'); c.width = 540; c.height = 960; const g = c.getContext('2d'); const d = g.createImageData(540, 960); let r = 7;
@@ -52,63 +53,100 @@ function friendsDraw(ctx, t, laugh) { ctx.save(); // 4 friends: 2 Barça, 2 Madr
     ctx.fillStyle = '#2b2b33'; ctx.fillRect(x - 50, y - 35, 40, 130); ctx.fillRect(x + 10, y - 35, 40, 130);
     ctx.save(); ctx.translate(x + f * 40, y - 255); ctx.rotate(f * 0.15); ctx.fillStyle = '#111'; ctx.fillRect(-26, -44, 52, 88); ctx.fillStyle = `rgba(150,210,255,${0.6 + 0.3 * Math.sin(t * 7 + i)})`; ctx.fillRect(-21, -38, 42, 76); ctx.restore(); });
   ctx.restore(); }
-// ---- heroes
-const idle = (t, k = 1) => ({ sq: Math.sin(t * 3.2) * 0.008 * k, tilt: Math.sin(t * 1.7) * 0.03 * k });
-const MB = (o, t) => PUPPET.draw(ctx, 'mbappe', Object.assign({ h: 900 }, idle(t), o));
-const YA = (o, t) => PUPPET.draw(ctx, 'yamal', Object.assign({ h: 800 }, idle(t + 1), o));
-const YX = 940, MX = 400; // fall line: Yamal's feet at YX so his face is still in frame when he lands flat
-function phoneHUD(t) { ctx.save(); ctx.font = '700 40px Inter, sans-serif'; ctx.fillStyle = '#e02020'; if (Math.floor(t * 2) % 2) { ctx.beginPath(); ctx.arc(110, 258, 15, 0, 7); ctx.fill(); }
-  ctx.fillText('REC', 138, 272); ctx.fillStyle = 'rgba(255,255,255,.9)'; const s = Math.floor(t); ctx.fillText(`00:${String(s).padStart(2, '0')}`, 870, 272); ctx.restore(); }
+// ---- cast: chibi bodies, caricature heads, limbs in the head's own skin colour
+const kit = (shirt, trim, shorts, sock, num, boot = '#111') => ({ shirt, sleeve: shirt, cuff: trim, collar: trim, shorts, sock, sockShade: sock, sockBand: trim, boot, num });
+const shadeOf = h => '#' + [1, 3, 5].map(i => Math.round(parseInt(h.slice(i, i + 2), 16) * 0.8).toString(16).padStart(2, '0')).join('');
+const BASE = { ronaldo: CH.ronaldo, messi: Object.assign({}, CH.messi, { kit: kit('#f5a3c7', '#111', '#111111', '#f5a3c7', '#111') }),
+  mbappe: Object.assign({}, CH.mate2, { kit: kit('#f7f7f7', '#c9a227', '#f7f7f7', '#f7f7f7', '#1b2a5c', '#f2f2f2'), num: '10', numSize: 56, name: 'MBAPPÉ' }),
+  yamal: Object.assign({}, CH.mate1, { kit: Object.assign(kit('#a50044', '#004d98', '#004d98', '#004d98', '#ffd60a'), { stripes: '#004d98' }), num: '10', numSize: 56, name: 'YAMAL' }) };
+const CC = {}; for (const k in BASE) CC[k] = Object.assign({}, BASE[k], { arm: BASE[k].arm * 0.82, armW: BASE[k].armW * 1.35, skin: CAST_SKIN[k], shade: shadeOf(CAST_SKIN[k]) });
+const SC = { ronaldo: 1.3, messi: 1.22, mbappe: 1.26, yamal: 1.24 };
+// local→world for a chibi drawn with (x, y, s, f, lean): used for arm IK and contact points
+const lay = n => { const C = CC[n], hipY = -C.leg * 0.95, shY = hipY - C.torsoH; return { hipY, shY, fs: [C.shoulderW * 0.8, shY + 30], bs: [-C.shoulderW * 0.72, shY + 30] }; };
+function W2(o, lx, ly) { const s = o.s, f = o.f || 1, r = o.lean || 0, X = lx * s * f, Y = ly * s; return [o.x + X * Math.cos(r) - Y * Math.sin(r), o.y + X * Math.sin(r) + Y * Math.cos(r)]; }
+function reach(n, o, side, tx, ty) { const L = lay(n), p = side === 'f' ? L.fs : L.bs, S = W2(o, p[0], p[1]), r = o.lean || 0, f = o.f || 1;
+  const dx = tx - S[0], dy = ty - S[1], lx = (dx * Math.cos(-r) - dy * Math.sin(-r)) / f, ly = dx * Math.sin(-r) + dy * Math.cos(-r);
+  const a = Math.atan2(lx, ly) * 180 / Math.PI; return [a - 10, a + 10]; }
+const along = (o, H) => [o.x + Math.sin(o.lean || 0) * H, o.y - Math.cos(o.lean || 0) * H];
+// draw with life: breathing, sway, head bob, arms that never freeze
+function CB(n, o, t, ph = 0) { const k = o.life ?? 1, sw = Math.sin(t * 2.1 + ph);
+  const pose = o.pose || { bArm: [-18 + sw * 6 * k, -8], fArm: [18 - sw * 6 * k, 8], bLeg: [-8, -4], fLeg: [8, 4] };
+  const q = Object.assign({ s: SC[n] }, o);
+  chibi.draw(ctx, CC[n], pose, 'neutral', q.x + (o.lean ? 0 : Math.sin(t * 0.9 + ph) * 5 * k), q.y - (o.hop || 0), q.s, { f: o.f || 1, lean: (o.lean || 0) + Math.sin(t * 1.3 + ph) * 0.015 * k, sq: (o.sq || 0) + Math.sin(t * 3.1 + ph) * 0.012 * k,
+    headTilt: (o.tilt || 0) + Math.sin(t * 1.7 + ph) * 0.06 * k, hands: o.hands, headFn: CASTIMG.head(ctx, n, o.expr || 'smug', { collar: CC[n].kit.collar }) }); }
+const GZ2 = 1560, RX = 220, RC = -0.5, R0 = { x: RX, y: GZ2, s: SC.ronaldo, f: 1 };
+let GEO = null; function geo() { if (GEO) return GEO; const L = lay('ronaldo'), S = W2(R0, L.fs[0], L.fs[1]), La = CC.ronaldo.arm * SC.ronaldo * 0.92, a = Math.PI * 0.4;  // 72° from straight down: arms nearly level
+  const T = [S[0] + Math.sin(a) * La, S[1] + Math.cos(a) * La], H = (GZ2 - T[1]) / Math.cos(RC); return GEO = { S, T, H, FALL: T[0] - Math.sin(RC) * H }; }
+const TRUST = { bArm: [60, 150], fArm: [-60, -150], bLeg: [-6, -3], fLeg: [6, 3] };          // arms crossed on the chest, body stiff as a plank
+const FLAIL = t => ({ bArm: [-150 + Math.sin(t * 30) * 30, -120], fArm: [150 + Math.cos(t * 30) * 30, 120], bLeg: [-30, -10], fLeg: [30, 10] });
+function trust(n, t0, t) { const k = t - t0, tip = 0.75, G = geo();
+  const lean = k < 0 ? 0 : k < tip ? RC * eIn(k / tip) : k < tip + 1.4 ? RC - Math.sin(clamp((k - tip) / 0.25) * Math.PI) * 0.05 : lerp(RC, 0, eOut((k - tip - 1.4) / 0.6));
+  const fo = { x: G.FALL, y: GZ2, s: SC[n], lean }, caught = k > tip * 0.6;
+  const [tx, ty] = along(fo, G.H), [tx2, ty2] = along(fo, G.H - 45);
+  const ready = clamp((k + 0.6) / 0.5);
+  const fA = caught ? reach('ronaldo', R0, 'f', tx, ty) : [lerp(18, 70, eOut(ready)), lerp(8, 80, eOut(ready))], bA = caught ? reach('ronaldo', R0, 'b', tx2, ty2) : [lerp(-18, 40, eOut(ready)), lerp(-8, 60, eOut(ready))];
+  const strain = k > tip && k < tip + 0.4 ? Math.sin((k - tip) / 0.4 * Math.PI) * 0.05 : 0;
+  return { lean, x: G.FALL, pose: { fArm: fA, bArm: bA, bLeg: [-12, -4], fLeg: [14, 6] }, strain, landed: k > tip };
+}
+function spectators(t, laugh, list) { list.forEach(([n, x, ph, e], i) => { const j = laugh ? Math.abs(Math.sin(t * 11 + i * 2)) * 18 : 0;
+  CB(n, { x, y: GZ2 - 150, s: SC[n] * 0.72, hop: j, expr: laugh ? 'laugh' : e || 'smug', pose: laugh ? { bArm: [-140 + Math.sin(t * 14 + i) * 25, -160], fArm: [140 + Math.cos(t * 13 + i) * 25, 160], bLeg: [-8, -4], fLeg: [8, 4] } : undefined, hands: laugh ? { f: 'open', b: 'open' } : undefined }, t, ph); }); }
 const SEG = [
-  // 1 HOOK — Yamal already leaning back, Mbappé's promise in giant letters (frame 0 says what the video is)
-  [0, 2.8, 'cu', (z, t) => SHOT.cu(ctx, () => { park(t, 2); friends(t, 0, 5);
-      MB({ x: 360, y: GZ, armL: lerp(5, 30, eOut(z / 1.2)), armR: lerp(5, 35, eOut(z / 1.2)), expr: z > 1.6 ? 'laugh' : 'smug' }, t);
-      YA({ x: 730, y: GZ, rot: -0.05 - 0.04 * Math.sin(z * 3), armL: 15, armR: 15, expr: z < 1.4 ? 'smug' : 'deadpan' }, t); }, { x: 540, y: 1140, zoom: 1.22 }),
-    (z, t) => { card("Don't worry bro,", 540, 262, 76, { pop: 0.7 + z / 0.35, rot: -0.02 }); card("I'll catch you 🤝", 560, 362, 76, { pop: z < 0.4 ? 0.7 : 0.7 + (z - 0.4) / 0.35, rot: 0.02, tail: -1 }); }],
-  // 2 the fall — worm's-eye, Yamal tips back like a plank
-  [2.8, 5.0, 'low', (z, t) => SHOT.low(ctx, () => { park(t); friends(t, 0, 4); const q = eIn(clamp((z - 0.3) / 1.6));
-      MB({ x: MX, y: GZ, armL: 40, armR: lerp(35, 70, q), expr: 'smug' }, t);
-      YA({ x: YX, y: GZ, rot: -q * 0.78, armL: 8, armR: 8, legL: 0, legR: 0, expr: q > 0.35 ? 'shock' : 'smug' }, t); }, { x: 660, y: 1300, lift: 200, zoom: 1.25 }),
-    (z) => { card('trust fall… 😬', 540, 280, 84, { pop: z / 0.3 }); }],
-  // 3 he actually catches him
-  [5.0, 7.0, 'wide', (z, t) => SHOT.wide(ctx, () => { park(t); friends(t, 0); const b = Math.sin(clamp(z / 0.4) * Math.PI) * 18;
-      MB({ x: MX, y: GZ, armL: 40, armR: 72, expr: 'laugh', sq: -0.02 }, t);
-      YA({ x: YX, y: GZ - b, rot: -0.78, armL: 10, armR: 25, expr: 'laugh' }, t); }, { x: 640, y: 1180, zoom: 1.0 }),
-    (z) => { stamp('CAUGHT ✅', 540, 380, 120, z - 0.15, '#1f7a3a'); }],
-  // 4 the realisation — extreme close-up: Mbappé looks down… Barça stripes
-  [7.0, 8.6, 'xcu', (z, t) => { park(t, 8); const look = z > 0.55;
-      if (!look) PUPPET.bust(ctx, 'mbappe', 'smug', 540 + Math.sin(t * 2) * 6, 900, 820, { rot: 0.04, kit: '#f7f7f7', stripes: '#111' });
-      else { // what he sees: the shirt, huge
-        ctx.save(); ctx.translate(540, 1150); ctx.rotate(-0.25); for (let i = -6; i < 7; i++) { ctx.fillStyle = i % 2 ? '#a50044' : '#004d98'; ctx.fillRect(i * 120 - 60, -900, 120, 1800); } ctx.restore();
-        PUPPET.bust(ctx, 'mbappe', 'shock', 540, 760 + (1 - eOut((z - 0.55) / 0.2)) * 200, 700, { kit: '#f7f7f7', stripes: '#111' }); } },
-    (z) => { if (z > 0.62) card('…wait. BARÇA?', 540, 1370, 96, { pop: (z - 0.62) / 0.25, rot: -0.03 }); }],
-  // 5 slow-mo drop + shrug, BONK at 10.2
-  [8.6, 11.0, 'slowmo', (z, t) => { const tt = SHOT.slow(z, 0.25, 0.4), q = eIn(clamp((tt - 0.25) / 0.55)), land = 1.6;
-      SHOT.cu(ctx, () => { park(t); friends(t, z > land ? 0.7 : 0);
-        MB({ x: MX, y: GZ, armL: z < 0.25 ? 40 : lerp(40, 95, eOut((z - 0.25) / 0.4)), armR: z < 0.25 ? 72 : lerp(72, 100, eOut((z - 0.25) / 0.4)), expr: z < land ? 'smug' : 'deadpan', tilt: z > land ? -0.12 : 0 }, t);
-        const rot = -0.78 - q * 0.79, drop = z > land ? Math.max(0, 1 - (z - land) * 5) * Math.abs(Math.sin((z - land) * 30)) * 14 : 0;
-        if (z < land) for (let g = 3; g >= 1; g--) { ctx.save(); ctx.globalAlpha = 0.12 * g; YA({ x: YX, y: GZ, rot: -0.78 - eIn(clamp((SHOT.slow(z - g * 0.05, 0.25, 0.4) - 0.25) / 0.55)) * 0.79, armL: 30, armR: 30, expr: 'shock', shadow: false }, t); ctx.restore(); }
-        YA({ x: YX, y: GZ - drop, rot, armL: 30 + q * 25, armR: 30 + q * 25, legL: 8, legR: 8, expr: 'shock' }, t);
-        if (z > land) FX.burst(ctx, 'dust', 700, GZ - 10, t, 8.6 + land, { ground: GZ + 20, n: 14 }); }, { x: 580, y: 1180, zoom: 1.2 });
-      if (z < land) SHOT.speedlines(ctx, t, { alpha: 0.25, col: '#fffaf0' }); },
-    (z) => { if (z > 1.6) stamp('BONK', 770, 330, 140, z - 1.6); }],
-  // 6 over the phone: the friends film Yamal flat on the grass (Yamal's face stays readable: no bird's-eye)
-  [11.0, 13.2, 'ots', (z, t) => { SHOT.ots(ctx, () => { park(t); YA({ x: 1080, y: 1500, rot: -1.57, armL: 110, armR: 20, legL: 5, legR: 15, expr: z < 1.1 ? 'shock' : 'angry', tilt: 0, shadow: false }, t);
-        for (let k = 0; k < 4; k++) { const a = t * 5 + k * 1.57; ctx.font = '56px serif'; ctx.textAlign = 'center'; ctx.fillText('⭐', 330 + Math.cos(a) * 120, 1270 + Math.sin(a) * 40); } }, { x: 560, y: 1380, zoom: 1.4, side: 1, fg: '#3a2a1e', shirt: '#f4f4f4' });
-      phoneHUD(t); },
-    (z) => { card('HAHAHAHA 😂', 540, 420, 96, { pop: z / 0.3, rot: 0.03 }); }],
-  // 7 callback: Yamal's turn — same words, same drop. 'oops… MADRID'
-  [13.2, 16.5, 'dutch', (z, t) => SHOT.dutch(ctx, () => { park(t); friends(t, z > 2.2 ? 0.8 : 0.3); const fall = z > 1.3, q = eIn(clamp((z - 1.3) / 0.95));
-      const back = eOut(clamp((z - 1.2) / 0.35)); YA({ x: 300 - back * 40, y: GZ - back * 90, h: 860 - back * 120, armL: fall ? lerp(40, 100, eOut((z - 1.3) / 0.4)) : 40, armR: fall ? lerp(40, 100, eOut((z - 1.3) / 0.4)) : 40, expr: z < 1.3 ? 'smug' : 'laugh' }, t);
-      MB({ x: 880, y: GZ, h: 780, rot: -q * 1.48, armL: 10 + q * 60, armR: 10 + q * 60, expr: q > 0 ? 'shock' : 'deadpan' }, t);
-      if (q >= 1) FX.burst(ctx, 'dust', 330, GZ - 10, t, 13.2 + 2.25, { ground: GZ + 20, n: 12 }); }, { x: 520, y: 1220, zoom: 1.05, rot: -0.12 }),
-    (z) => { card(z < 1.3 ? 'your turn 😇' : 'oops… MADRID 🤷', 480, 300, 88, { pop: (z < 1.3 ? z : z - 1.3) / 0.3, tail: -1 }); if (z > 2.4) stamp('CLÁSICO RIVALS 😂', 620, 455, 84, z - 2.4); }],
+  // 1 HOOK: Messi already tipping back on frame 0 — Ronaldo catches him
+  [0, 3.4, 'wide', (z, t) => SHOT.wide(ctx, () => { park(t); friends(t, z > 1.2 ? 0.5 : 0, 4); spectators(t, z > 1.2, [['mbappe', 960, 1], ['yamal', 1070, 2]]);
+      const c = trust('messi', -0.35, z); CB('messi', { x: c.x, y: GZ2, lean: c.lean, expr: z < 0.5 ? 'smug' : z < 1.6 ? 'shock' : 'laugh', pose: c.landed && z > 2.2 ? undefined : TRUST, life: c.landed ? 0.3 : 1 }, t, 0.5);
+      CB('ronaldo', { x: RX, y: GZ2, pose: c.pose, sq: c.strain, expr: z < 1.0 ? 'smug' : 'laugh', life: 0.25, hands: { f: 'grab', b: 'grab' } }, t); }, { x: 560, y: 1150, zoom: 1.05 + z * 0.03 }),
+    (z) => { card('TRUST FALL CHALLENGE 🙌', 540, 270, 70, { pop: 0.75 + z / 0.3, rot: -0.02 }); stamp('LEO ✅', 760, 420, 110, z - 0.6, '#1f7a3a'); }],
+  // 2 Mbappé wants in
+  [3.4, 5.0, 'cu', (z, t) => SHOT.cu(ctx, () => { park(t, 2); friends(t, 0, 5); CB('messi', { x: 150, y: GZ2 - 60, s: SC.messi * 0.85, expr: 'smug' }, t, 3);
+      const hop = Math.abs(Math.sin(z * 9)) * 26 * (z < 1.2 ? 1 : 0.3);
+      CB('mbappe', { x: 600, y: GZ2, hop, expr: 'laugh', pose: { bArm: [-20, -10], fArm: [150 + Math.sin(z * 16) * 18, 175], bLeg: [-10, -4], fLeg: [10, 4] }, hands: { f: 'wave' } }, t, 1);
+      CB('yamal', { x: 960, y: GZ2 - 60, s: SC.yamal * 0.85, expr: 'deadpan' }, t, 2); }, { x: 600, y: 1170, zoom: 1.4 + z * 0.05 }),
+    (z) => { card('Me next! 🙋', 560, 290, 88, { pop: z / 0.3, tail: 1 }); }],
+  // 3 Mbappé falls — Ronaldo catches (and feels it)
+  [5.0, 8.0, 'low', (z, t) => SHOT.low(ctx, () => { park(t); friends(t, z > 1.3 ? 0.4 : 0, 4); spectators(t, z > 1.3, [['messi', 960, 3, 'smug'], ['yamal', 1070, 2]]);
+      const c = trust('mbappe', 0.3, z); CB('mbappe', { x: c.x, y: GZ2, lean: c.lean, expr: z < 0.6 ? 'smug' : z < 1.8 ? 'shock' : 'laugh', pose: z > 0.3 && z < 1.1 ? FLAIL(z) : TRUST, life: c.landed ? 0.3 : 1 }, t, 1);
+      CB('ronaldo', { x: RX, y: GZ2, pose: c.pose, sq: c.strain * 1.6, expr: z < 1.0 ? 'smug' : z < 1.6 ? 'shock' : 'laugh', life: 0.25, hands: { f: 'grab', b: 'grab' } }, t); }, { x: 560, y: 1290, lift: 200, zoom: 1.12 }),
+    (z) => { stamp('KYLIAN ✅', 700, 360, 110, z - 1.15, '#1f7a3a'); }],
+  // 4 Yamal: "I'm the next GOAT"
+  [8.0, 9.8, 'cu', (z, t) => SHOT.cu(ctx, () => { park(t, 2); friends(t, 0, 5); CB('mbappe', { x: 140, y: GZ2 - 60, s: SC.mbappe * 0.85, expr: 'smug' }, t, 3);
+      const puff = Math.sin(clamp(z / 0.5) * Math.PI) * 0.05;
+      CB('yamal', { x: 600, y: GZ2, hop: Math.abs(Math.sin(z * 7)) * 14, sq: -puff, expr: 'smug', pose: { bArm: [-60 + Math.sin(z * 10) * 8, -150], fArm: [60 - Math.sin(z * 10) * 8, 150], bLeg: [-12, -4], fLeg: [12, 4] }, hands: { f: 'point', b: 'point' } }, t, 2); }, { x: 600, y: 1140, zoom: 1.45 + z * 0.06 }),
+    (z) => { card('My turn!', 560, 270, 84, { pop: z / 0.25, tail: 1 }); if (z > 0.6) card("I'm the next GOAT 😎", 560, 390, 80, { pop: (z - 0.6) / 0.3, rot: 0.02 }); }],
+  // 5 Ronaldo hears it
+  [9.8, 11.0, 'xcu', (z, t) => { park(t, 8); CASTIMG.face(ctx, 'ronaldo', z < 0.5 ? 'smug' : 'deadpan', 540 + Math.sin(t * 2) * 5, 860 - z * 20, 1050 + z * 60, -0.03 + Math.sin(t * 1.3) * 0.02); },
+    (z) => { if (z > 0.45) card('…next GOAT? 🤨', 540, 1380, 92, { pop: (z - 0.45) / 0.25 }); }],
+  // 6 the fall nobody catches: Ronaldo just steps back
+  [11.0, 13.8, 'wide', (z, t) => SHOT.wide(ctx, () => { park(t); friends(t, z > 1.95 ? 0.9 : 0, 4); spectators(t, z > 1.95, [['messi', 960, 3, 'smug'], ['mbappe', 1070, 1, 'smug']]);
+      const tip = clamp((z - 0.2) / 1.7), lean = -1.57 * eIn(tip), landed = z > 1.9, b = landed ? Math.max(0, 1 - (z - 1.9) * 4) * Math.abs(Math.sin((z - 1.9) * 28)) * 16 : 0;
+      const step = eOut(clamp((z - 0.55) / 0.35));
+      CB('ronaldo', { x: lerp(RX, 330, step), y: GZ2 - step * 190, s: SC.ronaldo * (1 - step * 0.16), hop: Math.sin(step * Math.PI) * 30, expr: 'deadpan', life: 0.6, pose: { bArm: [70, 150], fArm: [-70, -150], bLeg: [-8, -4], fLeg: [8, 4] } }, t);
+      if (landed) FX.burst(ctx, 'dust', geo().FALL - 250, GZ2 - 10, t, 11 + 1.9, { ground: GZ2 + 20, n: 16 });
+      CB('yamal', { x: geo().FALL, y: GZ2 - b, lean, expr: z < 0.9 ? 'smug' : 'shock', pose: z > 0.9 && !landed ? FLAIL(z) : landed ? { bArm: [-100, -80], fArm: [100, 80], bLeg: [-20, -10], fLeg: [20, 10] } : TRUST, life: landed ? 0 : 0.6 }, t, 2);
+      }, { x: 520, y: 1160, zoom: 0.95 }),
+    (z) => { if (z > 0.5 && z < 1.9) card('Nah. 🙅', 420, 300, 90, { pop: (z - 0.5) / 0.2, tail: -1 }); if (z > 1.9) stamp('BONK', 620, 330, 150, z - 1.9); }],
+  // 7 face in the grass
+  [13.8, 15.6, 'xcu', (z, t) => { park(t, 3); const sh = z < 0.3 ? Math.sin(z * 90) * 10 * (1 - z / 0.3) : 0;
+      ctx.save(); ctx.translate(sh, 0); CASTIMG.face(ctx, 'yamal', z < 0.9 ? 'shock' : 'cry', 560, 980, 1000, -1.45);
+      ctx.fillStyle = '#5f8f45'; ctx.fillRect(-200, 1215, W + 400, 900);
+      for (let i = 0; i < 70; i++) { const x = (i * 53) % 1180 - 50, hgt = 60 + (i * 37) % 90; ctx.strokeStyle = i % 2 ? '#4c7a36' : '#6ea552'; ctx.lineWidth = 9; ctx.beginPath(); ctx.moveTo(x, 1240); ctx.quadraticCurveTo(x + 10, 1240 - hgt / 2, x + 4 + Math.sin(t * 3 + i) * 6, 1240 - hgt); ctx.stroke(); }
+      FX.burst(ctx, 'grass', 560, 1200, t, 13.8, { n: 16 }); FX.burst(ctx, 'dust', 600, 1210, t, 13.8, { n: 8 }); ctx.restore(); },
+    (z) => { card('😵‍💫', 820, 470, 120, { pop: z / 0.3 }); }],
+  // 8 GOATs only: arms round each other's shoulders, Yamal still in the grass
+  [15.6, 20.0, 'dutch', (z, t) => SHOT.dutch(ctx, () => { park(t); friends(t, 0.8, 4);
+      CB('mbappe', { x: 1000, y: GZ2 - 140, s: SC.mbappe * 0.75, expr: 'laugh', hop: Math.abs(Math.sin(t * 11)) * 16, pose: { bArm: [-140 + Math.sin(t * 14) * 25, -160], fArm: [140 + Math.cos(t * 13) * 25, 160], bLeg: [-8, -4], fLeg: [8, 4] }, hands: { f: 'open', b: 'open' } }, t, 1);
+      const r = { x: 330, y: GZ2, s: SC.ronaldo }, m = { x: 610, y: GZ2, s: SC.messi, f: -1 }, hug = eOut(clamp((z - 0.5) / 0.4));
+      const Lm = lay('messi'), Lr = lay('ronaldo'), mS = W2(m, Lm.bs[0], Lm.bs[1]), rS = W2(r, Lr.bs[0], Lr.bs[1]);
+      const rf = reach('ronaldo', r, 'f', mS[0] + 75, mS[1] + 25);   // hand appears over Messi's far shoulder
+      CB('ronaldo', Object.assign({}, r, { expr: z < 2.2 ? 'smug' : 'laugh', pose: { bArm: [-18, -8], fArm: [lerp(18, rf[0], hug), lerp(8, rf[1] + 30, hug)], bLeg: [-8, -4], fLeg: [8, 4] }, hands: { f: 'grab' } }), t);
+      CB('messi', Object.assign({}, m, { expr: z < 2.2 ? 'smug' : 'laugh', pose: { bArm: [lerp(-18, -105, hug), lerp(-8, -150, hug)], fArm: [18, 8], bLeg: [-8, -4], fLeg: [8, 4] }, hands: { b: 'wave' } }), t, 3);   // waves to the camera with the outer hand
+      CB('yamal', { x: 1090, y: GZ2 + 15, lean: -1.57, expr: 'cry', life: 0.2, pose: { bArm: [-100, -80], fArm: [100, 80], bLeg: [-20 + Math.sin(t * 9) * 12, -10], fLeg: [20 - Math.sin(t * 9) * 12, 10] } }, t, 2); }, { x: 560, y: 1200, zoom: 1.05, rot: -0.1 }),
+    (z) => { stamp('GOATs ONLY 🐐', 540, 330, 104, z - 0.95); }],
 ];
-window.DURATION = 16.5; window.render = function (t) { ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.filter = 'none'; ctx.clearRect(0, 0, W, H);
+window.DURATION = 20; window.render = function (t) { window.T2T = t; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.filter = 'none'; ctx.clearRect(0, 0, W, H);
   const seg = SEG.find(s => t >= s[0] && t < s[1]) || SEG[SEG.length - 1]; const z = t - seg[0];
-  const hs = [[10.2, 22], [15.5, 18]].reduce((m, [a, A]) => Math.max(m, t >= a && t < a + 0.3 ? A * (1 - (t - a) / 0.3) : 0), 0) + Math.sin(t * 3) * 3; // handheld phone feel + hit shake
+  const hs = [[0.4, 10], [6.05, 14], [12.9, 24], [13.8, 14]].reduce((m, [a, A]) => Math.max(m, t >= a && t < a + 0.3 ? A * (1 - (t - a) / 0.3) : 0), 0) + Math.sin(t * 3) * 3;
   ctx.save(); ctx.translate(Math.sin(t * 2.1) * 6 + Math.sin(t * 91) * hs, Math.cos(t * 1.7) * 5 + Math.cos(t * 77) * hs); ctx.rotate(Math.sin(t * 0.9) * 0.006); seg[3](z, t); ctx.restore();
-  if (z < 0.16 && t > 0.1) PRO.whip(ctx, cv, z / 0.16, SEG.indexOf(seg) % 2 ? -1 : 1); post(t); ctx.setTransform(1, 0, 0, 1, 0, 0); seg[4](z, t);
-  ctx.font = '600 28px Inter'; ctx.fillStyle = 'rgba(42,29,18,.75)'; ctx.textAlign = 'center'; if (t > 15.3) ctx.fillText('Cartoon parody', 540, 232); };
-if (!location.search.includes('render')) { const t0 = performance.now(); (window.CAST_READY || Promise.resolve()).then(() => (function loop() { render(((performance.now() - t0) / 1000) % 16.5); requestAnimationFrame(loop); })()); }
+  if (z < 0.16 && t > 0.1) PRO.whip(ctx, cv, z / 0.16, SEG.indexOf(seg) % 2 ? -1 : 1); post(t); ctx.setTransform(1, 0, 0, 1, 0, 0); if (!window.NO_HUD) seg[4](z, t);
+  ctx.font = '600 28px Inter'; ctx.fillStyle = 'rgba(42,29,18,.75)'; ctx.textAlign = 'center'; if (t > 18.5) ctx.fillText('Cartoon parody', 540, 232); };
+if (!location.search.includes('render')) { const t0 = performance.now(); (window.CAST_READY || Promise.resolve()).then(() => (function loop() { render(((performance.now() - t0) / 1000) % 20); requestAnimationFrame(loop); })()); }
 </script></body></html>
