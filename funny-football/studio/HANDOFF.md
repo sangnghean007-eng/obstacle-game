@@ -87,3 +87,8 @@ Playwright, Chromium, ffmpeg, numpy and scipy are already available.
 - **Ep27 "The New Gang" (Nov 20)** `toon2/ep27/`: owner's simplified brief (game intro → swagger → beaten by Neymar, Messi, Ronaldo → OGs laugh as kids limp away), 28 s, acting layer.
 
 - RULE 0 (21 Nov 2026): facts first, then exaggerate. See ENGAGEMENT.md top.
+
+## OVERHAUL (21 Nov 2026) — read ENGAGEMENT.md "OVERHAUL RULES" first
+- New docs: UNIVERSE.md (recurring cast), GAG_BANK.md (used + 60 fresh gags), FORMATS_V2.md "Format v3" (12 formats + 5 style packs), EPISODES.csv + toon2/novelty.py (14-axis novelty gate).
+- Milestones: M1 docs → M1a novelty → M1b sound engine v2 → M2 rig2/fx → M3 styles/shots/sets/timeline → M4 Ep31 group-chat pilot → M4b daily task with vidIQ/Metricool/Drive → M5 QA extensions.
+- Work autonomously; never wait for approval between milestones.

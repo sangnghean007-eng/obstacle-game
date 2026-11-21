@@ -12,3 +12,20 @@ Rules: hook text on frame 0 · one idea · built from verified data · comment t
 Cartoon story episodes (Ep16/Ep17 style) become at most 1 per week.
 - **Quiz rule (user, Nov 17):** never reveal the answers in a quiz video or its captions/tags. End on "Write your answers 👇"; reveal in the pinned comment after ~24 h (or in a follow-up video).
 - **Main line (user, Nov 17):** classic exciting matches told as exaggerated caricature cartoons (Ep18). Each one a different narrative device (Ep18 = live-match chronicle with a dressing-room power-up).
+
+# Format v3 — 12 rotating frames (21 Nov 2026, overhaul plan; never the same format within 4 episodes)
+| # | Format | Engine pieces | Music genre that fits |
+|---|---|---|---|
+| 1 | Group chat on a phone | chat UI, typing dots, "left the group", cutaway scenes | lo-fi / phone-notification beat |
+| 2 | Breaking news broadcast | anchor desk, red ticker, field reporter who gets hit | news-stinger orchestral |
+| 3 | Movie trailer | black cards "IN A WORLD…", fast cuts, release date | epic braam / trailer hybrid |
+| 4 | Fighting game | health bars, combos, K.O. (only for real head-to-heads) | chiptune metal |
+| 5 | Nature documentary | whispered narrator text, telephoto shots | strings pizzicato |
+| 6 | Reality-show confessional | confessional chair cutaways | reality-TV pop |
+| 7 | Horror movie | flicker, creaking doors, "it's behind you" | horror drones + stingers |
+| 8 | Battle rap / music video | beat-synced text, two sides trade bars (real stats only) | trap / drill |
+| 9 | Courtroom | judge, witnesses, objection, verdict | courtroom harpsichord / jazz |
+| 10 | Weather forecast | map, football clouds, "rain of goals" | elevator jazz |
+| 11 | Dating app / GPS | swipes, "recalculating" | synth-pop |
+| 12 | Player-card upgrade | stat flips, pack-opening FX | EDM drop |
+Style packs (rotate, never the previous episode's): comic · ink · retro · noir · poster.

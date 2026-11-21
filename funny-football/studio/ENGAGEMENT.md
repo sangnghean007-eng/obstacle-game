@@ -223,3 +223,18 @@ Every final export: render → `toon2/add_cover.sh <video.mp4> <cover.jpg>` (put
 
 ### Facts go stale fast (owner, 21 Nov 2026: "Kiểm tra lại thông tin đi")
 I used a July 2026 report ("Ronaldo will continue") when he had already retired from Portugal on 5 Nov 2026. Before any script: search the LATEST news (sort by date, last 30 days) for every person's current status (club, national team, retired?, coach), and write the date of each fact in facts.md. Never rely on an earlier search in the same session for status questions.
+
+
+# OVERHAUL RULES (21 Nov 2026 — owner: monotonous, too simple; full plan in drafts/../../.. plan "zany-doodling-mango")
+## Working mode
+- Autonomous end-to-end: no waiting for approval between steps; send results as they finish; owner can interrupt any time. Stop only for: paid spending, posting on the owner's behalf, unverifiable/false facts, hateful content. Free credits (ElevenLabs ≤2,000, vidIQ) may be used without asking.
+- Writers' room picks the top-scoring idea itself; posts are written as soon as the video passes all gates.
+## Story
+- One-sentence logline (who wants what → obstacle → surprising outcome); 6–8 beats, one idea each, cause→effect chain; who/where/stakes in the first 2 s; ≤1 line (<7 words) of text per beat; ≥1.5 s per main action; 30–45 s; "stranger test" (no-sound, no-context viewer can retell it).
+- 4 acts: cold open → escalation → twist → callback. Two layers: visual joke for everyone + satire for fans.
+## Comedy
+- ≥4 different techniques from GAG_BANK.md per episode; never reuse a USED gag; log new ones.
+## Likeness
+- Exaggerate REAL traits only (LIKENESS profile in UNIVERSE.md); "cover the name" test must pass; score ≥8/10.
+## Gates (all must pass before sending; fail → fix → re-run)
+1 Facts (Rule 0) · 2 Script (logline, ≤8 beats, stranger test, 4 acts, ≥4 techniques, no reused gag, format not in last 4) · 2b Likeness ≥8/10 · 3 Picture (recognisable, ≥5 shot types, no repeat adjacent shot, style ≠ previous, nobody frozen >0.6 s, no text on faces/safe zones, each beat readable in 1.5 s) · 4 Technical + sound (qa.py PASS, cover 0.1 s, 30–45 s, <50 MB, hook ≥2×, no 3-s loop-only music, hits within 1 frame) · 5 Self-score ≥8/10 on funny, surprise, beauty, clarity · 6 Viral (hook frame 0, change every ≤3 s, seamless loop, ≥2 easter eggs, meme-able frame, two-sided ending, title scored) · 7 Novelty (novelty.py PASS on 14 axes, logged in EPISODES.csv).
