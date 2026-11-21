@@ -1,0 +1,23 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Style x Shot Sheet</title><style>html,body{margin:0;background:#000}</style></head><body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../chibi.js"></script><script src="../chibi_cast.js"></script><script src="../anim.js"></script><script src="../portrait.js"></script><script src="../pro.js"></script><script src="../rig2.js"></script><script src="../fx.js"></script><script src="../styles.js"></script><script src="../shots.js"></script><script src="../sets.js"></script><script src="../timeline.js"></script>
+<script>
+const W = 1080, H = 1920, cv = document.getElementById('c'), ctx = cv.getContext('2d');
+const ARG = { shirt: '#74acdf', stripes: '#ffffff', sleeve: '#74acdf', cuff: '#fff', collar: '#111', shorts: '#111', sock: '#fff', sockShade: '#ddd', sockBand: '#74acdf', boot: '#ffd21f', num: '#111' };
+const POR = { shirt: '#c8102e', sleeve: '#c8102e', cuff: '#046a38', collar: '#046a38', shorts: '#046a38', sock: '#c8102e', sockShade: '#9b0c23', sockBand: '#046a38', boot: '#fff', num: '#ffd400' };
+const likeC = (k) => Object.assign({}, CH[k], LIKE[k], { head: Object.assign({}, CH[k].head, LIKE[k].head) });
+const CR = Object.assign(likeC('ronaldo'), { kit: POR, num: '7', name: 'RONALDO' });
+const CJ = Object.assign({}, CH.mate1, { skin: '#d49a72', shade: '#b47c58', kit: { shirt: '#13294b', sleeve: '#13294b', cuff: '#c8102e', collar: '#c8102e', shorts: '#13294b', sock: '#13294b', sockShade: '#13294b', boot: '#111', num: '#fff' }, num: '', name: 'JORGE JESUS', nameSize: 11 });
+const ppl = (C, face, kit) => (c, p, e, x, y, s, o = {}) => chibi.draw(c, C, p, 'neutral', x, y, s, Object.assign({ noAnim: true }, o, { headFn: (R) => portrait.draw(c, face, 0, -R * 0.28, R * 2.1 / 330, { headOnly: true, expr: e, kit, turn: o.turn || 0 }) }));
+const RON = ppl(CR, 'ronaldo', '#c8102e'), JJ = ppl(CJ, 'jesus', '#13294b');
+const GZ = 1600;
+function world(c, t) { SET.stadium(c, t, { night: 1, wave: 2, cols: ['#c8102e', '#fff', '#046a38'] }); FX.shadow(c, 380, GZ, 540, 0, 1.1); FX.shadow(c, 720, GZ, 540, 0, 1.1);
+  RON(c, { bArm: [-30, -10], fArm: [110, 160], bLeg: [-12, -6], fLeg: [12, 6] }, 'angry', 380, GZ, 1.1, { hands: { f: 'point' }, turn: 0.4 }); JJ(c, chibi.POSES.shield, 'smug', 720, GZ, 1.05, { f: -1, turn: -0.4, hands: { f: 'open', b: 'open' } }); }
+function topView(c, t) { SET.pitchTop(c, t); SET.topPlayer(c, 470, 960, '#c8102e', '#1a120c', 1.4, { label: 'RONALDO', swing: Math.sin(t * 8) }); SET.topPlayer(c, 640, 860, '#13294b', '#ebe7df', 1.4, { label: 'JESUS', rot: 2.6 }); }
+const SHOTS = { wide: (c, t) => SHOT.wide(c, (cc) => world(cc, t), { y: 1100 }), low: (c, t) => SHOT.low(c, (cc) => world(cc, t), { x: 540, y: 1300 }), xcu: (c, t) => SHOT.xcu(c, (cc) => world(cc, t), { x: 380, y: 1150, zoom: 3 }),
+  ots: (c, t) => SHOT.ots(c, (cc) => world(cc, t), { x: 420, y: 1250, zoom: 1.6, side: 1, shirt: '#13294b', fg: '#d49a72', hair: '#ebe7df' }), high: (c, t) => SHOT.high(c, (cc) => topView(cc, t), { zoom: 1.3, y: 920 }),
+  cu: (c, t) => SHOT.cu(c, (cc) => world(cc, t), { x: 720, y: 1230 }), dutch: (c, t) => SHOT.dutch(c, (cc) => world(cc, t)),
+  split: (c, t) => SHOT.split(c, [{ shot: 'cu', draw: (cc) => world(cc, t), opts: { x: 380, y: 1230 } }, { shot: 'cu', draw: (cc) => world(cc, t), opts: { x: 720, y: 1230 } }]),
+  slowmo: (c, t) => { SHOT.cu(c, (cc) => world(cc, t), { x: 380, y: 1250, zoom: 1.6 }); SHOT.speedlines(c, t, { n: 30, alpha: 0.45, len: 300 }); } };
+window.renderCell = (style, shot, t = 1.3) => { const S = STYLES[style]; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, W, H); ctx.save(); SHOTS[shot](ctx, t); ctx.restore(); S.post(ctx, cv, t); ctx.setTransform(1, 0, 0, 1, 0, 0); S.cap(ctx, 'APOLOGISE FOR WHAT?', 540, 300); S.stamp(ctx, style, 540, 520); return cv.toDataURL('image/jpeg', 0.8); };
+window.DURATION = 1; window.render = (t) => window.renderCell('comic', 'wide', t);
+</script></body></html>
