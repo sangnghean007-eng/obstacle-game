@@ -8,7 +8,7 @@ const POR = { shirt: '#c8102e', sleeve: '#c8102e', cuff: '#046a38', collar: '#04
 const likeC = (k) => Object.assign({}, CH[k], LIKE[k], { head: Object.assign({}, CH[k].head, LIKE[k].head) });
 const CR = Object.assign(likeC('ronaldo'), { kit: POR, num: '7', name: 'RONALDO' }), LM = Object.assign(likeC('messi'), { kit: ARG, num: '10', name: 'MESSI' });
 const head = (name, kit) => (R, e) => portrait.draw(ctx, name, 0, -R * 0.28, R * 2.1 / 330, { headOnly: true, expr: typeof e === 'string' ? e : 'neutral', kit });
-const RON = (p, e, x, y, s, o = {}) => chibi.draw(ctx, CR, p, 'neutral', x, y, s, Object.assign({ f: 1, headFn: head('ronaldo', '#c8102e') }, o, { headFn: (R) => portrait.draw(ctx, 'ronaldo', 0, -R * 0.28, R * 2.1 / 330, { headOnly: true, expr: e, kit: '#c8102e' }) }));
+const RON = (p, e, x, y, s, o = {}) => chibi.draw(ctx, CR, p, 'neutral', x, y, s, Object.assign({ f: 1 }, o, { headFn: (R) => portrait.draw(ctx, 'ronaldo', 0, -R * 0.28, R * 2.1 / 330, { headOnly: true, expr: e, kit: '#c8102e', turn: o.turn || 0 }) }));
 const MES = (p, e, x, y, s, o = {}) => chibi.draw(ctx, LM, p, 'neutral', x, y, s, Object.assign({ f: -1 }, o, { headFn: (R) => portrait.draw(ctx, 'messi', 0, -R * 0.28, R * 2.1 / 330, { headOnly: true, expr: e, kit: '#74acdf' }) }));
 function txt(s, x, y, size, fill = '#fff', stroke = DARK) { ctx.font = `900 ${size}px ${F}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineJoin = 'round'; if (stroke) { ctx.lineWidth = size * 0.22; ctx.strokeStyle = stroke; ctx.strokeText(s, x, y); } ctx.fillStyle = fill; ctx.fillText(s, x, y); }
 function label(s, sub) { ctx.save(); ctx.fillStyle = 'rgba(0,0,0,.7)'; ctx.beginPath(); ctx.roundRect(90, 230, 900, sub ? 170 : 110, 24); ctx.fill(); txt(s, 540, 285, 54, '#ffd60a', null); if (sub) txt(sub, 540, 355, 34, '#fff', null); ctx.restore(); }
@@ -17,7 +17,7 @@ function pitch(t, dark = 0) { const g = ctx.createLinearGradient(0, 0, 0, H); g.
 const GZ = 1600;
 function seg0(z, t) { pitch(t); label('LIVING CROWD', 'Mexican wave · flags · phone lights'); }
 function seg1(z, t) { pitch(t, 0.35); const kinds = ['fist', 'open', 'point', 'thumb', 'grab', 'clap']; const k = kinds[Math.min(5, Math.floor(z / 0.5))];
-  RON({ bArm: [-30, -10], fArm: k === 'clap' ? [70, 140] : [110, 160], bLeg: [-12, -6], fLeg: [12, 6] }, 'smug', 540, GZ, 1.5, { hands: { f: k, b: k === 'clap' ? 'clap' : 'fist' } }); label('HANDS · 6 SHAPES', k.toUpperCase()); }
+  RON({ bArm: [-30, -10], fArm: k === 'clap' ? [70, 140] : [110, 160], bLeg: [-12, -6], fLeg: [12, 6] }, 'smug', 540, GZ, 1.5, { hands: { f: k, b: k === 'clap' ? 'clap' : 'fist' }, turn: Math.sin(z * 2.1) * 0.55 }); label('HANDS · 6 SHAPES · HEAD TURN', k.toUpperCase()); }
 function seg2(z, t) { pitch(t, 0.25); const hit = 0.5; MES(z < hit ? { bArm: [-60, -30], fArm: [60, 30], bLeg: [-40, -20], fLeg: [100, 80] } : 'stand', z < hit ? 'angry' : 'smug', 260, GZ, 1.15);
   if (z < hit) RON('stand', 'smug', 640, GZ, 1.15); else { const r = RIG2.ragdoll(t, hit + 6, { x0: 560, y0: GZ, vx: 60, vy: -1300, spin: 7, ground: GZ, bounce: .5 }); ctx.save(); ctx.translate(r.x, r.y - 200); ctx.rotate(r.rot); ctx.translate(-r.x, -(r.y - 200)); RON(r.pose, 'shock', r.x, r.y, 1.15, { noAnim: true }); ctx.restore(); FX.burst(ctx, 'dust', 640, GZ, t, hit + 6, { ground: GZ }); FX.burst(ctx, 'sweat', 640, GZ - 450, t, hit + 6); FX.burst(ctx, 'grass', r.x, GZ, t, hit + 6.9, { ground: GZ }); }
   label('RAGDOLL PHYSICS', 'knocked back · bounces · rolls · settles'); }
