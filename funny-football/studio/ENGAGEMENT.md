@@ -1,3 +1,11 @@
+# RULE 0 — FACTS FIRST, THEN EXAGGERATE (owner, 21 Nov 2026: "Hãy ghi nhớ luôn phải đúng thông tin rồi mới phóng đại biếm họa châm biếm")
+Every episode starts from verified, current facts. Caricature, satire and exaggeration are only allowed ON TOP of a true base, never instead of it.
+1. Before the script: search the latest news (last 30 days) for every person and event: current club, national-team status (active / retired), coach, result, date, minute, scorer.
+2. Write each fact with its date and source in epXX/facts.md. Two sources for anything surprising; if sources conflict, use the newest major outlet and say so.
+3. The joke may exaggerate HOW something happened (faces, reactions, gags), never WHAT happened (scores, who scored, who retired, who coaches).
+4. Invented lines are allowed only as obvious parody and every post says "Cartoon parody · invented lines".
+5. When the owner questions a fact: stop the render, re-check, fix the script, then re-render.
+
 # Engagement engine: make people WATCH, SHARE and ARGUE
 User request (Nov 15 2026): "make videos people find attractive, want to watch, want to share, want to argue about".
 Run this **before writing every script**. A script must score at least 14/20 on the scorecard (section 4) to go into production.

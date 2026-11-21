@@ -85,3 +85,5 @@ Playwright, Chromium, ffmpeg, numpy and scipy are already available.
 - **Ep25 "New Gen vs OG" v1 (Nov 20)** `toon2/ep25/`: owner idea, game-launch-week trend, 17.6 s.
 - **Ep26 "13 Years In Line" (Nov 20)** `toon2/ep26/`: approved script, Edition 5 → 6 trend, OGs vs new-gen trio, 29.4 s.
 - **Ep27 "The New Gang" (Nov 20)** `toon2/ep27/`: owner's simplified brief (game intro → swagger → beaten by Neymar, Messi, Ronaldo → OGs laugh as kids limp away), 28 s, acting layer.
+
+- RULE 0 (21 Nov 2026): facts first, then exaggerate. See ENGAGEMENT.md top.
