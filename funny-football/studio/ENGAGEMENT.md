@@ -252,3 +252,6 @@ I used a July 2026 report ("Ronaldo will continue") when he had already retired 
 
 ## DATA RULE (21 Nov 2026, first real YouTube numbers)
 Shorts ≤27 s keep 81.5 % of viewers and bring 4× more subscribers than ≥37 s (60 %). Default length is now 18–25 s; longer only with a reason written in the spec. Shares ≈ 0 → every episode needs a 'send-to-a-friend' moment (gate 6).
+
+
+## NO ARABIC (owner, 21 Nov 2026) — captions are English only; the old 'one Arabic line on Facebook' rule is cancelled.

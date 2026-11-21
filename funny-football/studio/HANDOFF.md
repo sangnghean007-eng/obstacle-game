@@ -110,3 +110,6 @@ Old versions kept: ep32/scene_v2_chibi.html. QA length rule is now 15–30 s (da
 - Bodies: chibi.js now has fingers on every hand (rig2 'relax'/'wave'), kit-print names (white + black edge) under the number, comic hatching + fabric folds, football boots. Limbs use the head's skin colour (`cast/skins.js`). Use `CASTIMG.head(ctx, name, expr, { collar })`.
 - Contacts: ep32/scene.html has chibi arm IK (`reach`) and catch geometry (`geo`) — reuse for any hug/catch/push.
 - Next episode: Ronaldo must rest (novelty lead rule).
+
+
+## NO ARABIC (owner, 21 Nov 2026) — captions are English only; the old 'one Arabic line on Facebook' rule is cancelled.

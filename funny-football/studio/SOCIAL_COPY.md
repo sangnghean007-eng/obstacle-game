@@ -143,3 +143,6 @@ Rules from now on for Facebook: caption 200–400 characters (story recap + the 
 - Line 1 = a short title. Then the story in 3–4 short lines (one beat per line, ✅/emoji at the end), one punchline line, the Arabic line, and '(Cartoon parody — invented scene)' on its own line.
 - No run-on sentences, no em-dash chains, no parody label glued to the joke.
 - Arabic: natural football Arabic, never word-for-word. GOAT = الأفضل في التاريخ / الأعظم (NOT الماعز). Check every Arabic line for meaning, not just grammar.
+
+
+## NO ARABIC (owner, 21 Nov 2026: "Bỏ tiếng ả rập") — overrides every earlier rule that asked for an Arabic line. Captions on every platform are English only.
