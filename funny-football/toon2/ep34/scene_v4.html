@@ -1,0 +1,294 @@
+<!doctype html><html><head><meta charset="utf-8"><title>The Throw-In</title><style>html,body{margin:0;background:#000}</style></head><body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../pro.js"></script><script src="../fx.js"></script><script src="../shots.js"></script><script src="../chibi.js"></script><script src="../chibi_cast.js"></script><script src="../rig2.js"></script><script src="../castimg.js"></script><script src="../cast/skins.js"></script>
+<script>
+// Ep34 "THE THROW-IN" (owner's clip, 22 Nov 2026; facts: ep34/facts.md): Columbus 3-0 Inter Miami, MLS playoffs R1 Game 1 (21 Nov 2026).
+// Before half-time Messi threw a throw-in into Gonzalo Tapia's face; referee booked BOTH ('force was negligible'); Columbus coach said it deserved more than a yellow.
+// Tapia scored twice. Game 2: Friday in Columbus. Tapia is staged back-to-camera / face behind the ball (no verified caricature yet).
+const W = 1080, H = 1920, cv = document.getElementById('c'), ctx = cv.getContext('2d');
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v)), lerp = (a, b, k) => a + (b - a) * k, eOut = k => 1 - (1 - clamp(k)) ** 3, eIn = k => clamp(k) ** 2;
+const eBack = k => { k = clamp(k); const c = 1.7; return 1 + (c + 1) * (k - 1) ** 3 + c * (k - 1) ** 2; };
+const FONT = '"Bangers","Impact",Inter,sans-serif', INK = '#1a1410';
+CASTIMG.preload(['messi', 'ronaldo']);
+const REAL_CAPT = { barcelona: ['raphinha', 'RAPHINHA'], celta: ['aspas', 'ASPAS'], sevilla: ['suazo', 'SUAZO'], villarreal: ['gerardmoreno', 'G. MORENO'], roma: ['dybala', 'DYBALA', 'nocap'] };   // verified 2026-27 captains (facts.md); others stay generic
+const CEXP = { bored: 'deadpan', shock: 'shock', dizzy: 'dizzy', angry: 'angry', scared: 'shock', strain: 'scared', happy: 'laugh', neutral: 'smug', sad: 'sad' };
+function card(s, x, y, size, o = {}) { ctx.save(); ctx.font = `400 ${size}px ${FONT}`; const tw = ctx.measureText(s).width, pw = tw + size * 0.9, ph = size * 1.35;
+  ctx.translate(x, y); ctx.rotate(o.rot || 0); const sc = o.pop != null ? eBack(o.pop) : 1; ctx.scale(sc, sc);
+  ctx.fillStyle = 'rgba(0,0,0,.18)'; ctx.beginPath(); ctx.roundRect(-pw / 2 + 8, -ph / 2 + 10, pw, ph, 18); ctx.fill();
+  ctx.fillStyle = o.bg || '#fffaf0'; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.beginPath(); ctx.roundRect(-pw / 2, -ph / 2, pw, ph, 18); ctx.fill(); ctx.stroke();
+  if (o.tail) { ctx.beginPath(); ctx.moveTo(o.tail * 40 - 30, ph / 2 - 3); ctx.lineTo(o.tail * 110, ph / 2 + 70); ctx.lineTo(o.tail * 40 + 30, ph / 2 - 3); ctx.fill(); ctx.stroke(); ctx.fillRect(o.tail * 40 - 27, ph / 2 - 8, 54, 8); }
+  ctx.fillStyle = o.col || INK; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(s, 0, 4); ctx.restore(); }
+function stamp(s, x, y, size, k, col = '#c0281c') { if (k <= 0) return; ctx.save(); ctx.translate(x, y); ctx.rotate(-0.07); const sc = 1.6 - 0.6 * eOut(k * 2.5); ctx.scale(sc, sc); ctx.globalAlpha = clamp(k * 4);
+  ctx.font = `400 ${size}px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineWidth = 16; ctx.strokeStyle = '#fffaf0'; ctx.strokeText(s, 0, 0); ctx.fillStyle = col; ctx.fillText(s, 0, 0);
+  const tw = ctx.measureText(s).width; ctx.lineWidth = 7; ctx.strokeStyle = col; ctx.strokeRect(-tw / 2 - 30, -size * 0.65, tw + 60, size * 1.3); ctx.restore(); }
+
+// ---- look: bright stadium parade ground, comic halftone vignette (≠ Ep32's paper-ink look)
+const BG = {}; function stadium(t, blur = 0) { if (!BG[blur]) { const c = document.createElement('canvas'); c.width = W + 1600; c.height = H + 1600; const g = c.getContext('2d'); g.translate(800, 800);
+    const sky = g.createLinearGradient(0, -800, 0, 900); sky.addColorStop(0, '#2b6cb0'); sky.addColorStop(1, '#a7d3f2'); g.fillStyle = sky; g.fillRect(-800, -800, W + 1600, H + 1600);
+    g.fillStyle = '#1c2333'; g.fillRect(-800, 560, W + 1600, 520); for (let k = 0; k < 4; k++) { g.fillStyle = `rgba(255,255,255,${0.08 + k * 0.02})`; g.fillRect(-800, 600 + k * 110, W + 1600, 6); }
+    for (let i = -6; i < 14; i++) { g.fillStyle = '#e8e8e8'; g.fillRect(i * 160, 420, 10, 140); g.fillStyle = '#fffbe0'; g.beginPath(); g.ellipse(i * 160 + 5, 410, 40, 16, 0, 0, 7); g.fill(); }
+    for (let i = 0; i < 16; i++) { g.fillStyle = i % 2 ? '#3f9e45' : '#4aae4f'; g.fillRect(-800, 1080 + i * 90, W + 1600, 90); }
+    g.strokeStyle = 'rgba(255,255,255,.85)'; g.lineWidth = 10; g.beginPath(); g.moveTo(-800, 1180); g.lineTo(W + 800, 1180); g.stroke();
+    if (blur) { const f = 1 + blur * 0.7, sm = document.createElement('canvas'); sm.width = c.width / f; sm.height = c.height / f; sm.getContext('2d').drawImage(c, 0, 0, sm.width, sm.height); g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, c.width, c.height); g.drawImage(sm, 0, 0, c.width, c.height); }
+    BG[blur] = c; }
+  ctx.drawImage(BG[blur], -800, -800); FX.crowd(ctx, t, { y0: 640, rows: 6, rowH: 70, cols: ['#f5a3c7', '#f5a3c7', '#111111', '#ffffff'], jump: 0.15, flags: true, phones: true, w: 1500, x0: -210, density: 0.8 }); }
+function post() { ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); const v = ctx.createRadialGradient(540, 960, 520, 540, 960, 1250); v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,0,.42)'); ctx.fillStyle = v; ctx.fillRect(0, 0, W, H); ctx.restore(); }
+// ---- cast
+const kit = (shirt, trim, shorts, sock, num, boot = '#111') => ({ shirt, sleeve: shirt, cuff: trim, collar: trim, shorts, sock, sockShade: sock, sockBand: trim, boot, num });
+const shadeOf = h => '#' + [1, 3, 5].map(i => Math.round(parseInt(h.slice(i, i + 2), 16) * 0.8).toString(16).padStart(2, '0')).join('');
+const BASE = { ronaldo: CH.ronaldo, messi: Object.assign({}, CH.messi, { kit: kit('#f5a3c7', '#111', '#111111', '#f5a3c7', '#111') }),
+  mbappe: Object.assign({}, CH.mate2, { kit: kit('#f7f7f7', '#c9a227', '#f7f7f7', '#f7f7f7', '#1b2a5c', '#f2f2f2'), num: '10', numSize: 56, name: 'MBAPPÉ' }),
+  yamal: Object.assign({}, CH.mate1, { kit: Object.assign(kit('#a50044', '#004d98', '#004d98', '#004d98', '#ffd60a'), { stripes: '#004d98' }), num: '10', numSize: 56, name: 'YAMAL' }) };
+const CC = {}; for (const k in BASE) CC[k] = Object.assign({}, BASE[k], { arm: BASE[k].arm * 0.82, armW: BASE[k].armW * 1.35, skin: CAST_SKIN[k], shade: shadeOf(CAST_SKIN[k]) });
+const SC = { ronaldo: 1.3, messi: 1.22, mbappe: 1.26, yamal: 1.24 };
+// local→world for a chibi drawn with (x, y, s, f, lean): used for arm IK and contact points
+const lay = n => { const C = CC[n], hipY = -C.leg * 0.95, shY = hipY - C.torsoH; return { hipY, shY, fs: [C.shoulderW * 0.8, shY + 30], bs: [-C.shoulderW * 0.72, shY + 30] }; };
+function W2(o, lx, ly) { const s = o.s, f = o.f || 1, r = o.lean || 0, X = lx * s * f, Y = ly * s; return [o.x + X * Math.cos(r) - Y * Math.sin(r), o.y + X * Math.sin(r) + Y * Math.cos(r)]; }
+function reach(n, o, side, tx, ty) { const L = lay(n), p = side === 'f' ? L.fs : L.bs, S = W2(o, p[0], p[1]), r = o.lean || 0, f = o.f || 1;
+  const dx = tx - S[0], dy = ty - S[1], lx = (dx * Math.cos(-r) - dy * Math.sin(-r)) / f, ly = dx * Math.sin(-r) + dy * Math.cos(-r);
+  const a = Math.atan2(lx, ly) * 180 / Math.PI; return [a - 10, a + 10]; }
+const along = (o, H) => [o.x + Math.sin(o.lean || 0) * H, o.y - Math.cos(o.lean || 0) * H];
+// draw with life: breathing, sway, head bob, arms that never freeze
+function CB(n, o, t, ph = 0) { const k = o.life ?? 1, sw = Math.sin(t * 2.1 + ph);
+  const pose = o.pose || { bArm: [-18 + sw * 6 * k, -8], fArm: [18 - sw * 6 * k, 8], bLeg: [-8, -4], fLeg: [8, 4] };
+  const q = Object.assign({ s: SC[n] }, o);
+  chibi.draw(ctx, CC[n], pose, 'neutral', q.x + (o.lean ? 0 : Math.sin(t * 0.9 + ph) * 5 * k), q.y - (o.hop || 0), q.s, { f: o.f || 1, lean: (o.lean || 0) + Math.sin(t * 1.3 + ph) * 0.015 * k, sq: (o.sq || 0) + Math.sin(t * 3.1 + ph) * 0.012 * k,
+    headTilt: (o.tilt || 0) + Math.sin(t * 1.7 + ph) * 0.06 * k, hands: o.hands, headFn: (o.headFn || CASTIMG.head(ctx, n, o.expr || 'smug', { collar: CC[n].kit.collar })) }); }
+
+// General Mbappé: peaked cap over the caricature head, medals + sash on the chest, a score paddle in the back hand
+function capHead(e) { const base = CASTIMG.head(ctx, 'mbappe', e, { collar: CC.mbappe.kit.collar }); return (R) => { base(R); ctx.save(); ctx.translate(0, -R * 1.38); ctx.rotate(-0.06);
+  ctx.fillStyle = '#1b2a5c'; ctx.strokeStyle = INK; ctx.lineWidth = 7; ctx.beginPath(); ctx.ellipse(0, -R * 0.1, R * 0.95, R * 0.34, 0, Math.PI, 0); ctx.lineTo(R * 0.8, R * 0.12); ctx.lineTo(-R * 0.8, R * 0.12); ctx.closePath(); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#c9a227'; ctx.fillRect(-R * 0.8, R * 0.02, R * 1.6, R * 0.12); ctx.strokeRect(-R * 0.8, R * 0.02, R * 1.6, R * 0.12);
+  ctx.fillStyle = '#111'; ctx.beginPath(); ctx.ellipse(R * 0.1, R * 0.16, R * 0.85, R * 0.14, 0.05, 0, Math.PI); ctx.fill();
+  ctx.fillStyle = '#ffd60a'; ctx.beginPath(); for (let k = 0; k < 10; k++) { const a = k * Math.PI / 5 - Math.PI / 2, r = k % 2 ? R * 0.08 : R * 0.18; ctx.lineTo(Math.cos(a) * r, -R * 0.18 + Math.sin(a) * r); } ctx.closePath(); ctx.fill(); ctx.lineWidth = 3; ctx.stroke(); ctx.restore(); }; }
+let SIGN = '1-0', SIGN2 = 'VILLARREAL';
+const D2 = a => a * Math.PI / 180, goL = (p, a, l) => [p[0] + Math.sin(D2(a)) * l, p[1] + Math.cos(D2(a)) * l];
+function handWorld(C, o, side, ang) { const hipY = -C.leg * 0.95, shY = hipY - C.torsoH, root = side === 'f' ? [C.shoulderW * 0.8, shY + 30] : [-C.shoulderW * 0.72, shY + 30];
+  const e = goL(goL(root, ang[0], C.arm * 0.5), ang[1], C.arm * 0.5); return W2(o, e[0], e[1]); }
+let BSTYLE = 0; const BSTYLES = ['paper', 'led', 'tv', 'chalk', 'neon', 'stone', 'sticky', 'ticker', 'ticket'];
+function board(x, y, l1, l2, o = {}) { const st = o.style || BSTYLES[BSTYLE % BSTYLES.length]; ctx.save(); ctx.translate(x, y); ctx.rotate(o.rot ?? (st === 'sticky' ? -0.12 : -0.05)); const h = o.h || 170;
+  ctx.font = `400 ${o.f2 || 30}px ${FONT}`; const w = Math.max(o.w || 250, ctx.measureText(l2).width + 44), T = -h * 0.9 - h;
+  ctx.fillStyle = '#7a5230'; ctx.fillRect(-7, -h * 0.9, 14, h * 0.95);   // stick
+  const panel = (fill, stroke, lw = 8, r = 16) => { ctx.fillStyle = fill; ctx.strokeStyle = stroke; ctx.lineWidth = lw; ctx.beginPath(); ctx.roundRect(-w / 2, T, w, h, r); ctx.fill(); if (lw) ctx.stroke(); };
+  let c1 = o.col || '#1b2a5c', c2 = '#c0281c', f1 = `400 ${o.f1 || 96}px ${FONT}`, f2 = `400 ${o.f2 || 30}px ${FONT}`, glow = 0;
+  if (st === 'paper') panel('#fffaf0', INK);
+  if (st === 'led') { panel('#111', '#444', 10, 10); c1 = '#ffb020'; c2 = '#ff5a1f'; f1 = `400 ${o.f1 || 96}px "Press Start 2P",monospace`; glow = 18; ctx.fillStyle = 'rgba(255,176,32,.08)'; for (let gx = -w / 2 + 8; gx < w / 2; gx += 10) for (let gy = T + 8; gy < T + h; gy += 10) ctx.fillRect(gx, gy, 5, 5); }
+  if (st === 'tv') { panel('#0b2a6b', '#fff', 6, 4); ctx.fillStyle = '#c0281c'; ctx.fillRect(-w / 2, T + h - 46, w, 46); c1 = '#fff'; c2 = '#fff'; ctx.fillStyle = '#ffd60a'; ctx.fillRect(-w / 2, T, 12, h - 46); }
+  if (st === 'chalk') { panel('#24453a', '#8a5a2b', 14, 6); c1 = '#f5f5ef'; c2 = '#ffe48a'; f1 = `700 ${o.f1 || 96}px "Caveat",cursive`; f2 = `700 ${(o.f2 || 30) + 8}px "Caveat",cursive`; }
+  if (st === 'neon') { panel('#120024', '#ff2fa0', 6, 22); c1 = '#00f0ff'; c2 = '#ff2fa0'; glow = 26; }
+  if (st === 'stone') { panel('#9a948a', '#4a463f', 8, 40); c1 = '#3a362f'; c2 = '#5b2a1a'; ctx.strokeStyle = 'rgba(0,0,0,.25)'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(-w / 2 + 20, T + 30); ctx.lineTo(-w / 2 + 60, T + 60); ctx.lineTo(-w / 2 + 40, T + 95); ctx.stroke(); }
+  if (st === 'sticky') { panel('#ffe94d', '#c9b000', 0, 2); c1 = '#222'; c2 = '#c0281c'; f1 = `700 ${o.f1 || 96}px "Caveat",cursive`; f2 = `700 ${(o.f2 || 30) + 8}px "Caveat",cursive`; ctx.fillStyle = 'rgba(255,255,255,.55)'; ctx.fillRect(-36, T - 10, 72, 22); }
+  if (st === 'ticker') { panel('#fff', INK, 8, 6); ctx.fillStyle = '#ffd60a'; ctx.fillRect(-w / 2 + 4, T + 4, w - 8, 34); ctx.fillStyle = INK; ctx.font = `400 22px ${FONT}`; ctx.textAlign = 'center'; ctx.fillText('⚡ BREAKING ⚡', 0, T + 28); }
+  if (st === 'ticket') { panel('#f7d9a8', '#7a4a1a', 6, 8); ctx.setLineDash([8, 8]); ctx.strokeStyle = '#7a4a1a'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(-w / 2 + 40, T + 8); ctx.lineTo(-w / 2 + 40, T + h - 8); ctx.stroke(); ctx.setLineDash([]); c2 = '#7a1a1a'; }
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.shadowColor = c1; ctx.shadowBlur = glow; ctx.fillStyle = c1; ctx.font = f1; ctx.fillText(l1, st === 'ticket' ? 18 : 0, T + h * (st === 'ticker' ? 0.5 : 0.42));
+  ctx.shadowColor = c2; ctx.shadowBlur = glow * 0.6; ctx.font = f2; ctx.fillStyle = c2; ctx.fillText(l2, st === 'ticket' ? 18 : 0, T + h * 0.83); ctx.restore(); }
+const SIGNARM = [-150, -172];   // back arm raised up and out: the score is held high, beside the head
+const PADDLE_UNUSED = { hand: 'b', draw(x, y) { ctx.save(); ctx.translate(x, y); ctx.fillStyle = '#7a5230'; ctx.fillRect(-7, -150, 14, 160); ctx.fillStyle = '#fffaf0'; ctx.strokeStyle = INK; ctx.lineWidth = 8;
+  ctx.beginPath(); ctx.roundRect(-105, -290, 210, 150, 16); ctx.fill(); ctx.stroke(); ctx.fillStyle = '#1b2a5c'; ctx.font = `400 86px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(SIGN, 0, -228);
+  ctx.font = `400 26px ${FONT}`; ctx.fillStyle = '#c0281c'; ctx.fillText('REAL vs ' + SIGN2, 0, -168); ctx.restore(); } };
+function medals(o) { const L = lay('mbappe'), [cx, cy] = W2(o, -CC.mbappe.shoulderW * 0.35, L.shY + 58); const s = o.s; ctx.save(); ctx.translate(cx, cy); ctx.scale(s, s);
+  ctx.strokeStyle = '#c0281c'; ctx.lineWidth = 16; ctx.beginPath(); ctx.moveTo(-40, -50); ctx.lineTo(120, 150); ctx.stroke();
+  ['#1b2a5c', '#c0281c', '#2f8f46'].forEach((c, i) => { ctx.fillStyle = c; ctx.fillRect(-30 + i * 22, 0, 18, 24); ctx.fillStyle = '#ffd60a'; ctx.beginPath(); ctx.arc(-21 + i * 22, 36, 10, 0, 7); ctx.fill(); ctx.strokeStyle = INK; ctx.lineWidth = 3; ctx.stroke(); }); ctx.restore(); }
+// slap: front arm winds back, snaps to the target face, returns; returns { pose, hit } for the moment t
+function slapPose(t, times, o, tx, ty, back = { bArm: [30, 150], bLeg: [-12, -4], fLeg: [16, 6] }) {
+  let fArm = [20, 10], hit = -1; for (const s of times) { const k = t - s; if (k > -0.16 && k < 0.22) { const strike = reach('mbappe', o, 'f', tx, ty);
+      fArm = k < -0.04 ? [-70, -110] : k < 0.06 ? strike : [lerp(strike[0], 20, (k - 0.06) / 0.16), lerp(strike[1], 10, (k - 0.06) / 0.16)]; if (k >= -0.04 && k < 0.12) hit = k; } }
+  return { pose: Object.assign({ fArm }, back), hit }; }
+const CAPT = { villarreal: ['#ffe11f', '#0b4a9e', '#0b4a9e', '#ffe11f', '#0b4a9e'], roma: ['#8e1f2f', '#f0bc42', '#8e1f2f', '#111', '#f0bc42'], sevilla: ['#ffffff', '#d4001a', '#ffffff', '#ffffff', '#d4001a'],
+  leipzig: ['#ffffff', '#dd0741', '#ffffff', '#ffffff', '#dd0741'], barcelona: ['#a50044', '#004d98', '#004d98', '#004d98', '#ffd60a', '#004d98'], racing: ['#ffffff', '#00843d', '#111111', '#00843d', '#00843d'],
+  aek: ['#ffd400', '#111111', '#111111', '#ffd400', '#111'], valencia: ['#ffffff', '#111111', '#111111', '#111111', '#111'], celta: ['#8ac3ee', '#c8102e', '#ffffff', '#8ac3ee', '#c8102e'], psv: ['#e30613', '#ffffff', '#111111', '#e30613', '#ffffff', '#ffffff'] };
+const MATES = ['mate1', 'mate2', 'mate3', 'mate4'];
+function reachC(C, o, side, tx, ty) { const hipY = -C.leg * 0.95, shY = hipY - C.torsoH, p = side === 'f' ? [C.shoulderW * 0.8, shY + 30] : [-C.shoulderW * 0.72, shY + 30], S = W2(o, p[0], p[1]), r = o.lean || 0, f = o.f || 1;
+  const dx = tx - S[0], dy = ty - S[1], lx = (dx * Math.cos(-r) - dy * Math.sin(-r)) / f, ly = dx * Math.sin(-r) + dy * Math.cos(-r), a = Math.atan2(lx, ly) * 180 / Math.PI; return [a - 8, a + 8]; }
+const mbHead = m => { const C = CC.mbappe, shY = -C.leg * 0.95 - C.torsoH; return W2(Object.assign({ f: 1 }, m), 10, shY - C.head.R * 0.9); };
+function captainC(team, i) { const k = CAPT[team]; const base = CH[MATES[i % 4]], rc = REAL_CAPT[team]; return Object.assign({}, base, { kit: Object.assign(kit(k[0], k[1], k[2], k[3], k[4]), k[5] ? { stripes: k[5] } : {}), num: '', name: rc ? rc[1] : team.toUpperCase(), arm: base.arm * 0.82, armW: base.armW * 1.35 }, rc ? { skin: CAST_SKIN[rc[0]], shade: shadeOf(CAST_SKIN[rc[0]]) } : {}); }
+function captain(team, i, x, y, s, f, expr, t, o = {}) { const C = captainC(team, i), q = { x, y, s, f, lean: o.lean || 0 }; const sh = Math.sin(t * 40 + i) * (o.shake || 0);
+  const hs = o.headScale || 1; if (hs !== 1) C.head = Object.assign({}, C.head, { R: C.head.R * hs });
+  const rc = REAL_CAPT[team], headFn = rc ? CASTIMG.head(ctx, rc[0], CEXP[expr] || 'smug', { collar: Math.abs(o.tilt || 0) < 0.5 ? C.kit.collar : null, size: 2.35 }) : undefined;
+  chibi.draw(ctx, C, o.pose || { bArm: [-18, -8], fArm: [18, 8], bLeg: [-8, -4], fLeg: [8, 4] }, expr, x + sh, y - (o.hop || 0), s, { f, lean: q.lean, headTilt: o.tilt || 0, sq: o.sq || 0, hands: o.hands, prop: o.prop, headFn });
+  const hipY = -C.leg * 0.95, shY = hipY - C.torsoH; if (!(REAL_CAPT[team] && REAL_CAPT[team][2] === 'nocap')) { const [ax, ay] = W2(q, C.shoulderW * 0.8, shY + 70); // captain's armband (verified captains only)
+  ctx.save(); ctx.translate(ax + sh, ay); ctx.rotate(q.lean); ctx.fillStyle = '#ffd60a'; ctx.strokeStyle = INK; ctx.lineWidth = 4; ctx.fillRect(-24 * s, -14 * s, 48 * s, 28 * s); ctx.strokeRect(-24 * s, -14 * s, 48 * s, 28 * s);
+  ctx.fillStyle = INK; ctx.font = `400 ${24 * s}px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('C', 0, 1); ctx.restore(); }
+  const R = C.head.R, headY = shY - R * 0.72; return [x, y + headY * s]; }
+let SLAPS = 0; const ALL = [];
+function handprint(x, y, s, rot, a = 0.6) { ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s); ctx.fillStyle = `rgba(225,30,40,${a})`; ctx.beginPath(); ctx.ellipse(0, 10, 20, 24, 0, 0, 7); ctx.fill();
+  [[-15, -22, 0.25], [-5, -30, 0.08], [6, -29, -0.08], [16, -22, -0.25]].forEach(([fx, fy, r]) => { ctx.save(); ctx.translate(fx, fy); ctx.rotate(r); ctx.beginPath(); ctx.roundRect(-5, -18, 10, 26, 5); ctx.fill(); ctx.restore(); });
+  ctx.beginPath(); ctx.ellipse(-24, 12, 6, 13, 0.9, 0, 7); ctx.fill(); ctx.restore(); }
+function tooth(x, y, t, t0) { const k = t - t0; if (k < 0 || k > 1.2) return; ctx.save(); ctx.translate(x - 380 * k, y - 600 * k + 1400 * k * k); ctx.rotate(k * 14); ctx.fillStyle = '#fff'; ctx.strokeStyle = INK; ctx.lineWidth = 4;
+  ctx.beginPath(); ctx.roundRect(-12, -14, 24, 28, [10, 10, 4, 4]); ctx.fill(); ctx.stroke(); ctx.restore(); }
+function hud(t) { ctx.save(); ctx.translate(880, 300); ctx.rotate(0.04); ctx.fillStyle = '#c0281c'; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.beginPath(); ctx.roundRect(-150, -46, 300, 92, 14); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#fff'; ctx.font = `400 54px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; const n = ALL.filter(s => s <= t).length; ctx.fillText(`SLAPS ${n}/26`, 0, 4); ctx.restore(); }
+function slapFx(x, y, t, s0, n = 10) { FX.burst(ctx, 'sparks', x, y, t, s0, { n }); const k = t - s0; if (k >= 0 && k < 0.25) { ctx.save(); ctx.translate(x, y - 40); ctx.rotate(-0.2); ctx.scale(1.4 - k * 2, 1.4 - k * 2);
+  ctx.font = `400 70px ${FONT}`; ctx.lineWidth = 12; ctx.strokeStyle = '#fff'; ctx.textAlign = 'center'; ctx.strokeText('SLAP!', 0, 0); ctx.fillStyle = '#c0281c'; ctx.fillText('SLAP!', 0, 0); ctx.restore(); } }
+const GZ = 1560, MB = s => ({ x: 430, y: GZ, s: s || 1.3 });
+// one inspection shot: General Mbappé (left) slaps captain (right) once per Real goal
+function inspect(team, idx, score, z, t, t0, slapAt, o = {}) { SIGN = score; SIGN2 = team.toUpperCase(); stadium(t, o.blur || 0);
+  const m = MB(o.ms), cx = o.cx || 840, cs = o.cs || 1.3; const hd = captainC(team, idx), head = [cx, GZ + (-hd.leg * 0.95 - hd.torsoH - hd.head.R * 0.72) * cs];
+  const sp = slapPose(t, slapAt, m, head[0] - 40, head[1] + 10, { bArm: SIGNARM, bLeg: [-12, -4], fLeg: [16, 6] }); let tilt = 0, hitK = 1e9;
+  for (const s of slapAt) { const k = t - s; if (k >= 0 && k < 0.5) { tilt = Math.sin(clamp(k / 0.5) * Math.PI) * 0.45 * (1 - k); hitK = Math.min(hitK, k); } }
+  const nHit = slapAt.filter(s => t >= s).length, expr = nHit === 0 ? 'bored' : nHit >= slapAt.length ? 'dizzy' : 'shock', last = slapAt[slapAt.length - 1], kl = t - last;
+  const R = o.react || 'tilt'; let ctilt = o.tilt ?? tilt, hsc = 1, csq = 0, cx2 = cx, cy2 = GZ, crot = o.lean || 0;
+  if (R === 'spin' && kl >= 0) ctilt = eOut(clamp(kl / 0.8)) * Math.PI * 4 + Math.sin(kl * 30) * 0.05 * Math.max(0, 1 - kl);   // head spins twice like a top
+  if (R === 'swell') { hsc = 1 + 0.07 * nHit; }                                                                      // cheeks swell a bit more after every slap
+  if (R === 'jiggle' && hitK < 1) csq = Math.sin(hitK * 45) * 0.09 * Math.exp(-4 * hitK);                           // face wobbles like jelly
+  if (R === 'launch' && kl >= 0) { cx2 = cx + 900 * kl; cy2 = GZ - 1500 * kl + 1500 * kl * kl * 0.9; crot = kl * 9; } // last slap sends him into the stands
+  captain(team, idx, cx2, cy2, cs, -1, o.expr || expr, t, { tilt: ctilt, shake: nHit === 0 ? 1.5 : 0, lean: crot, pose: o.cpose || (R === 'launch' && kl >= 0 ? { bArm: [-150, -120], fArm: [150, 120], bLeg: [-40, -10], fLeg: [40, 10] } : undefined), hands: o.chands, prop: o.cprop, headScale: hsc, sq: csq });
+  if (!(R === 'launch' && kl >= 0)) for (let i = 0; i < Math.min(nHit, 4); i++) handprint(head[0] - 34 + (i % 2) * 22, head[1] - 10 * hsc + 18 * i - 20, cs * hsc * 0.9, 0.2 - i * 0.15, 0.55);
+  if (R === 'spin') tooth(head[0], head[1] + 30, t, last + 0.05);
+  if (R === 'ripple' && hitK < 1) FX.burst(ctx, 'sweat', head[0], head[1] - 40, t, t - hitK, { n: 18 });
+  { const hw0 = handWorld(CC.mbappe, Object.assign({ f: 1 }, m), 'b', (o.mpose || sp.pose).bArm); board(hw0[0], hw0[1], SIGN, 'REAL vs ' + SIGN2); }   // sign first: its stick stays behind the head
+  const mp = o.heli ? Object.assign({}, sp.pose, { fArm: [(t * 1500) % 360, (t * 1500) % 360 + 15] }) : (o.mpose || sp.pose);
+  chibi.draw(ctx, CC.mbappe, mp, 'neutral', m.x, m.y, m.s, { f: 1, sq: Math.sin(t * 3) * 0.01, headTilt: o.mtilt || 0, lean: o.mlean || 0, headFn: capHead(o.mexpr || (nHit ? 'smug' : 'deadpan')), hands: { f: 'open', b: 'grab' } });
+  medals(m); if (!(R === 'launch' && kl > 0.05)) for (const s of slapAt) slapFx(head[0] - 20, head[1] - 150 * cs * hsc, t, s);   // SLAP! above the head: never over the face
+  if (R === 'launch' && kl > 0.3) { ctx.save(); ctx.font = `400 64px ${FONT}`; ctx.fillStyle = '#c0281c'; ctx.textAlign = 'center'; ctx.lineWidth = 10; ctx.strokeStyle = '#fff'; ctx.strokeText('BYE 👋', 760, 520); ctx.fillText('BYE 👋', 760, 520); ctx.restore(); } }
+
+// ======================= EP34 =======================
+const MX = 360, MS = 1.2; CC.messi = Object.assign({}, CC.messi, { arm: CC.messi.arm * 1.75 }); CC.ronaldo = Object.assign({}, CC.ronaldo, { arm: CC.ronaldo.arm * 1.6 });   // longer cartoon arms: a real overhead throw-in above the big head
+const CLB = kit('#fedd00', '#111111', '#111111', '#fedd00', '#111111');
+const TAPIA = Object.assign({}, CH.mate1, { kit: CLB, num: '', name: 'TAPIA', arm: CH.mate1.arm * 0.82, armW: CH.mate1.armW * 1.35 });
+const REFC = Object.assign({}, CH.mate2, { kit: kit('#1a1a1a', '#9aa0a6', '#1a1a1a', '#1a1a1a', '#ffffff'), num: '', name: 'REF', arm: CH.mate3.arm * 0.82, armW: CH.mate3.armW * 1.35 });
+const CLBM = [Object.assign({}, CH.mate2, { kit: CLB, num: '', name: '' }), Object.assign({}, CH.mate4, { kit: CLB, num: '', name: '' })];
+const MIAM = Object.assign({}, CH.mate3, { kit: kit('#f5a3c7', '#111', '#111111', '#f5a3c7', '#111'), num: '', name: '' });
+const backHead = (R) => { ctx.save(); ctx.fillStyle = '#c98a5e'; ctx.strokeStyle = INK; ctx.lineWidth = 7; for (const sx of [-1, 1]) { ctx.beginPath(); ctx.ellipse(sx * R * 0.95, R * 0.05, R * 0.2, R * 0.3, 0, 0, 7); ctx.fill(); ctx.stroke(); }
+  ctx.beginPath(); ctx.ellipse(0, 0, R, R * 1.05, 0, 0, 7); ctx.fill(); ctx.stroke(); ctx.fillStyle = '#1e140d'; ctx.beginPath(); ctx.ellipse(0, -R * 0.12, R * 0.98, R * 0.93, 0, 0, 7); ctx.fill();
+  ctx.strokeStyle = 'rgba(255,255,255,.12)'; ctx.lineWidth = 4; for (let k = -3; k <= 3; k++) { ctx.beginPath(); ctx.moveTo(k * R * 0.22, -R); ctx.quadraticCurveTo(k * R * 0.3, -R * 0.2, k * R * 0.18, R * 0.6); ctx.stroke(); } ctx.restore(); };   // back of the head: we never see Tapia's face
+function ball(x, y, r, rot = 0) { ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.fillStyle = '#fff'; ctx.strokeStyle = INK; ctx.lineWidth = r * 0.12; ctx.beginPath(); ctx.arc(0, 0, r, 0, 7); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#222'; ctx.beginPath(); for (let k = 0; k < 5; k++) { const a = k * 1.2566 - 1.57; ctx.lineTo(Math.cos(a) * r * 0.38, Math.sin(a) * r * 0.38); } ctx.fill();
+  for (let k = 0; k < 5; k++) { const a = k * 1.2566 + 0.63; ctx.beginPath(); ctx.arc(Math.cos(a) * r * 0.85, Math.sin(a) * r * 0.85, r * 0.22, 0, 7); ctx.fill(); } ctx.restore(); }
+const P = (bA, fA, bL = [-10, -4], fL = [10, 4]) => ({ bArm: bA, fArm: fA, bLeg: bL, fLeg: fL });
+const HALO_BREAK = 4.62;
+function messiHeadTop(o) { const C = CC.messi, hY = -C.leg * 0.95 - C.torsoH - C.head.R * 0.72; return [o.x + 10, o.y + (hY - 1.55 * C.head.R) * o.s]; }
+function halo(x, y, t, s = 1) { ctx.save(); ctx.translate(x, y + Math.sin(t * 3) * 6); ctx.scale(s, s); ctx.shadowColor = '#ffe066'; ctx.shadowBlur = 30; ctx.strokeStyle = '#ffd23a'; ctx.lineWidth = 16; ctx.beginPath(); ctx.ellipse(0, 0, 90, 26, 0, 0, 7); ctx.stroke(); ctx.restore();
+  for (let k = 0; k < 3; k++) { const a = t * 2 + k * 2.1; ctx.save(); ctx.globalAlpha = 0.7 + 0.3 * Math.sin(t * 5 + k); ctx.font = '40px serif'; ctx.textAlign = 'center'; ctx.fillText('✨', x + Math.cos(a) * 140, y + 30 + Math.sin(a) * 40); ctx.restore(); } }
+function horns(x, y) { ctx.save(); ctx.translate(x, y + 70); ctx.fillStyle = '#d0141e'; ctx.strokeStyle = INK; ctx.lineWidth = 7; for (const sx of [-1, 1]) { ctx.beginPath(); ctx.moveTo(sx * 40, 10); ctx.quadraticCurveTo(sx * 70, -40, sx * 95, -90); ctx.quadraticCurveTo(sx * 85, -30, sx * 80, 20); ctx.closePath(); ctx.fill(); ctx.stroke(); } ctx.restore(); }
+function messi(t, o) { CB('messi', Object.assign({ x: MX, y: GZ - 60, s: MS, f: 1 }, o), t, 0.5); }
+function person(C, o, expr, t) { chibi.draw(ctx, C, o.pose || P([-18, -8], [18, 8]), expr, o.x, o.y - (o.hop || 0), o.s, { f: o.f || 1, lean: o.lean || 0, headTilt: o.tilt || 0, hands: o.hands, headFn: o.headFn, sq: o.sq || 0 }); }
+const CHEST = (C, o) => { const hipY = -C.leg * 0.95, shY = hipY - C.torsoH; return W2(o, 0, shY - C.head.R * 0.72); };
+// ---------------- the touchline scene (Messi upstage-left, Tapia downstage-right with his back to us, ref, both benches in the same frame)
+function scene(t) { stadium(t, 0); FX.crowd(ctx, t, { y0: 660, rows: 3, rowH: 60, cols: ['#f5a3c7', '#f5a3c7', '#ffffff'], jump: t > 4.6 && t < 6 ? 0.8 : 0.1, w: 1500, x0: -210, density: 0.9, seed: 3 });
+  const tossK = clamp((t - 4.4) / 0.22), hit = 4.62, flop = t > hit && t < 8.0;
+  // background: two Columbus players (laugh at Messi when he is booked), one Miami player (facepalm)
+  const laughC = (t > 9.6 && t < 10.4) || (t > 13.0 && t < 14.2) || t > 14.3, laughM = t > 10.2 && t < 11.0;
+  CLBM.forEach((C, i) => person(C, { x: 840 + i * 120, y: GZ - 170, s: 0.72, f: -1, hop: laughC ? Math.abs(Math.sin(t * 14 + i)) * 16 : 0, pose: laughC ? P([-150, -170], [150, 170]) : (t > 2.6 && t < 4.4 ? P([60, 150], [70, 160]) : undefined), hands: laughC ? { f: 'open', b: 'open' } : undefined }, laughC ? 'happy' : t > 4.6 && t < 8 ? 'shock' : 'neutral', t));
+  person(MIAM, { x: 120, y: GZ - 170, s: 0.72, f: 1, pose: t > 8.8 && t < 14 ? P([-20, -10], [140, 175]) : undefined, hands: { f: 'open' } }, t > 8.8 && t < 14 ? 'sad' : laughM ? 'happy' : 'neutral', t);
+  // Messi
+  let mp, me = 'smug', bx = null, by = null;
+  if (t < 4.4) { const wind = clamp((t - 3.2) / 1.0); mp = P([-160 + wind * 30, -175 + wind * 60], [160 - wind * 30, 175 - wind * 60]); me = t < 2.6 ? 'deadpan' : 'angry'; }
+  else if (t < 4.75) { mp = P([-120, -60], [120, 60], [-20, -8], [24, 10]); me = 'angry'; }
+  else if (t < 8.4) { mp = P([-70, -150], [70, 150]); me = t < 6.4 ? 'smug' : 'deadpan'; }
+  else if (t < 11.2) { mp = t < 9.6 ? P([-70, -150], [70, 150]) : P([-40, -125], [40, 125], [-14 + Math.sin(t * 7) * 10, -4], [14 - Math.sin(t * 7) * 10, 4]); me = t < 9.6 ? 'deadpan' : 'smug'; }   // shrug → hands-on-hips swagger
+  else if (t < 14.2) { mp = P([-20, -10], [100, 160]); me = t > 13.0 ? 'laugh' : 'smug'; }
+  else { mp = P([-30, -150], [-20, 175]); me = t < 15.2 ? 'sad' : 'smug'; }
+  if (t < 4.4) { const C = CC.messi, hY = -C.leg * 0.95 - C.torsoH - C.head.R * 0.72, mo = { x: MX, y: GZ - 60, s: MS, f: 1 }, wb = t > 3.2 ? clamp((t - 3.2) / 1.0) : 0;
+    bx = MX + 210 - wb * 40; by = GZ - 60 + hY * MS - 120 - wb * 60;   // ball up high beside the head: arms never cross the face          // the ball sits above the head…
+    mp = P(reach('messi', mo, 'b', bx - 40, by + 10), reach('messi', mo, 'f', bx + 40, by + 10)); }  // …and both hands really hold it
+  const strut = t > 9.6 && t < 11.2; messi(t, { x: MX + (strut ? Math.sin(t * 3.5) * 40 : 0), hop: strut ? Math.abs(Math.sin(t * 7)) * 14 : 0, sq: strut ? -0.04 : 0, pose: mp, expr: me, hands: t < 4.4 ? { f: 'grab', b: 'grab' } : t < 9.6 ? { f: 'open', b: 'open' } : t < 11.2 ? { f: 'fist', b: 'fist' } : { f: 'thumb' } });
+  { const top = messiHeadTop({ x: MX, y: GZ - 60, s: MS });
+    if (t < HALO_BREAK) halo(top[0], top[1] - 20, t);
+    else if (t < 6.2) { const k = t - HALO_BREAK; ctx.save(); ctx.globalAlpha = Math.max(0, 1 - k / 1.6); for (const sx of [-1, 1]) { ctx.save(); ctx.translate(top[0] + sx * (30 + 160 * k), top[1] - 20 + 700 * k * k); ctx.rotate(sx * k * 4); ctx.strokeStyle = '#ffd23a'; ctx.lineWidth = 16; ctx.beginPath(); ctx.ellipse(0, 0, 90, 26, 0, sx < 0 ? Math.PI * 0.5 : -Math.PI * 0.5, sx < 0 ? Math.PI * 1.5 : Math.PI * 0.5); ctx.stroke(); ctx.restore(); } ctx.restore(); }
+    if (t > 14.6) horns(top[0], top[1]); }
+  // Tapia
+  let tx = lerp(700, 610, eOut(clamp((t - 2.6) / 1.2))), ty = GZ + 90, trot = 0, thop = 0, tpose = t > 2.6 && t < 4.6 ? P([-140 + Math.sin(t * 18) * 30, -170], [140 + Math.cos(t * 18) * 30, 170]) : undefined, tilt = 0;
+  if (t > hit && t < 8.4) { const k = t - hit; // the flop: three spins in the air, three bounces, three rolls
+    if (k < 1.0) { tx = 610 + 260 * k; ty = GZ + 90 - 520 * k + 520 * k * k; trot = k * 6 * Math.PI; tpose = P([-150, -120], [150, 120], [-40, -10], [40, 10]); }
+    else { const b = k - 1.0; tx = 870 + 60 * Math.min(b, 1.4); const bnc = [0, 0.4, 0.7, 0.9].reduce((m, s2, i) => b > s2 && b < s2 + 0.35 ? (140 / (i + 1)) * Math.sin((b - s2) / 0.35 * Math.PI) : m, 0); ty = GZ + 90 - bnc; trot = Math.PI * 6 + Math.min(b, 1.2) * 2 * Math.PI * 1.5; if (b > 1.2) trot = Math.PI / 2; tpose = P([-100, -80], [100 + (b > 1.6 ? Math.sin(t * 6) * 20 : 0), b > 1.6 ? 170 : 80], [-20, -10], [20, 10]); } }
+  if (t >= 8.4) { const up = eOut(clamp((t - 8.4) / 0.3)); tx = lerp(950, 780, clamp((t - 8.4) / 0.4)); ty = GZ + 90 - Math.sin(clamp((t - 8.4) / 0.4) * Math.PI) * 120; trot = lerp(Math.PI / 2, 0, up);
+    tpose = t < 10.6 ? P([-60 + Math.sin(t * 14) * 25, -150], [120 + Math.cos(t * 12) * 30, 170], [-12, -4], [12, 4]) : t < 14.2 ? P([-10, -4], [10, 4]) : P([-160, -175], [150, 170]);
+    if (t < 10.6) thop = Math.abs(Math.sin(t * 9)) * 12; }   // complaining: arms waving, hopping
+  if (t > 14.2) { tx = 760; thop = Math.abs(Math.sin(t * 9)) * 22; }
+  const to = { x: tx, y: ty, s: 1.3, f: -1, lean: trot, hop: thop, pose: tpose, headFn: backHead, hands: t > 14.2 ? { f: 'point', b: 'point' } : undefined };
+  person(TAPIA, to, 'neutral', t);
+  if (t > 14.3) { const [hx, hy] = handWorld(TAPIA, to, 'b', to.pose.bArm); ctx.save(); ctx.font = `400 70px ${FONT}`; ctx.fillStyle = '#fff'; ctx.strokeStyle = INK; ctx.lineWidth = 10; ctx.textAlign = 'center'; ctx.strokeText('✌️ 2', hx, hy - 50); ctx.fillText('✌️ 2', hx, hy - 50); ctx.restore(); }
+  // the ball: overhead → face → off into the crowd
+  const head = CHEST(TAPIA, { x: 610, y: GZ + 90, s: 1.3, f: -1 });
+  if (t < 4.4 && bx !== null) ball(bx, by, 44);
+  else if (t < hit) { const sx = MX + 170, sy = GZ - 620; ball(lerp(sx, head[0] - 10, eIn(tossK)), lerp(sy, head[1] - 20, eIn(tossK)) - Math.sin(tossK * Math.PI) * 40, 44, t * 20); }
+  else if (t < 6.0) { const k = t - hit; ball(head[0] + 600 * k, head[1] - 900 * k + 900 * k * k, 44, t * 25); }
+  if (t > hit && t < hit + 0.35) FX.burst(ctx, 'sparks', head[0], head[1] - 40, t, hit, { n: 16 });   // ball hit: sparks only (no 'SLAP' text)
+  // referee
+  if (t > 8.0 && t < 14.4) { const k = t - 8.0, rx = k < 0.8 ? lerp(1200, 600, eOut(k / 0.8)) : 600, run = k < 0.8;
+    let rp = run ? chibi.POSES[Math.floor(t * 10) % 2 ? 'run1' : 'run2'] : P([-18, -8], [18, 8]), card = null, rf = -1;
+    if (t > 9.6 && t < 10.4) { rp = P([-18, -8], [170, 178]); card = '#ffd60a'; rf = -1; }
+    if (t > 10.6 && t < 11.2) { rp = P([-18, -8], [170, 178]); card = '#ffd60a'; rf = 1; }
+    if (t > 11.8 && t < 14.2) { rp = P([-30, -150], [30, 150]); rf = -1; }
+    const ro = { x: rx, y: GZ - 20, s: 1.15, f: rf, pose: rp, hands: { f: card ? 'grab' : 'open' }, hop: run ? Math.abs(Math.sin(t * 20)) * 14 : 0 };
+    person(REFC, ro, t > 11.8 && t < 13.0 ? 'bored' : 'neutral', t);
+    if (card) { const [hx, hy] = handWorld(REFC, ro, 'f', rp.fArm); ctx.save(); ctx.translate(hx, hy - 60); ctx.rotate(0.12 * rf); ctx.fillStyle = card; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.beginPath(); ctx.roundRect(-38, -60, 76, 110, 8); ctx.fill(); ctx.stroke(); ctx.restore(); } }
+  // Columbus coach: only his arm and a huge red card from the left edge
+  if (t > 11.2 && t < 14.2) { const k = eOut(clamp((t - 11.2) / 0.3)), wave = Math.sin(t * 16) * 0.25; ctx.save(); ctx.translate(-260 + 330 * k, GZ - 560); ctx.rotate(-0.5 + wave);
+    ctx.fillStyle = '#1b2a3c'; ctx.strokeStyle = INK; ctx.lineWidth = 8; ctx.beginPath(); ctx.roundRect(-200, -34, 230, 68, 30); ctx.fill(); ctx.stroke(); ctx.fillStyle = '#c98a5e'; ctx.beginPath(); ctx.arc(46, 0, 34, 0, 7); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#e0141e'; ctx.beginPath(); ctx.roundRect(50, -130, 100, 140, 10); ctx.fill(); ctx.stroke(); ctx.restore(); }
+}
+// ---------------- IF IT WAS RONALDO (imaginary): a feather-light touch, instant triple red, sirens, 10-game ban
+const OPP = Object.assign({}, CH.mate4, { kit: kit('#e9e9e9', '#555', '#555555', '#e9e9e9', '#333'), num: '', name: 'OPPONENT', arm: CH.mate4.arm * 0.82, armW: CH.mate4.armW * 1.35 });
+function whatIf(k, t) { stadium(t, 0); const RX = 360, ro = { x: RX, y: GZ - 60, s: 1.25, f: 1 }, C = CC.ronaldo, hY = -C.leg * 0.95 - C.torsoH - C.head.R * 0.72;
+  const toss = clamp((k - 0.6) / 0.35), tapK = 0.95; const bx0 = RX + 210, by0 = GZ - 60 + hY * 1.25 - 120;
+  let rp = k < 0.6 ? P(reach('ronaldo', ro, 'b', bx0 - 40, by0 + 10), reach('ronaldo', ro, 'f', bx0 + 40, by0 + 10)) : P([-100, -60], [100, 60]);
+  if (k > 1.6) rp = P([-160, -175], [160, 175]);
+  CB('ronaldo', Object.assign({}, ro, { pose: rp, expr: k < 1.0 ? 'smug' : k < 1.6 ? 'shock' : 'cry', hands: { f: 'open', b: 'open' } }), t);
+  const oy = GZ + 60, ox = 680, down = k > tapK ? eOut(clamp((k - tapK) / 0.4)) : 0;
+  person(OPP, { x: ox + down * 60, y: oy, s: 1.2, f: -1, lean: down * 1.5, pose: down ? P([-150, -120], [150, 120], [-30, -10], [30, 10]) : undefined }, down ? 'dizzy' : 'neutral', t);
+  if (k < 0.6) ball(bx0, by0, 40); else if (k < tapK) ball(lerp(bx0, ox - 30, toss), lerp(by0, oy - 420, toss), 40, t * 6); else ball(ox - 30 - (k - tapK) * 60, oy - 420 + 900 * (k - tapK) ** 2, 40);
+  if (k > tapK && k < tapK + 0.8) { ctx.save(); ctx.font = `400 46px ${FONT}`; ctx.fillStyle = '#fff'; ctx.strokeStyle = INK; ctx.lineWidth = 8; ctx.textAlign = 'center'; ctx.strokeText('tap 🪶', ox - 40, oy - 500); ctx.fillText('tap 🪶', ox - 40, oy - 500); ctx.restore(); }
+  if (k > 1.15) { const rx = lerp(1200, 600, eOut(clamp((k - 1.15) / 0.3))), n = Math.min(3, Math.floor((k - 1.45) / 0.25) + 1);
+    const rpo = { x: rx + 260, y: GZ - 170, s: 1.0, f: -1, pose: P([-18, -8], [170, 178]), hands: { f: 'grab' } }; person(REFC, rpo, 'angry', t);
+    if (k > 1.45) { const [hx, hy] = handWorld(REFC, rpo, 'f', rpo.pose.fArm); for (let i = 0; i < n; i++) { ctx.save(); ctx.translate(hx - 30 * i, hy - 60); ctx.rotate(-0.25 + i * 0.25); ctx.fillStyle = '#e0141e'; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.beginPath(); ctx.roundRect(-38, -60, 76, 110, 8); ctx.fill(); ctx.stroke(); ctx.restore(); } } }
+  if (k > 1.5) { const on = Math.floor(t * 6) % 2; ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 0.18; ctx.fillStyle = on ? '#ff0000' : '#0040ff'; ctx.fillRect(0, 0, W, H); ctx.restore(); } }
+// ---------------- night training ground (button)
+function training(t) { const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#0b1230'); g.addColorStop(0.55, '#1b2a55'); g.addColorStop(0.56, '#1f5a32'); g.addColorStop(1, '#2f7a45'); ctx.fillStyle = g; ctx.fillRect(-600, -600, W + 1200, H + 1200);
+  for (const lx of [80, 1000]) { ctx.fillStyle = 'rgba(255,250,210,.12)'; ctx.beginPath(); ctx.moveTo(lx, 380); ctx.lineTo(lx - 300, 1700); ctx.lineTo(lx + 300, 1700); ctx.closePath(); ctx.fill(); ctx.fillStyle = '#fffbe0'; ctx.beginPath(); ctx.ellipse(lx, 380, 50, 20, 0, 0, 7); ctx.fill(); }
+  const k = t - 17.4, hitT = 1.25, fall = k > hitT ? eIn(clamp((k - hitT) / 0.5)) : 0;
+  // the cut-out poster: yellow shirt, back of the head, name on it
+  ctx.save(); ctx.translate(800, 1450); ctx.rotate(fall * 1.45); ctx.translate(-800, -1450); ctx.fillStyle = '#b08a5a'; ctx.fillRect(780, 1250, 40, 200);
+  person(TAPIA, { x: 800, y: 1300, s: 0.9, f: -1, headFn: backHead }, 'neutral', t); ctx.strokeStyle = '#e0141e'; ctx.lineWidth = 8; const hd = CHEST(TAPIA, { x: 800, y: 1300, s: 0.9, f: -1 });
+  for (const r of [60, 38, 16]) { ctx.beginPath(); ctx.arc(hd[0], hd[1], r, 0, 7); ctx.stroke(); } ctx.restore();
+  const wind = clamp((k - 0.3) / 0.7), thrown = k > 1.0;
+  CB('messi', { x: 300, y: 1500, s: 1.15, f: 1, pose: thrown ? P([-120, -60], [120, 60], [-20, -8], [24, 10]) : P([-160 + wind * 30, -175 + wind * 60], [160 - wind * 30, 175 - wind * 60]), expr: k > hitT + 0.3 ? 'laugh' : 'smug', hands: { f: 'grab', b: 'grab' } }, t);
+  if (!thrown) { const hw = handWorld(CC.messi, { x: 300, y: 1500, s: 1.15, f: 1 }, 'f', P([-160 + wind * 30, -175 + wind * 60], [160 - wind * 30, 175 - wind * 60]).fArm); ball(hw[0] - 30, hw[1] - 30, 40); }
+  else if (k < hitT) { const q = (k - 1.0) / (hitT - 1.0); ball(lerp(340, hd[0], q), lerp(980, hd[1], q) - Math.sin(q * Math.PI) * 50, 40, t * 20); }
+  else { ball(hd[0] - 80 * (k - hitT), hd[1] + 400 * (k - hitT) ** 2 * 3, 40, t * 10); if (k < hitT + 0.3) FX.burst(ctx, 'sparks', hd[0], hd[1], t, 17.4 + hitT, { n: 14 }); }
+  for (let i = 0; i < 6; i++) ball(120 + i * 34, 1560 - (i % 2) * 20, 26); }
+// ---------------- HUD
+function scoreBug(t) { const ft = t > 14.2; ctx.save(); ctx.translate(40, 250); ctx.fillStyle = '#111'; ctx.beginPath(); ctx.roundRect(0, 0, 520, 70, 10); ctx.fill();
+  ctx.fillStyle = '#f5a3c7'; ctx.fillRect(0, 0, 150, 70); ctx.fillStyle = '#fedd00'; ctx.fillRect(290, 0, 150, 70);
+  ctx.font = `400 44px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#111'; ctx.fillText('MIA', 75, 37); ctx.fillText('CLB', 365, 37);
+  ctx.fillStyle = '#fff'; ctx.fillText(ft ? '0–3' : '0–1', 220, 37); ctx.fillStyle = ft ? '#ffd60a' : '#fff'; ctx.fillText(ft ? 'FT' : "44'", 480, 37);
+  ctx.font = `400 22px ${FONT}`; ctx.fillStyle = '#fff'; ctx.textAlign = 'left'; ctx.fillText(ft ? 'PLAYOFFS R1 · GAME 1' : '🟥 MIA 10 MEN', 4, 92); ctx.restore(); }
+function gauge(t) { const k = t - 11.8; if (k < 0 || t > 14.2) return; const a0 = Math.PI, swing = k < 0.9 ? lerp(0.15, 0.95, eOut(k / 0.9)) : lerp(0.95, 0.06, eOut(clamp((k - 0.9) / 0.4)));
+  ctx.save(); ctx.translate(540, 1470); ctx.scale(0.7, 0.7); const R = 230;   // low, over the legs: faces stay clear ctx.fillStyle = 'rgba(255,255,255,.95)'; ctx.strokeStyle = INK; ctx.lineWidth = 8; ctx.beginPath(); ctx.arc(0, 0, R + 30, a0, 0); ctx.closePath(); ctx.fill(); ctx.stroke();
+  [['#7fd18b', 0, 0.33], ['#ffd60a', 0.33, 0.66], ['#e0141e', 0.66, 1]].forEach(([c, a, b]) => { ctx.strokeStyle = c; ctx.lineWidth = 46; ctx.beginPath(); ctx.arc(0, 0, R - 20, a0 + a * Math.PI, a0 + b * Math.PI); ctx.stroke(); });
+  ctx.font = `400 30px ${FONT}`; ctx.fillStyle = INK; ctx.textAlign = 'center'; ctx.fillText('🪶', -170, -40); ctx.fillText('🟨', 0, -190); ctx.fillText('🟥', 170, -40);
+  const ang = a0 + swing * Math.PI + Math.sin(t * 40) * 0.02; ctx.strokeStyle = INK; ctx.lineWidth = 10; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(Math.cos(ang) * (R - 40), Math.sin(ang) * (R - 40)); ctx.stroke();
+  ctx.fillStyle = INK; ctx.beginPath(); ctx.arc(0, 0, 18, 0, 7); ctx.fill(); ctx.font = `400 40px ${FONT}`; ctx.fillText('FORCE-O-METER', 0, 70); ctx.restore(); }
+const WI0 = 14.2, WI = 3.0; const mapT = t => t < WI0 ? t : t < WI0 + WI ? null : t - WI;
+const SEG = [[0, 24, 'touchline', (z, T) => { if (mapT(T) === null) { SHOT.wide(ctx, () => whatIf(T - WI0, T), { x: 560, y: 1160, zoom: 1.05 }); return; } const t = mapT(T);
+  if (t < 17.2) { // camera: hook close, pull back for the flop, follow the ref, push in for the twist
+    let cx = 520, cy = 1160, zm = 1.25; if (t < 4.4) { zm = lerp(1.35, 1.5, clamp((t - 2.6) / 1.8)); cx = lerp(520, 480, clamp((t - 2.6) / 1.8)); }
+    else if (t < 8.0) { zm = lerp(1.5, 0.95, eOut(clamp((t - 4.4) / 0.8))); cx = lerp(480, 620, clamp((t - 4.4) / 2)); }
+    else if (t < 14.2) { zm = 1.05; cx = 560; } else { zm = lerp(1.05, 1.22, eOut(clamp((t - 14.2) / 0.6))); cx = 540; }
+    const slow = t > 4.55 && t < 5.4 ? 0.35 : 1; SHOT.wide(ctx, () => scene(t), { x: cx, y: cy, zoom: zm });
+    if (t > 4.62 && t < 5.4) SHOT.speedlines(ctx, t, { alpha: 0.25 }); }
+  else SHOT.low(ctx, () => training(t), { x: 560, y: 1300, lift: 180, zoom: 1.05 }); },   // worm's-eye: the hero practising
+ (z, T) => { if (mapT(T) === null) { const k = T - WI0; card('IF RONALDO DID IT…', 540, 300, 80, { pop: k / 0.3, bg: '#fff3b0' }); if (k > 1.5) stamp('🟥 RED ×3', 540, 500, 100, k - 1.5);
+    if (k > 2.0) { ctx.fillStyle = '#c0281c'; ctx.fillRect(0, 1380, W, 90); ctx.fillStyle = '#fff'; ctx.font = `400 46px ${FONT}`; ctx.textAlign = 'center'; ctx.fillText('BANNED 10 GAMES', 540, 1440); }
+    ctx.font = '600 30px Inter'; ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.textAlign = 'center'; ctx.fillText('(imaginary)', 540, 380); return; }
+  const t = mapT(T);
+  if (t < 17.2) scoreBug(t);
+  if (t < 2.6) { card('“Nicest guy” 😇', 540, 400, 80, { pop: 0.7 + t / 0.3, rot: -0.02 }); card('Throw-in. 44\u2032', 540, 510, 60, { pop: 0.7 + (t - 0.6) / 0.3, bg: '#ffe9a8' }); }
+  if (t > 4.62 && t < 5.8) stamp('BONK', 760, 560, 140, t - 4.62);
+  if (t > 6.3 && t < 7.9) stamp('ROLL ×3 🎭', 700, 560, 90, t - 6.3);
+  if (t > 6.9 && t < 8.3) card('Just a throw-in 🤷', 360, 700, 60, { pop: (t - 6.9) / 0.3, tail: -1 });
+  if (t > 8.5 && t < 9.7) card('ON PURPOSE! RED! 🟥', 640, 660, 58, { pop: (t - 8.5) / 0.25, tail: -1, bg: '#fff3b0' });
+  if (t > 9.8 && t < 11.2) card('I’m not Ronaldo 😏', 400, 600, 64, { pop: (t - 9.8) / 0.25, tail: -1 });
+  if (t > 10.7 && t < 11.25) stamp('🟨🟨 BOTH', 600, 470, 80, t - 10.7);
+  if (t > 11.3 && t < 12.6) card('Coach: “RED!”', 420, 560, 66, { pop: (t - 11.3) / 0.3, bg: '#ffd9d9', rot: -0.03 });
+  gauge(t); if (t > 13.0 && t < 14.2) card('Ref: “Negligible” 🪶', 540, 420, 64, { pop: (t - 13.0) / 0.3 });
+  if (t > 14.4 && t < 17.2) stamp('FT 0–3', 540, 545, 100, t - 14.4); if (t > 15.2 && t < 17.2) card('Nice guy? 😇 ➡️ 😈', 540, 405, 62, { pop: (t - 15.2) / 0.3, bg: '#ffd9d9' });
+  if (t > 17.2) { card('Game 2: Friday 👀', 540, 330, 76, { pop: (t - 17.2) / 0.3 }); if (t > 18.8) stamp('PRACTICE ✅', 760, 560, 100, t - 18.8); }
+  ctx.font = '600 28px Inter'; ctx.fillStyle = 'rgba(255,255,255,.85)'; ctx.textAlign = 'center'; if (t > 19.5) ctx.fillText('Cartoon parody', 540, 232); }]];
+ALL.push(4.62, 21.65, 15.15);
+window.DURATION = 24; window.render = function (t) { window.T2T = t; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.filter = 'none'; ctx.clearRect(0, 0, W, H);
+  const seg = SEG[0], z = t; const hs = ALL.reduce((m, a) => Math.max(m, t >= a && t < a + 0.25 ? 18 * (1 - (t - a) / 0.25) : 0), 0) + Math.sin(t * 2.3) * 2;
+  ctx.save(); ctx.translate(Math.sin(t * 91) * hs, Math.cos(t * 77) * hs); seg[3](z, t); ctx.restore(); for (const c of [WI0, WI0 + WI, 20.2]) if (Math.abs(t - c) < 0.14) PRO.whip(ctx, cv, (t - c + 0.14) / 0.28, 1);
+  post(); ctx.setTransform(1, 0, 0, 1, 0, 0); if (!window.NO_HUD) seg[4](z, t); };
+if (!location.search.includes('render')) { const t0 = performance.now(); (window.CAST_READY || Promise.resolve()).then(() => (function loop() { render(((performance.now() - t0) / 1000) % 24); requestAnimationFrame(loop); })()); }
+</script></body></html>

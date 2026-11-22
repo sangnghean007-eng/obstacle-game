@@ -2,9 +2,9 @@
 Facts: ep34/facts.md. Cartoon parody — the flop, the meter and the practice poster are invented.
 
 ## YouTube Shorts
-Title: If Ronaldo Did This It’s a RED Card 🟥 #shorts #messi #ronaldo
+Title: Messi Threw It… Ronaldo Got the RED Card 🟥😂 #shorts #messi #ronaldo
 Description:
-"The nicest guy in football" 😇 throws the ball into Tapia’s face… yellow card, "negligible force" 🪶. Now imagine it was Ronaldo 🟥🟥🟥 (imaginary part clearly labelled). Columbus won 3-0; Game 2 is Friday.
+"The nicest guy in football" 😇 throws the ball into Tapia’s face… yellow card, "negligible force" 🪶. Then Messi drags Ronaldo in… and the ref sends HIM off 🟥 (imaginary part clearly labelled). Columbus won 3-0; Game 2 is Friday.
 Cartoon parody · invented scene · not real footage.
 #shorts #messi #ronaldo #intermiami #columbuscrew #football
 Tags (YouTube Studio → Tags field):
@@ -14,7 +14,7 @@ Upload settings: Category Comedy · Not made for kids · Altered/synthetic conte
 ## TikTok / Reels
 Tapia: "On purpose! RED!" 🟥
 Messi: "Relax… I'm not Ronaldo" 😏
-If it was Ronaldo → 🟥🟥🟥 + 10-game ban 😭 (imaginary)
+Messi: "I'm not Ronaldo" 😏 → drags him in → Ronaldo gets the RED 🟥 (imaginary)
 Agree or not? 👇
 Cartoon parody · invented scene
 #messi #intermiami #columbuscrew #mlsplayoffs #football #footballfunny
@@ -23,7 +23,7 @@ Cartoon parody · invented scene
 Caption:
 "Nicest guy in football" 😇… throws the ball into a player’s face 😳
 Tapia wants a red. Messi: "Relax… I'm not Ronaldo" 😏
-If it was Ronaldo? 🟥🟥🟥 (imaginary)
+Then he pulls Ronaldo in and Ronaldo gets the red 🟥 (imaginary)
 Be honest 👇
 
 Cartoon parody · invented scene · not real footage
@@ -34,7 +34,7 @@ Settings: Share to Feed on · Audio name "Soccer 365 – The Throw-In" · AI inf
 
 ## X (Twitter) — upload the mp4 natively
 Messi throws the ball in Tapia’s face → 🟨 "negligible" 🪶
-Ronaldo does it → 🟥🟥🟥 (imaginary)
+Drags Ronaldo in → Ronaldo 🟥 (imaginary)
 Nice guy era over? 😈
 (cartoon parody) #Messi #Ronaldo
 Alt text (media): Cartoon parody of Messi's throw-in hitting Gonzalo Tapia and both players being booked.
@@ -49,7 +49,7 @@ Both players: yellow card 🟨🟨
 Columbus coach: "More than a yellow!"
 Referee: "The force was negligible" 🪶
 
-Now imagine Ronaldo did it… 🟥🟥🟥 (imaginary)
+Messi drags Ronaldo in… the ref shows HIM the red 🟥 (imaginary)
 Final score: Columbus 3-0 Inter Miami. Game 2 is Friday 👀
 
 (Cartoon parody — invented scene)
