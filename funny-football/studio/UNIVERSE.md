@@ -11,6 +11,7 @@ Rule 0 applies: personalities are *exaggerations of real, public, verified trait
 | **Lamine Yamal** | Barcelona #19 | Show-off teenage prodigy | Dark curls, young face, braces-era grin | Homework / school bag gag | New gen vs OGs |
 | **Kylian Mbappé** | Real Madrid | Always "so close" | Shaved head, wide smile, crossed-arms celebration | The polite smile | — |
 | **Neymar** | — (re-check before use) | Diving drama king | Blond-tipped quiff, earrings, thin beard | Rolling, the referee's card | — |
+| **Mauricio Pochettino** | Man Utd head coach since 18 Nov 2026 (contract to 2029); debut Liverpool 4-0 | Calm promiser: "give me time" | Swept-back silver hair, grey stubble, heavy dark brows, deep-set eyes (cast/pochettino/caric) | Yellow hard hat, GIVE ME TIME sign | Rebuilding the crumbling Man Utd house |
 | **Zlatan Ibrahimović** | Retired | Ego bigger than the stadium | Long face, big nose, man-bun, beard | Talks about himself in 3rd person (parody) | Ronaldo duel 2013 |
 | **The Goalpost** | (object) | Laughs at every miss | White post with cartoon eyes | Winks, wags | Ronaldo's nemesis |
 | **The Goat** | (mascot) | Steals trophies and flags | White goat | Chewing | Everyone |

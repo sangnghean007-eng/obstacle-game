@@ -1,0 +1,162 @@
+<!doctype html><html><head><meta charset="utf-8"><title>The Rebuild</title><style>html,body{margin:0;background:#000}</style></head><body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../styles.js"></script><script src="../pro.js"></script><script src="../fx.js"></script><script src="../shots.js"></script><script src="../chibi.js"></script><script src="../chibi_cast.js"></script><script src="../rig2.js"></script><script src="../castimg.js"></script><script src="../cast/skins.js"></script>
+<script>
+// Ep36 "THE REBUILD" (facts: ep36/facts.md, checked 22 Nov 2026). Man Utd 18th, 1 win in 10; Carrick sacked 12 Nov (after 4-4 Villa); Pochettino: "You will see, give me time";
+// debut Liverpool 4-0 Man Utd at Anfield (Yoro red 8'; Szoboszlai 10', Wirtz 13', Ngumoha 66', Muñoz 82'); next: Sporting (A) Wed. Makeover-show parody; no club crests.
+const W = 1080, H = 1920, cv = document.getElementById('c'), ctx = cv.getContext('2d');
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v)), lerp = (a, b, k) => a + (b - a) * k, eOut = k => 1 - (1 - clamp(k)) ** 3, eIn = k => clamp(k) ** 2, eIO = k => { k = clamp(k); return k < .5 ? 4 * k * k * k : 1 - (-2 * k + 2) ** 3 / 2; };
+const eBack = k => { k = clamp(k); const c = 1.7; return 1 + (c + 1) * (k - 1) ** 3 + c * (k - 1) ** 2; };
+const FONT = '"Bangers","Impact",Inter,sans-serif', INK = '#1a1410', RED = '#c8102e';
+CASTIMG.preload(['pochettino']); window.CAST_READY = Promise.all([window.CAST_READY, document.fonts.load('40px Bangers')]);
+function card(s, x, y, size, o = {}) { ctx.save(); ctx.font = `400 ${size}px ${o.font || FONT}`; const tw = ctx.measureText(s).width, pw = tw + size * 0.9, ph = size * 1.35;
+  ctx.translate(x, y); ctx.rotate(o.rot || 0); const sc = o.pop != null ? eBack(o.pop) : 1; ctx.scale(sc, sc);
+  ctx.fillStyle = 'rgba(0,0,0,.25)'; ctx.beginPath(); ctx.roundRect(-pw / 2 + 8, -ph / 2 + 10, pw, ph, 18); ctx.fill();
+  ctx.fillStyle = o.bg || '#fffaf0'; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.beginPath(); ctx.roundRect(-pw / 2, -ph / 2, pw, ph, 18); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = o.col || INK; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(s, 0, 4); ctx.restore(); }
+function stamp(s, x, y, size, k, col = '#c0281c') { if (k <= 0) return; ctx.save(); ctx.translate(x, y); ctx.rotate(-0.07); const sc = 1.6 - 0.6 * eOut(k * 2.5); ctx.scale(sc, sc); ctx.globalAlpha = clamp(k * 4);
+  ctx.font = `400 ${size}px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineWidth = 16; ctx.strokeStyle = '#fffaf0'; ctx.strokeText(s, 0, 0); ctx.fillStyle = col; ctx.fillText(s, 0, 0);
+  const tw = ctx.measureText(s).width; ctx.lineWidth = 7; ctx.strokeStyle = col; ctx.strokeRect(-tw / 2 - 30, -size * 0.65, tw + 60, size * 1.3); ctx.restore(); }
+// ---------------- cast
+const kit = (shirt, trim, shorts, sock, num, boot = '#111') => ({ shirt, sleeve: shirt, cuff: trim, collar: trim, shorts, sock, sockShade: sock, sockBand: shirt, boot, num });
+const shadeOf = h => '#' + [1, 3, 5].map(i => Math.round(parseInt(h.slice(i, i + 2), 16) * 0.8).toString(16).padStart(2, '0')).join('');
+const POCH = Object.assign({}, CH.mate1, { kit: kit('#1b2340', '#1b2340', '#2a2a33', '#2a2a33', '#fff', '#111'), num: '', name: '' });
+const PC = Object.assign({}, POCH, { arm: POCH.arm * 0.82, armW: POCH.armW * 1.35, skin: CAST_SKIN.pochettino, shade: shadeOf(CAST_SKIN.pochettino) });
+const CARR = Object.assign({}, CH.mate2, { kit: kit('#5a5f6a', '#5a5f6a', '#2a2a33', '#2a2a33', '#fff', '#111'), num: '', name: '' });
+const CR = Object.assign({}, CARR, { arm: CARR.arm * 0.82, armW: CARR.armW * 1.35 });
+const lay = C => { const hipY = -C.leg * 0.95, shY = hipY - C.torsoH; return { hipY, shY, fs: [C.shoulderW * 0.8, shY + 30], bs: [-C.shoulderW * 0.72, shY + 30] }; };
+function W2(o, lx, ly) { const s = o.s, f = o.f || 1, r = o.lean || 0, X = lx * s * f, Y = ly * s; return [o.x + X * Math.cos(r) - Y * Math.sin(r), o.y + X * Math.sin(r) + Y * Math.cos(r)]; }
+function reach(C, o, side, tx, ty) { const L = lay(C), p = side === 'f' ? L.fs : L.bs, S = W2(o, p[0], p[1]), r = o.lean || 0, f = o.f || 1;
+  const dx = tx - S[0], dy = ty - S[1], lx = (dx * Math.cos(-r) - dy * Math.sin(-r)) / f, ly = dx * Math.sin(-r) + dy * Math.cos(-r); const a = Math.atan2(lx, ly) * 180 / Math.PI; return [a - 10, a + 10]; }
+// Pochettino: caricature head + yellow hard hat (askew after the demolition)
+function pochHead(expr, askew = 0, dent = 0) { const base = CASTIMG.head(ctx, 'pochettino', expr, { collar: '#1b2340' }); return (R) => { base(R); const top = R * 0.78 - R * 2.35;
+  ctx.save(); ctx.translate(R * 0.05 + askew * R * 0.5, top + R * 0.42); ctx.rotate(askew); ctx.fillStyle = '#ffcc00'; ctx.strokeStyle = INK; ctx.lineWidth = 7;
+  ctx.beginPath(); ctx.ellipse(0, 0, R * 0.9, R * 0.62 * (1 - dent * 0.3), 0, Math.PI, 0); ctx.closePath(); ctx.fill(); ctx.stroke(); ctx.beginPath(); ctx.roundRect(-R * 1.08, -R * 0.02, R * 2.16, R * 0.18, 8); ctx.fill(); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0, -R * 0.6 * (1 - dent * 0.3)); ctx.lineTo(0, 0); ctx.lineWidth = 5; ctx.stroke(); ctx.restore(); }; }
+function poch(t, o) { const k = o.life ?? 1, sw = Math.sin(t * 2.1); const pose = o.pose || { bArm: [-18 + sw * 6 * k, -8], fArm: [18 - sw * 6 * k, 8], bLeg: [-8, -4], fLeg: [8, 4] };
+  chibi.draw(ctx, PC, pose, 'neutral', o.x + Math.sin(t * 0.9) * 4 * k, o.y - (o.hop || 0), o.s, { f: o.f || 1, lean: (o.lean || 0) + Math.sin(t * 1.3) * 0.015 * k, sq: (o.sq || 0) + Math.sin(t * 3.1) * 0.012 * k,
+    headTilt: (o.tilt || 0) + Math.sin(t * 1.7) * 0.05 * k, hands: o.hands, headFn: pochHead(o.expr || 'smug', o.askew || 0, o.dent || 0) }); }
+// Carrick, back to camera, box on his shoulder
+function carrick(t, x, y, s) { const step = Math.sin(t * 9); const C = CR;
+  chibi.draw(ctx, C, { bArm: [-160, -170], fArm: [20 + step * 10, 10], bLeg: [-14 * step, -6], fLeg: [14 * step, 6] }, 'neutral', x, y - Math.abs(step) * 6, s, { f: 1, headFn: (R) => {
+    ctx.fillStyle = C.skin || '#e0b090'; ctx.strokeStyle = INK; ctx.lineWidth = 7; ctx.beginPath(); ctx.ellipse(0, -R * 0.2, R * 0.92, R * 1.0, 0, 0, 7); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#4a4038'; ctx.beginPath(); ctx.ellipse(0, -R * 0.35, R * 0.9, R * 0.8, 0, Math.PI * 0.95, Math.PI * 2.05); ctx.fill(); ctx.stroke();
+    for (const sx of [-1, 1]) { ctx.fillStyle = C.skin || '#e0b090'; ctx.beginPath(); ctx.ellipse(sx * R * 0.92, -R * 0.15, R * 0.16, R * 0.24, 0, 0, 7); ctx.fill(); ctx.stroke(); } } });
+  const L = lay(C), b = W2({ x, y: y - Math.abs(step) * 6, s }, -C.shoulderW * 0.6, L.shY - 120); ctx.save(); ctx.translate(b[0], b[1]); ctx.rotate(-0.12);
+  ctx.fillStyle = '#c49a5a'; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.fillRect(-90, -70, 180, 120); ctx.strokeRect(-90, -70, 180, 120); ctx.beginPath(); ctx.moveTo(-90, -40); ctx.lineTo(90, -40); ctx.stroke();
+  ctx.font = `400 30px ${FONT}`; ctx.fillStyle = INK; ctx.textAlign = 'center'; ctx.fillText('4-4 VILLA', 0, 10); ctx.restore(); }
+// ---------------- the house
+const T = { B: 3.4, C: 7.6, fix1: 8.0, fix2: 9.6, fix3: 11.2, D: 12.8, E: 15.6, red: 15.9, sw: [16.6, 17.6, 18.6, 19.6], F: 20.8, bonk: 24.4, END: 27.0 };
+const HX = 540, HB = 1320, HW = 820, HH = 860;   // house centre x, base y, width, height
+const GOALS = [['10′', 'SZOBOSZLAI'], ['13′', 'WIRTZ'], ['66′', 'NGUMOHA'], ['82′', 'MUÑOZ']];
+function sky(t) { const g = ctx.createLinearGradient(0, -400, 0, 1500); g.addColorStop(0, '#5a6b82'); g.addColorStop(1, '#c9b9a0'); ctx.fillStyle = g; ctx.fillRect(-800, -800, W + 1600, H + 1600);
+  for (let i = 0; i < 6; i++) { const x = ((i * 300 + t * 25) % 1800) - 400; ctx.fillStyle = 'rgba(80,90,105,.55)'; ctx.beginPath(); ctx.ellipse(x, 160 + (i % 3) * 90, 200, 50, 0, 0, 7); ctx.fill(); }
+  ctx.fillStyle = '#6b5a45'; ctx.fillRect(-800, HB, W + 1600, 1200); ctx.fillStyle = '#7d6a52'; for (let i = 0; i < 40; i++) ctx.fillRect(((i * 137) % 2000) - 500, HB + 30 + (i * 53) % 500, 60, 14); }
+function bricks(x, y, w, h, col) { ctx.fillStyle = col; ctx.fillRect(x, y, w, h); ctx.strokeStyle = 'rgba(40,10,10,.45)'; ctx.lineWidth = 3;
+  for (let r = 0, yy = y; yy < y + h; yy += 36, r++) { ctx.beginPath(); ctx.moveTo(x, yy); ctx.lineTo(x + w, yy); ctx.stroke(); for (let xx = x + (r % 2) * 40; xx < x + w; xx += 80) { ctx.beginPath(); ctx.moveTo(xx, yy); ctx.lineTo(xx, Math.min(yy + 36, y + h)); ctx.stroke(); } } }
+const HOLES = [[-260, -560, 170], [180, -470, 190], [-120, -250, 210], [210, -180, 230]];   // wrecking-ball holes (x, y from base, r)
+function house(t) { const x0 = HX - HW / 2, y0 = HB - HH;
+  // wall (with holes punched by the ball)
+  ctx.save(); ctx.beginPath(); ctx.rect(x0, y0, HW, HH); for (let i = 0; i < 4; i++) if (t > T.sw[i]) { const [hx, hy, r] = HOLES[i]; ctx.moveTo(HX + hx + r, HB + hy); ctx.arc(HX + hx, HB + hy, r * eOut((t - T.sw[i]) / 0.2), 0, 7, true); }
+  ctx.clip('evenodd'); bricks(x0, y0, HW, HH, '#a3392f');
+  // the right top wall chunk tips over after fix 3
+  ctx.restore(); ctx.strokeStyle = INK; ctx.lineWidth = 8; ctx.strokeRect(x0, y0, HW, HH);
+  // cracks
+  ctx.strokeStyle = '#2a0f0a'; ctx.lineWidth = 5; for (const c of [[x0 + 120, y0 + 60, 60, 160], [x0 + 600, y0 + 300, -50, 220], [x0 + 380, y0 + 520, 40, 140]]) { ctx.beginPath(); ctx.moveTo(c[0], c[1]); ctx.lineTo(c[0] + c[2] * 0.5, c[1] + c[3] * 0.4); ctx.lineTo(c[0] - c[2] * 0.2, c[1] + c[3] * 0.7); ctx.lineTo(c[0] + c[2], c[1] + c[3]); ctx.stroke(); }
+  // windows
+  for (const [wx, wy] of [[-260, -720], [180, -720], [-260, -430], [180, -430]]) { ctx.fillStyle = '#2b3442'; ctx.fillRect(HX + wx - 70, HB + wy, 140, 150); ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.strokeRect(HX + wx - 70, HB + wy, 140, 150);
+    ctx.beginPath(); ctx.moveTo(HX + wx, HB + wy); ctx.lineTo(HX + wx, HB + wy + 150); ctx.moveTo(HX + wx - 70, HB + wy + 75); ctx.lineTo(HX + wx + 70, HB + wy + 75); ctx.stroke(); }
+  ctx.save(); ctx.translate(HX + 180, HB - 645); ctx.rotate(0.5); ctx.fillStyle = '#9a8a70'; ctx.fillRect(-90, -14, 180, 28); ctx.strokeRect(-90, -14, 180, 28); ctx.restore();   // a plank across a window
+  // sign over the door
+  ctx.fillStyle = '#d9c49a'; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.fillRect(HX - 170, HB - 380, 340, 70); ctx.strokeRect(HX - 170, HB - 380, 340, 70); ctx.font = `400 52px ${FONT}`; ctx.fillStyle = RED; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('MAN UTD', HX, HB - 343);
+  // the door: falls flat at fix 1, propped back at fix 2
+  const dk = t < T.fix1 + 0.2 ? 0 : t < T.fix2 ? eIn((t - T.fix1 - 0.2) / 0.35) : t < T.fix2 + 0.3 ? 1 - eOut((t - T.fix2) / 0.3) : 0;
+  ctx.save(); ctx.translate(HX, HB); ctx.transform(1, 0, 0, Math.max(0.08, 1 - dk), 0, 0); ctx.fillStyle = '#5a3a1a'; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.fillRect(-90, -280 * (1 - dk * 0.0), 180, 280); ctx.strokeRect(-90, -280, 180, 280); ctx.fillStyle = '#c9a227'; ctx.beginPath(); ctx.arc(55, -140, 10, 0, 7); ctx.fill(); ctx.restore();
+  // '18th' sign hanging from one nail (swings)
+  const sw = Math.sin(t * 2.2) * 0.1 + 0.35; ctx.save(); ctx.translate(HX - 260, HB - 820); ctx.fillStyle = '#555'; ctx.beginPath(); ctx.arc(0, 0, 8, 0, 7); ctx.fill(); ctx.rotate(sw);
+  ctx.fillStyle = '#fffaf0'; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.fillRect(-20, 10, 200, 90); ctx.strokeRect(-20, 10, 200, 90); ctx.font = `400 64px ${FONT}`; ctx.fillStyle = RED; ctx.textAlign = 'center'; ctx.fillText('18th', 80, 57);
+  ctx.font = `400 22px ${FONT}`; ctx.fillStyle = INK; ctx.fillText('1 win in 10', 80, 90); ctx.restore();
+  // roof: slides off to the right at fix 2
+  const rk = t < T.fix2 + 0.3 ? 0 : eIn((t - T.fix2 - 0.3) / 0.9); ctx.save(); ctx.translate(rk * 700, rk * rk * 900); ctx.rotate(rk * 0.6);
+  ctx.fillStyle = '#3c3f47'; ctx.strokeStyle = INK; ctx.lineWidth = 8; ctx.beginPath(); ctx.moveTo(x0 - 60, y0 + 10); ctx.lineTo(HX, y0 - 260); ctx.lineTo(x0 + HW + 60, y0 + 10); ctx.closePath(); ctx.fill(); ctx.stroke();
+  ctx.strokeStyle = 'rgba(0,0,0,.4)'; ctx.lineWidth = 4; for (let i = 1; i < 6; i++) { ctx.beginPath(); ctx.moveTo(x0 - 60 + i * 50, y0 + 10 - i * 45); ctx.lineTo(x0 + HW + 60 - i * 50, y0 + 10 - i * 45); ctx.stroke(); } ctx.restore();
+  // top-right wall chunk tips over at fix 3
+  const wk = t < T.fix3 + 0.2 ? 0 : eIn((t - T.fix3 - 0.2) / 0.8); if (wk < 1) { ctx.save(); ctx.translate(x0 + HW, y0 + 220); ctx.rotate(wk * 1.4); ctx.translate(wk * 60, wk * wk * 700); bricks(-200, -220, 200, 220, '#a3392f'); ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.strokeRect(-200, -220, 200, 220); ctx.restore(); }
+  if (wk > 0) { ctx.fillStyle = '#5a6b82'; ctx.fillRect(x0 + HW - 200, y0, 200, 220); }
+  // scaffolding
+  ctx.strokeStyle = '#8a8f99'; ctx.lineWidth = 10; for (const sx of [x0 - 40, x0 + 70]) { ctx.beginPath(); ctx.moveTo(sx, HB); ctx.lineTo(sx, y0 + 60); ctx.stroke(); } for (let i = 0; i < 5; i++) { ctx.beginPath(); ctx.moveTo(x0 - 40, HB - i * 180); ctx.lineTo(x0 + 70, HB - i * 180); ctx.stroke(); }
+}
+function rubble(t, k) { for (let i = 0; i < 26; i++) { const x = HX - 420 + (i * 37) % 840, y = HB - 30 - ((i * 53) % 220) * k; ctx.fillStyle = i % 3 ? '#a3392f' : '#7a2a22'; ctx.strokeStyle = INK; ctx.lineWidth = 4;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(i); ctx.fillRect(-36, -20, 72, 40); ctx.strokeRect(-36, -20, 72, 40); ctx.restore(); } }
+function dust(t, t0, x, y) { const k = (t - t0) / 1.2; if (k <= 0 || k >= 1) return; for (let i = 0; i < 10; i++) { const a = i * 0.63; ctx.fillStyle = `rgba(210,195,170,${0.6 * (1 - k)})`; ctx.beginPath(); ctx.arc(x + Math.cos(a) * 160 * k, y + Math.sin(a) * 90 * k, 50 + 60 * k, 0, 7); ctx.fill(); } }
+function wreckingBall(t) { if (t < T.D + 1.0) return; const rise = eOut((t - T.D - 1.0) / 1.4);
+  // crane arm from the top right; the ball swings in four times
+  let ang = 0.9; for (let i = 0; i < 4; i++) { const s0 = T.sw[i] - 0.5, s1 = T.sw[i]; if (t > s0 && t <= s1) ang = lerp(0.9, 0.0, eIn((t - s0) / 0.5)); else if (t > s1 && t < s1 + 0.5) ang = lerp(0.0, 0.9, eOut((t - s1) / 0.5)); }
+  const px = 1300, py = -300 + (1 - rise) * -900, L = 1400; const target = i => [HX + HOLES[i][0], HB + HOLES[i][1]];
+  let idx = T.sw.findIndex(s => t < s + 0.5); if (idx < 0) idx = 3; const tg = target(idx), base = Math.atan2(tg[0] - px, tg[1] - py), a = base + ang;
+  const bx = px + Math.sin(a) * L * 0.95, by = py + Math.cos(a) * L * 0.95 * (rise);
+  ctx.strokeStyle = '#333'; ctx.lineWidth = 8; ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(bx, by); ctx.stroke();
+  ctx.fillStyle = RED; ctx.strokeStyle = INK; ctx.lineWidth = 8; ctx.beginPath(); ctx.arc(bx, by, 140, 0, 7); ctx.fill(); ctx.stroke(); ctx.fillStyle = 'rgba(255,255,255,.25)'; ctx.beginPath(); ctx.arc(bx - 45, by - 45, 40, 0, 7); ctx.fill();
+  ctx.font = `400 46px ${FONT}`; ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('LIVERPOOL', bx, by); }
+function scene(t, o = {}) { sky(t); house(t);
+  // red card brick: Yoro, 8'
+  if (t > T.red && t < T.F) { const k = clamp((t - T.red) / 0.6); ctx.save(); ctx.translate(HX - 330, lerp(HB - 900, HB - 40, eIn(k))); ctx.rotate(k * 2); ctx.fillStyle = '#d0141e'; ctx.strokeStyle = INK; ctx.lineWidth = 5; ctx.fillRect(-80, -40, 160, 80); ctx.strokeRect(-80, -40, 160, 80);
+    ctx.font = `400 30px ${FONT}`; ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('YORO 8′', 0, 2); ctx.restore(); }
+  for (let i = 0; i < 4; i++) dust(t, T.sw[i], HX + HOLES[i][0], HB + HOLES[i][1]);
+  wreckingBall(t);
+  if (t > T.sw[3] + 0.3) rubble(t, clamp((t - T.sw[3] - 0.3) / 0.6));
+  if (t < T.B + 0.6 && !o.noCarrick) carrick(t, lerp(HX, 230, clamp(t / 3.6)), lerp(HB + 40, HB + 330, clamp(t / 3.6)), lerp(0.85, 1.05, clamp(t / 3.6)));
+  if (o.poch) poch(t, o.poch);
+}
+// ---------------- shots
+const PX = 800, PY = HB + 420;
+function pochState(t) { // position/pose/expression through the episode
+  const o = { x: PX, y: PY, s: 1.25, f: -1, expr: 'smug' };
+  if (t < T.B + 1.2) { o.x = lerp(1250, PX, eOut((t - T.B) / 1.2)); o.lean = 0.05; }
+  if (t > 4.6 && t < 7.4) { o.expr = 'smug'; o.pose = { bArm: [-20, -10], fArm: [150, 120], bLeg: [-8, -4], fLeg: [8, 4] }; }   // finger up: 'give me time'
+  const ham = (tf) => t > tf - 0.4 && t < tf + 0.2; const tgt = { x: HX + 60, y: HB - 160 };
+  if (t >= T.C) { o.x = 760; o.y = HB + 300; o.s = 1.15; }
+  if (ham(T.fix1) || ham(T.fix3)) { o.pose = { bArm: [-20, -10], fArm: reach(PC, o, 'f', tgt.x, tgt.y + Math.sin(t * 30) * 30), bLeg: [-8, -4], fLeg: [8, 4] }; o.expr = 'deadpan'; }
+  if ((t > T.fix1 + 0.2 && t < T.fix2 - 0.2) || (t > T.fix2 + 0.3 && t < T.fix3 - 0.4) || (t > T.fix3 + 0.2 && t < T.D)) o.expr = 'shock';
+  if (t >= T.D) { o.expr = 'scared'; }
+  if (t >= T.E) { o.x = 860; o.y = HB + 330; o.s = 1.0; o.expr = 'scared'; o.sq = t > T.sw[0] - 0.3 ? 0.12 : 0; o.pose = { bArm: [-150, -170], fArm: [150, 170], bLeg: [-15, -6], fLeg: [15, 6] }; }   // ducks, hands on the hard hat
+  if (t >= T.F) { o.x = 560; o.y = HB + 360; o.s = 1.35; o.f = 1; o.expr = t < 22.6 ? 'cry' : t < T.bonk ? 'sad' : t < T.bonk + 0.8 ? 'shock' : 'deadpan'; o.askew = 0.35; o.dent = t > T.bonk ? 1 : 0; o.sq = 0;
+    o.pose = t > 23.0 ? { bArm: [-160, -160], fArm: [160, 160], bLeg: [-8, -4], fLeg: [8, 4] } : { bArm: [-14, -6], fArm: [14, 6], bLeg: [-8, -4], fLeg: [8, 4] }; o.life = 0.5; }
+  return o; }
+function signAbove(t, o) { if (t < 23.0) return; const up = eBack((t - 23.0) / 0.4), L = lay(PC), p = W2(o, 0, L.shY - PC.head.R * 2.6); ctx.save(); ctx.translate(p[0], p[1] - 70 * up); ctx.rotate(-0.05);
+  ctx.fillStyle = '#fffaf0'; ctx.strokeStyle = INK; ctx.lineWidth = 7; ctx.fillRect(-230, -70, 460, 120); ctx.strokeRect(-230, -70, 460, 120); ctx.font = `400 64px ${FONT}`; ctx.fillStyle = INK; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('GIVE ME TIME ⏳', 0, -6); ctx.restore(); }
+function toolbox(o) { const p = W2(o, 120, -40); ctx.save(); ctx.translate(p[0], p[1]); ctx.fillStyle = RED; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.fillRect(-70, -50, 140, 70); ctx.strokeRect(-70, -50, 140, 70);
+  ctx.font = `400 26px ${FONT}`; ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.fillText('TOOLS · 2029', 0, -8); ctx.restore(); }
+function frame(t) { const o = pochState(t);
+  const full = () => { scene(t, { poch: t > T.B - 0.1 ? o : null }); if (t >= T.F) { signAbove(t, o); if (t > T.bonk - 0.5 && t < T.bonk + 0.3) { const k = clamp((t - T.bonk + 0.5) / 0.5); const L = lay(PC), h = W2(o, 0, L.shY - PC.head.R * 2.0); ctx.fillStyle = '#a3392f'; ctx.strokeStyle = INK; ctx.lineWidth = 5; ctx.fillRect(h[0] - 40, lerp(-200, h[1] - 40, eIn(k)), 80, 44); ctx.strokeRect(h[0] - 40, lerp(-200, h[1] - 40, eIn(k)), 80, 44); } }
+    if (t > T.B && t < T.C) toolbox(o); };
+  if (t < T.B) SHOT.wide(ctx, full, { x: 540, y: 1080, zoom: lerp(0.86, 0.92, t / T.B) });
+  else if (t < T.C) SHOT.cu(ctx, full, { x: 760, y: HB + 60, zoom: 1.35 });
+  else if (t < T.D) SHOT.low(ctx, full, { x: 600, y: 1150, zoom: 0.9, lift: 140 });
+  else if (t < T.E) { SHOT.xcu(ctx, full, { x: 700, y: HB - 60, zoom: 1.9 }); clipboard(t); }
+  else if (t < T.F) SHOT.dutch(ctx, full, { x: 600, y: 1050, zoom: 0.78, rot: -0.12 });
+  else SHOT.cu(ctx, full, { x: 560, y: HB + 40, zoom: lerp(1.25, 1.4, (t - T.F) / 6) });
+}
+function clipboard(t) { const k = eOut((t - T.D) / 0.4); ctx.save(); ctx.translate(300, lerp(2200, 1350, k)); ctx.rotate(-0.08); ctx.fillStyle = '#8a5a2a'; ctx.strokeStyle = INK; ctx.lineWidth = 7; ctx.fillRect(-200, -260, 400, 520); ctx.strokeRect(-200, -260, 400, 520);
+  ctx.fillStyle = '#fffaf0'; ctx.fillRect(-170, -220, 340, 450); ctx.fillStyle = '#999'; ctx.fillRect(-60, -280, 120, 50); ctx.font = `400 44px ${FONT}`; ctx.fillStyle = INK; ctx.textAlign = 'center'; ctx.fillText('WORK ORDER', 0, -160);
+  ctx.font = `400 38px ${FONT}`; ctx.fillText('JOB #1:', 0, -70); ctx.font = `400 70px ${FONT}`; ctx.fillStyle = RED; ctx.fillText('ANFIELD', 0, 20); ctx.font = `400 34px ${FONT}`; ctx.fillStyle = INK; ctx.fillText('Sun 22 Nov', 0, 90); ctx.restore(); }
+function hud(t) {
+  if (t < T.B) { card('The Rebuild 🔨', 540, 300, 76, { pop: t / 0.3 }); if (t > 1.0) card('Carrick out (12 Nov)', 540, 420, 50, { pop: (t - 1.0) / 0.3, bg: '#e8f0ff' }); }
+  if (t > 4.8 && t < T.C) card('"You will see, give me time"', 540, 330, 52, { pop: (t - 4.8) / 0.3, bg: '#fff3b0' });
+  if (t > T.fix1 + 0.1 && t < T.fix2) stamp('FIX #1 💥', 540, 420, 84, t - T.fix1 - 0.1);
+  if (t > T.fix2 + 0.3 && t < T.fix3) stamp('FIX #2 💥💥', 540, 420, 84, t - T.fix2 - 0.3);
+  if (t > T.fix3 + 0.2 && t < T.D) stamp('FIX #3 💥💥💥', 540, 420, 80, t - T.fix3 - 0.2);
+  if (t > T.D + 0.4 && t < T.E) card('Debut: Anfield 😬', 540, 330, 64, { pop: (t - T.D - 0.4) / 0.3 });
+  if (t > T.red && t < T.sw[0]) stamp('🟥 8′ · 10 MEN', 540, 420, 72, t - T.red);
+  for (let i = 0; i < 4; i++) if (t > T.sw[i] && t < (T.sw[i + 1] || T.F)) { stamp(`${GOALS[i][0]} ${GOALS[i][1]}`, 540, 420, 64, t - T.sw[i], '#c8102e'); }
+  if (t > T.sw[0]) { const n = T.sw.filter(s => t > s).length; ctx.save(); ctx.fillStyle = '#111'; ctx.strokeStyle = '#fff'; ctx.lineWidth = 5; ctx.fillRect(340, 230, 400, 80); ctx.strokeRect(340, 230, 400, 80); ctx.font = `400 54px ${FONT}`; ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(`LIV ${n} – 0 MUN`, 540, 272); ctx.restore(); }
+  if (t > T.F + 0.3 && t < 23.0) card('Rebuild, day 1: 0-4', 540, 420, 60, { pop: (t - T.F - 0.3) / 0.3, bg: '#fff3b0' });
+  if (t > 25.0) card('Next: Sporting, Wed 👀', 540, 1480, 62, { pop: (t - 25.0) / 0.3 });
+  if (t > 25.4) { ctx.font = '600 26px Inter'; ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.textAlign = 'center'; ctx.fillText('Cartoon parody · real quote in " " · AI voice', 540, 1580); }
+}
+const SHAKE = [T.fix1 + 0.5, T.fix2 + 1.1, T.fix3 + 0.9, ...T.sw, T.bonk];
+function grade() { ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); const v = ctx.createRadialGradient(540, 960, 560, 540, 960, 1250); v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,0,.38)'); ctx.fillStyle = v; ctx.fillRect(0, 0, W, H); ctx.restore(); }
+window.DURATION = T.END; window.render = function (t) { window.T2T = t; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.clearRect(0, 0, W, H); ctx.fillStyle = '#5a6b82'; ctx.fillRect(0, 0, W, H);
+  const hs = SHAKE.reduce((m, a) => Math.max(m, t >= a && t < a + 0.3 ? 18 * (1 - (t - a) / 0.3) : 0), 0);
+  ctx.save(); ctx.translate(Math.sin(t * 91) * hs, Math.cos(t * 77) * hs); frame(t); ctx.restore(); grade(); ctx.setTransform(1, 0, 0, 1, 0, 0); if (!window.NO_HUD) hud(t); };
+if (!location.search.includes('render')) { const t0 = performance.now(); (window.CAST_READY || Promise.resolve()).then(() => (function loop() { render(((performance.now() - t0) / 1000) % DURATION); requestAnimationFrame(loop); })()); }
+</script></body></html>

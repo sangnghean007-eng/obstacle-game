@@ -1,0 +1,21 @@
+{
+ "logline": "A home-makeover show: Pochettino arrives at the crumbling 18th-placed house of Man United promising 'give me time' — every fix knocks something else down, and his first job, Anfield, is a wrecking ball: 4-0.",
+ "beats": [
+  {"shot": "wide", "idea": "the crumbling MAN UTD house, '18th' sign, Carrick walks out with a box (back to camera)", "text": "The Rebuild"},
+  {"shot": "cu", "idea": "Pochettino arrives in a hard hat: 'You will see. Give me time.'", "text": "Give me time"},
+  {"shot": "low", "idea": "fix 1: hammer a nail, the door falls; fix 2: the roof slides; fix 3: the wall tips", "text": "Fix ✅ … 💥"},
+  {"shot": "xcu", "idea": "work order: first job ANFIELD — a red wrecking ball rises", "text": "Debut: Anfield"},
+  {"shot": "dutch", "idea": "8': a brick 'YORO' falls (red); then four swings 10', 13', 66', 82' — LIV 4-0", "text": "4-0"},
+  {"shot": "cu", "idea": "Pochettino in the rubble, hard hat askew, still holding 'GIVE ME TIME'; next: Sporting, Wed", "text": "Next: Sporting"}
+ ],
+ "techniques": ["escalation", "rule-of-3", "visual pun", "deadpan", "callback"],
+ "gags": ["makeover-show-rebuild", "carrick-leaves-with-box", "each-fix-breaks-more", "wrecking-ball-goals"],
+ "twist": "the rebuild's first job is a demolition: Anfield 4-0",
+ "callback": "'Give me time' sign held up again in the rubble",
+ "ending": "cliffhanger",
+ "hidden_details": ["Carrick's box is labelled 4-4 Villa", "the 18th sign hangs from one nail", "the toolbox says 2029 (contract end)"],
+ "meme_frame": "Pochettino holding GIVE ME TIME as the wrecking ball hits",
+ "style": "chibi-caricature-makeover",
+ "prev_style": "chibi-caricature-feed",
+ "hook_frame0": "the crumbling MAN UTD house with a crooked '18th' sign and Pochettino in a hard hat"
+}

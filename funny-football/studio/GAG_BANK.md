@@ -47,6 +47,10 @@ Columns: id | gag | technique (rule-of-3, misdirection, escalation, cutaway, dea
 | U40 | Old record bar smashes the ceiling | Ep38 |
 | U41 | Liking his own post, +1 +1 | Ep38 |
 | U42 | Types a compliment, sees the rival's numbers, deletes it ⌫⌫⌫ | Ep38 v2 |
+| U43 | Makeover show: each fix knocks something else down | Ep36 |
+| U44 | Old boss leaves with a box ('4-4 VILLA') | Ep36 |
+| U45 | Rival = wrecking ball, one hole per goal | Ep36 |
+| U46 | 'Give me time' sign in the rubble, brick bonks the hard hat | Ep36 |
 
 ## FRESH (60 — pick ≥4 per episode, mix groups)
 ### A. Impact (physics, escalation)
