@@ -24,6 +24,7 @@ Every item below came from an owner complaint. They are applied by default, neve
 - [ ] Frame sheet every 0.5 s + full-res close-ups of every key moment checked; faces/text outside the app UI zones.
 ## Facts (Rule 0)
 - [ ] Every real fact on screen in facts.md with ≥2 sources from the last 30 days.
+- [ ] CODE LIKENESS ("Vẽ bằng code cho giống"): when no AI face is available, every real player gets a LIKE2 spec (cast/*_likeness.js) — hair type + colour first (bun, twists, sidepart, swept, fade+quiff…), beard/stubble, skin, face shape, eye colour; check against a free Commons photo when reachable; render a likeness sheet and fix before use; never hide the main cue (hair) under a hat in the key shots.
 ## Sound ("Âm thanh cứ lặp đi lặp lại qua các video" — 22 Nov 2026)
 - [ ] NO REUSED SOUND LIBRARY. Every episode gets its own palette in ep<N>/snd/, made for that story (ElevenLabs, free credits):
       music bed (node 'music', eleven_music_v2_5, ~900 cr, transcribe-check NOT needed: prompt "No vocals" + check by envelope),

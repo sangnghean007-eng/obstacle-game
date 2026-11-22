@@ -1,5 +1,5 @@
 <!doctype html><html><head><meta charset="utf-8"><title>The Rebuild</title><style>html,body{margin:0;background:#000}</style></head><body><canvas id="c" width="1080" height="1920"></canvas>
-<script src="../styles.js"></script><script src="../pro.js"></script><script src="../fx.js"></script><script src="../shots.js"></script><script src="../chibi.js"></script><script src="../chibi_cast.js"></script><script src="../rig2.js"></script><script src="../castimg.js"></script><script src="../cast/skins.js"></script>
+<script src="../styles.js"></script><script src="../pro.js"></script><script src="../fx.js"></script><script src="../shots.js"></script><script src="../chibi.js"></script><script src="../chibi_cast.js"></script><script src="../rig2.js"></script><script src="../castimg.js"></script><script src="../cast/skins.js"></script><script src="../cast/mu_lfc_likeness.js"></script>
 <script>
 // Ep36 "THE REBUILD" (facts: ep36/facts.md, checked 22 Nov 2026). Man Utd 18th, 1 win in 10; Carrick sacked 12 Nov (after 4-4 Villa); Pochettino: "You will see, give me time";
 // debut Liverpool 4-0 Man Utd (De Ligt error, Yoro red 8' for fouling Isak; Szoboszlai free kick 10', Wirtz 13' — a Premier League first for a debut;
@@ -135,6 +135,7 @@ const P_ = {
   ngumoha: MAKE('mate2', { hair: 'curls', hairCol: '#111', faceH: 1.0, jaw: 0.35 }, Object.assign({ skin: '#4a2e1c' }, LFC('73', 'NGUMOHA'))),
   munoz: MAKE('mate1', { hair: 'fade', hairCol: '#2a1a10', beard: 'trim', beardCol: '#2a1a10' }, LFC('19', 'MUÑOZ')),
   ref: MAKE('mate1', { hair: 'bald', hairCol: '#111', jaw: 0.7 }, { kit: kit('#1a1a1a', '#f2c230', '#1a1a1a', '#1a1a1a', '#f2c230'), num: '', name: 'REF' }) };
+for (const k in LIKE2) { const L2 = LIKE2[k], b = P_[k]; Object.assign(b, L2, { head: Object.assign({}, b.head, L2.head), kit: b.kit, num: b.num, name: b.name, numSize: b.numSize, arm: (L2.arm || b.arm), armW: b.armW }); }
 for (const k in P_) P_[k].skin = P_[k].skin || CH.mate1.skin;
 const POSE = { idle: { bArm: [-14, -6], fArm: [14, 6], bLeg: [-8, -4], fLeg: [8, 4] }, up: { bArm: [-160, -150], fArm: [160, 150], bLeg: [-10, -4], fLeg: [10, 4] }, wall: { bArm: [20, 70], fArm: [-20, -70], bLeg: [-6, -2], fLeg: [6, 2] },
   run: t => ({ bArm: [-50 * Math.sin(t * 20), -40], fArm: [50 * Math.sin(t * 20), 40], bLeg: [-40 * Math.sin(t * 20), -20], fLeg: [40 * Math.sin(t * 20), 20] }), shrug: { bArm: [-70, -120], fArm: [70, 120], bLeg: [-8, -4], fLeg: [8, 4] },
@@ -143,7 +144,7 @@ function hardHat(C, o, col = '#ffcc00', off = 0) { const L = lay(C), R = C.head.
   ctx.fillStyle = col; ctx.strokeStyle = INK; ctx.lineWidth = 5; ctx.beginPath(); ctx.ellipse(0, 0, r * 0.95, r * 0.62, 0, Math.PI, 0); ctx.closePath(); ctx.fill(); ctx.stroke(); ctx.beginPath(); ctx.roundRect(-r * 1.12, -r * 0.02, r * 2.24, r * 0.18, 6); ctx.fill(); ctx.stroke(); ctx.restore(); }
 function guy(k, o, t, ph = 0) { const C = P_[k], k2 = o.life ?? 1; const pose = typeof o.pose === 'function' ? o.pose(t) : (o.pose || { bArm: [-14 + Math.sin(t * 2 + ph) * 6 * k2, -6], fArm: [14 - Math.sin(t * 2 + ph) * 6 * k2, 6], bLeg: [-8, -4], fLeg: [8, 4] });
   const q = Object.assign({ s: 0.8, f: 1 }, o); chibi.draw(ctx, C, pose, o.expr || 'neutral', q.x + Math.sin(t * 0.9 + ph) * 3 * k2, q.y - (o.hop || 0), q.s, { f: q.f, lean: (o.lean || 0) + Math.sin(t * 1.3 + ph) * 0.015 * k2, sq: o.sq || 0, headTilt: (o.tilt || 0) + Math.sin(t * 1.7 + ph) * 0.05 * k2 });
-  if (o.hat) hardHat(C, q, o.hat === true ? '#ffcc00' : o.hat, o.hatOff || 0); if (o.mini) { const L = lay(C), h = W2(q, C.shoulderW * 0.8 + 40, L.shY + 120); hourglass(h[0], h[1], 0.35 * q.s / 0.8, t, false); } }
+  if (o.hat) hardHat(C, q, o.hat === true ? '#ffcc00' : o.hat, (o.hatOff || 0) + C.head.R * 0.42); if (o.mini) { const L = lay(C), h = W2(q, C.shoulderW * 0.8 + 40, L.shY + 120); hourglass(h[0], h[1], 0.35 * q.s / 0.8, t, false); } }
 function plank(x, y, len, ang) { ctx.save(); ctx.translate(x, y); ctx.rotate(ang); ctx.fillStyle = '#b8864b'; ctx.strokeStyle = INK; ctx.lineWidth = 5; ctx.fillRect(-len / 2, -16, len, 32); ctx.strokeRect(-len / 2, -16, len, 32); ctx.restore(); }
 function fans(t, laugh) { for (let i = 0; i < 14; i++) { const x = 900 + (i % 7) * 30 - (i > 6 ? 15 : 0), y = HB - 60 - (i > 6 ? 40 : 0), j = laugh ? Math.abs(Math.sin(t * 9 + i)) * 14 : Math.sin(t * 2 + i) * 3;
   ctx.fillStyle = '#c8102e'; ctx.strokeStyle = INK; ctx.lineWidth = 3; ctx.beginPath(); ctx.roundRect(x - 13, y - 30 - j, 26, 34, 8); ctx.fill(); ctx.stroke(); ctx.fillStyle = '#e0b090'; ctx.beginPath(); ctx.arc(x, y - 42 - j, 12, 0, 7); ctx.fill(); ctx.stroke();
@@ -157,7 +158,7 @@ function crane(t) { if (t < T.E) return; const rise = eOut((t - T.E) / 0.8); ctx
 const CREW = ['bruno', 'deligt', 'yoro', 'mainoo', 'mbeumo'];
 function crewAt(t) { // x, y, pose, expr, extras for each MU worker
   const base = { bruno: [200, 0], deligt: [360, 30], yoro: [520, 10], mainoo: [680, 30], mbeumo: [840, 0] }, out = {};
-  for (const k of CREW) { const [x, dy] = base[k]; const o = { x, y: HB + 300 + dy, s: 0.72, hat: true, expr: 'shock', life: 1 };
+  for (const k of CREW) { const [x, dy] = base[k]; const o = { x, y: HB + 300 + dy, s: 0.72, hat: t < T.D, expr: 'shock', life: 1 };
     if (t < T.B) o.expr = k === 'bruno' ? 'angry' : 'shock';
     if (t >= T.B && t < T.C) { o.expr = 'smile'; o.mini = t > 4.6; }
     if (t >= T.C && t < T.D) { o.expr = k === 'bruno' ? 'angry' : 'shock'; if (k === 'bruno') o.pose = POSE.point; }
