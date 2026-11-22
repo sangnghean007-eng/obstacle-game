@@ -3,7 +3,7 @@ Facts: ep36/facts.md. Real: Man Utd 18th, 1 win in 10; Carrick sacked 12 Nov; Po
 Invented: the makeover show, the house, bricks named after errors, the hourglass, the wrecking ball. AI caricature face + AI voice (not his voice).
 
 ## YouTube Shorts
-Title (77 chars):
+Title (85 chars):
 Pochettino: "Give Me Time"… Anfield Gave Him 13 Minutes 😭 #shorts #manutd #pochettino
 
 Description:
