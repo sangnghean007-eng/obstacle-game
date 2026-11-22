@@ -12,3 +12,4 @@
 Invented (cartoon): the 3 spins/3 bounces/3 rolls, the Force-O-Meter, the training-ground poster. Tapia is never shown face-on (no verified caricature yet).
 
 v2 (owner: 'khịa Messi mạnh hơn'): the halo/horns and the 'IF IT WAS RONALDO' scene are opinion/satire, shown on screen as '(imaginary — this never happened)'. No claim about any real Ronaldo card is made.
+v3: Tapia's 'On purpose! RED!' and Messi's 'Relax… I'm not Ronaldo' are invented parody lines (not real quotes).

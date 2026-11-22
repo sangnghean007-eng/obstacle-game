@@ -12,7 +12,8 @@ messi, lionel messi, ronaldo, messi vs ronaldo, double standard, inter miami, co
 Upload settings: Category Comedy · Not made for kids · Altered/synthetic content: Yes (AI-drawn caricature face) · Language English · Comments on.
 
 ## TikTok / Reels
-Messi hits Tapia in the face → yellow 🟨 "negligible" 🪶
+Tapia: "On purpose! RED!" 🟥
+Messi: "Relax… I'm not Ronaldo" 😏
 If it was Ronaldo → 🟥🟥🟥 + 10-game ban 😭 (imaginary)
 Agree or not? 👇
 Cartoon parody · invented scene
@@ -21,7 +22,8 @@ Cartoon parody · invented scene
 ## Instagram (Reels)
 Caption:
 "Nicest guy in football" 😇… throws the ball into a player’s face 😳
-Yellow card. If it was Ronaldo? 🟥 (imaginary)
+Tapia wants a red. Messi: "Relax… I'm not Ronaldo" 😏
+If it was Ronaldo? 🟥🟥🟥 (imaginary)
 Be honest 👇
 
 Cartoon parody · invented scene · not real footage
@@ -41,6 +43,8 @@ Alt text (media): Cartoon parody of Messi's throw-in hitting Gonzalo Tapia and b
 "The nicest guy in football" 😇
 
 Ball → straight into Tapia’s face
+Tapia: "He did it on purpose! Red card!"
+Messi, smiling: "Relax… I'm not Ronaldo" 😏
 Both players: yellow card 🟨🟨
 Columbus coach: "More than a yellow!"
 Referee: "The force was negligible" 🪶
