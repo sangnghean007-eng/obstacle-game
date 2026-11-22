@@ -1,7 +1,7 @@
 """Ep35 BLOCK BY BLOCK sound — this episode's own palette (ElevenLabs, free credits; no shared library, no channel sting):
 music  snd/music.wav  8-bit chiptune march (eleven_music_v2_5)
 sfx    snd/slam (block thunk + shimmer), post (PING + clatter down steps), scrape (block sliding out + creak), robot (beeps + error buzz), goat (mocking bleat)
-voices snd/vo_r986 "Nine eight six! SIUUU!" + vo_mine "No no no! MINE!" (premade voice 'Harry'), vo_bot "Own goal. Removing." (library voice 'Vector'). Invented lines."""
+voices snd/vo_r986 "Nine eight six!" + siu_b "Ssssiiuuuuu!" + vo_mine "No no no! MINE!" (premade voice 'Harry'), vo_bot "Own goal. Removing." (library voice 'Vector'). Invented lines."""
 import os, sys, numpy as np
 H = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, os.path.join(H, '..', 'sfx'))
 from music import SR
@@ -14,7 +14,8 @@ def snd(name, a=0, b=None):
     f = np.ones(x.shape[1]); k = min(220, len(f) // 2); f[:k] = np.linspace(0, 1, k); f[-k:] = np.linspace(1, 0, k); return x * f
 d.add('music', snd('music', 0, 27.0), 0, .5)
 d.add('fx', snd('slam'), 0.93, 1.0); m.whoosh(0.7, .25, .3)
-d.add('vox', snd('vo_r986'), 0.9, 2.3)                 # "Nine eight six!" on the slam, "SIUUU!" on the jump (2.3)
+d.add('vox', snd('vo_r986', 0, 1.25), 0.9, 2.3)        # "Nine eight six!" on the slam
+d.add('vox', snd('siu_b'), 2.2, 2.4)                    # owner 22 Nov: 'Siuuu cho rõ' — clear S + long 'uuu' (new take), on the jump
 m.spring(1.25, .25); m.thump(2.95, .5); m.whoosh(3.5, .9, .25)
 d.add('fx', snd('goat'), 5.6, .7, .3)                   # Ep8's goat at the summit
 m.whoosh(7.0, .3, .2); m.thump(7.25, .3); [m.thump(t, .2) for t in (8.05, 8.2, 8.35)]; m.whoosh(8.5, .3, .4)
@@ -29,5 +30,5 @@ m.whoosh(18.7, .5, .35); d.add('vox', snd('vo_mine'), 18.7, 2.3, .2); m.thump(19
 d.add('fx', snd('slam'), 20.48, 1.0); m.spring(20.6, .3); m.whoosh(20.7, .6, .35); d.add('fx', snd('robot', .9, 1.9), 20.7, .5, -.5)
 m.whoosh(22.2, .3, .2); d.add('fx', snd('slam', .2), 22.7, .45); d.add('fx', snd('goat'), 25.2, .45, .4)
 d.add('fx', (m.fx + m.music).T, 0, 1.0); d.add('vox', m.vox.T, 0, 1.0)
-d.duck('music', [0.93, 8.83, 20.48], .45, .15, .4); d.duck('music', [0.9, 2.3, 15.55, 16.6, 18.7, 19.7], .55, 1.0, .3); d.room('fx', 'room', .1)
+d.duck('music', [0.93, 8.83, 20.48], .45, .15, .4); d.duck('music', [0.9, 2.2, 3.2, 15.55, 16.6, 18.7, 19.7], .55, 1.0, .3); d.room('fx', 'room', .1)
 print(d.master(sys.argv[1], os.path.join(H, 'release', 'stems')))

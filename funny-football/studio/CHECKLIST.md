@@ -31,6 +31,7 @@ Every item below came from an owner complaint. They are applied by default, neve
       1–3 short character lines (creative_generate_speech eleven_v4, ~40 cr each, premade/library voices, never cloned; vary voices per episode).
 - [ ] fx2.py synth only for small fills (springs, whooshes); never as the main hit sounds. No shared channel sting at the end — end on the episode's own music button.
 - [ ] PACE ("diễn biến hơi nhanh", "đọc Ronaldo bị chậm"): each beat ≥1.5 s + a reaction pause; a voice line STARTS within 0.1 s of its caption popping and the caption stays until the line ends; lines never overlap (check the vox stem envelope). Shorts may run up to 30 s — use the time.
+- [ ] CATCHPHRASES ("Siuuu cho rõ"): a signature shout (SIUUU, etc.) is its own take, spelled phonetically long ("Ssssiiiiuuuuuu!"), never tacked onto another line; check the S onset (hi-freq ratio) + long vowel, show it on screen too, and hold the matching pose for the whole shout.
 - [ ] Voices 5+ dB over music in their windows (check release/stems RMS), music ducked under lines; place music breaks on the big hit.
 - [ ] Hits synced to frames, qa.py PASS, export release/<name>-sound.mp3. Out of credits → new fx2 parameters + a genre not used in 6 episodes, and say so.
 ## Posts ("hời hợt tag", "lung tung", "bỏ tiếng ả rập")
