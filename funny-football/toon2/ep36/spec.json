@@ -1,5 +1,5 @@
 {
- "logline": "A home-makeover show: Pochettino arrives at the crumbling 18th-placed house of Man United promising 'give me time' — every fix knocks something else down, and his first job, Anfield, is a wrecking ball: 4-0.",
+ "logline": "Makeover-show ensemble: Pochettino and his MU work crew try to rebuild the 18th-placed house; De Ligt's plank, Yoro's trip on Isak and two smashed windows wreck it in 13 minutes, Liverpool's crew finish it with a wrecking ball and take a selfie.",
  "beats": [
   {
    "shot": "wide",
@@ -8,22 +8,22 @@
   },
   {
    "shot": "cu",
-   "idea": "Pochettino flips an hourglass: 'You will see, give me time'",
+   "idea": "Pochettino flips an hourglass: 'You will see, give me time' — the whole crew flips mini hourglasses",
    "text": "give me time"
   },
   {
    "shot": "low",
-   "idea": "three fixes, three collapses",
+   "idea": "teamwork: Fernandes points, De Ligt spins a plank — bonk, bonk — scaffolding, roof and wall go",
    "text": "FIX #1-3"
   },
   {
    "shot": "cu",
-   "idea": "8'-13': De Ligt blunder brick, Yoro brick trips Isak (red), two balls smash the windows — Premier League first",
+   "idea": "8'-13': De Ligt drops the plank, Yoro dives on Isak, ref's red, Pochettino and Fernandes protest; MU crew makes a wall, Szoboszlai's free kick and Wirtz's backheel smash the windows; Liverpool fans laugh",
    "text": "PL first"
   },
   {
    "shot": "dutch",
-   "idea": "wrecking ball 66' and 82', shots 28-10",
+   "idea": "Ngumoha and Muñoz drive the wrecking-ball crane: 66', 82'; MU crew scatters; shots 28-10",
    "text": "4-0"
   },
   {
@@ -33,7 +33,7 @@
   },
   {
    "shot": "wide",
-   "idea": "pull back: 'the size of the mess' (Sky Sports); next: Sporting",
+   "idea": "pull back: Liverpool crew group selfie in front of the rubble; 'the size of the mess'; next: Sporting",
    "text": "Next: Sporting"
   }
  ],
@@ -51,7 +51,13 @@
   "wrecking-ball-goals",
   "leaking-goal-door-34",
   "hourglass-give-me-time",
-  "bricks-named-after-errors"
+  "bricks-named-after-errors",
+  "crew-mini-hourglasses",
+  "plank-bonk-chain",
+  "human-wall-free-kick",
+  "backheel-window",
+  "crane-cab-operators",
+  "rival-selfie-at-rubble"
  ],
  "twist": "the rebuild's first job is a demolition: Anfield 4-0",
  "callback": "the hourglass flipped at 'give me time' is smashed at the end",

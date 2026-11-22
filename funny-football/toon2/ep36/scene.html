@@ -58,12 +58,6 @@ function toolbox(o) { const p = W2(o, 120, -40); ctx.save(); ctx.translate(p[0],
   ctx.font = `400 26px ${FONT}`; ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.fillText('TOOLS · 2029', 0, -8); ctx.restore(); }
 function grade() { ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); const v = ctx.createRadialGradient(540, 960, 560, 540, 960, 1250); v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,0,.38)'); ctx.fillStyle = v; ctx.fillRect(0, 0, W, H); ctx.restore(); }
 
-// ---------------- v2 timeline
-const T = { B: 3.0, flip: 4.2, C: 6.6, fix: [7.0, 8.0, 9.0], D: 9.8, deligt: 10.2, yoro: 10.9, szob: 12.2, wirtz: 13.4, first: 14.1, E: 15.6, sw: [16.6, 18.2], F: 20.2, glass: 23.6, G: 25.6, END: 29.5 };
-const HX = 540, HB = 1320, HW = 820, HH = 860;
-const WIN = { L: [HX - 260, HB - 355], R: [HX + 180, HB - 355] };       // centres of the two lower windows (balls go through them)
-const HOLES = [[-150, -620, 200], [170, -230, 230]];                      // the two wrecking-ball holes
-const goalsAt = t => [T.szob, T.wirtz, T.sw[0], T.sw[1]].filter(s => t > s).length;
 function ballPile(t) { // the door is a goal frame that leaks footballs: 34 conceded
   const n = 30 + goalsAt(t); for (let i = 0; i < n; i++) { const a = i * 2.39, r = 26 * Math.sqrt(i), x = HX - 290 + Math.cos(a) * r * 1.6, y = HB + 60 + Math.sin(a) * r * 0.45 - (i % 5) * 4;
     ctx.save(); ctx.translate(x, y); ctx.fillStyle = '#fff'; ctx.strokeStyle = INK; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(0, 0, 22, 0, 7); ctx.fill(); ctx.stroke(); ctx.fillStyle = INK; ctx.beginPath(); ctx.arc(0, 0, 7, 0, 7); ctx.fill(); ctx.restore(); }
@@ -102,16 +96,9 @@ function house(t) { const x0 = HX - HW / 2, y0 = HB - HH;
   // fix 3 → scaffolding folds
   const sk = t < T.fix[2] + 0.15 ? 0 : eIn((t - T.fix[2] - 0.15) / 0.6); ctx.save(); ctx.translate(x0 + 15, HB); ctx.rotate(-sk * 1.3); ctx.strokeStyle = '#8a8f99'; ctx.lineWidth = 10;
   for (const sx of [-55, 55]) { ctx.beginPath(); ctx.moveTo(sx, 0); ctx.lineTo(sx, -800); ctx.stroke(); } for (let i = 0; i < 5; i++) { ctx.beginPath(); ctx.moveTo(-55, -i * 180); ctx.lineTo(55, -i * 180); ctx.stroke(); } ctx.restore();
-  // the De Ligt brick slips out, the Yoro brick slides out under Isak
-  const dk = clamp((t - T.deligt) / 0.6); if (t > T.deligt - 0.1) { ctx.save(); ctx.translate(HX + 300, lerp(HB - 520, HB - 40, eIn(dk))); ctx.rotate(dk * 2.5); brickLabel('DE LIGT', '#a3392f'); ctx.restore(); }
-  const yk = clamp((t - T.yoro + 0.4) / 0.35); if (t > T.yoro - 0.4) { ctx.save(); ctx.translate(HX - 260 + yk * 180, HB - 30); brickLabel('YORO', '#d0141e'); ctx.restore(); }
 }
 function brickLabel(s, col) { ctx.fillStyle = col; ctx.strokeStyle = INK; ctx.lineWidth = 5; ctx.fillRect(-85, -32, 170, 64); ctx.strokeRect(-85, -32, 170, 64); ctx.font = `400 34px ${FONT}`; ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(s, 0, 2); }
 // Isak (Liverpool striker): runs across, tripped by the Yoro brick (no face shown: side-on blur + name)
-const ISAK = Object.assign({}, CH.mate3, { kit: kit('#d00027', '#ffffff', '#d00027', '#d00027', '#fff'), num: '', name: 'ISAK', arm: CH.mate3.arm * 0.82, armW: CH.mate3.armW * 1.35 });
-function isak(t) { if (t < T.yoro - 0.9 || t > T.yoro + 1.4) return; const k = (t - T.yoro + 0.9) / 0.9, run = Math.sin(t * 22);
-  const x = k < 1 ? lerp(-150, HX - 40, k) : HX - 40 + (t - T.yoro) * 380, y = HB + 40 + (k >= 1 ? -Math.sin(clamp((t - T.yoro) / 0.6) * Math.PI) * 120 : 0), rot = k >= 1 ? clamp((t - T.yoro) / 0.5) * 1.7 : 0.1;
-  chibi.draw(ctx, ISAK, { bArm: [-60 * run, -30], fArm: [60 * run, 30], bLeg: [-40 * run, -20], fLeg: [40 * run, 20] }, 'neutral', x, y, 0.9, { f: 1, lean: rot, headFn: (R) => { ctx.strokeStyle = INK; ctx.lineWidth = 7; ctx.fillStyle = '#1a1410'; ctx.beginPath(); ctx.ellipse(0, -R * 0.2, R * 0.9, R, 0, 0, 7); ctx.fill(); ctx.stroke(); ctx.fillStyle = '#8a5a3a'; ctx.beginPath(); ctx.ellipse(R * 0.85, -R * 0.1, R * 0.16, R * 0.26, 0, 0, 7); ctx.fill(); ctx.stroke(); ctx.fillStyle = '#1a1410'; ctx.beginPath(); ctx.arc(-R * 0.6, -R * 0.9, R * 0.3, 0, 7); ctx.fill(); } }); }
 function flyBall(t, tHit, to, label) { if (t < tHit - 0.5 || t > tHit) return; const k = (t - tHit + 0.5) / 0.5, x = lerp(1400, to[0], k), y = lerp(HB - 900, to[1], k) - Math.sin(k * Math.PI) * 120;
   ctx.save(); ctx.translate(x, y); ctx.rotate(k * 9); ctx.fillStyle = '#fff'; ctx.strokeStyle = INK; ctx.lineWidth = 5; ctx.beginPath(); ctx.arc(0, 0, 48, 0, 7); ctx.fill(); ctx.stroke(); ctx.fillStyle = INK; ctx.beginPath(); ctx.arc(0, 0, 14, 0, 7); ctx.fill(); ctx.restore();
   ctx.font = `400 34px ${FONT}`; ctx.fillStyle = '#fff'; ctx.strokeStyle = INK; ctx.lineWidth = 8; ctx.textAlign = 'center'; ctx.strokeText(label, x, y - 70); ctx.fillText(label, x, y - 70); }
@@ -122,60 +109,145 @@ function wreckingBall(t) { if (t < T.E) return; const rise = eOut((t - T.E) / 0.
   ctx.fillStyle = 'rgba(255,255,255,.25)'; ctx.beginPath(); ctx.arc(bx - 45, by - 45, 40, 0, 7); ctx.fill(); ctx.font = `400 46px ${FONT}`; ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('LIVERPOOL', bx, by); }
 function statsBoard(t) { if (t < 19.0 || t > T.F) return; const k = eBack((t - 19.0) / 0.4); ctx.save(); ctx.translate(820, HB - 980); ctx.scale(k, k); ctx.fillStyle = '#111'; ctx.strokeStyle = '#fff'; ctx.lineWidth = 6; ctx.fillRect(-170, -80, 340, 160); ctx.strokeRect(-170, -80, 340, 160);
   ctx.font = `400 40px ${FONT}`; ctx.fillStyle = '#ffe066'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('SHOTS', 0, -40); ctx.font = `400 64px ${FONT}`; ctx.fillStyle = '#fff'; ctx.fillText('28 – 10', 0, 25); ctx.restore(); }
-const HG = [HX - 180, HB + 150];   // the hourglass on the doorstep
-function scene(t, o = {}) { sky(t); house(t); ballPile(t);
-  hourglass(HG[0], HG[1], 1, t, t > T.glass); if (t > T.glass - 0.5 && t < T.glass) { const k = (t - T.glass + 0.5) / 0.5; ctx.save(); ctx.translate(HG[0], lerp(-200, HG[1] - 60, eIn(k))); brickLabel('', '#a3392f'); ctx.restore(); }
-  isak(t); flyBall(t, T.szob, WIN.L, "10′ SZOBOSZLAI"); flyBall(t, T.wirtz, WIN.R, "13′ WIRTZ");
-  for (let i = 0; i < 2; i++) dust(t, T.sw[i], HX + HOLES[i][0], HB + HOLES[i][1]);
-  wreckingBall(t); statsBoard(t);
-  if (t > T.sw[1] + 0.3) rubble(t, clamp((t - T.sw[1] - 0.3) / 0.6));
-  if (t < T.B + 0.4) carrick(t, lerp(HX, 230, clamp(t / 3.2)), lerp(HB + 40, HB + 330, clamp(t / 3.2)), lerp(0.85, 1.05, clamp(t / 3.2)));
-  if (o.poch) poch(t, o.poch); }
-const PX = 800, PY = HB + 420;
-function pochState(t) { const o = { x: PX, y: PY, s: 1.25, f: -1, expr: 'smug' };
-  if (t < T.B + 1.0) { o.x = lerp(1250, PX, eOut((t - T.B) / 1.0)); o.lean = 0.05; }
-  if (t > T.flip - 0.2 && t < T.flip + 0.6) { o.pose = { bArm: [-20, -10], fArm: reach(PC, o, 'f', HG[0], HG[1] - 60), bLeg: [-8, -4], fLeg: [8, 4] }; }
-  if (t > 4.8 && t < T.C) o.pose = { bArm: [-20, -10], fArm: [150, 120], bLeg: [-8, -4], fLeg: [8, 4] };
-  if (t >= T.C) { o.x = 780; o.y = HB + 300; o.s = 1.1; }
-  for (const tf of T.fix) { if (t > tf - 0.3 && t < tf + 0.15) { o.pose = { bArm: [-20, -10], fArm: reach(PC, o, 'f', HX + 80, HB - 200 + Math.sin(t * 30) * 30), bLeg: [-8, -4], fLeg: [8, 4] }; o.expr = 'deadpan'; } else if (t > tf + 0.15 && t < tf + 0.85) o.expr = 'shock'; }
-  if (t >= T.D) { o.x = 930; o.y = HB + 330; o.s = 0.95; o.expr = t < T.yoro + 0.3 ? 'shock' : t < T.first ? 'angry' : 'scared'; }
-  if (t >= T.E) { o.expr = 'scared'; o.sq = 0.12; o.pose = { bArm: [-150, -170], fArm: [150, 170], bLeg: [-15, -6], fLeg: [15, 6] }; }
-  if (t >= T.F) { o.x = 600; o.y = HB + 360; o.s = 1.35; o.f = 1; o.sq = 0; o.askew = 0.35; o.life = 0.6;
-    o.expr = t < 21.8 ? 'angry' : t < T.glass ? 'sad' : t < T.glass + 0.9 ? 'shock' : 'cry';
-    o.pose = t < 21.8 ? { bArm: [-30, -60], fArm: [90, 60], bLeg: [-8, -4], fLeg: [8, 4] } : t < T.glass ? { bArm: [-160, -160], fArm: [160, 160], bLeg: [-8, -4], fLeg: [8, 4] } : { bArm: [-14, -6], fArm: [14, 6], bLeg: [-8, -4], fLeg: [8, 4] }; }
-  if (t >= T.G) { o.x = 640; o.y = HB + 200; o.s = 0.8; o.expr = 'deadpan'; }
-  return o; }
 function signAbove(t, o) { if (t < 21.8 || t > T.glass + 0.2) return; const up = eBack((t - 21.8) / 0.4), L = lay(PC), p = W2(o, 0, L.shY - PC.head.R * 2.6); ctx.save(); ctx.translate(p[0], p[1] - 70 * up); ctx.rotate(-0.05);
   ctx.fillStyle = '#fffaf0'; ctx.strokeStyle = INK; ctx.lineWidth = 7; ctx.fillRect(-230, -70, 460, 120); ctx.strokeRect(-230, -70, 460, 120); ctx.font = `400 64px ${FONT}`; ctx.fillStyle = INK; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('GIVE ME TIME ⏳', 0, -6); ctx.restore(); }
-function frame(t) { const o = pochState(t); const full = () => { scene(t, { poch: t > T.B - 0.1 ? o : null }); if (t >= T.F && t < T.G) signAbove(t, o); if (t > T.B && t < T.C) toolbox(o); };
-  if (t < T.B) SHOT.wide(ctx, full, { x: 540, y: 1100, zoom: lerp(0.84, 0.9, t / T.B) });
-  else if (t < T.C) SHOT.cu(ctx, full, { x: 700, y: HB + 60, zoom: 1.25 });
-  else if (t < T.D) SHOT.low(ctx, full, { x: 580, y: 1150, zoom: 0.88, lift: 140 });
-  else if (t < T.E) SHOT.cu(ctx, full, { x: 560, y: HB - 260, zoom: lerp(1.0, 1.08, (t - T.D) / 5.8) });
-  else if (t < T.F) SHOT.dutch(ctx, full, { x: 600, y: 1050, zoom: 0.78, rot: -0.12 });
-  else if (t < T.G) SHOT.xcu(ctx, full, { x: 560, y: HB - 80, zoom: lerp(1.45, 1.6, (t - T.F) / 5.4) });
-  else SHOT.wide(ctx, full, { x: 540, y: lerp(1150, 1000, eIO((t - T.G) / 2)), zoom: lerp(1.2, 0.62, eIO((t - T.G) / 2.2)) }); }
 function clock(t) { if (t < T.D || t > T.E) return; const m = t < T.yoro ? 8 : t < T.szob ? 8 + (t - T.yoro) / (T.szob - T.yoro) * 2 : t < T.wirtz ? 10 + (t - T.szob) / (T.wirtz - T.szob) * 3 : 13;
   ctx.save(); ctx.fillStyle = '#111'; ctx.strokeStyle = '#fff'; ctx.lineWidth = 5; ctx.fillRect(760, 380, 190, 80); ctx.strokeRect(760, 380, 190, 80); ctx.font = `400 56px ${FONT}`; ctx.fillStyle = '#ffe066'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(`${Math.floor(m)}′`, 855, 422); ctx.restore(); }
+// ---------------- v3 (owner: "đơn điệu, quá ít nhân vật và miếng hài"): an ensemble — MU work crew vs Liverpool demolition crew, ref, fans
+const T = { B: 3.0, flip: 3.6, C: 6.4, plank: 7.3, fix: [8.8, 9.1, 8.3], D: 9.6, deligt: 10.0, yoro: 10.8, red: 11.15, szob: 12.4, wirtz: 13.6, first: 14.2, E: 15.6, sw: [16.6, 18.2], F: 20.2, glass: 23.6, G: 25.6, END: 29.5 };
+const HX = 540, HB = 1320, HW = 820, HH = 860;
+const WIN = { L: [HX - 260, HB - 355], R: [HX + 180, HB - 355] };
+const HOLES = [[-150, -620, 200], [170, -230, 230]];
+const goalsAt = t => [T.szob, T.wirtz, T.sw[0], T.sw[1]].filter(s => t > s).length;
+// players: code-drawn chibis with each one's most recognisable traits (no AI faces left today) + names on the kit
+const MAKE = (base, head, extra) => { const b = CH[base]; return Object.assign({}, b, extra, { head: Object.assign({}, b.head, head), arm: b.arm * 0.82, armW: b.armW * 1.35 }); };
+const MUK = (num, name) => ({ kit: kit('#da291c', '#ffffff', '#ffffff', '#111111', '#ffffff'), num, name, numSize: 46 });
+const LFC = (num, name) => ({ kit: kit('#c8102e', '#ffffff', '#c8102e', '#c8102e', '#ffffff'), num, name, numSize: 46 });
+const P_ = {
+  bruno: MAKE('mate1', { hair: 'styled', hairCol: '#2a1a10', stubble: true, jaw: 0.6, browW: 0.15, browCol: '#2a1a10' }, Object.assign({ skin: '#d9a27c', shade: '#b9825e' }, MUK('8', 'FERNANDES'))),
+  deligt: MAKE('mate3', { hair: 'sidepart', hairCol: '#e2c27a', jaw: 0.85, faceW: 1.0, browCol: '#c9a75a', iris: '#4a6fa5' }, Object.assign({ shoulderW: 86 }, MUK('4', 'DE LIGT'))),
+  yoro: MAKE('mate2', { hair: 'short', hairCol: '#111', faceH: 1.08, jaw: 0.4 }, Object.assign({ skin: '#5c3a24' }, MUK('15', 'YORO'))),
+  mainoo: MAKE('mate4', { hair: 'buzz', hairCol: '#111', jaw: 0.45 }, MUK('37', 'MAINOO')),
+  mbeumo: MAKE('mate2', { hair: 'buzz', hairCol: '#111', beard: 'trim', beardCol: '#111' }, Object.assign({ skin: '#4a2e1c' }, MUK('19', 'MBEUMO'))),
+  isak: MAKE('mate4', { hair: 'long', hairCol: '#111', faceH: 1.12, jaw: 0.5 }, Object.assign({ skin: '#7a4a2e' }, LFC('9', 'ISAK'))),
+  szob: MAKE('mate3', { hair: 'swept', hairCol: '#e8cf8a', jaw: 0.9, browCol: '#c9a75a', iris: '#4a6fa5' }, LFC('8', 'SZOBOSZLAI')),
+  wirtz: MAKE('mate3', { hair: 'quiff', hairCol: '#7a4e2a', faceH: 1.05, jaw: 0.45, browCol: '#6a4422' }, Object.assign({ skin: '#f1c7a5' }, LFC('7', 'WIRTZ'))),
+  ngumoha: MAKE('mate2', { hair: 'curls', hairCol: '#111', faceH: 1.0, jaw: 0.35 }, Object.assign({ skin: '#4a2e1c' }, LFC('73', 'NGUMOHA'))),
+  munoz: MAKE('mate1', { hair: 'fade', hairCol: '#2a1a10', beard: 'trim', beardCol: '#2a1a10' }, LFC('19', 'MUÑOZ')),
+  ref: MAKE('mate1', { hair: 'bald', hairCol: '#111', jaw: 0.7 }, { kit: kit('#1a1a1a', '#f2c230', '#1a1a1a', '#1a1a1a', '#f2c230'), num: '', name: 'REF' }) };
+for (const k in P_) P_[k].skin = P_[k].skin || CH.mate1.skin;
+const POSE = { idle: { bArm: [-14, -6], fArm: [14, 6], bLeg: [-8, -4], fLeg: [8, 4] }, up: { bArm: [-160, -150], fArm: [160, 150], bLeg: [-10, -4], fLeg: [10, 4] }, wall: { bArm: [20, 70], fArm: [-20, -70], bLeg: [-6, -2], fLeg: [6, 2] },
+  run: t => ({ bArm: [-50 * Math.sin(t * 20), -40], fArm: [50 * Math.sin(t * 20), 40], bLeg: [-40 * Math.sin(t * 20), -20], fLeg: [40 * Math.sin(t * 20), 20] }), shrug: { bArm: [-70, -120], fArm: [70, 120], bLeg: [-8, -4], fLeg: [8, 4] },
+  point: { bArm: [-14, -6], fArm: [95, 85], bLeg: [-8, -4], fLeg: [8, 4] }, sit: { bArm: [-30, -60], fArm: [30, 60], bLeg: [-80, -10], fLeg: [80, 10] } };
+function hardHat(C, o, col = '#ffcc00', off = 0) { const L = lay(C), R = C.head.R, c = W2(o, 0, L.shY - R * 0.72 - R * 0.85 - off); ctx.save(); ctx.translate(c[0], c[1]); ctx.rotate((o.lean || 0) + (o.hatTilt || 0)); const r = R * o.s;
+  ctx.fillStyle = col; ctx.strokeStyle = INK; ctx.lineWidth = 5; ctx.beginPath(); ctx.ellipse(0, 0, r * 0.95, r * 0.62, 0, Math.PI, 0); ctx.closePath(); ctx.fill(); ctx.stroke(); ctx.beginPath(); ctx.roundRect(-r * 1.12, -r * 0.02, r * 2.24, r * 0.18, 6); ctx.fill(); ctx.stroke(); ctx.restore(); }
+function guy(k, o, t, ph = 0) { const C = P_[k], k2 = o.life ?? 1; const pose = typeof o.pose === 'function' ? o.pose(t) : (o.pose || { bArm: [-14 + Math.sin(t * 2 + ph) * 6 * k2, -6], fArm: [14 - Math.sin(t * 2 + ph) * 6 * k2, 6], bLeg: [-8, -4], fLeg: [8, 4] });
+  const q = Object.assign({ s: 0.8, f: 1 }, o); chibi.draw(ctx, C, pose, o.expr || 'neutral', q.x + Math.sin(t * 0.9 + ph) * 3 * k2, q.y - (o.hop || 0), q.s, { f: q.f, lean: (o.lean || 0) + Math.sin(t * 1.3 + ph) * 0.015 * k2, sq: o.sq || 0, headTilt: (o.tilt || 0) + Math.sin(t * 1.7 + ph) * 0.05 * k2 });
+  if (o.hat) hardHat(C, q, o.hat === true ? '#ffcc00' : o.hat, o.hatOff || 0); if (o.mini) { const L = lay(C), h = W2(q, C.shoulderW * 0.8 + 40, L.shY + 120); hourglass(h[0], h[1], 0.35 * q.s / 0.8, t, false); } }
+function plank(x, y, len, ang) { ctx.save(); ctx.translate(x, y); ctx.rotate(ang); ctx.fillStyle = '#b8864b'; ctx.strokeStyle = INK; ctx.lineWidth = 5; ctx.fillRect(-len / 2, -16, len, 32); ctx.strokeRect(-len / 2, -16, len, 32); ctx.restore(); }
+function fans(t, laugh) { for (let i = 0; i < 14; i++) { const x = 900 + (i % 7) * 30 - (i > 6 ? 15 : 0), y = HB - 60 - (i > 6 ? 40 : 0), j = laugh ? Math.abs(Math.sin(t * 9 + i)) * 14 : Math.sin(t * 2 + i) * 3;
+  ctx.fillStyle = '#c8102e'; ctx.strokeStyle = INK; ctx.lineWidth = 3; ctx.beginPath(); ctx.roundRect(x - 13, y - 30 - j, 26, 34, 8); ctx.fill(); ctx.stroke(); ctx.fillStyle = '#e0b090'; ctx.beginPath(); ctx.arc(x, y - 42 - j, 12, 0, 7); ctx.fill(); ctx.stroke();
+  if (laugh) { ctx.fillStyle = INK; ctx.beginPath(); ctx.arc(x, y - 40 - j, 5, 0, Math.PI); ctx.fill(); } } if (laugh) { ctx.font = `400 34px ${FONT}`; ctx.fillStyle = '#fff'; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.textAlign = 'center'; ctx.strokeText('HAHA', 990, HB - 190); ctx.fillText('HAHA', 990, HB - 190); } }
+function redCard(x, y, k) { ctx.save(); ctx.translate(x, y); ctx.rotate(-0.2); ctx.scale(eBack(k), eBack(k)); ctx.fillStyle = '#e01b24'; ctx.strokeStyle = INK; ctx.lineWidth = 5; ctx.fillRect(-28, -40, 56, 80); ctx.strokeRect(-28, -40, 56, 80); ctx.restore(); }
+function crane(t) { if (t < T.E) return; const rise = eOut((t - T.E) / 0.8); ctx.save(); ctx.translate(0, (1 - rise) * 600);
+  ctx.fillStyle = '#f2c230'; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.fillRect(900, HB - 260, 260, 200); ctx.strokeRect(900, HB - 260, 260, 200); ctx.fillStyle = '#9fd3ff'; ctx.fillRect(920, HB - 240, 220, 100); ctx.strokeRect(920, HB - 240, 220, 100);
+  ctx.save(); ctx.beginPath(); ctx.rect(920, HB - 240, 220, 100); ctx.clip(); guy('ngumoha', { x: 975, y: HB - 20, s: 0.55, expr: 'happy', pose: { bArm: [-14, -6], fArm: [100 + Math.sin(t * 8) * 20, 80], bLeg: [-8, -4], fLeg: [8, 4] } }, t, 1); guy('munoz', { x: 1085, y: HB - 20, s: 0.55, f: -1, expr: 'grin' }, t, 2); ctx.restore();
+  ctx.strokeStyle = '#5a5a5a'; ctx.lineWidth = 14; ctx.beginPath(); ctx.moveTo(1030, HB - 260); ctx.lineTo(1300, -300); ctx.stroke(); ctx.restore(); }
+// ---------------- the cast's staging through the episode
+const CREW = ['bruno', 'deligt', 'yoro', 'mainoo', 'mbeumo'];
+function crewAt(t) { // x, y, pose, expr, extras for each MU worker
+  const base = { bruno: [200, 0], deligt: [360, 30], yoro: [520, 10], mainoo: [680, 30], mbeumo: [840, 0] }, out = {};
+  for (const k of CREW) { const [x, dy] = base[k]; const o = { x, y: HB + 300 + dy, s: 0.72, hat: true, expr: 'shock', life: 1 };
+    if (t < T.B) o.expr = k === 'bruno' ? 'angry' : 'shock';
+    if (t >= T.B && t < T.C) { o.expr = 'smile'; o.mini = t > 4.6; }
+    if (t >= T.C && t < T.D) { o.expr = k === 'bruno' ? 'angry' : 'shock'; if (k === 'bruno') o.pose = POSE.point; }
+    out[k] = o; }
+  // the plank chain (C): De Ligt turns with a plank; it bonks Mainoo, then Mbeumo
+  if (t >= T.C && t < T.D) { const d = out.deligt; d.pose = { bArm: [-150, -170], fArm: [150, 170], bLeg: [-8, -4], fLeg: [8, 4] }; d.expr = 'strain';
+    for (const [k, tt] of [['mainoo', 7.55], ['mbeumo', 7.8]]) if (t > tt) { out[k].hatOff = Math.min(160, (t - tt) * 600); out[k].hatTilt = (t - tt) * 6; out[k].expr = 'dizzy'; out[k].lean = Math.sin(t * 9) * 0.1; } }
+  // the 5 minutes (D)
+  if (t >= T.D && t < T.E) { out.deligt.expr = t > T.deligt ? 'shock' : 'strain'; out.yoro.expr = 'strain';
+    if (t > T.yoro - 0.35 && t < T.yoro + 0.4) { const k = clamp((t - T.yoro + 0.35) / 0.35); out.yoro.x = lerp(520, HX - 60, k); out.yoro.lean = -1.3 * k; out.yoro.y = HB + 300 - Math.sin(k * Math.PI) * 60; }
+    if (t >= T.yoro + 0.4) { const k = clamp((t - T.red - 0.3) / 1.0); out.yoro.x = lerp(HX - 60, -140, k); out.yoro.expr = 'sad'; out.yoro.pose = POSE.run(t * 0.4); out.yoro.f = -1; out.yoro.lean = 0; }
+    if (t > T.red && t < T.szob - 0.5) { out.bruno.pose = POSE.up; out.bruno.expr = 'angry'; out.bruno.x = 560; }
+    if (t > T.szob - 0.8 && t < T.wirtz) for (const [i, k] of ['bruno', 'deligt', 'mainoo', 'mbeumo'].entries()) { out[k].x = 340 + i * 95; out[k].y = HB + 250; out[k].pose = POSE.wall; out[k].expr = 'shock'; out[k].hop = t > T.szob - 0.3 && t < T.szob ? 40 : 0; }
+    if (t >= T.wirtz) for (const k of ['bruno', 'deligt', 'mainoo', 'mbeumo']) out[k].expr = 'sad'; }
+  if (t >= T.E && t < T.F) CREW.forEach((k, i) => { const o = out[k]; o.expr = 'shock'; o.pose = POSE.run(t + i); o.x = 200 + i * 160 + Math.sin(t * 3 + i) * 120; if (k === 'yoro') o.x = -300; });
+  if (t >= T.F) CREW.forEach((k, i) => { const o = out[k]; o.expr = 'sad'; o.pose = POSE.sit; o.y = HB + 330; o.x = [160, 330, -400, 760, 930][i]; o.hatTilt = 0.4; if (k === 'bruno') { o.x = 860; o.pose = POSE.up; o.expr = 'angry'; } });
+  return out; }
+function pochAt(t) { const o = { x: 1300, y: HB + 380, s: 1.0, f: -1, expr: 'smug' };
+  if (t < T.B) { o.x = lerp(1300, 820, clamp((t - 1.0) / 1.8)); o.hatDrop = t > 2.0 ? clamp((t - 2.0) / 0.35) : 0; }
+  if (t >= T.B && t < T.C) { o.x = 760; o.s = 1.15; o.y = HB + 420; if (t > T.flip - 0.2 && t < T.flip + 0.6) o.pose = { bArm: [-20, -10], fArm: reach(PC, o, 'f', HG[0], HG[1] - 60), bLeg: [-8, -4], fLeg: [8, 4] }; if (t > 4.0) o.pose = { bArm: [-20, -10], fArm: [150, 120], bLeg: [-8, -4], fLeg: [8, 4] }; }
+  if (t >= T.C && t < T.D) { o.x = 980; o.s = 0.9; o.y = HB + 380; o.expr = t > 7.6 ? 'shock' : 'deadpan'; }
+  if (t >= T.D && t < T.E) { o.x = 980; o.s = 0.85; o.y = HB + 380; o.expr = t < T.red ? 'shock' : t < T.szob ? 'angry' : 'scared'; if (t > T.red + 0.1 && t < T.szob - 0.5) { o.pose = POSE.up; o.x = 720; } }
+  if (t >= T.E && t < T.F) { o.x = 980; o.s = 0.85; o.expr = 'scared'; o.sq = 0.12; o.pose = { bArm: [-150, -170], fArm: [150, 170], bLeg: [-15, -6], fLeg: [15, 6] }; }
+  if (t >= T.F && t < T.G) { o.x = 560; o.y = HB + 380; o.s = 1.25; o.f = 1; o.askew = 0.35; o.life = 0.6; o.expr = t < 21.4 ? 'angry' : t < T.glass ? 'sad' : t < T.glass + 0.9 ? 'shock' : 'cry';
+    o.pose = t < 21.4 ? POSE.shrug : t < T.glass ? POSE.up : POSE.idle; }
+  if (t >= T.G) { o.x = 520; o.y = HB + 330; o.s = 0.75; o.f = 1; o.expr = 'deadpan'; o.askew = 0.35; }
+  return o; }
+const HG = [HX - 180, HB + 150];
+function lfcAt(t) { const out = {};
+  if (t > T.D - 0.1 && t < T.E) { // Isak runs in with the ball; tripped by Yoro; Szoboszlai takes the free kick; Wirtz backheels
+    const k = clamp((t - T.D) / 1.2); out.isak = { x: lerp(1200, HX - 20, k), y: HB + 300, s: 0.78, f: -1, expr: 'happy', pose: POSE.run(t) };
+    if (t > T.yoro) { const f = clamp((t - T.yoro) / 0.5); out.isak.lean = -1.5 * f; out.isak.y = HB + 300 - Math.sin(f * Math.PI) * 90; out.isak.expr = 'shock'; out.isak.x = HX - 20 - f * 120; }
+    if (t > T.yoro + 0.9) { out.isak.lean = 0; out.isak.y = HB + 300; out.isak.expr = 'smug'; out.isak.pose = POSE.idle; out.isak.x = 260; }
+    out.szob = { x: lerp(1250, 870, clamp((t - 11.2) / 0.8)), y: HB + 330, s: 0.8, f: -1, expr: t > T.szob ? 'happy' : 'smug', pose: t > T.szob - 0.3 && t < T.szob ? { bArm: [-40, -20], fArm: [40, 20], bLeg: [-50, -20], fLeg: [30, 10] } : POSE.idle };
+    out.wirtz = { x: lerp(1300, 960, clamp((t - 12.6) / 0.7)), y: HB + 250, s: 0.76, f: t > T.wirtz - 0.3 ? 1 : -1, expr: t > T.wirtz ? 'smug' : 'neutral', pose: t > T.wirtz - 0.2 && t < T.wirtz + 0.6 ? POSE.shrug : POSE.idle } }
+  if (t >= T.G) { // group selfie in front of the rubble
+    [['isak', 300], ['szob', 430], ['wirtz', 560], ['ngumoha', 690], ['munoz', 820]].forEach(([k, x], i) => { out[k] = { x, y: HB + 470, s: 0.85, f: i < 2 ? 1 : -1, expr: i % 2 ? 'grin' : 'happy', pose: i === 2 ? { bArm: [-14, -6], fArm: [150, 140], bLeg: [-8, -4], fLeg: [8, 4] } : { bArm: [-14, -6], fArm: [100, 30], bLeg: [-8, -4], fLeg: [8, 4] }, hop: Math.abs(Math.sin(t * 4 + i)) * 10 }; }); }
+  return out; }
+function refAt(t) { if (t > T.red - 0.6 && t < T.szob - 0.3) { const k = clamp((t - T.red + 0.6) / 0.5); return { x: lerp(1250, 620, k), y: HB + 330, s: 0.78, f: -1, expr: 'bored', pose: t > T.red ? { bArm: [-14, -6], fArm: [175, 170], bLeg: [-8, -4], fLeg: [8, 4] } : POSE.run(t), card: t > T.red ? clamp((t - T.red) / 0.25) : 0 }; }
+  if (t >= T.F && t < T.G) return { x: 1000, y: HB + 340, s: 0.78, f: -1, expr: 'bored', pose: { bArm: [-14, -6], fArm: [175, 170], bLeg: [-8, -4], fLeg: [8, 4] }, card: 1 };
+  return null; }
+function selfiePhone(t, o) { const L = lay(P_.wirtz), p = W2(o, P_.wirtz.shoulderW * 0.8, L.shY - 200); ctx.save(); ctx.translate(p[0], p[1]); ctx.fillStyle = '#111'; ctx.strokeStyle = INK; ctx.lineWidth = 4; ctx.fillRect(-26, -46, 52, 92); ctx.strokeRect(-26, -46, 52, 92);
+  if (Math.floor(t * 3) % 3 === 0) { ctx.fillStyle = 'rgba(255,255,255,.85)'; ctx.beginPath(); ctx.arc(0, 0, 60, 0, 7); ctx.fill(); } ctx.restore(); }
+function scene(t) { sky(t); house(t); fans(t, t > T.szob && t < T.F); ballPile(t);
+  hourglass(HG[0], HG[1], 1, t, t > T.glass); if (t > T.glass - 0.5 && t < T.glass) { const k = (t - T.glass + 0.5) / 0.5; ctx.save(); ctx.translate(HG[0], lerp(-200, HG[1] - 60, eIn(k))); brickLabel('', '#a3392f'); ctx.restore(); }
+  if (t < T.B + 0.4) { const cx = lerp(HX, -200, clamp(t / 3.2)); carrick(t, cx, lerp(HB + 120, HB + 320, clamp(t / 3.2)), 0.85); }
+  if (t > T.sw[1] + 0.3) rubble(t, clamp((t - T.sw[1] - 0.3) / 0.6));
+  crane(t); wreckingBall(t); statsBoard(t);
+  const crew = crewAt(t), lfc = lfcAt(t), ref = refAt(t), po = pochAt(t), order = [];
+  for (const k in crew) order.push([crew[k].y, () => guy(k, crew[k], t, CREW.indexOf(k))]);
+  for (const k in lfc) order.push([lfc[k].y, () => { guy(k, lfc[k], t, 5 + Object.keys(lfc).indexOf(k)); if (k === 'wirtz' && t >= T.G) selfiePhone(t, lfc[k]); }]);
+  if (ref) order.push([ref.y, () => { guy('ref', ref, t, 9); if (ref.card) { const L = lay(P_.ref), h = W2(Object.assign({ s: ref.s }, ref), -P_.ref.shoulderW * 0.8, L.shY - 210); redCard(h[0], h[1], ref.card); } }]);
+  if (t > 1.0) order.push([po.y, () => { poch(t, po); if (po.hatDrop != null && po.hatDrop < 1 && t < T.B) { /* Carrick's hat lands on him */ } }]);
+  order.sort((a, b) => a[0] - b[0]).forEach(f => f[1]());
+  // the plank (C) and the dropped plank (D)
+  if (t >= T.C && t < T.D) { const d = crew.deligt, L = lay(P_.deligt), h = W2(Object.assign({}, d), 0, L.shY - 40), ang = t < T.plank ? 0 : (t - T.plank) * 5; plank(h[0], h[1] - 140, 520, ang); }
+  if (t >= T.D && t < T.deligt + 1.2) { const d = crew.deligt, L = lay(P_.deligt), h = W2(Object.assign({}, d), 0, L.shY - 40), k = clamp((t - T.deligt) / 0.4); plank(h[0] + k * 60, lerp(h[1] - 140, HB + 310, eIn(k)), 520, k * 0.3); }
+  flyBall(t, T.szob, WIN.L, "10′ SZOBOSZLAI"); flyBall(t, T.wirtz, WIN.R, "13′ WIRTZ");
+  for (let i = 0; i < 2; i++) dust(t, T.sw[i], HX + HOLES[i][0], HB + HOLES[i][1]);
+  if (t >= T.F && t < T.G) signAbove(t, po); }
+function frame(t) { const full = () => scene(t);
+  if (t < T.B) SHOT.wide(ctx, full, { x: 560, y: 1150, zoom: lerp(0.84, 0.9, t / T.B) });
+  else if (t < T.C) SHOT.cu(ctx, full, { x: 640, y: HB + 120, zoom: 1.2 });
+  else if (t < T.D) SHOT.low(ctx, full, { x: 560, y: 1200, zoom: 0.92, lift: 140 });
+  else if (t < T.E) SHOT.cu(ctx, full, { x: 600, y: HB + 20, zoom: 1.12 });
+  else if (t < T.F) SHOT.dutch(ctx, full, { x: 600, y: 1080, zoom: 0.78, rot: -0.12 });
+  else if (t < T.G) SHOT.xcu(ctx, full, { x: 600, y: HB + 40, zoom: lerp(1.2, 1.3, (t - T.F) / 5.4) });
+  else SHOT.wide(ctx, full, { x: 560, y: lerp(1250, 1100, eIO((t - T.G) / 2)), zoom: lerp(1.1, 0.72, eIO((t - T.G) / 2.2)) }); }
 function hud(t) {
-  if (t < T.B) { card('The Rebuild 🔨', 540, 300, 76, { pop: t / 0.3 }); if (t > 1.0) card('Carrick out (12 Nov) 📦', 540, 420, 50, { pop: (t - 1.0) / 0.3, bg: '#e8f0ff' }); }
-  if (t > 4.8 && t < T.C) card('"You will see, give me time"', 540, 330, 52, { pop: (t - 4.8) / 0.3, bg: '#fff3b0' });
-  T.fix.forEach((f, i) => { if (t > f + 0.15 && t < (T.fix[i + 1] || T.D)) stamp(`FIX #${i + 1} ` + '💥'.repeat(i + 1), 540, 330, 84, t - f - 0.15); });
+  if (t < T.B) { card('The Rebuild 🔨', 540, 300, 76, { pop: t / 0.3 }); if (t > 0.8) card('Carrick out 📦', 540, 420, 52, { pop: (t - 0.8) / 0.3, bg: '#e8f0ff' }); }
+  if (t > 4.0 && t < T.C) card('"You will see, give me time"', 540, 330, 52, { pop: (t - 4.0) / 0.3, bg: '#fff3b0' });
+  if (t > 4.7 && t < T.C) stamp('⏳⏳⏳⏳⏳', 540, 450, 70, t - 4.7, '#7a4b00');
+  if (t > 6.6 && t < T.plank) card('Teamwork… 🔨', 540, 330, 60, { pop: (t - 6.6) / 0.3 });
+  if (t > 7.6 && t < T.D) stamp('BONK · BONK · 💥', 540, 360, 74, t - 7.6);
   if (t > T.D && t < T.E) { clock(t); card('Debut: Anfield 😬', 420, 300, 56, { pop: (t - T.D) / 0.3 }); }
-  if (t > T.deligt + 0.2 && t < T.yoro + 0.2) stamp('BLUNDER', 540, 520, 76, t - T.deligt - 0.2, '#7a4b00');
-  if (t > T.yoro + 0.2 && t < T.szob) stamp('🟥 YORO · 10 MEN', 540, 520, 70, t - T.yoro - 0.2);
-  if (t > T.first && t < T.E) { stamp('PREMIER LEAGUE FIRST 🤯', 540, 520, 62, t - T.first); ctx.font = '600 30px Inter'; ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.fillText('red card + 2 goals in a debut 1st half', 540, 600); }
-  if (t > T.wirtz + 0.9 && t < T.E) card('13 minutes in ⏳', 540, 1500, 58, { pop: (t - T.wirtz - 0.9) / 0.3, bg: '#fff3b0' });
-  const n = goalsAt(t); if (n) { ctx.save(); ctx.fillStyle = '#111'; ctx.strokeStyle = '#fff'; ctx.lineWidth = 5; ctx.fillRect(340, 220, 400, 70); ctx.strokeRect(340, 220, 400, 70); ctx.font = `400 48px ${FONT}`; ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(`LIV ${n} – 0 MUN`, 540, 257); ctx.restore(); }
-  if (t > T.sw[0] && t < T.F) stamp(t < T.sw[1] ? "66′ NGUMOHA" : "82′ MUÑOZ", 540, 380, 64, t - (t < T.sw[1] ? T.sw[0] : T.sw[1]), RED);
-  if (t > T.F + 0.3 && t < 21.8) card('Pochettino: red card was unfair 😤', 540, 380, 48, { pop: (t - T.F - 0.3) / 0.3, bg: '#e8f0ff' });
-  if (t > T.glass + 0.2 && t < T.G) stamp('⏳💥', 540, 380, 110, t - T.glass - 0.2);
-  if (t > T.G + 0.6 && t < T.G + 2.4) card('"the size of the mess" — Sky Sports', 540, 380, 46, { pop: (t - T.G - 0.6) / 0.3, bg: '#fff3b0' });
-  if (t > T.G + 2.4) card('Next: Sporting, Wed 👀', 540, 380, 62, { pop: (t - T.G - 2.4) / 0.3 });
-  if (t > T.G + 1.0) { ctx.font = '600 26px Inter'; ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.textAlign = 'center'; ctx.fillText('Cartoon parody · real quotes in " " · AI voice', 540, 1580); } }
-const SHAKE = [...T.fix.map(f => f + 0.6), T.yoro + 0.1, T.szob, T.wirtz, ...T.sw, T.glass];
+  if (t > T.deligt + 0.1 && t < T.yoro) stamp('BLUNDER', 540, 450, 80, t - T.deligt - 0.1, '#7a4b00');
+  if (t > T.red && t < T.szob - 0.6) stamp('🟥 YORO · 8′', 540, 450, 80, t - T.red);
+  if (t > T.red + 0.3 && t < T.szob - 0.6) card('Unfair! 😤', 300, 600, 56, { pop: (t - T.red - 0.3) / 0.3, bg: '#e8f0ff' });
+  if (t > T.first && t < T.E) { stamp('PREMIER LEAGUE FIRST 🤯', 540, 450, 60, t - T.first); ctx.font = '600 30px Inter'; ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.fillText('red + 2 goals in a debut 1st half', 540, 525); }
+  const n = goalsAt(t); if (n) { ctx.save(); ctx.fillStyle = '#111'; ctx.strokeStyle = '#fff'; ctx.lineWidth = 5; ctx.fillRect(340, 215, 400, 70); ctx.strokeRect(340, 215, 400, 70); ctx.font = `400 48px ${FONT}`; ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(`LIV ${n} – 0 MUN`, 540, 252); ctx.restore(); }
+  if (t > T.sw[0] && t < T.F) stamp(t < T.sw[1] ? "66′ NGUMOHA" : "82′ MUÑOZ", 540, 360, 64, t - (t < T.sw[1] ? T.sw[0] : T.sw[1]), RED);
+  if (t > T.F + 0.2 && t < 21.4) card('Pochettino: "unfair"', 540, 360, 52, { pop: (t - T.F - 0.2) / 0.3, bg: '#e8f0ff' });
+  if (t > T.glass + 0.2 && t < T.G) stamp('⏳💥', 540, 360, 110, t - T.glass - 0.2);
+  if (t > T.G + 0.4 && t < T.G + 2.2) card('"the size of the mess"', 540, 360, 54, { pop: (t - T.G - 0.4) / 0.3, bg: '#fff3b0' });
+  if (t > T.G + 2.2) card('Next: Sporting, Wed 👀', 540, 360, 62, { pop: (t - T.G - 2.2) / 0.3 });
+  if (t > T.G + 1.0) { ctx.font = '600 24px Inter'; ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.textAlign = 'center'; ctx.fillText('Cartoon parody · real quotes in " " · AI voice · Sky Sports quote', 540, 1590); } }
+const SHAKE = [7.55, 7.8, T.fix[2] + 0.6, T.fix[0] + 0.6, T.deligt + 0.4, T.yoro + 0.2, T.szob, T.wirtz, ...T.sw, T.glass];
 window.DURATION = T.END; window.render = function (t) { window.T2T = t; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.clearRect(0, 0, W, H); ctx.fillStyle = '#5a6b82'; ctx.fillRect(0, 0, W, H);
-  const hs = SHAKE.reduce((m, a) => Math.max(m, t >= a && t < a + 0.3 ? 18 * (1 - (t - a) / 0.3) : 0), 0);
+  const hs = SHAKE.reduce((m, a) => Math.max(m, t >= a && t < a + 0.3 ? 16 * (1 - (t - a) / 0.3) : 0), 0);
   ctx.save(); ctx.translate(Math.sin(t * 91) * hs, Math.cos(t * 77) * hs); frame(t); ctx.restore(); grade(); ctx.setTransform(1, 0, 0, 1, 0, 0); if (!window.NO_HUD) hud(t); };
 if (!location.search.includes('render')) { const t0 = performance.now(); (window.CAST_READY || Promise.resolve()).then(() => (function loop() { render(((performance.now() - t0) / 1000) % DURATION); requestAnimationFrame(loop); })()); }
+
 </script></body></html>

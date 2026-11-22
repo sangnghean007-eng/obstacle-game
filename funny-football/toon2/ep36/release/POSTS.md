@@ -1,6 +1,6 @@
-# Ep36 "The Rebuild" v2 — posts (the-rebuild-9x16.mp4, 30 s)
+# Ep36 "The Rebuild" v3 (ensemble) — posts (the-rebuild-9x16.mp4, 30 s)
 Facts: ep36/facts.md. Real: Man Utd 18th, 1 win in 10; Carrick sacked 12 Nov; Pochettino: "You will see, give me time"; debut Liverpool 4-0 (22 Nov): De Ligt error → Yoro red 8' (foul on Isak) → Szoboszlai free kick 10' → Wirtz 13' — a Premier League first for a debut; Ngumoha 66', Muñoz 82'; shots 28-10; Utd 34 conceded in all comps (most in Europe); Pochettino called the red unfair; Sky Sports: "the size of the mess".
-Invented: the makeover show, the house, bricks named after errors, the hourglass, the wrecking ball. AI caricature face + AI voice (not his voice).
+Invented: the makeover show, the house, the work crews, the plank, the hourglasses, the wrecking ball, the selfie. Players are code-drawn cartoons (names on kits). AI caricature face + AI voice (not his voice).
 
 ## YouTube Shorts
 Title (85 chars):
@@ -45,7 +45,7 @@ Cartoon parody · AI face & voice
 .
 #manutd #pochettino #liverpool #premierleague #footballcartoon
 Cover: cover-9x16.jpg
-Alt text: Cartoon of Pochettino in a hard hat at a crumbling house labelled MAN UTD whose door is a leaking goal; bricks labelled DE LIGT and YORO fall, footballs smash the windows, a Liverpool wrecking ball hits, and a brick smashes his hourglass.
+Alt text: Cartoon of Pochettino and a Man United work crew in hard hats at a crumbling house whose door is a leaking goal; De Ligt's plank bonks his teammates, Yoro trips Isak and gets a red card, Szoboszlai and Wirtz smash the windows, Liverpool players wreck the house with a wrecking ball and take a selfie.
 Settings: Share to Feed on · Audio name "Soccer 365 – The Rebuild" · AI info label ON.
 
 ## X (Twitter) — upload the mp4 natively

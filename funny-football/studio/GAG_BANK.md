@@ -53,6 +53,10 @@ Columns: id | gag | technique (rule-of-3, misdirection, escalation, cutaway, dea
 | U46 | 'Give me time' sign in the rubble; a brick smashes the hourglass | Ep36 v2 |
 | U47 | Door = leaking goal, ball pile counts goals conceded | Ep36 v2 |
 | U48 | Bricks named after the errors (DE LIGT, YORO) fall out | Ep36 v2 |
+| U49 | Whole crew flips mini hourglasses in sync | Ep36 v3 |
+| U50 | Spinning plank bonks the crew's hard hats off | Ep36 v3 |
+| U51 | Human wall shields itself, free kick curls into the window | Ep36 v3 |
+| U52 | Rivals take a group selfie at the rubble | Ep36 v3 |
 
 ## FRESH (60 — pick ≥4 per episode, mix groups)
 ### A. Impact (physics, escalation)
