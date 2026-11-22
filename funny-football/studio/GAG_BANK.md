@@ -50,7 +50,9 @@ Columns: id | gag | technique (rule-of-3, misdirection, escalation, cutaway, dea
 | U43 | Makeover show: each fix knocks something else down | Ep36 |
 | U44 | Old boss leaves with a box ('4-4 VILLA') | Ep36 |
 | U45 | Rival = wrecking ball, one hole per goal | Ep36 |
-| U46 | 'Give me time' sign in the rubble, brick bonks the hard hat | Ep36 |
+| U46 | 'Give me time' sign in the rubble; a brick smashes the hourglass | Ep36 v2 |
+| U47 | Door = leaking goal, ball pile counts goals conceded | Ep36 v2 |
+| U48 | Bricks named after the errors (DE LIGT, YORO) fall out | Ep36 v2 |
 
 ## FRESH (60 — pick ≥4 per episode, mix groups)
 ### A. Impact (physics, escalation)
