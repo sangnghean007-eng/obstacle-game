@@ -40,14 +40,14 @@ The farewell LIKE race ❤️
 🇦🇷 Messi: ~20M · 🇵🇹 Ronaldo: ~41M
 💬 Ronaldo commented on Messi's post. Messi? Nothing 🤐
 In our cartoon: types… sees the likes… deletes ⌫
-Then: "my World Cup post has 70M+" 🏆😏
+Then he scrolls to his World Cup post: 70M+ 🏆😏
 Who wins? 👇
 
 Cartoon parody · like counts approx. · AI voice
 .
 #ronaldo #messi #goat #footballcartoon #instagram
 Cover: cover-9x16.jpg
-Alt text: Cartoon of Messi and Ronaldo beside giant phones showing their farewell posts; like-count bars race upward and Messi's World Cup post bar smashes through the ceiling.
+Alt text: Cartoon of Messi and Ronaldo beside giant phones showing their farewell posts. Ronaldo's like bar passes Messi's; Messi starts typing a comment on Ronaldo's post, sees 41M likes and deletes it, then his World Cup post bar smashes through the ceiling.
 Settings: Share to Feed on · Audio name "Soccer 365 – The Like Race" · AI info label ON.
 
 ## X (Twitter) — upload the mp4 natively
@@ -57,7 +57,7 @@ Ronaldo's post: ~41M vs Messi's ~20M
 Messi: *opens World Cup post, 70M+* 🏆😏
 Who won? 👇
 (cartoon parody) #Messi #Ronaldo
-Alt text (media): Cartoon like-count race between Messi's and Ronaldo's farewell posts; Messi's World Cup post bar breaks the ceiling.
+Alt text (media): Cartoon like-count race between Messi's and Ronaldo's farewell posts; Messi types then deletes a comment, then his World Cup post bar breaks the ceiling.
 
 ## Facebook (Reels)
 Messi vs Ronaldo: the farewell LIKE race ❤️
