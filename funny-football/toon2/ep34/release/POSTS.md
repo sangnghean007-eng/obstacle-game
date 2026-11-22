@@ -1,56 +1,74 @@
-# Ep34 "The Throw-In" v2 — posts (the-throw-in-9x16.mp4, 28 s) — angle: the 'nice guy' halo + the Ronaldo double standard (clearly labelled imaginary)
-Sound v3 (22 Nov): own music, SFX and voice lines made for this episode — no shared sound library, no channel sting.
-Facts: ep34/facts.md. Cartoon parody — the flop, the meter and the practice poster are invented.
+# Ep34 "The Throw-In" v6 — posts (the-throw-in-9x16.mp4, 28 s) — angle: the 'nice guy' halo + the Ronaldo double standard (imaginary part labelled)
+Sound v3: own music, SFX and voice lines made for this episode. Facts: ep34/facts.md.
+Real: Messi's throw-in hit Gonzalo Tapia's face; both booked; ref Allen Chapman: force "negligible"; Columbus coach: more than a yellow; Columbus 3-0 Inter Miami (MLS Cup Playoffs Round One, Game 1); Game 2 Friday 27 Nov.
+Invented: every spoken line, the flop rolls, the Force-O-Meter, Ronaldo dragged in + sent off, the practice scene. AI voice actors, not the players' voices.
 
 ## YouTube Shorts
-Title: Messi Threw It… Ronaldo Got the RED Card 🟥😂 #shorts #messi #ronaldo
-Description:
-"The nicest guy in football" 😇 throws the ball into Tapia’s face… yellow card, "negligible force" 🪶. Then Messi drags Ronaldo in… and the ref sends HIM off 🟥 (imaginary part clearly labelled). Columbus won 3-0; Game 2 is Friday.
-Cartoon parody · invented scene & lines · AI voices, not the players’ · not real footage.
-#shorts #messi #ronaldo #intermiami #columbuscrew #football
-Tags (YouTube Studio → Tags field):
-messi, lionel messi, ronaldo, messi vs ronaldo, double standard, inter miami, columbus crew, gonzalo tapia, messi throw in, messi yellow card, mls playoffs, mls cup playoffs, inter miami vs columbus, messi funny, football funny, football cartoon, soccer cartoon, football animation, football memes, soccer memes, football shorts, soccer 365
-Upload settings: Category Comedy · Not made for kids · Altered/synthetic content: Yes (AI-drawn caricature faces + AI voice actors for invented lines; not the players’ real voices) · Language English · Comments on.
+Title (78 chars):
+Messi Threw It… Ronaldo Got the RED Card 🟥😂 #shorts #messi #ronaldo
 
-## TikTok / Reels
+Description:
+Messi's throw-in hits Gonzalo Tapia in the face… and Inter Miami vs Columbus gets a cartoon twist 😂
+😇 "Nicest guy in football" takes a throw-in
+⚽ BONK — straight into Tapia's face
+🟨 Both booked. Ref: force "negligible" 🪶
+😏 Messi: "I'm not Ronaldo"… then drags Ronaldo in
+🟥 Ronaldo gets the red (imaginary!)
+📉 Columbus won 3-0. Game 2 is Friday.
+Would it be a red if it was Ronaldo? 👇
+Cartoon parody · invented scene & lines · AI voices, not the players' · not real footage.
+#messi #ronaldo #intermiami
+
+Tags (YouTube Studio → Tags field):
+messi, lionel messi, ronaldo, cristiano ronaldo, messi vs ronaldo, messi throw in, messi yellow card, gonzalo tapia, inter miami vs columbus, inter miami, columbus crew, mls cup playoffs, football cartoon, football animation, soccer 365
+
+Upload settings: Category Comedy · Not made for kids · Altered or synthetic content: Yes (AI caricature faces + AI voice actors for invented lines) · Language English · Comments on · Thumbnail = first frame (cover is built in).
+
+## TikTok
+Caption:
+Messi throws the ball into Tapia's face 😳
 Tapia: "On purpose! RED!" 🟥
-Messi: "Relax… I'm not Ronaldo" 😏
-Messi: "I'm not Ronaldo" 😏 → drags him in → Ronaldo gets the RED 🟥 (imaginary)
-Agree or not? 👇
-Cartoon parody · invented scene
-#messi #intermiami #columbuscrew #mlsplayoffs #football #footballfunny
+Messi: "I'm not Ronaldo" 😏 …and drags Ronaldo in 😂
+Would it be a red for Ronaldo? 👇
+Cartoon parody · AI voices · imaginary twist
+#messi #ronaldo #intermiami #mlsplayoffs #footballtiktok
+Settings: AI-generated content label ON · Sound name "Soccer 365 – The Throw-In" · Comments on.
 
 ## Instagram (Reels)
 Caption:
-"Nicest guy in football" 😇… throws the ball into a player’s face 😳
-Tapia wants a red. Messi: "Relax… I'm not Ronaldo" 😏
-Then he pulls Ronaldo in and Ronaldo gets the red 🟥 (imaginary)
-Be honest 👇
+"Nicest guy in football" 😇… throws the ball into Tapia's face 😳
+Ref: "negligible" 🪶 Both get a yellow 🟨
+Messi: "I'm not Ronaldo" 😏 → drags Ronaldo in → Ronaldo gets the red 🟥 (imaginary)
+Double standard or fair call? 👇
 
-Cartoon parody · invented lines · AI voices, not the players’
+Cartoon parody · invented lines · AI voices, not the players'
 .
-#messi #intermiami #columbuscrew #mls #footballfunny #footballcartoon #soccermemes
-Cover: cover-9x16.jpg · Alt text: Cartoon of Messi taking a throw-in that hits a Columbus player in the face, the referee showing two yellow cards.
-Settings: Share to Feed on · Audio name "Soccer 365 – The Throw-In" · AI info label on.
+#messi #ronaldo #intermiami #footballfunny #footballcartoon
+Cover: cover-9x16.jpg
+Alt text: Cartoon parody. Messi's throw-in hits Columbus player Tapia in the face; then Messi pulls a cartoon Ronaldo into the scene and the referee shows Ronaldo a red card.
+Settings: Share to Feed on · Audio name "Soccer 365 – The Throw-In" · AI info label ON.
 
-## X (Twitter) — upload the mp4 natively
-Messi throws the ball in Tapia’s face → 🟨 "negligible" 🪶
-Drags Ronaldo in → Ronaldo 🟥 (imaginary)
-Nice guy era over? 😈
-(cartoon parody) #Messi #Ronaldo
-Alt text (media): Cartoon parody of Messi's throw-in hitting Gonzalo Tapia and both players being booked.
+## X (Twitter) — upload the mp4 natively (≈200 characters)
+Messi throws the ball into Tapia's face → 🟨 "negligible force" 🪶
+"I'm not Ronaldo" 😏 → drags Ronaldo in → Ronaldo 🟥 (imaginary)
+Double standard? 👇
+(cartoon parody, AI voices) #Messi #Ronaldo
+Alt text (media): Cartoon parody of Messi's throw-in hitting Gonzalo Tapia; a cartoon Ronaldo is pulled in and shown a red card.
 
-## Facebook
+## Facebook (Reels)
+Messi's throw-in vs Columbus 😂
+
 "The nicest guy in football" 😇
+The ball goes straight into Tapia's face.
+Both players get a yellow 🟨🟨
+Referee: the force was "negligible" 🪶
+Columbus coach: it deserved more than a yellow
 
-Ball → straight into Tapia’s face
-Tapia: "He did it on purpose! Red card!"
-Messi, smiling: "Relax… I'm not Ronaldo" 😏
-Both players: yellow card 🟨🟨
-Columbus coach: "More than a yellow!"
-Referee: "The force was negligible" 🪶
+In our cartoon, Messi says "I'm not Ronaldo" 😏
+…pulls Ronaldo in, and the ref shows HIM the red 🟥
 
-Messi drags Ronaldo in… the ref shows HIM the red 🟥 (imaginary)
-Final score: Columbus 3-0 Inter Miami. Game 2 is Friday 👀
+Real result: Columbus 3-0 Inter Miami. Game 2 is Friday.
+Would it be a red if it was Ronaldo?
 
-(Cartoon parody — invented scene)
+Cartoon parody · invented lines · AI voices
+#Messi #InterMiami
