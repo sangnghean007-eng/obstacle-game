@@ -17,6 +17,12 @@ Run this **before writing every script**. A script must score at least 14/20 on 
 - Review checklist on every frame sheet before sending: joints/seams · hands have fingers · names/text readable on a phone · head-to-body proportion · face style matches body style · nothing frozen · catches/contacts actually touch · faces and text outside the app UI zones · nothing mirrored (shirt numbers) · nothing out of frame at the key moment.
 - If a fix is not possible (tool limit, credits), say so plainly with the reason — never present the item as done.
 
+
+## RULE 0c — TỰ CẬP NHẬT MÔI TRƯỜNG & KẾT NỐI (owner, 22 Nov 2026: "Sau cần hãy tự cập nhật môi trường đừng hỏi · cứ tự do kết nối cập nhật mà làm")
+- When a host/tool/network change is needed, call update_environment (or create_environment) directly — never ask in chat first. (The platform still shows the owner a one-click approval; that is not a question from me.)
+- Keep looking for connectors that make the work better (image/video/voice generation, stock media, analytics, scheduling). Use every connector already connected without asking; for one that needs the owner's login, show it once with SuggestConnectors and keep working meanwhile.
+- Image sources in order: Canva generate-image (export via a plain design → export-design → export-download.canva.com), ElevenLabs creative_generate_image (~3/day free), vidIQ image_generate (22 credits). Never reword a prompt to evade a provider's refusal.
+
 ## 1. WATCH: keep them until the end
 - **Open loop in the first 3 s:** pose a question the video only answers at the end ("WHO WINS?", "ONLY 15 TO GO?!", "NO RONALDO, NO PROBLEM?"). The loop must be closed late, ideally in the last 20%.
 - **Layered hook at frame 0:** a big recognisable face (portrait), the hook text and a loud sound all at once.
