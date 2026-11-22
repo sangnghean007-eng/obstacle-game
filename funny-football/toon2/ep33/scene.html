@@ -8,7 +8,9 @@ const W = 1080, H = 1920, cv = document.getElementById('c'), ctx = cv.getContext
 const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v)), lerp = (a, b, k) => a + (b - a) * k, eOut = k => 1 - (1 - clamp(k)) ** 3, eIn = k => clamp(k) ** 2;
 const eBack = k => { k = clamp(k); const c = 1.7; return 1 + (c + 1) * (k - 1) ** 3 + c * (k - 1) ** 2; };
 const FONT = '"Bangers","Impact",Inter,sans-serif', INK = '#1a1410';
-CASTIMG.preload(['mbappe']);
+CASTIMG.preload(['mbappe', 'raphinha', 'aspas', 'suazo']);
+const REAL_CAPT = { barcelona: ['raphinha', 'RAPHINHA'], celta: ['aspas', 'ASPAS'], sevilla: ['suazo', 'SUAZO'] };   // verified 2026-27 captains (facts.md); others stay generic
+const CEXP = { bored: 'deadpan', shock: 'shock', dizzy: 'dizzy', angry: 'angry', scared: 'shock', happy: 'laugh', neutral: 'smug' };
 function card(s, x, y, size, o = {}) { ctx.save(); ctx.font = `400 ${size}px ${FONT}`; const tw = ctx.measureText(s).width, pw = tw + size * 0.9, ph = size * 1.35;
   ctx.translate(x, y); ctx.rotate(o.rot || 0); const sc = o.pop != null ? eBack(o.pop) : 1; ctx.scale(sc, sc);
   ctx.fillStyle = 'rgba(0,0,0,.18)'; ctx.beginPath(); ctx.roundRect(-pw / 2 + 8, -ph / 2 + 10, pw, ph, 18); ctx.fill();
@@ -85,9 +87,10 @@ const MATES = ['mate1', 'mate2', 'mate3', 'mate4'];
 function reachC(C, o, side, tx, ty) { const hipY = -C.leg * 0.95, shY = hipY - C.torsoH, p = side === 'f' ? [C.shoulderW * 0.8, shY + 30] : [-C.shoulderW * 0.72, shY + 30], S = W2(o, p[0], p[1]), r = o.lean || 0, f = o.f || 1;
   const dx = tx - S[0], dy = ty - S[1], lx = (dx * Math.cos(-r) - dy * Math.sin(-r)) / f, ly = dx * Math.sin(-r) + dy * Math.cos(-r), a = Math.atan2(lx, ly) * 180 / Math.PI; return [a - 8, a + 8]; }
 const mbHead = m => { const C = CC.mbappe, shY = -C.leg * 0.95 - C.torsoH; return W2(Object.assign({ f: 1 }, m), 10, shY - C.head.R * 0.9); };
-function captainC(team, i) { const k = CAPT[team]; const base = CH[MATES[i % 4]]; return Object.assign({}, base, { kit: Object.assign(kit(k[0], k[1], k[2], k[3], k[4]), k[5] ? { stripes: k[5] } : {}), num: '', name: team.toUpperCase(), arm: base.arm * 0.82, armW: base.armW * 1.35 }); }
+function captainC(team, i) { const k = CAPT[team]; const base = CH[MATES[i % 4]], rc = REAL_CAPT[team]; return Object.assign({}, base, { kit: Object.assign(kit(k[0], k[1], k[2], k[3], k[4]), k[5] ? { stripes: k[5] } : {}), num: '', name: rc ? rc[1] : team.toUpperCase(), arm: base.arm * 0.82, armW: base.armW * 1.35 }, rc ? { skin: CAST_SKIN[rc[0]], shade: shadeOf(CAST_SKIN[rc[0]]) } : {}); }
 function captain(team, i, x, y, s, f, expr, t, o = {}) { const C = captainC(team, i), q = { x, y, s, f, lean: o.lean || 0 }; const sh = Math.sin(t * 40 + i) * (o.shake || 0);
-  chibi.draw(ctx, C, o.pose || { bArm: [-18, -8], fArm: [18, 8], bLeg: [-8, -4], fLeg: [8, 4] }, expr, x + sh, y - (o.hop || 0), s, { f, lean: q.lean, headTilt: o.tilt || 0, sq: o.sq || 0, hands: o.hands, prop: o.prop });
+  const rc = REAL_CAPT[team], headFn = rc ? CASTIMG.head(ctx, rc[0], CEXP[expr] || 'smug', { collar: C.kit.collar }) : undefined;
+  chibi.draw(ctx, C, o.pose || { bArm: [-18, -8], fArm: [18, 8], bLeg: [-8, -4], fLeg: [8, 4] }, expr, x + sh, y - (o.hop || 0), s, { f, lean: q.lean, headTilt: o.tilt || 0, sq: o.sq || 0, hands: o.hands, prop: o.prop, headFn });
   const hipY = -C.leg * 0.95, shY = hipY - C.torsoH, [ax, ay] = W2(q, C.shoulderW * 0.8, shY + 70); // captain's armband
   ctx.save(); ctx.translate(ax + sh, ay); ctx.rotate(q.lean); ctx.fillStyle = '#ffd60a'; ctx.strokeStyle = INK; ctx.lineWidth = 4; ctx.fillRect(-24 * s, -14 * s, 48 * s, 28 * s); ctx.strokeRect(-24 * s, -14 * s, 48 * s, 28 * s);
   ctx.fillStyle = INK; ctx.font = `400 ${24 * s}px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('C', 0, 1); ctx.restore();
@@ -127,10 +130,12 @@ const SEG = [
   [10.4, 13.0, 'slowmo', (z, t) => { const tt = z < 1.4 ? t : 11.8 + (z - 1.4) * 0.35; SHOT.cu(ctx, () => inspect('barcelona', 0, '2-1', z, tt, 10.4, T.bar), { x: 590, y: 1180, zoom: 1.25 + z * 0.04 }); if (z > 1.4 && z < 2.3) SHOT.speedlines(ctx, t, { alpha: 0.3 }); },
     (z) => { if (z > 1.6) stamp('CLÁSICO ✅', 540, 400, 100, z - 1.6); }],
   // Racing, AEK, Valencia at once
-  [13.0, 15.2, 'split', (z, t) => SHOT.split(ctx, [
-      { shot: 'wide', draw: () => inspect('racing', 1, '3-0', z, t, 13, T.rac, { ms: 1.2, cs: 1.2 }), opts: { x: 590, y: 1120, zoom: 0.75 } },
-      { shot: 'wide', draw: () => inspect('aek', 2, '3-2', z, t, 13, T.aek, { ms: 1.2, cs: 1.2 }), opts: { x: 590, y: 1120, zoom: 0.75 } },
-      { shot: 'wide', draw: () => inspect('valencia', 3, '3-0', z, t, 13, T.val, { ms: 1.2, cs: 1.2 }), opts: { x: 590, y: 1120, zoom: 0.75 } }], { border: '#111' }), (z) => {}],
+  [13.0, 15.2, 'split', (z, t) => { // three panels kept inside the safe area (y 230–1500): the app UI covers the bottom 400 px
+      const P = [['racing', 1, '3-0', T.rac], ['aek', 2, '3-2', T.aek], ['valencia', 3, '3-0', T.val]], top = 230, ph = 1270 / 3;
+      P.forEach(([tm, ix, sc, tt], i) => { const y0 = top + i * ph; ctx.save(); ctx.beginPath(); ctx.rect(0, y0, W, ph); ctx.clip();
+        ctx.translate(0, y0 + ph / 2 - 960); SHOT.wide(ctx, () => inspect(tm, ix, sc, z, t, 13, tt, { ms: 1.2, cs: 1.2 }), { x: 590, y: 1180, zoom: 0.62 }); ctx.restore();
+        ctx.lineWidth = 10; ctx.strokeStyle = '#111'; ctx.strokeRect(5, y0 + 5, W - 10, ph - 10); });
+      ctx.fillStyle = '#111'; ctx.fillRect(0, 0, W, top); ctx.fillRect(0, top + 1270, W, H); }, (z) => {}],
   // Celta: the twist — "you missed a penalty"
   [15.2, 19.0, 'cu', (z, t) => SHOT.cu(ctx, () => { const back = z > 2.4, k = z - 2.4;
       const lx = back ? lerp(840, 640, eOut(clamp(k / 0.12))) - (k > 0.35 ? lerp(0, -200, eOut((k - 0.35) / 0.4)) : 0) : 840;   // lunge in, then back

@@ -1,0 +1,70 @@
+{
+ "version": "v1 (22 Nov 2026, owner's idea)",
+ "logline": "General Mbappé slaps the captains of the 9 teams Real Madrid just beat, one slap per goal, until Celta's Aspas slaps back for the missed penalty.",
+ "style": "chibi-caricature-stadium",
+ "prev_style": "chibi-caricature",
+ "hook_frame0": "'9 WINS IN A ROW 🎖️' card over the line-up of 9 captains and General Mbappé",
+ "beats": [
+  {
+   "shot": "wide",
+   "idea": "line-up",
+   "text": "9 WINS IN A ROW"
+  },
+  {
+   "shot": "cu",
+   "idea": "Villarreal 1 slap",
+   "text": "1-0"
+  },
+  {
+   "shot": "low",
+   "idea": "Roma 4 slaps",
+   "text": "4-3"
+  },
+  {
+   "shot": "dutch",
+   "idea": "Sevilla/Suazo 4 slaps",
+   "text": "4-1"
+  },
+  {
+   "shot": "xcu",
+   "idea": "Leipzig 4 slaps",
+   "text": "LEIPZIG 4-1"
+  },
+  {
+   "shot": "slowmo",
+   "idea": "Clásico/Raphinha 2 slaps",
+   "text": "CLÁSICO"
+  },
+  {
+   "shot": "split",
+   "idea": "Racing, AEK, Valencia",
+   "text": "3-0 3-2 3-0"
+  },
+  {
+   "shot": "cu",
+   "idea": "Aspas: PENALTY MISSED, slaps back",
+   "text": "REVENGE SLAP"
+  }
+ ],
+ "techniques": [
+  "rule-of-3",
+  "escalation",
+  "misdirection",
+  "deadpan",
+  "callback"
+ ],
+ "gags": [
+  "one slap per goal with a live counter",
+  "captain holds up PENALTY MISSED and slaps back",
+  "next opponent runs away"
+ ],
+ "twist": "the last captain slaps back because Mbappé missed a penalty in that game (true)",
+ "callback": "the '10?' sign and PSV on Tuesday — Mourinho's 'ten on Tuesday'",
+ "ending": "cliffhanger",
+ "hidden_details": [
+  "SLAPS counter ticks to exactly 26 = Real's goals",
+  "the Clásico slap is the only one in slow motion (Mbappé scored the 88th-minute winner)",
+  "Mbappé's medals and the star on his cap"
+ ],
+ "meme_frame": "Aspas slapping General Mbappé"
+}

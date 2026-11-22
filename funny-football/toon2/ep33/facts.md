@@ -14,3 +14,11 @@
 | Total Real goals in the 9 wins | 1+4+4+4+2+3+3+3+2 = 26 | sum of the above |
 | Next match | Real Madrid v PSV, UCL, Tue 24 Nov 2026, Bernabéu | realmadrid.com schedule; esmadrid.com; fixture listings |
 Invented (cartoon): Mbappé as a "general", slaps (1 per goal), the captains' line-up (generic, no real faces), the revenge slap, PSV's captain running away.
+
+## Captains drawn as real people (caricature heads made with Canva AI, 22 Nov 2026)
+| Captain | Club, 2026-27 | Sources |
+|---|---|---|
+| Raphinha | Barcelona captain (first Brazilian captain); scored Barça's goal in the 1-2 Clásico | ESPN (appointment); Wikipedia 2026–27 La Liga; EFE via Khaleej Times (61' goal) |
+| Iago Aspas | Celta captain; EFE called 21 Nov his "last battle at the Bernabéu" (expected to retire this season) | VAVEL 20 Nov 2026; Wikipedia 2026–27 La Liga; Infobae/EFE 21 Nov 2026 |
+| Gabriel Suazo | Sevilla first captain (club confirmed 11 Nov 2026) | El Pespunte 11 Nov 2026; Mucho Deporte; javisfc |
+Generic (not drawn as real people): Villarreal (Gerard Moreno is captain — 2 sources — but no image credit left today), Roma (rotating captaincy), Leipzig, Racing, AEK, Valencia (captains with only one source so far).
