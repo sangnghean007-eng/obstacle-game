@@ -1,32 +1,35 @@
-# Ep38 "The Like Race" — posts (the-like-race-9x16.mp4, 27 s)
+# Ep38 "The Like Race" v2 — posts (the-like-race-9x16.mp4, 30 s) — owner: Messi never commented back; imaginary: he typed, saw 41M vs 20M, deleted, then saved face
 Facts: ep38/facts.md. Like counts are approximate platform figures from media reports: Messi's Argentina farewell ~20M; Ronaldo's comment under it 5M+; Ronaldo's Portugal farewell 22M in 8 hours, ~41M now; Messi's 2022 World Cup post = most-liked Instagram post ever, 70M+.
-Invented: the race studio, bars, ceiling crash, Ronaldo liking his own post, commentator lines (AI voice).
+Real: Ronaldo commented on Messi's farewell; Messi did not comment on Ronaldo's (reported by LiveScore/Goal, Yardbarker, EssentiallySports).
+Invented: Messi typing then deleting a comment (labelled imaginary), the race studio, bars, ceiling crash, Ronaldo liking his own post, commentator lines (AI voice).
 
 ## YouTube Shorts
-Title (76 chars):
-Ronaldo Beat Messi… in LIKES 😂❤️ Then Messi Did This #shorts #ronaldo #messi
+Title (71 chars):
+Ronaldo Commented. Messi Didn't… Here's Why 😂❤️ #shorts #ronaldo #messi
 
 Description:
 Messi and Ronaldo both said goodbye to their national teams — so Ronaldo turned it into a like race 😂
 🇦🇷 Messi's farewell post: ~20M likes
-💬 Ronaldo's comment "All my respect…": 5M+ likes
+💬 Ronaldo commented "All my respect…" (5M+ likes)
 🇵🇹 Ronaldo's farewell: 22M in 8 hours, ~41M now 😎
-🏆 Messi's World Cup post: 70M+ — the most-liked post EVER
+🤐 Messi never commented back… (in our cartoon he starts typing, sees 41M vs 20M, deletes it)
+🏆 Then he 'saves face' with his World Cup post: 70M+, the most-liked post EVER
 Who really won? 👇
 Cartoon parody · like counts approx. (media reports) · AI voice · not real footage.
 #ronaldo #messi #instagram
 
 Tags (YouTube Studio → Tags field):
-ronaldo, messi, cristiano ronaldo, lionel messi, ronaldo retirement, messi retirement, ronaldo instagram likes, messi instagram record, most liked instagram post, messi world cup post, ronaldo portugal farewell, messi argentina farewell, football cartoon, football funny, soccer 365
+ronaldo, messi, cristiano ronaldo, lionel messi, ronaldo retirement, messi retirement, ronaldo instagram likes, messi instagram record, most liked instagram post, messi world cup post, ronaldo portugal farewell, messi argentina farewell, messi no comment ronaldo, football cartoon, football funny, soccer 365
 
 Upload settings: Category Comedy · Not made for kids · Altered or synthetic content: Yes (AI caricature faces + AI commentator voice) · Language English · Comments on · Thumbnail = first frame (cover is built in).
 
 ## TikTok
 Caption:
-Messi says goodbye: 20M ❤️
-Ronaldo says goodbye: 22M in 8 hours 😎 "Ronaldo takes the lead!"
-Then Messi scrolls back to his World Cup post… 70M+ 🏆
-Who won the like race? 👇
+Ronaldo commented on Messi's goodbye 💬
+Messi never commented back 🤐
+Our theory: he typed "Respect, Cris…", saw 41M vs his 20M… ⌫⌫⌫
+Then scrolled to his World Cup post: 70M+ 🏆 😏
+Who won? 👇
 Cartoon parody · likes approx.
 #ronaldo #messi #goat #instagram #footballtiktok
 Settings: AI-generated content label ON · Sound name "Soccer 365 – The Like Race" · Comments on.
@@ -34,9 +37,10 @@ Settings: AI-generated content label ON · Sound name "Soccer 365 – The Like R
 ## Instagram (Reels)
 Caption:
 The farewell LIKE race ❤️
-🇦🇷 Messi: ~20M
-🇵🇹 Ronaldo: 22M in 8 hours, ~41M now
-🏆 Messi's World Cup post: 70M+ (most-liked post ever)
+🇦🇷 Messi: ~20M · 🇵🇹 Ronaldo: ~41M
+💬 Ronaldo commented on Messi's post. Messi? Nothing 🤐
+In our cartoon: types… sees the likes… deletes ⌫
+Then: "my World Cup post has 70M+" 🏆😏
 Who wins? 👇
 
 Cartoon parody · like counts approx. · AI voice
@@ -47,10 +51,10 @@ Alt text: Cartoon of Messi and Ronaldo beside giant phones showing their farewel
 Settings: Share to Feed on · Audio name "Soccer 365 – The Like Race" · AI info label ON.
 
 ## X (Twitter) — upload the mp4 natively
-Farewell posts ❤️
-Messi: ~20M
-Ronaldo: 22M in 8 hours, ~41M now 😎
-Messi's World Cup post: 70M+ 🏆 (most-liked ever)
+Ronaldo commented on Messi's farewell 💬
+Messi never commented back 🤐
+Ronaldo's post: ~41M vs Messi's ~20M
+Messi: *opens World Cup post, 70M+* 🏆😏
 Who won? 👇
 (cartoon parody) #Messi #Ronaldo
 Alt text (media): Cartoon like-count race between Messi's and Ronaldo's farewell posts; Messi's World Cup post bar breaks the ceiling.
@@ -62,8 +66,9 @@ Messi's Argentina goodbye: about 20 million likes
 Ronaldo's comment under it ("All my respect…"): 5M+
 Ronaldo's Portugal goodbye: 22M in 8 hours, about 41M now
 
-Then Messi scrolls back to his World Cup post: 70M+ 🏆
-The most-liked post ever.
+Ronaldo commented on Messi's post. Messi never commented on Ronaldo's.
+In our cartoon, Messi starts typing… sees 41M vs his 20M… and deletes it 😂
+Then he scrolls back to his World Cup post: 70M+ 🏆, the most-liked post ever.
 
 Who really won?
 

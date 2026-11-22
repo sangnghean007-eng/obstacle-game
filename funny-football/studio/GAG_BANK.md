@@ -46,6 +46,7 @@ Columns: id | gag | technique (rule-of-3, misdirection, escalation, cutaway, dea
 | U39 | Counting likes on a comment | Ep38 |
 | U40 | Old record bar smashes the ceiling | Ep38 |
 | U41 | Liking his own post, +1 +1 | Ep38 |
+| U42 | Types a compliment, sees the rival's numbers, deletes it ⌫⌫⌫ | Ep38 v2 |
 
 ## FRESH (60 — pick ≥4 per episode, mix groups)
 ### A. Impact (physics, escalation)

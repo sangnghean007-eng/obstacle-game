@@ -36,7 +36,7 @@ function mate(x, y, s = 1, tilt = 0) { ctx.save(); ctx.translate(x, y); ctx.rota
   ctx.fillStyle = '#7a4a22'; ctx.strokeStyle = INK; ctx.lineWidth = 5; ctx.beginPath(); ctx.ellipse(0, 0, 34, 42, 0, 0, 7); ctx.fill(); ctx.stroke();
   ctx.fillStyle = '#c9a227'; ctx.fillRect(-30, -40, 60, 12); ctx.strokeRect(-30, -40, 60, 12); ctx.fillStyle = '#5c8a2e'; ctx.beginPath(); ctx.ellipse(0, -42, 26, 7, 0, 0, 7); ctx.fill(); ctx.restore(); }
 // ---------------- like counts over time (millions), from facts.md
-const T = { mPost: 0.4, rCom: 4.4, rPost: 8.2, lead: 12.0, xcu: 14.0, wc: 17.0, smash: 19.0, btn: 22.0, END: 26.5 };
+const T = { mPost: 0.4, rCom: 4.4, rPost: 8.2, lead: 12.0, xcu: 14.0, type: 15.6, wc: 20.6, smash: 22.6, btn: 25.6, END: 29.6 };   // owner 22 Nov: Messi starts a comment, sees 41M vs 20M, deletes it (imaginary) — then saves face
 const M = t => t < T.wc ? 20 * eOut((t - T.mPost) / 3.0) : 20;                                         // Messi farewell (~20M)
 const MWC = t => t < T.wc + 0.3 ? 0 : 70;                                                                  // Messi World Cup post: already 70M+ (posted Dec 2022)
 const COM = t => 5 * eOut((t - T.rCom - 0.8) / 2.0);                                                     // Ronaldo's comment (5M+)
@@ -83,6 +83,23 @@ function bar(x, base, v, col, label, t, o = {}) { const hgt = v * 14 * (o.k || 1
   ctx.font = `400 30px ${FONT}`; ctx.strokeText(label, x, base + 44); ctx.fillStyle = '#ffd6e4'; ctx.fillText(label, x, base + 44); ctx.restore(); }
 // ---------------- the scene (everyone in one frame)
 const BASEY = 1480, MX = 300, RX = 780;
+// over Messi's shoulder: he starts a comment on Ronaldo's post, sees the like count, deletes it (imaginary)
+function typingPhone(t) { const k = eOut((t - T.type) / 0.5), down = eIO((t - T.type - 3.6) / 1.2); ctx.save(); ctx.translate(560 + down * 60, lerp(2300, 1250, k) + down * 520); ctx.rotate(0.06 + down * 0.25);   // after deleting he puts the phone down
+  ctx.fillStyle = '#111'; ctx.strokeStyle = INK; ctx.lineWidth = 8; ctx.beginPath(); ctx.roundRect(-260, -470, 520, 940, 50); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.roundRect(-235, -440, 470, 880, 34); ctx.fill();
+  ctx.fillStyle = '#c8102e'; ctx.beginPath(); ctx.arc(-185, -390, 26, 0, 7); ctx.fill(); ctx.font = `400 34px ${FONT}`; ctx.fillStyle = INK; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText('cristiano · 5 Nov 2026', -145, -388);
+  ctx.save(); ctx.beginPath(); ctx.rect(-235, -350, 470, 300); ctx.clip(); for (let i = 0; i < 3; i++) { ctx.fillStyle = ['#0b6b2e', '#c8102e', '#c8102e'][i]; ctx.fillRect(-235, -350 + i * 100, 470, 100); } CASTIMG.face(ctx, 'ronaldo', 'cry', 0, -180, 270); ctx.restore();
+  // the like count — it zooms when he notices it
+  const look = clamp((t - T.type - 1.8) / 0.3) * (1 - clamp((t - T.type - 3.2) / 0.3)); ctx.save(); ctx.translate(-120, 10); ctx.scale(1 + look * 0.5, 1 + look * 0.5); heart(-70, 0, 22, PINK);
+  ctx.font = `400 52px ${FONT}`; ctx.fillStyle = look > 0.1 ? '#c0281c' : INK; ctx.fillText('41M likes', -38, 4); ctx.restore();
+  // comment box: types, stops, deletes
+  ctx.fillStyle = '#f3f3f3'; ctx.strokeStyle = '#bbb'; ctx.lineWidth = 3; ctx.beginPath(); ctx.roundRect(-215, 120, 430, 90, 45); ctx.fill(); ctx.stroke();
+  const full = 'Respect, Cris', N = full.length, n = t < T.type + 1.8 ? Math.floor(clamp((t - T.type - 0.5) / 1.2) * N) : t < T.type + 2.6 ? N : Math.max(0, N - Math.floor((t - T.type - 2.6) / 0.07));
+  ctx.font = `400 40px ${FONT}`; ctx.fillStyle = INK; ctx.fillText('leomessi: ' + full.slice(0, n) + (Math.floor(t * 4) % 2 ? '|' : ''), -190, 166);
+  if (t > T.type + 3.6) { ctx.font = `400 34px ${FONT}`; ctx.fillStyle = '#999'; ctx.fillText('No comments from leomessi', -190, 280); }
+  // his thumb
+  const tap = Math.abs(Math.sin(t * 20)) * (t > T.type + 0.5 && t < T.type + 3.4 ? 14 : 0); ctx.fillStyle = CAST_SKIN.messi; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.beginPath(); ctx.ellipse(170, 380 - tap, 56, 96, -0.5, 0, 7); ctx.fill(); ctx.stroke();
+  ctx.restore(); }
 function scene(t, o = {}) {
   studio(t);
   const mv = t < T.wc ? M(t) : Math.max(M(t), MWC(t)), rv = R(t);
@@ -100,7 +117,7 @@ function scene(t, o = {}) {
   const sip = (t > 2.4 && t < 3.6) || (t > T.btn + 1.4 && t < T.btn + 2.6);
   const m = { x: MX, y: BASEY + 300, s: SC.messi, f: 1 }, mateP = sip ? [MX - 18, m.y - 300] : [MX + 110, m.y - 260];
   const mPose = { bArm: t > T.wc - 0.4 && t < T.wc + 0.6 ? reach('messi', m, 'b', MX + 60, 900) : [-14, -6], fArm: reach('messi', m, 'f', mateP[0] - 10, mateP[1] + 50), bLeg: [-8, -4], fLeg: [8, 4] };
-  CB('messi', Object.assign({}, m, { pose: mPose, expr: t > T.wc + 2 ? 'smug' : 'deadpan' }), t, 0.4); mate(mateP[0], mateP[1], 0.85, sip ? -0.12 : 0.1);
+  if (!o.noMessi) { CB('messi', Object.assign({}, m, { pose: mPose, expr: t > T.wc + 2 ? 'smug' : 'deadpan' }), t, 0.4); mate(mateP[0], mateP[1], 0.85, sip ? -0.12 : 0.1); }
   const r = { x: RX, y: BASEY + 300, s: SC.ronaldo, f: -1 };
   let rexpr = 'smug', rpose = null, hop = 0;
   if (t < T.rCom) rexpr = 'deadpan';
@@ -118,7 +135,8 @@ function frame(t) {
   if (t < T.rCom) SHOT.wide(ctx, () => scene(t), { x: lerp(420, 520, t / T.rCom), y: 1160, zoom: lerp(1.15, 1.05, t / T.rCom) });
   else if (t < T.rPost) SHOT.cu(ctx, () => scene(t), { x: 560, y: 1180, zoom: 1.35 });
   else if (t < T.xcu) SHOT.low(ctx, () => scene(t), { x: 600, y: 1150, zoom: 0.95, lift: 120 });
-  else if (t < T.wc) SHOT.xcu(ctx, () => scene(t), { x: RX - 20, y: 1330, zoom: lerp(1.9, 2.2, (t - T.xcu) / 3) });
+  else if (t < T.type) SHOT.xcu(ctx, () => scene(t), { x: RX - 20, y: 1330, zoom: lerp(1.9, 2.1, (t - T.xcu) / 1.6) });
+  else if (t < T.wc) { SHOT.ots(ctx, () => scene(t, { noMessi: true }), { x: lerp(620, 560, (t - T.type) / 5), y: 1000, zoom: lerp(0.98, 1.08, (t - T.type) / 5), side: -1, fg: '#4a2e1c', shirt: '#9ccbf0' }); typingPhone(t); }
   else if (t < T.btn) SHOT.dutch(ctx, () => scene(t), { x: 520, y: t > T.smash - 0.4 ? 880 : 1000, zoom: t > T.smash - 0.4 ? 0.8 : 1.0, rot: 0.14 });
   else SHOT.cu(ctx, () => scene(t), { x: 560, y: 1250, zoom: lerp(1.25, 1.4, (t - T.btn) / 4.5) });
 }
@@ -128,11 +146,17 @@ function hud(t) {
   if (t > T.rPost && t < 10.6) card('Ronaldo says goodbye 🇵🇹', 540, 300, 62, { pop: (t - T.rPost) / 0.3 });
   if (t > 10.6 && t < T.xcu) card('8 hours: 22M ❤️', 540, 300, 66, { pop: (t - 10.6) / 0.3, bg: '#fff3b0' });
   if (t > T.lead && t < T.lead + 1.6) stamp('RONALDO LEADS!', 540, 450, 84, t - T.lead);
-  if (t > 15.0 && t < T.wc) card('Now: 41M 😎', 540, 300, 66, { pop: (t - 15.0) / 0.3 });
-  if (t > T.wc + 0.8 && t < T.btn) card('Most-liked post EVER 🏆', 540, 300, 60, { pop: (t - T.wc - 0.8) / 0.3, bg: '#fff3b0' });
+  if (t > 14.3 && t < T.type) card('Now: 41M 😎', 540, 300, 66, { pop: (t - 14.3) / 0.3 });
+  if (t > T.type + 0.2 && t < T.type + 1.9) card('Messi starts typing… 👀', 540, 300, 58, { pop: (t - T.type - 0.2) / 0.3 });
+  if (t > T.type + 1.9 && t < T.type + 3.4) card('41M vs my 20M… 🤨', 540, 300, 62, { pop: (t - T.type - 1.9) / 0.3, bg: '#fff3b0' });
+  if (t > T.type + 2.6 && t < T.type + 3.6) stamp('⌫⌫⌫', 760, 470, 90, t - T.type - 2.6, '#7a4b00');
+  if (t > T.type + 3.6 && t < T.wc) card('Real: Messi never commented', 540, 300, 52, { pop: (t - T.type - 3.6) / 0.3, bg: '#e8f0ff' });
+  if (t > T.type && t < T.type + 3.6) { ctx.font = '600 28px Inter'; ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.textAlign = 'center'; ctx.fillText('(imaginary)', 540, 390); }
+  if (t > T.wc + 0.5 && t < T.wc + 1.9) card('Saving face… 😏', 540, 300, 62, { pop: (t - T.wc - 0.5) / 0.3 });
+  if (t > T.wc + 1.9 && t < T.btn) card('Most-liked post EVER 🏆', 540, 300, 60, { pop: (t - T.wc - 1.9) / 0.3, bg: '#fff3b0' });
   if (t > T.smash + 0.2 && t < T.btn) stamp('70M+', 540, 470, 120, t - T.smash - 0.2, '#b8860b');
   if (t > T.btn + 0.4) card('+1 … +1 … 😅', 540, 300, 62, { pop: (t - T.btn - 0.4) / 0.3 });
-  if (t > 23.5) { ctx.font = '600 26px Inter'; ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.textAlign = 'center'; ctx.fillText('Cartoon parody · like counts approx. (media reports)', 540, 1600); }
+  if (t > T.btn + 1.5) { ctx.font = '600 26px Inter'; ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.textAlign = 'center'; ctx.fillText('Cartoon parody · like counts approx. (media reports)', 540, 1600); }
 }
 const SHAKE = [T.lead, T.smash];
 function grade() { ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); const v = ctx.createRadialGradient(540, 960, 560, 540, 960, 1250); v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,0,.35)'); ctx.fillStyle = v; ctx.fillRect(0, 0, W, H); ctx.restore(); }

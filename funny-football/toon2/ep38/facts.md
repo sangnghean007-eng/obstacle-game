@@ -7,3 +7,5 @@
 | Messi's World Cup 2022 post | Most-liked Instagram post ever, 70M+ likes (66M/68M/70M+ in Dec 2022; ~74M later) | Guinness World Records; SBS; Tribune; Wikipedia list |
 Not used: "Messi's post leads on views" (one source only).
 Invented (cartoon): the race studio, the bars, the ceiling crash, Ronaldo liking his own post, commentator lines. AI voice (commentator), not the players'.
+| Messi's reply | Messi did not comment on / publicly respond to Ronaldo's retirement post (as of reports ~2 weeks later); an X post claiming he did is AI-made | LiveScore (Goal); Yardbarker; EssentiallySports |
+v2 (owner): Messi typing "Respect, Cris" then deleting after seeing 41M vs 20M is INVENTED, labelled "(imaginary)" on screen; "Real: Messi never commented" is the fact.
