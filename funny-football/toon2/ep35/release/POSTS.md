@@ -8,7 +8,7 @@ Ronaldo's Road to 1000… Block by Block 🧱😂 #shorts #ronaldo #cr7
 
 Description:
 Cristiano Ronaldo scores goal 986… then hits the post from the penalty spot 😬 Road to 1000, block by block 🧱
-🧱 Goal 986 vs Al Ahli
+🧱 Goal 986 vs Al Ahli — SIUUU!
 ⚽ 4 minutes later: penalty… POST
 📉 Al Nassr lose 3-1
 🤓 Opta calls one of his goals an own goal
@@ -25,7 +25,7 @@ Upload settings: Category Comedy · Not made for kids · Altered or synthetic co
 ## TikTok
 Caption:
 Ronaldo's road to 1000, block by block 🧱
-986 ✅ → penalty → POST 😬 → 3-1 loss
+986 ✅ SIUUU! → penalty → POST 😬 → 3-1 loss
 Then a stats robot tries to take one back 🤓 "MINE!!"
 When does 1000 land? 👇
 Cartoon parody · AI voices
@@ -34,7 +34,7 @@ Settings: AI-generated content label ON · Sound name "Soccer 365 – Block by B
 
 ## Instagram (Reels)
 Caption:
-Ronaldo stacks goal 986 🧱
+Ronaldo stacks goal 986 🧱 SIUUU!
 4 minutes later… penalty off the post 😬
 Opta: "own goal" 🤓 League: "his goal" ✅ Ronaldo: "MINE!!"
 14 to go. Your prediction? 👇
@@ -47,7 +47,7 @@ Alt text: Block-style cartoon of Ronaldo on a staircase of numbered goal blocks 
 Settings: Share to Feed on · Audio name "Soccer 365 – Block by Block" · AI info label ON.
 
 ## X (Twitter) — upload the mp4 natively
-Ronaldo: goal 986 🧱
+Ronaldo: goal 986 🧱 SIUUU!
 4 min later: penalty… post 😬
 Opta: one of them is an own goal 🤓 League: no ✅
 14 to go. When does 1000 land? 👇
@@ -57,7 +57,7 @@ Alt text (media): Block-style cartoon of Ronaldo building a staircase of goal bl
 ## Facebook (Reels)
 Ronaldo's road to 1000, block by block 🧱
 
-Goal 986 vs Al Ahli ✅
+Goal 986 vs Al Ahli ✅ SIUUU!
 4 minutes later: penalty… off the post 😬
 Al Nassr lose 3-1
 
