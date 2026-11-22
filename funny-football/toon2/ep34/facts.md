@@ -10,3 +10,5 @@
 | Scorers | Tapia 2 (incl. penalty), Habroune 1 | WSVN/AP; World Soccer Talk |
 | Next | Game 2 Friday 27 Nov 2026 at ScottsMiracle-Gro Field, Columbus | WSVN/AP; Kuwait Times |
 Invented (cartoon): the 3 spins/3 bounces/3 rolls, the Force-O-Meter, the training-ground poster. Tapia is never shown face-on (no verified caricature yet).
+
+v2 (owner: 'khịa Messi mạnh hơn'): the halo/horns and the 'IF IT WAS RONALDO' scene are opinion/satire, shown on screen as '(imaginary — this never happened)'. No claim about any real Ronaldo card is made.

@@ -1,25 +1,28 @@
-# Ep34 "The Throw-In" — posts (the-throw-in-9x16.mp4, 21 s)
+# Ep34 "The Throw-In" v2 — posts (the-throw-in-9x16.mp4, 24 s) — angle: the 'nice guy' halo + the Ronaldo double standard (clearly labelled imaginary)
 Facts: ep34/facts.md. Cartoon parody — the flop, the meter and the practice poster are invented.
 
 ## YouTube Shorts
-Title: Messi’s Throw-In Went Straight Into Tapia’s Face 😳 #shorts #messi #intermiami
+Title: If Ronaldo Did This It’s a RED Card 🟥 #shorts #messi #ronaldo
 Description:
-Columbus 3-0 Inter Miami. One throw-in, two yellow cards, and a referee who called it "negligible" 🪶 Game 2 is Friday…
+"The nicest guy in football" 😇 throws the ball into Tapia’s face… yellow card, "negligible force" 🪶. Now imagine it was Ronaldo 🟥🟥🟥 (imaginary part clearly labelled). Columbus won 3-0; Game 2 is Friday.
 Cartoon parody · invented scene · not real footage.
-#shorts #messi #intermiami #columbuscrew #mlsplayoffs #football
+#shorts #messi #ronaldo #intermiami #columbuscrew #football
 Tags (YouTube Studio → Tags field):
-messi, lionel messi, inter miami, columbus crew, gonzalo tapia, messi throw in, messi yellow card, mls playoffs, mls cup playoffs, inter miami vs columbus, messi funny, football funny, football cartoon, soccer cartoon, football animation, football memes, soccer memes, football shorts, soccer 365
+messi, lionel messi, ronaldo, messi vs ronaldo, double standard, inter miami, columbus crew, gonzalo tapia, messi throw in, messi yellow card, mls playoffs, mls cup playoffs, inter miami vs columbus, messi funny, football funny, football cartoon, soccer cartoon, football animation, football memes, soccer memes, football shorts, soccer 365
 Upload settings: Category Comedy · Not made for kids · Altered/synthetic content: Yes (AI-drawn caricature face) · Language English · Comments on.
 
 ## TikTok / Reels
-Messi’s throw-in had ONE target 🎯 Ref: "negligible force" 🪶 Columbus coach: "more than a yellow!" 🟥 Who’s right? 👇
+Messi hits Tapia in the face → yellow 🟨 "negligible" 🪶
+If it was Ronaldo → 🟥🟥🟥 + 10-game ban 😭 (imaginary)
+Agree or not? 👇
 Cartoon parody · invented scene
 #messi #intermiami #columbuscrew #mlsplayoffs #football #footballfunny
 
 ## Instagram (Reels)
 Caption:
-One throw-in. Two yellow cards. Zero chill 😳
-Ref says the force was "negligible" 🪶 — rate it 1–10 👇
+"Nicest guy in football" 😇… throws the ball into a player’s face 😳
+Yellow card. If it was Ronaldo? 🟥 (imaginary)
+Be honest 👇
 
 Cartoon parody · invented scene · not real footage
 .
@@ -28,22 +31,21 @@ Cover: cover-9x16.jpg · Alt text: Cartoon of Messi taking a throw-in that hits 
 Settings: Share to Feed on · Audio name "Soccer 365 – The Throw-In" · AI info label on.
 
 ## X (Twitter) — upload the mp4 natively
-Messi: throw-in 🎯
-Tapia: 🌀🌀🌀
-Ref: 🟨🟨 "negligible"
-Final: Columbus 3-0 😳
-Game 2: Friday 👀
-(cartoon parody) #Messi #InterMiami
+Messi throws the ball in Tapia’s face → 🟨 "negligible" 🪶
+Ronaldo does it → 🟥🟥🟥 (imaginary)
+Nice guy era over? 😈
+(cartoon parody) #Messi #Ronaldo
 Alt text (media): Cartoon parody of Messi's throw-in hitting Gonzalo Tapia and both players being booked.
 
 ## Facebook
-Messi’s throw-in had a target 🎯
+"The nicest guy in football" 😇
 
 Ball → straight into Tapia’s face
 Both players: yellow card 🟨🟨
 Columbus coach: "More than a yellow!"
 Referee: "The force was negligible" 🪶
 
+Now imagine Ronaldo did it… 🟥🟥🟥 (imaginary)
 Final score: Columbus 3-0 Inter Miami. Game 2 is Friday 👀
 
 (Cartoon parody — invented scene)

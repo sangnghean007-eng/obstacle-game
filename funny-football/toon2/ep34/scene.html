@@ -8,7 +8,7 @@ const W = 1080, H = 1920, cv = document.getElementById('c'), ctx = cv.getContext
 const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v)), lerp = (a, b, k) => a + (b - a) * k, eOut = k => 1 - (1 - clamp(k)) ** 3, eIn = k => clamp(k) ** 2;
 const eBack = k => { k = clamp(k); const c = 1.7; return 1 + (c + 1) * (k - 1) ** 3 + c * (k - 1) ** 2; };
 const FONT = '"Bangers","Impact",Inter,sans-serif', INK = '#1a1410';
-CASTIMG.preload(['messi']);
+CASTIMG.preload(['messi', 'ronaldo']);
 const REAL_CAPT = { barcelona: ['raphinha', 'RAPHINHA'], celta: ['aspas', 'ASPAS'], sevilla: ['suazo', 'SUAZO'], villarreal: ['gerardmoreno', 'G. MORENO'], roma: ['dybala', 'DYBALA', 'nocap'] };   // verified 2026-27 captains (facts.md); others stay generic
 const CEXP = { bored: 'deadpan', shock: 'shock', dizzy: 'dizzy', angry: 'angry', scared: 'shock', strain: 'scared', happy: 'laugh', neutral: 'smug', sad: 'sad' };
 function card(s, x, y, size, o = {}) { ctx.save(); ctx.font = `400 ${size}px ${FONT}`; const tw = ctx.measureText(s).width, pw = tw + size * 0.9, ph = size * 1.35;
@@ -142,7 +142,7 @@ function inspect(team, idx, score, z, t, t0, slapAt, o = {}) { SIGN = score; SIG
   if (R === 'launch' && kl > 0.3) { ctx.save(); ctx.font = `400 64px ${FONT}`; ctx.fillStyle = '#c0281c'; ctx.textAlign = 'center'; ctx.lineWidth = 10; ctx.strokeStyle = '#fff'; ctx.strokeText('BYE 👋', 760, 520); ctx.fillText('BYE 👋', 760, 520); ctx.restore(); } }
 
 // ======================= EP34 =======================
-const MX = 360, MS = 1.2; CC.messi = Object.assign({}, CC.messi, { arm: CC.messi.arm * 1.75 });   // longer cartoon arms: a real overhead throw-in above the big head
+const MX = 360, MS = 1.2; CC.messi = Object.assign({}, CC.messi, { arm: CC.messi.arm * 1.75 }); CC.ronaldo = Object.assign({}, CC.ronaldo, { arm: CC.ronaldo.arm * 1.6 });   // longer cartoon arms: a real overhead throw-in above the big head
 const CLB = kit('#fedd00', '#111111', '#111111', '#fedd00', '#111111');
 const TAPIA = Object.assign({}, CH.mate1, { kit: CLB, num: '', name: 'TAPIA', arm: CH.mate1.arm * 0.82, armW: CH.mate1.armW * 1.35 });
 const REFC = Object.assign({}, CH.mate2, { kit: kit('#1a1a1a', '#9aa0a6', '#1a1a1a', '#1a1a1a', '#ffffff'), num: '', name: 'REF', arm: CH.mate3.arm * 0.82, armW: CH.mate3.armW * 1.35 });
@@ -155,6 +155,11 @@ function ball(x, y, r, rot = 0) { ctx.save(); ctx.translate(x, y); ctx.rotate(ro
   ctx.fillStyle = '#222'; ctx.beginPath(); for (let k = 0; k < 5; k++) { const a = k * 1.2566 - 1.57; ctx.lineTo(Math.cos(a) * r * 0.38, Math.sin(a) * r * 0.38); } ctx.fill();
   for (let k = 0; k < 5; k++) { const a = k * 1.2566 + 0.63; ctx.beginPath(); ctx.arc(Math.cos(a) * r * 0.85, Math.sin(a) * r * 0.85, r * 0.22, 0, 7); ctx.fill(); } ctx.restore(); }
 const P = (bA, fA, bL = [-10, -4], fL = [10, 4]) => ({ bArm: bA, fArm: fA, bLeg: bL, fLeg: fL });
+const HALO_BREAK = 4.62;
+function messiHeadTop(o) { const C = CC.messi, hY = -C.leg * 0.95 - C.torsoH - C.head.R * 0.72; return [o.x + 10, o.y + (hY - 1.55 * C.head.R) * o.s]; }
+function halo(x, y, t, s = 1) { ctx.save(); ctx.translate(x, y + Math.sin(t * 3) * 6); ctx.scale(s, s); ctx.shadowColor = '#ffe066'; ctx.shadowBlur = 30; ctx.strokeStyle = '#ffd23a'; ctx.lineWidth = 16; ctx.beginPath(); ctx.ellipse(0, 0, 90, 26, 0, 0, 7); ctx.stroke(); ctx.restore();
+  for (let k = 0; k < 3; k++) { const a = t * 2 + k * 2.1; ctx.save(); ctx.globalAlpha = 0.7 + 0.3 * Math.sin(t * 5 + k); ctx.font = '40px serif'; ctx.textAlign = 'center'; ctx.fillText('✨', x + Math.cos(a) * 140, y + 30 + Math.sin(a) * 40); ctx.restore(); } }
+function horns(x, y) { ctx.save(); ctx.translate(x, y + 70); ctx.fillStyle = '#d0141e'; ctx.strokeStyle = INK; ctx.lineWidth = 7; for (const sx of [-1, 1]) { ctx.beginPath(); ctx.moveTo(sx * 40, 10); ctx.quadraticCurveTo(sx * 70, -40, sx * 95, -90); ctx.quadraticCurveTo(sx * 85, -30, sx * 80, 20); ctx.closePath(); ctx.fill(); ctx.stroke(); } ctx.restore(); }
 function messi(t, o) { CB('messi', Object.assign({ x: MX, y: GZ - 60, s: MS, f: 1 }, o), t, 0.5); }
 function person(C, o, expr, t) { chibi.draw(ctx, C, o.pose || P([-18, -8], [18, 8]), expr, o.x, o.y - (o.hop || 0), o.s, { f: o.f || 1, lean: o.lean || 0, headTilt: o.tilt || 0, hands: o.hands, headFn: o.headFn, sq: o.sq || 0 }); }
 const CHEST = (C, o) => { const hipY = -C.leg * 0.95, shY = hipY - C.torsoH; return W2(o, 0, shY - C.head.R * 0.72); };
@@ -172,11 +177,15 @@ function scene(t) { stadium(t, 0); FX.crowd(ctx, t, { y0: 660, rows: 3, rowH: 60
   else if (t < 8.4) { mp = P([-70, -150], [70, 150]); me = t < 6.4 ? 'smug' : 'deadpan'; }
   else if (t < 11.2) { mp = t < 9.4 ? P([-150, -170], [150, 170]) : P([-40, -150], [40, 150]); me = t < 9.4 ? 'shock' : 'angry'; }
   else if (t < 14.2) { mp = P([-20, -10], [100, 160]); me = t > 13.0 ? 'laugh' : 'smug'; }
-  else { mp = P([-10, -4], [10, 4]); me = 'cry'; }
+  else { mp = P([-30, -150], [-20, 175]); me = t < 15.2 ? 'sad' : 'smug'; }
   if (t < 4.4) { const C = CC.messi, hY = -C.leg * 0.95 - C.torsoH - C.head.R * 0.72, mo = { x: MX, y: GZ - 60, s: MS, f: 1 }, wb = t > 3.2 ? clamp((t - 3.2) / 1.0) : 0;
     bx = MX + 210 - wb * 40; by = GZ - 60 + hY * MS - 120 - wb * 60;   // ball up high beside the head: arms never cross the face          // the ball sits above the head…
     mp = P(reach('messi', mo, 'b', bx - 40, by + 10), reach('messi', mo, 'f', bx + 40, by + 10)); }  // …and both hands really hold it
   messi(t, { pose: mp, expr: me, hands: t < 4.4 ? { f: 'grab', b: 'grab' } : t < 8.4 ? { f: 'open', b: 'open' } : t < 11.2 ? { f: 'point' } : { f: 'thumb' } });
+  { const top = messiHeadTop({ x: MX, y: GZ - 60, s: MS });
+    if (t < HALO_BREAK) halo(top[0], top[1] - 20, t);
+    else if (t < 6.2) { const k = t - HALO_BREAK; ctx.save(); ctx.globalAlpha = Math.max(0, 1 - k / 1.6); for (const sx of [-1, 1]) { ctx.save(); ctx.translate(top[0] + sx * (30 + 160 * k), top[1] - 20 + 700 * k * k); ctx.rotate(sx * k * 4); ctx.strokeStyle = '#ffd23a'; ctx.lineWidth = 16; ctx.beginPath(); ctx.ellipse(0, 0, 90, 26, 0, sx < 0 ? Math.PI * 0.5 : -Math.PI * 0.5, sx < 0 ? Math.PI * 1.5 : Math.PI * 0.5); ctx.stroke(); ctx.restore(); } ctx.restore(); }
+    if (t > 14.6) horns(top[0], top[1]); }
   // Tapia
   let tx = lerp(700, 610, eOut(clamp((t - 2.6) / 1.2))), ty = GZ + 90, trot = 0, thop = 0, tpose = t > 2.6 && t < 4.6 ? P([-140 + Math.sin(t * 18) * 30, -170], [140 + Math.cos(t * 18) * 30, 170]) : undefined, tilt = 0;
   if (t > hit && t < 9.6) { const k = t - hit; // the flop: three spins in the air, three bounces, three rolls
@@ -208,6 +217,21 @@ function scene(t) { stadium(t, 0); FX.crowd(ctx, t, { y0: 660, rows: 3, rowH: 60
     ctx.fillStyle = '#1b2a3c'; ctx.strokeStyle = INK; ctx.lineWidth = 8; ctx.beginPath(); ctx.roundRect(-200, -34, 230, 68, 30); ctx.fill(); ctx.stroke(); ctx.fillStyle = '#c98a5e'; ctx.beginPath(); ctx.arc(46, 0, 34, 0, 7); ctx.fill(); ctx.stroke();
     ctx.fillStyle = '#e0141e'; ctx.beginPath(); ctx.roundRect(50, -130, 100, 140, 10); ctx.fill(); ctx.stroke(); ctx.restore(); }
 }
+// ---------------- IF IT WAS RONALDO (imaginary): a feather-light touch, instant triple red, sirens, 10-game ban
+const OPP = Object.assign({}, CH.mate4, { kit: kit('#e9e9e9', '#555', '#555555', '#e9e9e9', '#333'), num: '', name: 'OPPONENT', arm: CH.mate4.arm * 0.82, armW: CH.mate4.armW * 1.35 });
+function whatIf(k, t) { stadium(t, 0); const RX = 360, ro = { x: RX, y: GZ - 60, s: 1.25, f: 1 }, C = CC.ronaldo, hY = -C.leg * 0.95 - C.torsoH - C.head.R * 0.72;
+  const toss = clamp((k - 0.6) / 0.35), tapK = 0.95; const bx0 = RX + 210, by0 = GZ - 60 + hY * 1.25 - 120;
+  let rp = k < 0.6 ? P(reach('ronaldo', ro, 'b', bx0 - 40, by0 + 10), reach('ronaldo', ro, 'f', bx0 + 40, by0 + 10)) : P([-100, -60], [100, 60]);
+  if (k > 1.6) rp = P([-160, -175], [160, 175]);
+  CB('ronaldo', Object.assign({}, ro, { pose: rp, expr: k < 1.0 ? 'smug' : k < 1.6 ? 'shock' : 'cry', hands: { f: 'open', b: 'open' } }), t);
+  const oy = GZ + 60, ox = 680, down = k > tapK ? eOut(clamp((k - tapK) / 0.4)) : 0;
+  person(OPP, { x: ox + down * 60, y: oy, s: 1.2, f: -1, lean: down * 1.5, pose: down ? P([-150, -120], [150, 120], [-30, -10], [30, 10]) : undefined }, down ? 'dizzy' : 'neutral', t);
+  if (k < 0.6) ball(bx0, by0, 40); else if (k < tapK) ball(lerp(bx0, ox - 30, toss), lerp(by0, oy - 420, toss), 40, t * 6); else ball(ox - 30 - (k - tapK) * 60, oy - 420 + 900 * (k - tapK) ** 2, 40);
+  if (k > tapK && k < tapK + 0.8) { ctx.save(); ctx.font = `400 46px ${FONT}`; ctx.fillStyle = '#fff'; ctx.strokeStyle = INK; ctx.lineWidth = 8; ctx.textAlign = 'center'; ctx.strokeText('tap 🪶', ox - 40, oy - 500); ctx.fillText('tap 🪶', ox - 40, oy - 500); ctx.restore(); }
+  if (k > 1.15) { const rx = lerp(1200, 600, eOut(clamp((k - 1.15) / 0.3))), n = Math.min(3, Math.floor((k - 1.45) / 0.25) + 1);
+    const rpo = { x: rx + 260, y: GZ - 170, s: 1.0, f: -1, pose: P([-18, -8], [170, 178]), hands: { f: 'grab' } }; person(REFC, rpo, 'angry', t);
+    if (k > 1.45) { const [hx, hy] = handWorld(REFC, rpo, 'f', rpo.pose.fArm); for (let i = 0; i < n; i++) { ctx.save(); ctx.translate(hx - 30 * i, hy - 60); ctx.rotate(-0.25 + i * 0.25); ctx.fillStyle = '#e0141e'; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.beginPath(); ctx.roundRect(-38, -60, 76, 110, 8); ctx.fill(); ctx.stroke(); ctx.restore(); } } }
+  if (k > 1.5) { const on = Math.floor(t * 6) % 2; ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 0.18; ctx.fillStyle = on ? '#ff0000' : '#0040ff'; ctx.fillRect(0, 0, W, H); ctx.restore(); } }
 // ---------------- night training ground (button)
 function training(t) { const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#0b1230'); g.addColorStop(0.55, '#1b2a55'); g.addColorStop(0.56, '#1f5a32'); g.addColorStop(1, '#2f7a45'); ctx.fillStyle = g; ctx.fillRect(-600, -600, W + 1200, H + 1200);
   for (const lx of [80, 1000]) { ctx.fillStyle = 'rgba(255,250,210,.12)'; ctx.beginPath(); ctx.moveTo(lx, 380); ctx.lineTo(lx - 300, 1700); ctx.lineTo(lx + 300, 1700); ctx.closePath(); ctx.fill(); ctx.fillStyle = '#fffbe0'; ctx.beginPath(); ctx.ellipse(lx, 380, 50, 20, 0, 0, 7); ctx.fill(); }
@@ -234,30 +258,34 @@ function gauge(t) { const k = t - 11.8; if (k < 0 || t > 14.2) return; const a0 
   ctx.font = `400 30px ${FONT}`; ctx.fillStyle = INK; ctx.textAlign = 'center'; ctx.fillText('🪶', -170, -40); ctx.fillText('🟨', 0, -190); ctx.fillText('🟥', 170, -40);
   const ang = a0 + swing * Math.PI + Math.sin(t * 40) * 0.02; ctx.strokeStyle = INK; ctx.lineWidth = 10; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(Math.cos(ang) * (R - 40), Math.sin(ang) * (R - 40)); ctx.stroke();
   ctx.fillStyle = INK; ctx.beginPath(); ctx.arc(0, 0, 18, 0, 7); ctx.fill(); ctx.font = `400 40px ${FONT}`; ctx.fillText('FORCE-O-METER', 0, 70); ctx.restore(); }
-const SEG = [[0, 21, 'touchline', (z, t) => {
+const WI0 = 14.2, WI = 3.0; const mapT = t => t < WI0 ? t : t < WI0 + WI ? null : t - WI;
+const SEG = [[0, 24, 'touchline', (z, T) => { if (mapT(T) === null) { SHOT.wide(ctx, () => whatIf(T - WI0, T), { x: 560, y: 1160, zoom: 1.05 }); return; } const t = mapT(T);
   if (t < 17.2) { // camera: hook close, pull back for the flop, follow the ref, push in for the twist
     let cx = 520, cy = 1160, zm = 1.25; if (t < 4.4) { zm = lerp(1.35, 1.5, clamp((t - 2.6) / 1.8)); cx = lerp(520, 480, clamp((t - 2.6) / 1.8)); }
     else if (t < 8.0) { zm = lerp(1.5, 0.95, eOut(clamp((t - 4.4) / 0.8))); cx = lerp(480, 620, clamp((t - 4.4) / 2)); }
-    else if (t < 14.2) { zm = 1.05; cx = 560; } else { zm = lerp(1.05, 1.3, eOut(clamp((t - 14.2) / 0.6))); cx = 620; }
+    else if (t < 14.2) { zm = 1.05; cx = 560; } else { zm = lerp(1.05, 1.22, eOut(clamp((t - 14.2) / 0.6))); cx = 540; }
     const slow = t > 4.55 && t < 5.4 ? 0.35 : 1; SHOT.wide(ctx, () => scene(t), { x: cx, y: cy, zoom: zm });
     if (t > 4.62 && t < 5.4) SHOT.speedlines(ctx, t, { alpha: 0.25 }); }
   else SHOT.low(ctx, () => training(t), { x: 560, y: 1300, lift: 180, zoom: 1.05 }); },   // worm's-eye: the hero practising
- (z, t) => {
+ (z, T) => { if (mapT(T) === null) { const k = T - WI0; card('IF IT WAS RONALDO… 🤔', 540, 300, 74, { pop: k / 0.3, bg: '#fff3b0' }); if (k > 1.5) stamp('RED RED RED 🟥', 540, 500, 84, k - 1.5);
+    if (k > 2.0) { ctx.fillStyle = '#c0281c'; ctx.fillRect(0, 1380, W, 90); ctx.fillStyle = '#fff'; ctx.font = `400 46px ${FONT}`; ctx.textAlign = 'center'; ctx.fillText('BREAKING: RONALDO BANNED 10 GAMES', 540, 1440); }
+    ctx.font = '600 30px Inter'; ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.textAlign = 'center'; ctx.fillText('(imaginary — this never happened)', 540, 380); return; }
+  const t = mapT(T);
   if (t < 17.2) scoreBug(t);
-  if (t < 2.6) { card('Messi. Throw-in. 44′', 540, 400, 72, { pop: 0.7 + t / 0.3, rot: -0.02 }); card('He’s standing VERY close… 😤', 540, 510, 50, { pop: 0.7 + (t - 0.6) / 0.3, bg: '#ffe9a8' }); }
+  if (t < 2.6) { card('Messi: “the nicest guy in football” 😇', 540, 400, 56, { pop: 0.7 + t / 0.3, rot: -0.02 }); card('Throw-in. 44\u2032. Tapia too close…', 540, 500, 48, { pop: 0.7 + (t - 0.6) / 0.3, bg: '#ffe9a8' }); }
   if (t > 4.62 && t < 5.8) stamp('BONK', 760, 560, 140, t - 4.62);
   if (t > 6.3 && t < 7.9) stamp('ROLL ×3 🎭', 700, 560, 90, t - 6.3);
   if (t > 6.9 && t < 8.3) card('It’s a throw-in 🤷', 360, 700, 56, { pop: (t - 6.9) / 0.3, tail: -1 });
   if (t > 10.3 && t < 11.25) stamp('🟨🟨 BOTH BOOKED', 540, 560, 62, t - 10.3);
   if (t > 11.3 && t < 12.6) card('“More than a yellow!”', 420, 560, 56, { pop: (t - 11.3) / 0.3, bg: '#ffd9d9', rot: -0.03 });
   gauge(t); if (t > 13.0 && t < 14.2) card('Ref: “force was negligible” 🪶', 540, 420, 50, { pop: (t - 13.0) / 0.3 });
-  if (t > 14.4 && t < 17.2) stamp('FT 0–3 · TAPIA ⚽⚽', 540, 560, 78, t - 14.4);
+  if (t > 14.4 && t < 17.2) stamp('FT 0–3 · TAPIA ⚽⚽', 540, 545, 74, t - 14.4); if (t > 15.2 && t < 17.2) card('Nice guy? 😇 ➡️ 😈', 540, 405, 62, { pop: (t - 15.2) / 0.3, bg: '#ffd9d9' });
   if (t > 17.2) { card('Game 2: Friday in Columbus 👀', 540, 330, 64, { pop: (t - 17.2) / 0.3 }); if (t > 18.8) stamp('PRACTICE ✅', 760, 560, 100, t - 18.8); }
   ctx.font = '600 28px Inter'; ctx.fillStyle = 'rgba(255,255,255,.85)'; ctx.textAlign = 'center'; if (t > 19.5) ctx.fillText('Cartoon parody', 540, 232); }]];
-ALL.push(4.62, 18.65);
-window.DURATION = 21; window.render = function (t) { window.T2T = t; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.filter = 'none'; ctx.clearRect(0, 0, W, H);
+ALL.push(4.62, 21.65, 15.15);
+window.DURATION = 24; window.render = function (t) { window.T2T = t; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.filter = 'none'; ctx.clearRect(0, 0, W, H);
   const seg = SEG[0], z = t; const hs = ALL.reduce((m, a) => Math.max(m, t >= a && t < a + 0.25 ? 18 * (1 - (t - a) / 0.25) : 0), 0) + Math.sin(t * 2.3) * 2;
-  ctx.save(); ctx.translate(Math.sin(t * 91) * hs, Math.cos(t * 77) * hs); seg[3](z, t); ctx.restore(); if (Math.abs(t - 17.2) < 0.14) PRO.whip(ctx, cv, (t - 17.06) / 0.28, 1);
+  ctx.save(); ctx.translate(Math.sin(t * 91) * hs, Math.cos(t * 77) * hs); seg[3](z, t); ctx.restore(); for (const c of [WI0, WI0 + WI, 20.2]) if (Math.abs(t - c) < 0.14) PRO.whip(ctx, cv, (t - c + 0.14) / 0.28, 1);
   post(); ctx.setTransform(1, 0, 0, 1, 0, 0); if (!window.NO_HUD) seg[4](z, t); };
-if (!location.search.includes('render')) { const t0 = performance.now(); (window.CAST_READY || Promise.resolve()).then(() => (function loop() { render(((performance.now() - t0) / 1000) % 21); requestAnimationFrame(loop); })()); }
+if (!location.search.includes('render')) { const t0 = performance.now(); (window.CAST_READY || Promise.resolve()).then(() => (function loop() { render(((performance.now() - t0) / 1000) % 24); requestAnimationFrame(loop); })()); }
 </script></body></html>
