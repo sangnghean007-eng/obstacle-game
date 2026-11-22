@@ -12,10 +12,12 @@ L = min(len(st['drums']), int(D * SR)); env = np.ones(L); a, b = int(16.85 * SR)
 d.add_stems({k: v[:L] * env for k, v in st.items()})
 n = tt(D); d.add('crowd', np.stack([np.convolve(np.random.default_rng(3).standard_normal(len(n)), np.ones(300) / 300, 'same') * 4] * 2), 0, .14)
 m.timpani(0.0, 90, .6, roll=1.2); m.timpani(2.5, 70, .5)
-SL = [3.3, 5.0, 5.45, 5.9, 6.35, 7.45, 7.75, 8.05, 8.35, 9.05, 9.3, 9.55, 9.8, 11.0, 12.1, 13.6, 13.75, 13.9, 14.0, 14.15, 14.3, 14.4, 14.55, 14.7, 15.9, 16.4]
-for i, s in enumerate(SL): m.whip(s - 0.06, .25, .2); m.smack(s, .75 if s != 12.1 else .95, -.2 + (i % 3) * .2)
+SL = [3.3, 5.0, 5.45, 5.9, 6.35, 7.45, 7.75, 8.05, 8.35, 9.05, 9.3, 9.55, 9.8, 11.0, 11.9, 13.0, 13.25, 13.5, 13.95, 14.2, 14.45, 14.85, 15.1, 15.35, 16.0, 16.4]
+for i, s in enumerate(SL): m.whip(s - 0.06, .25, .2); m.smack(s, .75 if s != 11.9 else .95, -.2 + (i % 3) * .2)
 for s in (3.5, 6.6, 8.6, 10.0, 12.4, 15.0, 16.6): m.crowd(s, 'ooh', 1.0, .25)
-m.slide_whistle(11.6, False, .5, .25); m.boom(12.1, .5)                              # Clásico slow-mo slap
+m.slide_whistle(8.4, True, .9, .3)   # Sevilla's captain flies into the stands
+for w in (2.7, 4.6, 7.0, 8.65, 10.5, 12.6, 13.7, 14.6, 15.6): m.whoosh(w, .35, .15)   # Mbappé marching between captains
+m.slide_whistle(11.4, False, .5, .25); m.boom(11.9, .5)                              # Clásico slow-mo slap
 m.f(np.concatenate([np.sin(2 * np.pi * np.cumsum(np.linspace(900, 200, int(.25 * SR))) / SR), np.zeros(10)]) * .6, 16.85, .5)  # PENALTY MISSED
 m.vo('mbappe', 'hmph', 17.2, .4); m.whip(17.76, .3); m.smack(17.82, 1.0, .2); m.vo('mbappe', 'ow', 17.9, .55); m.spring(18.1, .3)
 m.crowd(18.0, 'laugh', 1.6, .35); m.slide_whistle(20.6, True, .8, .35); m.vo('mbappe', 'laugh', 21.6, .35, -.2, 'giggle')

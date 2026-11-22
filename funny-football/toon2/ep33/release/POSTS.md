@@ -1,5 +1,5 @@
-# Ep33 "General Mbappé" — posts (general-mbappe-9x16.mp4, 23.1 s; cover = Aspas slaps Mbappé back)
-Story (owner's idea): General Mbappé walks past the captains of the 9 teams Real Madrid beat in a row, shows each score and slaps once per Real goal (26).
+# Ep33 "General Mbappé" — posts (general-mbappe-9x16.mp4, 23.1 s; cover = the whole wrecked line-up)
+Story (owner's idea, one continuous line-up shot): General Mbappé walks down the line of the captains of the 9 teams Real Madrid beat in a row, shows each score and slaps once per Real goal (26).
 Twist (true): Mbappé missed a penalty v Celta → Celta captain Iago Aspas slaps back. Button: Tuesday's opponent PSV runs away.
 Facts: ep33/facts.md (all 9 scores, captains, PSV fixture). Everything else is an invented cartoon gag.
 

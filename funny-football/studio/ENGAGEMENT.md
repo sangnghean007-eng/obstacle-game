@@ -1,3 +1,5 @@
+> **Before sending ANY episode: run studio/CHECKLIST.md (every owner lesson, applied by default).**
+
 # RULE 0 — FACTS FIRST, THEN EXAGGERATE (owner, 21 Nov 2026: "Hãy ghi nhớ luôn phải đúng thông tin rồi mới phóng đại biếm họa châm biếm")
 Every episode starts from verified, current facts. Caricature, satire and exaggeration are only allowed ON TOP of a true base, never instead of it.
 1. Before the script: search the latest news (last 30 days) for every person and event: current club, national-team status (active / retired), coach, result, date, minute, scorer.
