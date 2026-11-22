@@ -1,1 +1,1 @@
-window.CAST_SKIN = {"ronaldo": "#f3a769", "messi": "#e38f76", "mbappe": "#de8d44", "yamal": "#d0824b", "raphinha": "#da8e54", "aspas": "#efaa7f", "suazo": "#e4864c"};  // median cheek colour of each caricature head — limbs use it so face and hands match
+window.CAST_SKIN = {"ronaldo": "#f3a769", "messi": "#e38f76", "mbappe": "#de8d44", "yamal": "#d0824b", "raphinha": "#da8e54", "aspas": "#efaa7f", "suazo": "#e4864c", "gerardmoreno": "#e99260"};  // median cheek colour of each caricature head — limbs use it so face and hands match
