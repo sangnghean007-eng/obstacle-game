@@ -9,6 +9,9 @@ Every item below came from an owner complaint. They are applied by default, neve
 - [ ] Twist from a TRUE fact + a button ending. Owner's story ideas are followed exactly.
 ## Staging (owner, 22 Nov 2026: "Nên để hình ảnh tất cả các cầu thủ chung khung hình chứ đừng đơn lẻ" · "Ghi nhớ")
 - [ ] SAME FRAME: group stories keep everyone on screen together (line-up, walk along the line); victims stay visible with their after-effects so the damage piles up. No one-person-per-shot cutting.
+- [ ] EVERY real person on screen looks like the real person (caricature head). Generic only if the identity can't be verified — then say so, never leave it silently.
+- [ ] Bystanders REACT all the time: those waiting tremble/sweat/fear (the next one most), others laugh at the current victim; after being hit they laugh at the next one (owner, 22 Nov 2026).
+- [ ] Props/graphics vary: no two score boards/cards/stamps in the same style in one episode (LED, TV bug, chalk, neon, paper, stone…).
 - [ ] Camera tracks / pulls back instead of cutting between isolated two-shots; close-ups only as short punch-ins.
 ## Look ("vẽ cho giống", "kỳ", "hài phóng đại")
 - [ ] Real people = AI caricature heads (cast/*/caric) — exaggerated, funny, recognisable; generic only when the person can't be verified with 2 sources.

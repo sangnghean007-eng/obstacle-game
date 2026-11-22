@@ -23,3 +23,7 @@ Invented (cartoon): Mbappé as a "general", slaps (1 per goal), the captains' li
 | Gabriel Suazo | Sevilla first captain (club confirmed 11 Nov 2026) | El Pespunte 11 Nov 2026; Mucho Deporte; javisfc |
 | Gerard Moreno | Villarreal first captain 2026-27 (players' vote, second straight year) | Noticias Ciudadanas; OneFootball; Wikipedia 2026–27 Villarreal season |
 Generic (not drawn as real people): Roma (rotating captaincy), Leipzig, Racing, AEK, Valencia (captains with only one source so far).
+
+## v4 additions (22 Nov 2026)
+| Roma player shown | Paulo Dybala — started v Real Madrid 14 Oct 2026 (not shown as captain: no armband) | WhoScored confirmed line-ups; FotMob |
+Still generic (can't draw today — image credits used up; verified names ready for the next batch): Leipzig (Tidiam Gomis scored 85' — ESPN, Yahoo), Racing (keeper Jon Agirrezabala, 8 saves — ESPN), AEK (Koita scored — ESPN, beIN), Valencia (Gayà sent off late — FotMob, Betfred).

@@ -10,7 +10,7 @@ Description:
 Cartoon parody · invented scene · not real events.
 #shorts #mbappe #realmadrid #mourinho #laliga #football
 Tags (YouTube Studio → Tags field, 379/500 characters):
-mbappe, kylian mbappe, real madrid, mourinho, real madrid 9 wins, raphinha, iago aspas, gabriel suazo, gerard moreno, barcelona, celta vigo, sevilla, villarreal, roma, rb leipzig, aek athens, valencia, racing santander, psv, champions league, la liga, football funny, football cartoon, soccer cartoon, football animation, football memes, soccer memes, football shorts, soccer 365
+mbappe, kylian mbappe, real madrid, mourinho, real madrid 9 wins, raphinha, iago aspas, gabriel suazo, gerard moreno, dybala, barcelona, celta vigo, sevilla, villarreal, roma, rb leipzig, aek athens, valencia, racing santander, psv, champions league, la liga, football funny, football cartoon, soccer cartoon, football animation, football memes, soccer memes, football shorts, soccer 365
 Upload settings: Category Comedy · Not made for kids · Altered/synthetic content: Yes (AI-drawn caricature faces) · Language English · Comments on.
 
 ## TikTok / Reels

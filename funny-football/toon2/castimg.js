@@ -5,8 +5,8 @@
 //   CASTIMG.face(ctx, 'yamal', 'cry', x, y, height, rot)   — close-ups
 (function () {
   const base = (document.currentScript && document.currentScript.src || '').replace(/castimg\.js.*$/, '') + 'cast/';
-  const IM = {}, EX = ['smug', 'shock', 'angry', 'laugh', 'deadpan', 'cry', 'sad', 'angry2', 'dizzy'];
-  const MAP = { neutral: 'smug', open: 'laugh', happy: 'laugh', grin: 'laugh', joy: 'laugh', siuuu: 'laugh', scared: 'shock', strain: 'angry', mad: 'angry', bored: 'deadpan', flat: 'deadpan', sad: 'cry' };
+  const IM = {}, EX = ['smug', 'shock', 'angry', 'laugh', 'deadpan', 'cry', 'sad', 'angry2', 'dizzy', 'scared'];
+  const MAP = { scared: 'shock', neutral: 'smug', open: 'laugh', happy: 'laugh', grin: 'laugh', joy: 'laugh', siuuu: 'laugh',  strain: 'angry', mad: 'angry', bored: 'deadpan', flat: 'deadpan', sad: 'cry' };
   const load = (key, srcs) => new Promise(r => { const i = new Image(); let k = 0; i.onload = () => { IM[key] = i; r(); }; i.onerror = () => { if (++k < srcs.length) i.src = srcs[k]; else r(); }; i.src = srcs[0]; });
   function preload(names) { const p = Promise.all(names.flatMap(n => EX.map(e => load(n + '/' + e, [`${base}${n}/caric/${e}.png`, `${base}${n}/${e}.png`])))); window.CAST_READY = Promise.all([window.CAST_READY, p].filter(Boolean)); return p; }
   const get = (n, e) => IM[n + '/' + e] || IM[n + '/' + (MAP[e] || 'smug')] || IM[n + '/smug'];
