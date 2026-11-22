@@ -1,15 +1,16 @@
 # Ep34 "The Throw-In" v2 — posts (the-throw-in-9x16.mp4, 24 s) — angle: the 'nice guy' halo + the Ronaldo double standard (clearly labelled imaginary)
+Sound v3 (22 Nov): own music, SFX and voice lines made for this episode — no shared sound library, no channel sting.
 Facts: ep34/facts.md. Cartoon parody — the flop, the meter and the practice poster are invented.
 
 ## YouTube Shorts
 Title: Messi Threw It… Ronaldo Got the RED Card 🟥😂 #shorts #messi #ronaldo
 Description:
 "The nicest guy in football" 😇 throws the ball into Tapia’s face… yellow card, "negligible force" 🪶. Then Messi drags Ronaldo in… and the ref sends HIM off 🟥 (imaginary part clearly labelled). Columbus won 3-0; Game 2 is Friday.
-Cartoon parody · invented scene · not real footage.
+Cartoon parody · invented scene & lines · AI voices, not the players’ · not real footage.
 #shorts #messi #ronaldo #intermiami #columbuscrew #football
 Tags (YouTube Studio → Tags field):
 messi, lionel messi, ronaldo, messi vs ronaldo, double standard, inter miami, columbus crew, gonzalo tapia, messi throw in, messi yellow card, mls playoffs, mls cup playoffs, inter miami vs columbus, messi funny, football funny, football cartoon, soccer cartoon, football animation, football memes, soccer memes, football shorts, soccer 365
-Upload settings: Category Comedy · Not made for kids · Altered/synthetic content: Yes (AI-drawn caricature face) · Language English · Comments on.
+Upload settings: Category Comedy · Not made for kids · Altered/synthetic content: Yes (AI-drawn caricature faces + AI voice actors for invented lines; not the players’ real voices) · Language English · Comments on.
 
 ## TikTok / Reels
 Tapia: "On purpose! RED!" 🟥
@@ -26,7 +27,7 @@ Tapia wants a red. Messi: "Relax… I'm not Ronaldo" 😏
 Then he pulls Ronaldo in and Ronaldo gets the red 🟥 (imaginary)
 Be honest 👇
 
-Cartoon parody · invented scene · not real footage
+Cartoon parody · invented lines · AI voices, not the players’
 .
 #messi #intermiami #columbuscrew #mls #footballfunny #footballcartoon #soccermemes
 Cover: cover-9x16.jpg · Alt text: Cartoon of Messi taking a throw-in that hits a Columbus player in the face, the referee showing two yellow cards.

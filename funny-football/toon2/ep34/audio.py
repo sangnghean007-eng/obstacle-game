@@ -1,31 +1,47 @@
-"""Ep34 THE THROW-IN sound: trailer-style drama (new genre in the window), stadium crowd, whistle, BONK, three bounces,
-card swishes, timpani roll for the Force-O-Meter, a deflating 'pfft' for 'negligible', sad trombone at FT, training-ground echo."""
-import os, sys, numpy as np
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'sfx'))
-from music import Song, tt, SR
+"""Ep34 THE THROW-IN sound v3 — owner: "the sound repeats across videos". This episode's own palette, made for it (ElevenLabs, free credits):
+music  snd/music.wav  — original tango-telenovela comedy bed (eleven_music_v2_5), starts at 1.5 s so its first break lands on the BONK
+sfx    snd/bonk|stretch|whistle|crowd|hook.wav (eleven_text_to_sound_v3) — ball bonk, rubber arm, 3 whistle blasts + hit, crowd ooh→laugh, stage hook
+voices snd/vo_*.wav (eleven_v4, premade/library voices, no cloning) — Tapia "On purpose! That's a RED!", Messi "I'm not Ronaldo", Ronaldo "What?! I just got here!"
+No channel sting (it was the same in every episode); the music's own brass button ends it. Synth fx2 only for small fills."""
+import os, sys, subprocess, numpy as np
+H = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, os.path.join(H, '..', 'sfx'))
+from music import SR
 from mix import Desk
 from fx2 import Mix2
 from scipy.io import wavfile
 D = 23.3; d = Desk(D); m = Mix2(D, ep=34)
-song = Song('trailer', key='D', minor=True, seed=34).form([('intro', 1), ('verse', 1), ('drop', 2), ('break', 1), ('outro', 1)]); st = song.render()
-L = min(len(st['drums']), int(D * SR)); env = np.ones(L)
-for a, b in ((4.55, 5.6), (14.0, 15.3), (16.4, 17.4)): env[int(a * SR):int(b * SR)] = 0.15
-env = np.convolve(env, np.ones(1500) / 1500, 'same'); d.add_stems({k: v[:L] * env for k, v in st.items()})
-n = tt(D); d.add('crowd', np.stack([np.convolve(np.random.default_rng(4).standard_normal(len(n)), np.ones(260) / 260, 'same') * 4] * 2), 0, .16)
-def whistle(t, dur=.35, g=.35):
-    k = np.arange(int(dur * SR)) / SR; x = np.sin(2 * np.pi * 2900 * k) * (0.6 + 0.4 * np.sin(2 * np.pi * 28 * k)) * np.minimum(1, k * 40) * np.minimum(1, (dur - k) * 30); m.f(x * g, t, .6)
-m.crowd(0.3, 'ooh', 1.2, .15); m.vo('messi', 'hmph', 3.3, .4)
-m.whoosh(4.35, .3, .35); m.bonk(4.62, 1.0); m.thump(4.64, .7); m.crowd(4.7, 'ooh', 1.6, .4)
-m.slide_whistle(4.8, True, .8, .3); [m.spring(t0, .3) for t0 in (5.62, 6.02, 6.32)]; m.squeak(6.6, .3); m.crowd(6.4, 'laugh', 1.4, .25)
-m.vo('messi', 'laugh', 7.0, .3, -.2, 'snicker'); whistle(8.2, .5); m.whoosh(8.0, .6, .2)
-m.vo('generic_m', 'yelp', 8.55, .45, .4); m.vo('generic_m', 'hmph', 9.0, .4, .4)
-m.vo('messi', 'laugh', 9.75, .35, -.2, 'snicker'); m.spring(10.0, .4, .9); m.whoosh(10.4, .5, .35); m.vo('ronaldo', 'yelp', 10.5, .5, -.3); m.thump(10.95, .7)
-whistle(10.95, .5, .4); m.whip(11.0, .5); m.boom(11.0, .4); m.crowd(11.05, 'ooh', 1.2, .35); m.vo('ronaldo', 'hmph', 11.15, .5, -.2)
-m.whip(11.95, .25); m.cork(12.0, .25); m.whip(12.35, .35); m.slide_whistle(12.45, False, .9, .35); m.vo('ronaldo', 'ow', 12.6, .5, -.4); m.crowd(12.7, 'laugh', 1.2, .35); m.vo('messi', 'laugh', 12.8, .35, -.2, 'belly')
-m.honk(13.50, .3); m.timpani(14.00, 80, .5, roll=1.1); m.spring(15.20, .35); m.cork(15.25, .3); m.crowd(15.40, 'laugh', 1.0, .3)
-whistle(16.40, .25); whistle(16.70, .25); whistle(17.00, .7); m.wahwah(17.20, .3); m.crowd(17.40, 'cheer', 1.8, .3)
-m.whoosh(17.05, .3, .3); m.whoosh(18.35, .3, .3); m.bonk(18.65, .9); m.thump(18.9, .6); m.vo('messi', 'laugh', 21.2, .35, 0, 'giggle')
-_sr, sting = wavfile.read(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'sfx', 'demo', 'soccer365-sting.wav')); sting = sting.astype(float) / (32768 if sting.dtype == np.int16 else 1)
-sting = (sting.T if sting.ndim == 2 else np.stack([sting] * 2)); d.add('fx', sting[:, :int((D - 21.6) * SR)], 21.6, .5)
-d.add('fx', (m.fx + m.music).T, 0, 1.0); d.add('vox', m.vox.T, 0, 1.0); d.duck('music', [4.62, 10.95, 20.85], .4, .15, .4); d.room('fx', 'room', .12)
-print(d.master(sys.argv[1], os.path.join(os.path.dirname(os.path.abspath(__file__)), 'release', 'stems')))
+def snd(name, a=0, b=None, tempo=1.0):
+    sr, x = wavfile.read(os.path.join(H, 'snd', name + '.wav')); x = x.astype(float).T / 32768
+    x = x[:, int(a * SR): int(b * SR) if b else None]
+    if tempo != 1.0:  # speed up a line without changing pitch (ffmpeg atempo)
+        p = subprocess.run(['ffmpeg', '-v', 'error', '-f', 's16le', '-ar', str(SR), '-ac', '2', '-i', '-', '-af', f'atempo={tempo}', '-f', 's16le', '-'],
+                           input=(x.T * 32767).astype('<i2').tobytes(), capture_output=True).stdout
+        x = np.frombuffer(p, '<i2').reshape(-1, 2).T.astype(float) / 32768
+    f = np.ones(x.shape[1]); k = min(220, len(f) // 2); f[:k] = np.linspace(0, 1, k); f[-k:] = np.linspace(1, 0, k); return x * f
+# music bed
+d.add('music', snd('music'), 1.5, .55)
+# stadium air under everything (quiet), opening whistle + crowd before the music comes in
+n = int(D * SR); d.add('crowd', np.stack([np.convolve(np.random.default_rng(4).standard_normal(n), np.ones(260) / 260, 'same') * 4] * 2), 0, .12)
+d.add('fx', snd('whistle', 0, .45), 0.15, .45); d.add('crowd', snd('crowd', 0, 1.3), .4, .35)
+m.vo('messi', 'hmph', 3.3, .35)
+# the throw: whoosh → BONK (music break) → ooh→laugh, three bounces
+m.whoosh(4.35, .3, .35); d.add('fx', snd('bonk'), 4.6, 1.0); m.thump(4.64, .5); d.add('crowd', snd('crowd'), 4.75, .6)
+[m.spring(t0, .28) for t0 in (5.62, 6.02, 6.32)]; m.squeak(6.6, .25)
+# Tapia complains, ref whistles
+d.add('fx', snd('whistle', 0, 1.25), 8.15, .55)
+d.add('vox', snd('vo_tapia', .05, 2.4), 8.45, 2.3, .35)
+# THE GAG: Messi's line → rubber arm → Ronaldo dragged in → RED (blasts + orchestral hit) → "I just got here?!" → stage hook
+d.add('vox', snd('vo_messi', .15, 1.15), 9.95, 2.5, -.25)
+d.add('fx', snd('stretch'), 10.0, 1.0, -.2); m.whoosh(10.4, .5, .3); m.thump(10.95, .6)
+d.add('fx', snd('whistle', 0, 2.6), 10.85, .4); d.add('crowd', snd('crowd', 0, 1.4), 11.0, .25)
+d.add('vox', snd('vo_ronaldo', .05, 2.3, 1.2), 11.15, 2.3, .25)
+m.cork(12.0, .2); d.add('fx', snd('hook'), 12.3, 1.0, .3); d.add('crowd', snd('crowd', 1.2), 12.6, .55)
+# back in the match: Force-O-Meter, FT, training
+m.honk(13.50, .25); m.timpani(14.00, 80, .45, roll=1.1); m.spring(15.20, .3); m.cork(15.25, .25); d.add('crowd', snd('crowd', 1.5), 15.3, .35)
+d.add('fx', snd('whistle', 0, .45), 16.4, .4); d.add('fx', snd('whistle', 0, .45), 16.75, .4); m.wahwah(17.20, .28); d.add('crowd', snd('crowd', .6), 17.4, .35)
+m.whoosh(18.35, .3, .3); d.add('fx', snd('bonk', 0, .6), 18.6, .8); m.thump(18.9, .5)
+d.add('vox', snd('vo_messi', 1.25, 2.3), 21.3, 2.0, -.2)   # Messi's chuckle — the callback for the ending
+d.add('crowd', snd('crowd', 1.4), 21.9, .3)
+d.add('fx', (m.fx + m.music).T, 0, 1.0); d.add('vox', m.vox.T, 0, 1.0)
+d.duck('music', [4.62, 10.95], .45, .15, .4); d.duck('music', [8.45, 9.95, 11.15, 21.3], .6, 1.6, .3); d.room('fx', 'room', .12)
+print(d.master(sys.argv[1], os.path.join(H, 'release', 'stems')))

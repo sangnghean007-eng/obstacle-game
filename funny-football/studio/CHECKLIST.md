@@ -24,8 +24,14 @@ Every item below came from an owner complaint. They are applied by default, neve
 - [ ] Frame sheet every 0.5 s + full-res close-ups of every key moment checked; faces/text outside the app UI zones.
 ## Facts (Rule 0)
 - [ ] Every real fact on screen in facts.md with ≥2 sources from the last 30 days.
-## Sound
-- [ ] Hits synced to frames, music changes per episode, channel sting, qa.py PASS.
+## Sound ("Âm thanh cứ lặp đi lặp lại qua các video" — 22 Nov 2026)
+- [ ] NO REUSED SOUND LIBRARY. Every episode gets its own palette in ep<N>/snd/, made for that story (ElevenLabs, free credits):
+      music bed (node 'music', eleven_music_v2_5, ~900 cr, transcribe-check NOT needed: prompt "No vocals" + check by envelope),
+      4–6 key SFX described for THIS gag (node 'sfx', eleven_text_to_sound_v3, 50 cr each),
+      1–3 short character lines (creative_generate_speech eleven_v4, ~40 cr each, premade/library voices, never cloned; vary voices per episode).
+- [ ] fx2.py synth only for small fills (springs, whooshes); never as the main hit sounds. No shared channel sting at the end — end on the episode's own music button.
+- [ ] Voices 5+ dB over music in their windows (check release/stems RMS), music ducked under lines; place music breaks on the big hit.
+- [ ] Hits synced to frames, qa.py PASS, export release/<name>-sound.mp3. Out of credits → new fx2 parameters + a genre not used in 6 episodes, and say so.
 ## Posts ("hời hợt tag", "lung tung", "bỏ tiếng ả rập")
 - [ ] YouTube title (3 hashtags incl. #shorts) + description + Tags field + upload settings; TikTok; Instagram (+alt text, AI label); X ≤280; Facebook in short clean lines. English only. No Arabic.
 ## Working mode
