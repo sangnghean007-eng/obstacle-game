@@ -4,7 +4,7 @@ Real: Messi's throw-in hit Gonzalo Tapia's face; both booked; ref Allen Chapman:
 Invented: every spoken line, the flop rolls, the Force-O-Meter, Ronaldo dragged in + sent off, the practice scene. AI voice actors, not the players' voices.
 
 ## YouTube Shorts
-Title (78 chars):
+Title (67 chars):
 Messi Threw It… Ronaldo Got the RED Card 🟥😂 #shorts #messi #ronaldo
 
 Description:
