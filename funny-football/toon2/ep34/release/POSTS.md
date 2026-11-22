@@ -1,4 +1,4 @@
-# Ep34 "The Throw-In" v2 — posts (the-throw-in-9x16.mp4, 24 s) — angle: the 'nice guy' halo + the Ronaldo double standard (clearly labelled imaginary)
+# Ep34 "The Throw-In" v2 — posts (the-throw-in-9x16.mp4, 28 s) — angle: the 'nice guy' halo + the Ronaldo double standard (clearly labelled imaginary)
 Sound v3 (22 Nov): own music, SFX and voice lines made for this episode — no shared sound library, no channel sting.
 Facts: ep34/facts.md. Cartoon parody — the flop, the meter and the practice poster are invented.
 

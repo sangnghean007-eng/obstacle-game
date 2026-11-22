@@ -304,13 +304,13 @@ const SEG = [[0, 24, 'touchline', (z, T) => { const t = mapT(T);
     if (t > 4.62 && t < 5.4) SHOT.speedlines(ctx, t, { alpha: 0.25 }); }
   else SHOT.low(ctx, () => training(t), { x: 560, y: 1300, lift: 180, zoom: 1.05 }); },   // worm's-eye: the hero practising
  (z, T) => { if (T >= 9.6 && T < 13.4) { scoreBug(T);
-    if (T < 10.5) card('I’m not Ronaldo 😏', 420, 600, 64, { pop: (T - 9.65) / 0.25, tail: -1 });
+    if (T < 10.8) card('I’m not Ronaldo 😏', 420, 600, 64, { pop: (T - 9.65) / 0.25, tail: -1 });
     if (T >= 10.4) { ctx.font = '600 30px Inter'; ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.textAlign = 'center'; ctx.fillText('(imaginary)', 540, 390); }
     if (T > 10.95 && T < 11.9) stamp('🟥 RONALDO!', 560, 480, 96, T - 10.95);
-    if (T > 11.1 && T < 12.35) card('I just got here?!', 300, 720, 56, { pop: (T - 11.1) / 0.25, tail: -1, bg: '#fff3b0' });
+    if (T > 11.45 && T < 12.75) card('I just got here?!', 300, 720, 56, { pop: (T - 11.45) / 0.25, tail: -1, bg: '#fff3b0' });
     if (T > 11.9 && T < 12.3) stamp('🟨 Messi… only', 380, 480, 72, T - 11.9);
     if (T > 12.3 && T < 12.9) stamp('🟨 Tapia', 700, 480, 64, T - 12.3);
-    if (T > 12.6) stamp('BYE 👋', 300, 560, 90, T - 12.6); return; }
+    if (T > 12.8) stamp('BYE 👋', 300, 560, 90, T - 12.8); return; }
   const t = mapT(T);
   if (t < 17.2) scoreBug(t);
   if (t < 2.6) { card('“Nicest guy” 😇', 540, 400, 80, { pop: 0.7 + t / 0.3, rot: -0.02 }); card('Throw-in. 44\u2032', 540, 510, 60, { pop: 0.7 + (t - 0.6) / 0.3, bg: '#ffe9a8' }); }
@@ -324,9 +324,10 @@ const SEG = [[0, 24, 'touchline', (z, T) => { const t = mapT(T);
   if (t > 17.2) { card('Game 2: Friday 👀', 540, 330, 76, { pop: (t - 17.2) / 0.3 }); if (t > 18.8) stamp('PRACTICE ✅', 760, 560, 100, t - 18.8); }
   ctx.font = '600 28px Inter'; ctx.fillStyle = 'rgba(255,255,255,.85)'; ctx.textAlign = 'center'; if (t > 19.5) ctx.fillText('Cartoon parody', 540, 232); }]];
 ALL.push(4.62, 10.95, 20.85);
-window.DURATION = 23.2; window.render = function (t) { window.T2T = t; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.filter = 'none'; ctx.clearRect(0, 0, W, H);
+const SLOW = 1.2;  // owner 22 Nov: 'diễn biến hơi nhanh' — whole story 1.2x slower (27.8 s)
+window.DURATION = 23.2 * SLOW; window.render = function (t0) { const t = t0 / SLOW; window.T2T = t; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.filter = 'none'; ctx.clearRect(0, 0, W, H);
   const seg = SEG[0], z = t; const hs = ALL.reduce((m, a) => Math.max(m, t >= a && t < a + 0.25 ? 18 * (1 - (t - a) / 0.25) : 0), 0) + Math.sin(t * 2.3) * 2;
   ctx.save(); ctx.translate(Math.sin(t * 91) * hs, Math.cos(t * 77) * hs); seg[3](z, t); ctx.restore(); for (const c of [19.4]) if (Math.abs(t - c) < 0.14) PRO.whip(ctx, cv, (t - c + 0.14) / 0.28, 1);
   post(); ctx.setTransform(1, 0, 0, 1, 0, 0); if (!window.NO_HUD) seg[4](z, t); };
-if (!location.search.includes('render')) { const t0 = performance.now(); (window.CAST_READY || Promise.resolve()).then(() => (function loop() { render(((performance.now() - t0) / 1000) % 23.2); requestAnimationFrame(loop); })()); }
+if (!location.search.includes('render')) { const t0 = performance.now(); (window.CAST_READY || Promise.resolve()).then(() => (function loop() { render(((performance.now() - t0) / 1000) % DURATION); requestAnimationFrame(loop); })()); }
 </script></body></html>
