@@ -244,7 +244,7 @@ function hud(t) {
   if (t > T.glass + 0.2 && t < T.G) stamp('⏳💥', 540, 360, 110, t - T.glass - 0.2);
   if (t > T.G + 0.4 && t < T.G + 2.2) card('"the size of the mess"', 540, 360, 54, { pop: (t - T.G - 0.4) / 0.3, bg: '#fff3b0' });
   if (t > T.G + 2.2) card('Next: Sporting, Wed 👀', 540, 360, 62, { pop: (t - T.G - 2.2) / 0.3 });
-  if (t > T.G + 1.0) { ctx.font = '600 24px Inter'; ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.textAlign = 'center'; ctx.fillText('Cartoon parody · real quotes in " " · AI voice · Sky Sports quote', 540, 1590); } }
+  if (t > T.G + 1.0) { ctx.font = '600 24px Inter'; ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.textAlign = 'center'; ctx.fillText('Cartoon parody · real quotes in " "', 540, 1590); } }
 const SHAKE = [7.55, 7.8, T.fix[2] + 0.6, T.fix[0] + 0.6, T.deligt + 0.4, T.yoro + 0.2, T.szob, T.wirtz, ...T.sw, T.glass];
 window.DURATION = T.END; window.render = function (t) { window.T2T = t; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.clearRect(0, 0, W, H); ctx.fillStyle = '#5a6b82'; ctx.fillRect(0, 0, W, H);
   const hs = SHAKE.reduce((m, a) => Math.max(m, t >= a && t < a + 0.3 ? 16 * (1 - (t - a) / 0.3) : 0), 0);

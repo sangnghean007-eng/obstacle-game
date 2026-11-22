@@ -5,6 +5,7 @@ Use this guide for every release dossier (`toon2/epN/release/*.md`). It was rese
 - Real numbers in `performance.csv` beat this guide. When our data disagrees, update this file.
 
 ## 0. House rules for all platforms
+- **NO "AI" IN POSTS (owner, 22 Nov 2026: "Không cần nói làm gì bằng AI đâu, mọi người tự biết mà")**: captions never mention AI faces/voices. Keep only "Cartoon parody" (+ "invented lines"/"imaginary" where lines are made up) — real people + made-up lines still need the parody flag. Platform synthetic-content labels: not required for clearly animated cartoons → leave off.
 - **Language:** all copy in English (simple words; a Vietnamese 18-year-old must get it).
 - **Facts:** every fact in a caption is in `facts.md` with 2+ sources. Write "parody" next to anything invented. No quotes unless they are VERBATIM and sourced. Real coaches stay unnamed.
 - **The first line is everything.** All platforms cut the caption after the first line or so. The first line = **hook + main keyword** (the player/team name a fan would search, e.g. "Ronaldo", "Portugal 1-4 Denmark"). **(consensus)**

@@ -36,6 +36,6 @@ Every item below came from an owner complaint. They are applied by default, neve
 - [ ] Voices 5+ dB over music in their windows (check release/stems RMS), music ducked under lines; place music breaks on the big hit.
 - [ ] Hits synced to frames, qa.py PASS, export release/<name>-sound.mp3. Out of credits → new fx2 parameters + a genre not used in 6 episodes, and say so.
 ## Posts ("hời hợt tag", "lung tung", "bỏ tiếng ả rập")
-- [ ] YouTube title (3 hashtags incl. #shorts) + description + Tags field + upload settings; TikTok; Instagram (+alt text, AI label); X ≤280; Facebook in short clean lines. English only. No Arabic.
+- [ ] YouTube title (3 hashtags incl. #shorts) + description + Tags field + upload settings; TikTok; Instagram (+alt text); X ≤280; Facebook in short clean lines. English only. No Arabic. No "AI" mentions in captions (owner) — just "Cartoon parody".
 ## Working mode
 - [ ] Don't ask about defects or environment/connector changes — do them (Rule 0b, 0c). Ask only about taste.

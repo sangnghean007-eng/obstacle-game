@@ -15,13 +15,13 @@ Pochettino's Man United rebuild lasted 13 minutes at Anfield 😬
 💥 Liverpool 4-0 · shots 28-10 · 34 conceded this season, most in Europe
 🤳 Liverpool's demolition crew takes a selfie at the rubble
 Next: Sporting on Wednesday. How much time does he need? 👇
-Cartoon parody · invented scene · players drawn as cartoons · AI face and voice · not real footage.
+Cartoon parody · invented scene · not real footage.
 #manutd #pochettino #liverpool
 
 Tags (YouTube Studio → Tags field):
 manchester united, man utd, pochettino, mauricio pochettino, liverpool vs man utd, liverpool 4-0 man utd, pochettino debut, yoro red card, de ligt, give me time, premier league record, man utd relegation zone, football cartoon, football funny, soccer 365
 
-Upload settings: Category Comedy · Not made for kids · Altered or synthetic content: Yes (AI caricature face + AI voice) · Language English · Comments on · Thumbnail = first frame (cover is built in).
+Upload settings: Category Comedy · Not made for kids · Altered or synthetic content: No (clearly animated cartoon) · Language English · Comments on · Thumbnail = first frame (cover is built in).
 
 ## TikTok
 Caption:
@@ -30,9 +30,9 @@ De Ligt's plank: BONK BONK 🪵
 Anfield: 🟥 8' · ⚽ 10' · ⚽ 13' — a Premier League first 🤯
 Liverpool finish the job with a wrecking ball… and a selfie 🤳
 How much time does he need? 👇
-Cartoon parody · AI voice
+Cartoon parody
 #manutd #pochettino #liverpool #premierleague #footballtiktok
-Settings: AI-generated content label ON · Sound name "Soccer 365 – The Rebuild" · Comments on.
+Settings: Sound name "Soccer 365 – The Rebuild" · Comments on.
 
 ## Instagram (Reels)
 Caption:
@@ -43,12 +43,12 @@ Anfield: red card 8', two goals by 13' — a Premier League first. 4-0.
 Liverpool's crew: wrecking ball + group selfie 🤳
 How much time does he need? 👇
 
-Cartoon parody · players drawn as cartoons · AI face & voice
+Cartoon parody
 .
 #manutd #pochettino #liverpool #premierleague #footballcartoon
 Cover: cover-9x16.jpg
 Alt text: Cartoon of Pochettino and a Man United work crew (Fernandes, De Ligt, Yoro, Mainoo, Mbeumo) at a crumbling house whose door is a leaking goal; De Ligt's plank bonks his teammates, Yoro trips Isak and gets a red card, Szoboszlai and Wirtz smash the windows, Liverpool players wreck the house with a wrecking ball and take a selfie.
-Settings: Share to Feed on · Audio name "Soccer 365 – The Rebuild" · AI info label ON.
+Settings: Share to Feed on · Audio name "Soccer 365 – The Rebuild".
 
 ## X (Twitter) — upload the mp4 natively
 Pochettino: "You will see, give me time" ⏳
@@ -76,5 +76,5 @@ United have conceded 34 this season, the most in Europe.
 Liverpool's crew finishes with a wrecking ball and a group selfie.
 Next: Sporting on Wednesday. How much time does he need?
 
-Cartoon parody · players drawn as cartoons · AI face & voice
+Cartoon parody
 #ManUtd #Pochettino

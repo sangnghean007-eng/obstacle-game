@@ -168,7 +168,7 @@ function hud(t) {
   if (t > T.flip + 0.35 && t < T.F) stamp('THEY DON’T 🤓', 540, 420, 84, t - T.flip - 0.35);
   if (t > 22.0 && t < 23.6) stamp('SIUUU!', 540, 420, 110, t - 22.0, '#1f3c88');
   if (t > 25.4) card('🧉', 820, 520, 90, { pop: (t - 25.4) / 0.3 });
-  if (t > 25.0) { ctx.font = '600 26px Inter'; ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.textAlign = 'center'; ctx.fillText('Cartoon parody · real quotes in " " · AI voices', 540, 1560); }
+  if (t > 25.0) { ctx.font = '600 26px Inter'; ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.textAlign = 'center'; ctx.fillText('Cartoon parody · real quotes in " "', 540, 1560); }
 }
 const SHAKE = [1.25, 9.0, T.flip + 0.3, 22.9];
 function grade() { ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); const v = ctx.createRadialGradient(540, 960, 560, 540, 960, 1250); v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,0,.4)'); ctx.fillStyle = v; ctx.fillRect(0, 0, W, H); ctx.restore(); }

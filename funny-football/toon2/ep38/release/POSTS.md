@@ -15,13 +15,13 @@ Messi and Ronaldo both said goodbye to their national teams — so Ronaldo turne
 🤐 Messi never commented back… (in our cartoon he starts typing, sees 41M vs 20M, deletes it)
 🏆 Then he 'saves face' with his World Cup post: 70M+, the most-liked post EVER
 Who really won? 👇
-Cartoon parody · like counts approx. (media reports) · AI voice · not real footage.
+Cartoon parody · like counts approx. (media reports) · not real footage.
 #ronaldo #messi #instagram
 
 Tags (YouTube Studio → Tags field):
 ronaldo, messi, cristiano ronaldo, lionel messi, ronaldo retirement, messi retirement, ronaldo instagram likes, messi instagram record, most liked instagram post, messi world cup post, ronaldo portugal farewell, messi argentina farewell, messi no comment ronaldo, football cartoon, football funny, soccer 365
 
-Upload settings: Category Comedy · Not made for kids · Altered or synthetic content: Yes (AI caricature faces + AI commentator voice) · Language English · Comments on · Thumbnail = first frame (cover is built in).
+Upload settings: Category Comedy · Not made for kids · Altered or synthetic content: No (clearly animated cartoon) · Language English · Comments on · Thumbnail = first frame (cover is built in).
 
 ## TikTok
 Caption:
@@ -32,7 +32,7 @@ Then scrolled to his World Cup post: 70M+ 🏆 😏
 Who won? 👇
 Cartoon parody · likes approx.
 #ronaldo #messi #goat #instagram #footballtiktok
-Settings: AI-generated content label ON · Sound name "Soccer 365 – The Like Race" · Comments on.
+Settings: Sound name "Soccer 365 – The Like Race" · Comments on.
 
 ## Instagram (Reels)
 Caption:
@@ -43,12 +43,12 @@ In our cartoon: types… sees the likes… deletes ⌫
 Then he scrolls to his World Cup post: 70M+ 🏆😏
 Who wins? 👇
 
-Cartoon parody · like counts approx. · AI voice
+Cartoon parody · like counts approx.
 .
 #ronaldo #messi #goat #footballcartoon #instagram
 Cover: cover-9x16.jpg
 Alt text: Cartoon of Messi and Ronaldo beside giant phones showing their farewell posts. Ronaldo's like bar passes Messi's; Messi starts typing a comment on Ronaldo's post, sees 41M likes and deletes it, then his World Cup post bar smashes through the ceiling.
-Settings: Share to Feed on · Audio name "Soccer 365 – The Like Race" · AI info label ON.
+Settings: Share to Feed on · Audio name "Soccer 365 – The Like Race".
 
 ## X (Twitter) — upload the mp4 natively
 Ronaldo commented on Messi's farewell 💬
@@ -72,5 +72,5 @@ Then he scrolls back to his World Cup post: 70M+ 🏆, the most-liked post ever.
 
 Who really won?
 
-Cartoon parody · like counts approx. · AI voice
+Cartoon parody · like counts approx.
 #Messi #Ronaldo

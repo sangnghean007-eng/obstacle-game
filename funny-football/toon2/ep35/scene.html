@@ -180,7 +180,7 @@ function hud(t) {
   if (t > T.land && t < T.back) card('MINE!!', 790, 1480, 80, { pop: (t - T.land) / 0.25, bg: '#fff3b0', rot: 0.04 });
   if (t > T.back + 0.1 && t < T.cuEnd) stamp('League: GOAL ✅', 540, 470, 80, t - T.back - 0.1, '#1f7a2a');
   if (t > 23.4) card('987? 👀', 540, 1470, 76, { pop: (t - 23.4) / 0.3, bg: '#fff3b0' });
-  if (t > 24.6) { ctx.font = `400 22px ${PIX}`; ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.textAlign = 'center'; ctx.fillText('cartoon parody · AI voices', 540, 1560); }
+  if (t > 24.6) { ctx.font = `400 22px ${PIX}`; ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.textAlign = 'center'; ctx.fillText('cartoon parody', 540, 1560); }
 }
 const SHAKE = [T.slam, T.post, T.land, T.back];
 function grade() { ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); const v = ctx.createRadialGradient(540, 960, 560, 540, 960, 1250); v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,0,.38)'); ctx.fillStyle = v; ctx.fillRect(0, 0, W, H); ctx.restore(); }

@@ -14,13 +14,13 @@ Cristiano Ronaldo scores goal 986… then hits the post from the penalty spot �
 🤓 Opta calls one of his goals an own goal
 ✅ The league says it's his
 14 to go. When does 1000 land? 👇
-Cartoon parody · invented scene & lines · AI voices, not the players' · not real footage.
+Cartoon parody · invented scene & lines · not real footage.
 #ronaldo #cr7 #alnassr
 
 Tags (YouTube Studio → Tags field):
 ronaldo, cristiano ronaldo, cr7, ronaldo 1000 goals, ronaldo 986 goals, road to 1000, ronaldo penalty miss, ronaldo hits post, al nassr vs al ahli, al nassr, saudi pro league, opta own goal, football cartoon, football animation, soccer 365
 
-Upload settings: Category Comedy · Not made for kids · Altered or synthetic content: Yes (AI caricature face + AI voice actors for invented lines) · Language English · Comments on · Thumbnail = first frame (cover is built in).
+Upload settings: Category Comedy · Not made for kids · Altered or synthetic content: No (clearly animated cartoon) · Language English · Comments on · Thumbnail = first frame (cover is built in).
 
 ## TikTok
 Caption:
@@ -28,9 +28,9 @@ Ronaldo's road to 1000, block by block 🧱
 986 ✅ SIUUU! → penalty → POST 😬 → 3-1 loss
 Then a stats robot tries to take one back 🤓 "MINE!!"
 When does 1000 land? 👇
-Cartoon parody · AI voices
+Cartoon parody
 #ronaldo #cr7 #alnassr #roadto1000 #footballtiktok
-Settings: AI-generated content label ON · Sound name "Soccer 365 – Block by Block" · Comments on.
+Settings: Sound name "Soccer 365 – Block by Block" · Comments on.
 
 ## Instagram (Reels)
 Caption:
@@ -39,19 +39,19 @@ Ronaldo stacks goal 986 🧱 SIUUU!
 Opta: "own goal" 🤓 League: "his goal" ✅ Ronaldo: "MINE!!"
 14 to go. Your prediction? 👇
 
-Cartoon parody · invented lines · AI voices, not the players'
+Cartoon parody · invented lines
 .
 #ronaldo #cr7 #alnassr #footballcartoon #roadto1000
 Cover: cover-9x16.jpg
 Alt text: Block-style cartoon of Ronaldo on a staircase of numbered goal blocks reaching 986; a small robot tries to pull out a block labelled OCT23 while Ronaldo grabs it back.
-Settings: Share to Feed on · Audio name "Soccer 365 – Block by Block" · AI info label ON.
+Settings: Share to Feed on · Audio name "Soccer 365 – Block by Block".
 
 ## X (Twitter) — upload the mp4 natively
 Ronaldo: goal 986 🧱 SIUUU!
 4 min later: penalty… post 😬
 Opta: one of them is an own goal 🤓 League: no ✅
 14 to go. When does 1000 land? 👇
-(cartoon parody, AI voices) #Ronaldo #CR7
+(cartoon parody) #Ronaldo #CR7
 Alt text (media): Block-style cartoon of Ronaldo building a staircase of goal blocks to 1000 and fighting a robot over a disputed block.
 
 ## Facebook (Reels)
@@ -66,5 +66,5 @@ In our cartoon he grabs it back: "MINE!!"
 
 14 to go. When will he reach 1000?
 
-Cartoon parody · invented lines · AI voices
+Cartoon parody · invented lines
 #Ronaldo #AlNassr
