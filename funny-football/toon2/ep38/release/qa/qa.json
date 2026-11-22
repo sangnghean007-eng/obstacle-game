@@ -1,0 +1,37 @@
+[
+ [
+  "length",
+  "PASS",
+  "26.7 s"
+ ],
+ [
+  "loudness",
+  "PASS",
+  "-14.0 LUFS, true peak -3.2 dBTP"
+ ],
+ [
+  "silence",
+  "PASS",
+  "none >= 0.3 s"
+ ],
+ [
+  "still",
+  "PASS",
+  "none >= 0.6 s"
+ ],
+ [
+  "blank",
+  "PASS",
+  "none"
+ ],
+ [
+  "variation",
+  "PASS",
+  "0 near-identical 3-s stretches"
+ ],
+ [
+  "safe zones",
+  "LOOK",
+  "release/qa/safezones.png"
+ ]
+]

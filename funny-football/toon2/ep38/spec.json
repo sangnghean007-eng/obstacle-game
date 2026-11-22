@@ -1,0 +1,21 @@
+{
+ "logline": "Ronaldo turns two farewell posts into a like race: his comment on Messi's goodbye gets 5M, his own goodbye passes Messi's 20M in 8 hours — until Messi quietly scrolls back to his World Cup post, the most-liked post ever.",
+ "beats": [
+  {"shot": "wide", "idea": "Messi's farewell post on a giant phone, counter to 20M", "text": "Messi says goodbye"},
+  {"shot": "cu", "idea": "Ronaldo comments 'All my respect' — the comment gets 5M likes, he counts them", "text": "His comment: 5M+"},
+  {"shot": "low", "idea": "Ronaldo's farewell post: the like bar rockets past Messi's 20M line in 8 hours", "text": "8 hours: 22M"},
+  {"shot": "xcu", "idea": "Ronaldo's eyes with the counter reflected: 41M", "text": "41M"},
+  {"shot": "dutch", "idea": "Messi calmly scrolls to his World Cup post, 70M+, the bar smashes the ceiling", "text": "Most-liked post EVER"},
+  {"shot": "cu", "idea": "Ronaldo frantically likes his own post +1 +1, Messi sips mate", "text": "+1"}
+ ],
+ "techniques": ["escalation", "misdirection", "deadpan", "sound gag", "callback"],
+ "gags": ["like-race-commentary", "counting-likes-on-a-comment", "bar-smashes-ceiling", "liking-own-post"],
+ "twist": "Messi's World Cup post is the most-liked post ever",
+ "callback": "Messi's mate (running gag) and Ronaldo counting everything",
+ "ending": "button",
+ "hidden_details": ["Ronaldo's phone case has his own face", "the 8-hour clock is shaped like a 7", "Messi's World Cup post shows the trophy"],
+ "meme_frame": "Messi's bar smashing through the ceiling while Ronaldo stares",
+ "style": "chibi-caricature-feed",
+ "prev_style": "chibi-caricature-gala",
+ "hook_frame0": "two giant phones as race lanes, Ronaldo's like bar rocketing, Messi calm with mate"
+}

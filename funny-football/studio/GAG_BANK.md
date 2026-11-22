@@ -42,6 +42,10 @@ Columns: id | gag | technique (rule-of-3, misdirection, escalation, cutaway, dea
 | U35 | His own stat board flips to Messi 8 – CR7 5 | Ep37 |
 | U36 | Self-made 'BEST EVER: ME' trophy + self-crowning | Ep37 |
 | U37 | Messi 4th-wall mate slurp | Ep37 |
+| U38 | Like race with a horse-race commentator | Ep38 |
+| U39 | Counting likes on a comment | Ep38 |
+| U40 | Old record bar smashes the ceiling | Ep38 |
+| U41 | Liking his own post, +1 +1 | Ep38 |
 
 ## FRESH (60 — pick ≥4 per episode, mix groups)
 ### A. Impact (physics, escalation)

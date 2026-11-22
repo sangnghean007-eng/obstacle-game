@@ -1,0 +1,143 @@
+<!doctype html><html><head><meta charset="utf-8"><title>The Like Race</title><style>html,body{margin:0;background:#000}</style></head><body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../styles.js"></script><script src="../pro.js"></script><script src="../fx.js"></script><script src="../shots.js"></script><script src="../chibi.js"></script><script src="../chibi_cast.js"></script><script src="../rig2.js"></script><script src="../castimg.js"></script><script src="../cast/skins.js"></script>
+<script>
+// Ep38 "THE LIKE RACE" (facts: ep38/facts.md). Messi's Argentina farewell post ~20M likes; Ronaldo's comment under it 5M+; Ronaldo's Portugal farewell post 22M in 8 h, ~41M now;
+// Messi's World Cup 2022 post = most-liked Instagram post ever, 70M+. Generic social-feed look (no platform logo/UI copy).
+const W = 1080, H = 1920, cv = document.getElementById('c'), ctx = cv.getContext('2d');
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v)), lerp = (a, b, k) => a + (b - a) * k, eOut = k => 1 - (1 - clamp(k)) ** 3, eIO = k => { k = clamp(k); return k < .5 ? 4 * k * k * k : 1 - (-2 * k + 2) ** 3 / 2; };
+const eBack = k => { k = clamp(k); const c = 1.7; return 1 + (c + 1) * (k - 1) ** 3 + c * (k - 1) ** 2; };
+const FONT = '"Bangers","Impact",Inter,sans-serif', INK = '#1a1410', PINK = '#ff3d77';
+CASTIMG.preload(['messi', 'ronaldo']); window.CAST_READY = Promise.all([window.CAST_READY, document.fonts.load('40px Bangers')]);
+function card(s, x, y, size, o = {}) { ctx.save(); ctx.font = `400 ${size}px ${o.font || FONT}`; const tw = ctx.measureText(s).width, pw = tw + size * 0.9, ph = size * 1.35;
+  ctx.translate(x, y); ctx.rotate(o.rot || 0); const sc = o.pop != null ? eBack(o.pop) : 1; ctx.scale(sc, sc);
+  ctx.fillStyle = 'rgba(0,0,0,.25)'; ctx.beginPath(); ctx.roundRect(-pw / 2 + 8, -ph / 2 + 10, pw, ph, 18); ctx.fill();
+  ctx.fillStyle = o.bg || '#fffaf0'; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.beginPath(); ctx.roundRect(-pw / 2, -ph / 2, pw, ph, 18); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = o.col || INK; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(s, 0, 4); ctx.restore(); }
+function stamp(s, x, y, size, k, col = '#c0281c') { if (k <= 0) return; ctx.save(); ctx.translate(x, y); ctx.rotate(-0.07); const sc = 1.6 - 0.6 * eOut(k * 2.5); ctx.scale(sc, sc); ctx.globalAlpha = clamp(k * 4);
+  ctx.font = `400 ${size}px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineWidth = 16; ctx.strokeStyle = '#fffaf0'; ctx.strokeText(s, 0, 0); ctx.fillStyle = col; ctx.fillText(s, 0, 0);
+  const tw = ctx.measureText(s).width; ctx.lineWidth = 7; ctx.strokeStyle = col; ctx.strokeRect(-tw / 2 - 30, -size * 0.65, tw + 60, size * 1.3); ctx.restore(); }
+// ---------------- cast: national-team kits (both farewells)
+const kit = (shirt, trim, shorts, sock, num, boot = '#111') => ({ shirt, sleeve: shirt, cuff: trim, collar: trim, shorts, sock, sockShade: sock, sockBand: trim, boot, num });
+const shadeOf = h => '#' + [1, 3, 5].map(i => Math.round(parseInt(h.slice(i, i + 2), 16) * 0.8).toString(16).padStart(2, '0')).join('');
+const BASE = { ronaldo: Object.assign({}, CH.ronaldo, { kit: kit('#c8102e', '#0b6b2e', '#0b6b2e', '#c8102e', '#ffd200') }),
+  messi: Object.assign({}, CH.messi, { kit: Object.assign(kit('#9ccbf0', '#ffffff', '#111111', '#ffffff', '#111'), { stripes: '#ffffff' }) }) };
+const CC = {}; for (const k in BASE) CC[k] = Object.assign({}, BASE[k], { arm: BASE[k].arm * 0.82, armW: BASE[k].armW * 1.35, skin: CAST_SKIN[k], shade: shadeOf(CAST_SKIN[k]) });
+const SC = { ronaldo: 1.12, messi: 1.05 };
+const lay = n => { const C = CC[n], hipY = -C.leg * 0.95, shY = hipY - C.torsoH; return { hipY, shY, fs: [C.shoulderW * 0.8, shY + 30], bs: [-C.shoulderW * 0.72, shY + 30] }; };
+function W2(o, lx, ly) { const s = o.s, f = o.f || 1, r = o.lean || 0, X = lx * s * f, Y = ly * s; return [o.x + X * Math.cos(r) - Y * Math.sin(r), o.y + X * Math.sin(r) + Y * Math.cos(r)]; }
+function reach(n, o, side, tx, ty) { const L = lay(n), p = side === 'f' ? L.fs : L.bs, S = W2(o, p[0], p[1]), r = o.lean || 0, f = o.f || 1;
+  const dx = tx - S[0], dy = ty - S[1], lx = (dx * Math.cos(-r) - dy * Math.sin(-r)) / f, ly = dx * Math.sin(-r) + dy * Math.cos(-r); const a = Math.atan2(lx, ly) * 180 / Math.PI; return [a - 10, a + 10]; }
+function CB(n, o, t, ph = 0) { const k = o.life ?? 1, sw = Math.sin(t * 2.1 + ph);
+  const pose = o.pose || { bArm: [-18 + sw * 6 * k, -8], fArm: [18 - sw * 6 * k, 8], bLeg: [-8, -4], fLeg: [8, 4] }; const q = Object.assign({ s: SC[n] }, o);
+  chibi.draw(ctx, CC[n], pose, 'neutral', q.x + Math.sin(t * 0.9 + ph) * 4 * k, q.y - (o.hop || 0), q.s, { f: o.f || 1, lean: (o.lean || 0) + Math.sin(t * 1.3 + ph) * 0.015 * k, sq: (o.sq || 0) + Math.sin(t * 3.1 + ph) * 0.012 * k,
+    headTilt: (o.tilt || 0) + Math.sin(t * 1.7 + ph) * 0.05 * k, hands: o.hands, headFn: CASTIMG.head(ctx, n, o.expr || 'smug', { collar: CC[n].kit.collar }) }); }
+function mate(x, y, s = 1, tilt = 0) { ctx.save(); ctx.translate(x, y); ctx.rotate(tilt); ctx.scale(s, s);
+  ctx.strokeStyle = '#c9c9d1'; ctx.lineWidth = 7; ctx.beginPath(); ctx.moveTo(8, -40); ctx.lineTo(26, -92); ctx.stroke(); ctx.strokeStyle = INK; ctx.lineWidth = 2; ctx.stroke();
+  ctx.fillStyle = '#7a4a22'; ctx.strokeStyle = INK; ctx.lineWidth = 5; ctx.beginPath(); ctx.ellipse(0, 0, 34, 42, 0, 0, 7); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#c9a227'; ctx.fillRect(-30, -40, 60, 12); ctx.strokeRect(-30, -40, 60, 12); ctx.fillStyle = '#5c8a2e'; ctx.beginPath(); ctx.ellipse(0, -42, 26, 7, 0, 0, 7); ctx.fill(); ctx.restore(); }
+// ---------------- like counts over time (millions), from facts.md
+const T = { mPost: 0.4, rCom: 4.4, rPost: 8.2, lead: 12.0, xcu: 14.0, wc: 17.0, smash: 19.0, btn: 22.0, END: 26.5 };
+const M = t => t < T.wc ? 20 * eOut((t - T.mPost) / 3.0) : 20;                                         // Messi farewell (~20M)
+const MWC = t => t < T.wc + 0.3 ? 0 : 70;                                                                  // Messi World Cup post: already 70M+ (posted Dec 2022)
+const COM = t => 5 * eOut((t - T.rCom - 0.8) / 2.0);                                                     // Ronaldo's comment (5M+)
+const R = t => t < T.rPost + 0.6 ? 0 : t < 12.6 ? 22 * eIO((t - T.rPost - 0.6) / 3.8) : t < 14.0 ? lerp(22, 32, eOut((t - 12.6) / 1.2)) : t < T.btn ? lerp(32, 41, eOut((t - 14.0) / 1.5)) : 41;
+const fmt = v => v >= 1 ? v.toFixed(v >= 10 ? 0 : 1) + 'M' : Math.round(v * 1000) + 'K';
+// ---------------- set: a feed studio
+const BG = {}; function studio(t) { if (!BG.c) { const c = document.createElement('canvas'); c.width = W + 1200; c.height = H + 1600; const g = c.getContext('2d'); g.translate(600, 800);
+    const gr = g.createLinearGradient(0, -800, 0, 2700); gr.addColorStop(0, '#2b1055'); gr.addColorStop(0.55, '#7a1f6b'); gr.addColorStop(1, '#ff6f91'); g.fillStyle = gr; g.fillRect(-600, -800, W + 1200, H + 1600);
+    g.strokeStyle = 'rgba(255,255,255,.07)'; g.lineWidth = 3; for (let i = -10; i < 30; i++) { g.beginPath(); g.moveTo(-600, i * 110); g.lineTo(W + 600, i * 110); g.stroke(); }
+    g.fillStyle = '#1d0b2e'; g.fillRect(-600, 1500, W + 1200, 1000); g.fillStyle = PINK; g.fillRect(-600, 1490, W + 1200, 16); BG.c = c; }
+  ctx.drawImage(BG.c, -600, -800);
+  for (let i = 0; i < 26; i++) { const x = (i * 157) % 1400 - 160, y = 1500 - ((t * 120 * (1 + i % 3) + i * 211) % 2600); heart(x, y, 16 + (i % 4) * 6, 'rgba(255,90,140,.35)'); } }
+function heart(x, y, r, col) { ctx.save(); ctx.translate(x, y); ctx.fillStyle = col; ctx.beginPath(); ctx.moveTo(0, r * 0.9); ctx.bezierCurveTo(-r * 1.6, -r * 0.1, -r * 0.7, -r * 1.3, 0, -r * 0.45); ctx.bezierCurveTo(r * 0.7, -r * 1.3, r * 1.6, -r * 0.1, 0, r * 0.9); ctx.fill(); ctx.restore(); }
+// a post card on a phone
+function phonePost(x, y, s, who, o, t) { ctx.save(); ctx.translate(x, y); ctx.scale(s, s); const w = 380, h = 560;
+  ctx.fillStyle = '#111'; ctx.strokeStyle = INK; ctx.lineWidth = 8; ctx.beginPath(); ctx.roundRect(-w / 2 - 16, -h / 2 - 30, w + 32, h + 60, 40); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.roundRect(-w / 2, -h / 2, w, h, 24); ctx.fill();
+  const flag = o.photo === 'wc' ? ['#9ccbf0', '#ffffff', '#9ccbf0'] : who === 'messi' ? ['#9ccbf0', '#ffffff', '#9ccbf0'] : ['#0b6b2e', '#c8102e', '#c8102e'];
+  // header
+  ctx.fillStyle = flag[0]; ctx.beginPath(); ctx.arc(-w / 2 + 40, -h / 2 + 40, 24, 0, 7); ctx.fill(); ctx.strokeStyle = INK; ctx.lineWidth = 3; ctx.stroke();
+  ctx.font = `400 30px ${FONT}`; ctx.fillStyle = INK; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText(who === 'messi' ? 'leomessi' : 'cristiano', -w / 2 + 76, -h / 2 + 42);
+  ctx.font = `400 22px ${FONT}`; ctx.fillStyle = '#888'; ctx.textAlign = 'right'; ctx.fillText(o.date, w / 2 - 16, -h / 2 + 42);
+  // photo
+  const py = -h / 2 + 80, ph = 300; ctx.save(); ctx.beginPath(); ctx.rect(-w / 2, py, w, ph); ctx.clip();
+  for (let i = 0; i < 3; i++) { ctx.fillStyle = flag[i]; ctx.fillRect(-w / 2, py + i * ph / 3, w, ph / 3); }
+  if (o.photo === 'wc') { // the trophy, gold, held high
+    ctx.fillStyle = '#f2c230'; ctx.strokeStyle = INK; ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(-40, py + 230); ctx.lineTo(40, py + 230); ctx.lineTo(28, py + 170); ctx.quadraticCurveTo(70, py + 110, 30, py + 50); ctx.quadraticCurveTo(0, py + 20, -30, py + 50); ctx.quadraticCurveTo(-70, py + 110, -28, py + 170); ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.font = `400 30px ${FONT}`; ctx.fillStyle = INK; ctx.textAlign = 'center'; ctx.fillText('2022 🏆', 0, py + 270);
+  } else CASTIMG.face(ctx, who, o.photoExpr || (who === 'messi' ? 'sad' : 'cry'), 0, py + ph / 2 + 20, 270);
+  ctx.restore();
+  // likes row
+  const ly = py + ph + 50; heart(-w / 2 + 40, ly, 20, PINK); ctx.font = `400 46px ${FONT}`; ctx.fillStyle = INK; ctx.textAlign = 'left'; ctx.fillText(fmt(o.likes) + ' likes', -w / 2 + 74, ly + 4);
+  ctx.font = `400 26px ${FONT}`; ctx.fillStyle = '#444'; ctx.fillText(o.caption, -w / 2 + 20, ly + 56);
+  if (o.comment) { const k = o.comment; ctx.globalAlpha = clamp(k * 3); ctx.fillStyle = '#fff3f7'; ctx.fillRect(-w / 2 + 10, ly + 82, w - 20, 70); ctx.strokeStyle = PINK; ctx.lineWidth = 3; ctx.strokeRect(-w / 2 + 10, ly + 82, w - 20, 70);
+    ctx.font = `400 24px ${FONT}`; ctx.fillStyle = INK; ctx.fillText('cristiano: "All my respect…"', -w / 2 + 22, ly + 106); heart(w / 2 - 120, ly + 132, 12, PINK); ctx.fillText(fmt(o.comLikes) + ' ❤', w / 2 - 102, ly + 134); ctx.globalAlpha = 1; }
+  ctx.restore(); }
+// a like bar (thermometer of hearts), 10M = 140 px
+function bar(x, base, v, col, label, t, o = {}) { const hgt = v * 14 * (o.k || 1); ctx.save();
+  ctx.fillStyle = 'rgba(0,0,0,.3)'; ctx.fillRect(x - 54, base - 1700, 108, 1700);
+  const g = ctx.createLinearGradient(0, base - hgt, 0, base); g.addColorStop(0, '#ffffff'); g.addColorStop(0.1, col); g.addColorStop(1, shadeOf(col)); ctx.fillStyle = g; ctx.fillRect(x - 50, base - hgt, 100, hgt);
+  ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.strokeRect(x - 50, base - hgt, 100, hgt);
+  for (let i = 0; i < Math.min(30, hgt / 60); i++) heart(x, base - 30 - i * 60, 14, 'rgba(255,255,255,.55)');
+  ctx.font = `400 44px ${FONT}`; ctx.textAlign = 'center'; ctx.lineWidth = 10; ctx.strokeStyle = INK; ctx.strokeText(fmt(v), x, base - hgt - 30); ctx.fillStyle = '#fff'; ctx.fillText(fmt(v), x, base - hgt - 30);
+  ctx.font = `400 30px ${FONT}`; ctx.strokeText(label, x, base + 44); ctx.fillStyle = '#ffd6e4'; ctx.fillText(label, x, base + 44); ctx.restore(); }
+// ---------------- the scene (everyone in one frame)
+const BASEY = 1480, MX = 300, RX = 780;
+function scene(t, o = {}) {
+  studio(t);
+  const mv = t < T.wc ? M(t) : Math.max(M(t), MWC(t)), rv = R(t);
+  // the 20M finish line
+  if (t > T.rPost && t < T.wc + 0.5) { const y = BASEY - 20 * 14; ctx.save(); ctx.setLineDash([24, 16]); ctx.strokeStyle = '#ffe066'; ctx.lineWidth = 6; ctx.beginPath(); ctx.moveTo(60, y); ctx.lineTo(1020, y); ctx.stroke(); ctx.setLineDash([]);
+    ctx.font = `400 34px ${FONT}`; ctx.fillStyle = '#ffe066'; ctx.textAlign = 'left'; ctx.fillText("Messi's 20M", 70, y - 18); ctx.restore(); }
+  bar(MX - 150, BASEY, mv, t > T.wc + 0.6 ? '#f2c230' : '#7cc0f0', t > T.wc + 0.6 ? 'WORLD CUP POST' : 'MESSI', t, { k: t > T.wc + 0.6 ? lerp(20 / 70, 2.6, eIO((t - T.wc - 0.6) / 1.8)) : 1 });
+  if (t > T.rPost) bar(RX + 150, BASEY, rv, '#e8344a', 'RONALDO', t);
+  // phones on stands
+  const mp = { date: t > T.wc + 0.3 ? 'Dec 2022' : 'Oct 2026', likes: t > T.wc + 0.3 ? MWC(t) : M(t), caption: t > T.wc + 0.3 ? 'CAMPEONES DEL MUNDO!' : 'Thank you, Argentina 🇦🇷', photo: t > T.wc + 0.3 ? 'wc' : null, comment: t > T.rCom && t < T.wc ? clamp((t - T.rCom) / 0.4) : 0, comLikes: COM(t) };
+  const scroll = t > T.wc - 0.2 && t < T.wc + 0.4 ? Math.sin((t - T.wc + 0.2) / 0.6 * Math.PI) * 60 : 0;
+  phonePost(MX + 40, 760 + scroll, 0.92, 'messi', mp, t);
+  if (t > T.rPost - 0.2) phonePost(RX - 40, 760 - (1 - eOut((t - T.rPost + 0.2) / 0.4)) * 900, 0.92, 'ronaldo', { date: '5 Nov 2026', likes: rv, caption: 'Obrigado, Portugal 🇵🇹', photoExpr: 'cry' }, t);
+  // the characters
+  const sip = (t > 2.4 && t < 3.6) || (t > T.btn + 1.4 && t < T.btn + 2.6);
+  const m = { x: MX, y: BASEY + 300, s: SC.messi, f: 1 }, mateP = sip ? [MX - 18, m.y - 300] : [MX + 110, m.y - 260];
+  const mPose = { bArm: t > T.wc - 0.4 && t < T.wc + 0.6 ? reach('messi', m, 'b', MX + 60, 900) : [-14, -6], fArm: reach('messi', m, 'f', mateP[0] - 10, mateP[1] + 50), bLeg: [-8, -4], fLeg: [8, 4] };
+  CB('messi', Object.assign({}, m, { pose: mPose, expr: t > T.wc + 2 ? 'smug' : 'deadpan' }), t, 0.4); mate(mateP[0], mateP[1], 0.85, sip ? -0.12 : 0.1);
+  const r = { x: RX, y: BASEY + 300, s: SC.ronaldo, f: -1 };
+  let rexpr = 'smug', rpose = null, hop = 0;
+  if (t < T.rCom) rexpr = 'deadpan';
+  else if (t < T.rPost) { rexpr = t > T.rCom + 1.6 ? 'laugh' : 'smug'; rpose = { bArm: [-20, -10], fArm: reach('ronaldo', r, 'f', MX + 200, 1100), bLeg: [-8, -4], fLeg: [8, 4] }; }      // points at his comment
+  else if (t < T.wc + 0.8) { rexpr = t > T.lead - 0.4 ? 'laugh' : 'smug'; if (t > T.lead && t < T.lead + 1.2) { hop = Math.abs(Math.sin((t - T.lead) * 8)) * 50; rpose = { bArm: [-150, -140], fArm: [150, 140], bLeg: [-15, -6], fLeg: [15, 6] }; } }
+  else if (t < T.btn) { rexpr = 'shock'; rpose = { bArm: [-30, -60], fArm: [30, 60], bLeg: [-8, -4], fLeg: [8, 4] }; }
+  else { rexpr = 'angry'; const tap = Math.abs(Math.sin(t * 18)); rpose = { bArm: reach('ronaldo', r, 'b', RX + 70, 1500), fArm: reach('ronaldo', r, 'f', RX - 10, 1490 - tap * 25), bLeg: [-8, -4], fLeg: [8, 4] }; }   // taps a phone held at his chest
+  CB('ronaldo', Object.assign({}, r, { pose: rpose || undefined, expr: rexpr, hop }), t, 1.3);
+  if (t > T.btn) { ctx.save(); ctx.translate(RX + 40, 1520); ctx.rotate(-0.2); ctx.fillStyle = '#111'; ctx.strokeStyle = INK; ctx.lineWidth = 5; ctx.beginPath(); ctx.roundRect(-45, -75, 90, 150, 14); ctx.fill(); ctx.stroke(); heart(0, 0, 22, PINK); ctx.restore(); }
+  // the World Cup bar smashes the ceiling
+  if (t > T.smash - 0.1 && t < T.smash + 1.6) { const k = (t - T.smash) / 1.6; for (let i = 0; i < 18; i++) { const x = MX - 150 + Math.cos(i * 2.3) * 160 * k * 1.5, y = -260 + k * k * 900 + Math.sin(i) * 60 * k; ctx.fillStyle = i % 2 ? '#d8cbb5' : '#9a8f80'; ctx.save(); ctx.translate(x, y); ctx.rotate(i + k * 6); ctx.fillRect(-18, -12, 36, 24); ctx.strokeStyle = INK; ctx.lineWidth = 3; ctx.strokeRect(-18, -12, 36, 24); ctx.restore(); } }
+  if (t > T.btn) { for (let i = 0; i < 6; i++) { const k = ((t - T.btn) * 2.2 + i / 6) % 1; ctx.globalAlpha = 1 - k; ctx.font = `400 40px ${FONT}`; ctx.fillStyle = PINK; ctx.textAlign = 'center'; ctx.fillText('+1', RX + 40 + Math.sin(i * 3) * 60, 1420 - k * 260); ctx.globalAlpha = 1; } }
+}
+function frame(t) {
+  if (t < T.rCom) SHOT.wide(ctx, () => scene(t), { x: lerp(420, 520, t / T.rCom), y: 1160, zoom: lerp(1.15, 1.05, t / T.rCom) });
+  else if (t < T.rPost) SHOT.cu(ctx, () => scene(t), { x: 560, y: 1180, zoom: 1.35 });
+  else if (t < T.xcu) SHOT.low(ctx, () => scene(t), { x: 600, y: 1150, zoom: 0.95, lift: 120 });
+  else if (t < T.wc) SHOT.xcu(ctx, () => scene(t), { x: RX - 20, y: 1330, zoom: lerp(1.9, 2.2, (t - T.xcu) / 3) });
+  else if (t < T.btn) SHOT.dutch(ctx, () => scene(t), { x: 520, y: t > T.smash - 0.4 ? 880 : 1000, zoom: t > T.smash - 0.4 ? 0.8 : 1.0, rot: 0.14 });
+  else SHOT.cu(ctx, () => scene(t), { x: 560, y: 1250, zoom: lerp(1.25, 1.4, (t - T.btn) / 4.5) });
+}
+function hud(t) {
+  if (t < 4.2) card('Messi says goodbye 🇦🇷', 540, 300, 62, { pop: (t - 0.3) / 0.3 });
+  if (t > T.rCom + 1.6 && t < T.rPost) card('His comment: 5M+ ❤️', 540, 300, 62, { pop: (t - T.rCom - 1.6) / 0.3, bg: '#fff3b0' });
+  if (t > T.rPost && t < 10.6) card('Ronaldo says goodbye 🇵🇹', 540, 300, 62, { pop: (t - T.rPost) / 0.3 });
+  if (t > 10.6 && t < T.xcu) card('8 hours: 22M ❤️', 540, 300, 66, { pop: (t - 10.6) / 0.3, bg: '#fff3b0' });
+  if (t > T.lead && t < T.lead + 1.6) stamp('RONALDO LEADS!', 540, 450, 84, t - T.lead);
+  if (t > 15.0 && t < T.wc) card('Now: 41M 😎', 540, 300, 66, { pop: (t - 15.0) / 0.3 });
+  if (t > T.wc + 0.8 && t < T.btn) card('Most-liked post EVER 🏆', 540, 300, 60, { pop: (t - T.wc - 0.8) / 0.3, bg: '#fff3b0' });
+  if (t > T.smash + 0.2 && t < T.btn) stamp('70M+', 540, 470, 120, t - T.smash - 0.2, '#b8860b');
+  if (t > T.btn + 0.4) card('+1 … +1 … 😅', 540, 300, 62, { pop: (t - T.btn - 0.4) / 0.3 });
+  if (t > 23.5) { ctx.font = '600 26px Inter'; ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.textAlign = 'center'; ctx.fillText('Cartoon parody · like counts approx. (media reports)', 540, 1600); }
+}
+const SHAKE = [T.lead, T.smash];
+function grade() { ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); const v = ctx.createRadialGradient(540, 960, 560, 540, 960, 1250); v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,0,.35)'); ctx.fillStyle = v; ctx.fillRect(0, 0, W, H); ctx.restore(); }
+window.DURATION = T.END; window.render = function (t) { window.T2T = t; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.clearRect(0, 0, W, H); ctx.fillStyle = '#2b1055'; ctx.fillRect(0, 0, W, H);
+  const hs = SHAKE.reduce((m, a) => Math.max(m, t >= a && t < a + 0.3 ? 16 * (1 - (t - a) / 0.3) : 0), 0);
+  ctx.save(); ctx.translate(Math.sin(t * 91) * hs, Math.cos(t * 77) * hs); frame(t); ctx.restore(); grade(); ctx.setTransform(1, 0, 0, 1, 0, 0); if (!window.NO_HUD) hud(t); };
+if (!location.search.includes('render')) { const t0 = performance.now(); (window.CAST_READY || Promise.resolve()).then(() => (function loop() { render(((performance.now() - t0) / 1000) % DURATION); requestAnimationFrame(loop); })()); }
+</script></body></html>
