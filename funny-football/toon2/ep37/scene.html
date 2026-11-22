@@ -1,0 +1,179 @@
+<!doctype html><html><head><meta charset="utf-8"><title>The Excuses</title><style>html,body{margin:0;background:#000}</style></head><body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../styles.js"></script><script src="../pro.js"></script><script src="../fx.js"></script><script src="../shots.js"></script><script src="../chibi.js"></script><script src="../chibi_cast.js"></script><script src="../rig2.js"></script><script src="../castimg.js"></script><script src="../cast/skins.js"></script>
+<script>
+// Ep37 "THE EXCUSES" (facts: ep37/facts.md, checked 22 Nov 2026). Messi 8 Ballons d'Or, Ronaldo 5. Real words on screen in quotes only:
+// 2021 Instagram "…lie in this way"; 2023 to Record "losing credibility" / "the numbers don't deceive" (he scored 54 in 2023). Everything else is cartoon.
+const W = 1080, H = 1920, cv = document.getElementById('c'), ctx = cv.getContext('2d');
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v)), lerp = (a, b, k) => a + (b - a) * k, eOut = k => 1 - (1 - clamp(k)) ** 3, eIO = k => { k = clamp(k); return k < .5 ? 4 * k * k * k : 1 - (-2 * k + 2) ** 3 / 2; };
+const eBack = k => { k = clamp(k); const c = 1.7; return 1 + (c + 1) * (k - 1) ** 3 + c * (k - 1) ** 2; };
+const FONT = '"Bangers","Impact",Inter,sans-serif', INK = '#1a1410', GOLD = '#f2c230';
+CASTIMG.preload(['messi', 'ronaldo']); window.CAST_READY = Promise.all([window.CAST_READY, document.fonts.load('40px Bangers'), document.fonts.load('40px Anton')]);
+function card(s, x, y, size, o = {}) { ctx.save(); ctx.font = `400 ${size}px ${o.font || FONT}`; const tw = ctx.measureText(s).width, pw = tw + size * 0.9, ph = size * 1.35;
+  ctx.translate(x, y); ctx.rotate(o.rot || 0); const sc = o.pop != null ? eBack(o.pop) : 1; ctx.scale(sc, sc);
+  ctx.fillStyle = 'rgba(0,0,0,.25)'; ctx.beginPath(); ctx.roundRect(-pw / 2 + 8, -ph / 2 + 10, pw, ph, 18); ctx.fill();
+  ctx.fillStyle = o.bg || '#fffaf0'; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.beginPath(); ctx.roundRect(-pw / 2, -ph / 2, pw, ph, 18); ctx.fill(); ctx.stroke();
+  if (o.tail) { ctx.beginPath(); ctx.moveTo(o.tail * 40 - 30, ph / 2 - 3); ctx.lineTo(o.tail * 110, ph / 2 + 70); ctx.lineTo(o.tail * 40 + 30, ph / 2 - 3); ctx.fill(); ctx.stroke(); ctx.fillRect(o.tail * 40 - 27, ph / 2 - 8, 54, 8); }
+  ctx.fillStyle = o.col || INK; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(s, 0, 4); ctx.restore(); }
+function stamp(s, x, y, size, k, col = '#c0281c') { if (k <= 0) return; ctx.save(); ctx.translate(x, y); ctx.rotate(-0.07); const sc = 1.6 - 0.6 * eOut(k * 2.5); ctx.scale(sc, sc); ctx.globalAlpha = clamp(k * 4);
+  ctx.font = `400 ${size}px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineWidth = 16; ctx.strokeStyle = '#fffaf0'; ctx.strokeText(s, 0, 0); ctx.fillStyle = col; ctx.fillText(s, 0, 0);
+  const tw = ctx.measureText(s).width; ctx.lineWidth = 7; ctx.strokeStyle = col; ctx.strokeRect(-tw / 2 - 30, -size * 0.65, tw + 60, size * 1.3); ctx.restore(); }
+// ---------------- cast: both in tuxedos (gala), caricature heads
+const kit = (shirt, trim, shorts, sock, num, boot = '#111') => ({ shirt, sleeve: shirt, cuff: trim, collar: trim, shorts, sock, sockShade: sock, sockBand: shirt, boot, num });
+const shadeOf = h => '#' + [1, 3, 5].map(i => Math.round(parseInt(h.slice(i, i + 2), 16) * 0.8).toString(16).padStart(2, '0')).join('');
+const TUX = kit('#1b1b24', '#ffffff', '#1b1b24', '#1b1b24', '#ffffff', '#0b0b0b');
+const BASE = { ronaldo: Object.assign({}, CH.ronaldo, { kit: TUX, num: '', name: '' }), messi: Object.assign({}, CH.messi, { kit: kit('#2a1f3d', '#ffffff', '#2a1f3d', '#2a1f3d', '#ffffff', '#0b0b0b'), num: '', name: '' }) };
+const CC = {}; for (const k in BASE) CC[k] = Object.assign({}, BASE[k], { arm: BASE[k].arm * 0.82, armW: BASE[k].armW * 1.35, skin: CAST_SKIN[k], shade: shadeOf(CAST_SKIN[k]) });
+const SC = { ronaldo: 1.3, messi: 1.22 };
+const lay = n => { const C = CC[n], hipY = -C.leg * 0.95, shY = hipY - C.torsoH; return { hipY, shY, fs: [C.shoulderW * 0.8, shY + 30], bs: [-C.shoulderW * 0.72, shY + 30] }; };
+function W2(o, lx, ly) { const s = o.s, f = o.f || 1, r = o.lean || 0, X = lx * s * f, Y = ly * s; return [o.x + X * Math.cos(r) - Y * Math.sin(r), o.y + X * Math.sin(r) + Y * Math.cos(r)]; }
+function reach(n, o, side, tx, ty) { const L = lay(n), p = side === 'f' ? L.fs : L.bs, S = W2(o, p[0], p[1]), r = o.lean || 0, f = o.f || 1;
+  const dx = tx - S[0], dy = ty - S[1], lx = (dx * Math.cos(-r) - dy * Math.sin(-r)) / f, ly = dx * Math.sin(-r) + dy * Math.cos(-r);
+  const a = Math.atan2(lx, ly) * 180 / Math.PI; return [a - 10, a + 10]; }
+const handAt = (n, o, side, dist = 0.95) => { const L = lay(n), C = CC[n], p = side === 'f' ? L.fs : L.bs, S = W2(o, p[0], p[1]); return S; };   // shoulder (for aiming)
+function CB(n, o, t, ph = 0) { const k = o.life ?? 1, sw = Math.sin(t * 2.1 + ph);
+  const pose = o.pose || { bArm: [-18 + sw * 6 * k, -8], fArm: [18 - sw * 6 * k, 8], bLeg: [-8, -4], fLeg: [8, 4] };
+  const q = Object.assign({ s: SC[n] }, o);
+  chibi.draw(ctx, CC[n], pose, 'neutral', q.x + Math.sin(t * 0.9 + ph) * 4 * k, q.y - (o.hop || 0), q.s, { f: o.f || 1, lean: (o.lean || 0) + Math.sin(t * 1.3 + ph) * 0.015 * k, sq: (o.sq || 0) + Math.sin(t * 3.1 + ph) * 0.012 * k,
+    headTilt: (o.tilt || 0) + Math.sin(t * 1.7 + ph) * 0.05 * k, hands: o.hands, headFn: CASTIMG.head(ctx, n, o.expr || 'smug', { collar: '#ffffff' }) });
+  // bow tie + shirt front over the collar
+  const L = lay(n), b = W2(q, 0, L.shY + 26); ctx.save(); ctx.translate(b[0], b[1]); ctx.rotate(q.lean || 0); const z = q.s;
+  ctx.fillStyle = '#fffaf0'; ctx.beginPath(); ctx.moveTo(-26 * z, -6 * z); ctx.lineTo(26 * z, -6 * z); ctx.lineTo(0, 70 * z); ctx.closePath(); ctx.fill(); ctx.strokeStyle = INK; ctx.lineWidth = 3; ctx.stroke();
+  ctx.fillStyle = '#111'; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(-30 * z, -14 * z); ctx.lineTo(-30 * z, 14 * z); ctx.closePath(); ctx.moveTo(0, 0); ctx.lineTo(30 * z, -14 * z); ctx.lineTo(30 * z, 14 * z); ctx.closePath(); ctx.fill();
+  ctx.beginPath(); ctx.arc(0, 0, 7 * z, 0, 7); ctx.fill(); ctx.restore(); }
+// ---------------- props
+function goldBall(x, y, r, t, o = {}) { ctx.save(); ctx.translate(x, y); const d = o.deflate || 0; ctx.scale(1 + d * 0.25, 1 - d * 0.62); ctx.rotate(o.rot || 0);
+  if (!o.noGlow) { ctx.shadowColor = '#ffe680'; ctx.shadowBlur = 40 * (1 - d); }
+  const g = ctx.createRadialGradient(-r * 0.35, -r * 0.4, r * 0.1, 0, 0, r); g.addColorStop(0, '#fff6c2'); g.addColorStop(0.45, GOLD); g.addColorStop(1, '#9a6a0c'); ctx.fillStyle = g;
+  ctx.beginPath(); ctx.arc(0, 0, r, 0, 7); ctx.fill(); ctx.shadowBlur = 0; ctx.lineWidth = Math.max(3, r * 0.08); ctx.strokeStyle = INK; ctx.stroke();
+  ctx.strokeStyle = 'rgba(122,75,0,.8)'; ctx.lineWidth = Math.max(2, r * 0.05); for (let i = 0; i < 5; i++) { const a = i * 1.2566 + 0.3; ctx.beginPath(); ctx.moveTo(Math.cos(a) * r * 0.35, Math.sin(a) * r * 0.35); ctx.lineTo(Math.cos(a) * r * 0.95, Math.sin(a) * r * 0.95); ctx.stroke(); }
+  ctx.beginPath(); for (let i = 0; i < 5; i++) { const a = i * 1.2566 + 0.3; ctx.lineTo(Math.cos(a) * r * 0.35, Math.sin(a) * r * 0.35); } ctx.closePath(); ctx.stroke();
+  if (o.wrinkle) { ctx.strokeStyle = INK; ctx.lineWidth = 3; for (let i = 0; i < 4; i++) { ctx.beginPath(); ctx.moveTo(-r * 0.7 + i * r * 0.45, -r * 0.2); ctx.quadraticCurveTo(-r * 0.5 + i * r * 0.45, 0, -r * 0.7 + i * r * 0.45, r * 0.25); ctx.stroke(); } }
+  ctx.restore(); }
+function mate(x, y, s = 1, tilt = 0) { ctx.save(); ctx.translate(x, y); ctx.rotate(tilt); ctx.scale(s, s);
+  ctx.strokeStyle = '#c9c9d1'; ctx.lineWidth = 7; ctx.beginPath(); ctx.moveTo(8, -40); ctx.lineTo(26, -92); ctx.stroke(); ctx.strokeStyle = INK; ctx.lineWidth = 2; ctx.stroke();
+  ctx.fillStyle = '#7a4a22'; ctx.strokeStyle = INK; ctx.lineWidth = 5; ctx.beginPath(); ctx.ellipse(0, 0, 34, 42, 0, 0, 7); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#c9a227'; ctx.fillRect(-30, -40, 60, 12); ctx.strokeRect(-30, -40, 60, 12); ctx.fillStyle = '#5c8a2e'; ctx.beginPath(); ctx.ellipse(0, -42, 26, 7, 0, 0, 7); ctx.fill(); ctx.restore(); }
+function glove(x, y, t) { // the host's white-gloved hand coming down from the top of the frame
+  ctx.save(); ctx.fillStyle = '#1b1b24'; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.beginPath(); ctx.roundRect(x - 30, -400, 60, y + 360, 20); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.roundRect(x - 44, y - 50, 88, 70, 24); ctx.fill(); ctx.stroke();
+  for (let i = 0; i < 4; i++) { ctx.beginPath(); ctx.roundRect(x - 42 + i * 22, y + 8, 18, 34, 9); ctx.fill(); ctx.stroke(); } ctx.restore(); }
+// ---------------- the gala set
+const BG = {}; function gala(t, year) { if (!BG.c) { const c = document.createElement('canvas'); c.width = W + 1200; c.height = H + 1200; const g = c.getContext('2d'); g.translate(600, 600);
+    const back = g.createLinearGradient(0, -600, 0, 1300); back.addColorStop(0, '#12081f'); back.addColorStop(1, '#3a1430'); g.fillStyle = back; g.fillRect(-600, -600, W + 1200, H + 1200);
+    for (const sx of [-1, 1]) for (let i = 0; i < 9; i++) { const x0 = sx < 0 ? -600 + i * 60 : W + 600 - (i + 1) * 60; g.fillStyle = i % 2 ? '#8a0f24' : '#a3142d'; g.fillRect(x0, -600, 60, 1900); g.fillStyle = 'rgba(0,0,0,.25)'; g.fillRect(x0 + 44, -600, 16, 1900); }
+    g.fillStyle = '#a3142d'; g.beginPath(); g.moveTo(-600, -600); g.lineTo(W + 600, -600); g.lineTo(W + 600, 120); for (let i = 0; i <= 12; i++) g.quadraticCurveTo(W + 600 - (i + 0.5) * (W + 1200) / 12, 220, W + 600 - (i + 1) * (W + 1200) / 12, 120); g.closePath(); g.fill();
+    g.fillStyle = '#2b1a10'; g.fillRect(-600, 1260, W + 1200, 900); g.fillStyle = '#c9a227'; g.fillRect(-600, 1240, W + 1200, 26); g.strokeStyle = INK; g.lineWidth = 6; g.strokeRect(-600, 1240, W + 1200, 26);
+    for (let i = 0; i < 26; i++) { g.fillStyle = 'rgba(255,255,255,.05)'; g.fillRect(-600 + i * 110, 1266, 4, 900); }
+    // trophy shelf on the back wall (hidden detail: the tally)
+    g.fillStyle = '#5a3a1a'; g.fillRect(-60, 560, 600, 22); g.strokeRect(-60, 560, 600, 22);
+    BG.c = c; }
+  ctx.drawImage(BG.c, -600, -600);
+  const n = t < 9.0 ? 7 : 8; for (let i = 0; i < n; i++) goldBall(-20 + i * 68, 530, 26, t, { noGlow: true });
+  // spotlights
+  ctx.save(); ctx.globalCompositeOperation = 'lighter'; for (const [x, w] of [[420, 260], [800, 200]]) { const g = ctx.createLinearGradient(0, -200, 0, 1300); g.addColorStop(0, 'rgba(255,230,160,.35)'); g.addColorStop(1, 'rgba(255,230,160,0)');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(x - 30 + Math.sin(t * 0.7) * 20, -200); ctx.lineTo(x + 30 + Math.sin(t * 0.7) * 20, -200); ctx.lineTo(x + w, 1300); ctx.lineTo(x - w, 1300); ctx.closePath(); ctx.fill(); } ctx.restore();
+  // banner
+  ctx.save(); ctx.translate(540, 250); ctx.fillStyle = '#111'; ctx.strokeStyle = GOLD; ctx.lineWidth = 8; ctx.beginPath(); ctx.roundRect(-300, -60, 600, 120, 16); ctx.fill(); ctx.stroke();
+  ctx.font = `400 74px ${FONT}`; ctx.fillStyle = GOLD; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(`GOLDEN BALL ${year}`, 0, 6); ctx.restore();
+  // confetti
+  for (let i = 0; i < 40; i++) { const x = (i * 197 + t * 40 * (1 + i % 3)) % 1500 - 200, y = (i * 331 + t * 160 * (1 + (i % 4) * 0.3)) % 1700 - 200; ctx.fillStyle = ['#f2c230', '#ffffff', '#e04a6a', '#5fd3ff'][i % 4]; ctx.save(); ctx.translate(x, y); ctx.rotate(t * 3 + i); ctx.fillRect(-6, -3, 12, 6); ctx.restore(); }
+}
+function seats(t) { for (let i = 0; i < 6; i++) { const x = 80 + i * 190; ctx.fillStyle = '#7a0f22'; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.beginPath(); ctx.roundRect(x - 80, 1660, 160, 200, 30); ctx.fill(); ctx.stroke(); } }
+// the stats board (rolled in by Ronaldo, flipped by Messi)
+function board(t, x, y, flip) { ctx.save(); ctx.translate(x, y); ctx.scale(0.88, 0.88); const w = 520, h = 330;
+  ctx.fillStyle = '#5a3a1a'; ctx.fillRect(-w / 2 + 30, h / 2, 16, 120); ctx.fillRect(w / 2 - 46, h / 2, 16, 120); for (const wx of [-w / 2 + 38, w / 2 - 38]) { ctx.fillStyle = '#222'; ctx.beginPath(); ctx.arc(wx, h / 2 + 128, 22, 0, 7); ctx.fill(); }
+  const sy = Math.abs(Math.cos(clamp(flip) * Math.PI)), back = flip > 0.5; ctx.scale(1, Math.max(0.02, sy));
+  ctx.fillStyle = back ? '#14213d' : '#111'; ctx.strokeStyle = GOLD; ctx.lineWidth = 10; ctx.beginPath(); ctx.roundRect(-w / 2, -h / 2, w, h, 18); ctx.fill(); ctx.stroke();
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  if (!back) { ctx.font = `400 46px ${FONT}`; ctx.fillStyle = '#ffffff'; ctx.fillText('2023 GOALS', 0, -100); ctx.font = `400 150px ${FONT}`; ctx.fillStyle = GOLD; ctx.fillText('CR7: 54', 0, 30); ctx.font = `400 40px ${FONT}`; ctx.fillStyle = '#9fd3ff'; ctx.fillText('⚽ world No.1', 0, 125); }
+  else { ctx.font = `400 46px ${FONT}`; ctx.fillStyle = '#ffffff'; ctx.fillText("BALLONS D'OR", 0, -105); ctx.font = `400 120px ${FONT}`; ctx.fillStyle = GOLD; ctx.fillText('MESSI 8', 0, -5); ctx.font = `400 84px ${FONT}`; ctx.fillStyle = '#cfcfcf'; ctx.fillText('CR7 5', 0, 100); }
+  ctx.restore(); }
+function mic(x, y) { ctx.save(); ctx.strokeStyle = '#555'; ctx.lineWidth = 10; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x, y + 420); ctx.stroke(); ctx.fillStyle = '#222'; ctx.strokeStyle = INK; ctx.lineWidth = 5; ctx.beginPath(); ctx.ellipse(x, y - 30, 30, 44, 0, 0, 7); ctx.fill(); ctx.stroke();
+  ctx.strokeStyle = '#777'; ctx.lineWidth = 2; for (let i = -2; i <= 2; i++) { ctx.beginPath(); ctx.moveTo(x - 26, y - 30 + i * 12); ctx.lineTo(x + 26, y - 30 + i * 12); ctx.stroke(); } ctx.restore(); }
+function trophy(x, y, s, t) { ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.shadowColor = '#ffe680'; ctx.shadowBlur = 30;
+  ctx.fillStyle = GOLD; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.beginPath(); ctx.moveTo(-70, -150); ctx.lineTo(70, -150); ctx.quadraticCurveTo(70, -40, 14, -20); ctx.lineTo(14, 20); ctx.lineTo(50, 40); ctx.lineTo(-50, 40); ctx.lineTo(-14, 20); ctx.lineTo(-14, -20); ctx.quadraticCurveTo(-70, -40, -70, -150); ctx.closePath(); ctx.fill(); ctx.stroke();
+  for (const sx of [-1, 1]) { ctx.beginPath(); ctx.arc(sx * 82, -110, 24, sx < 0 ? 0.6 : -2.2 + Math.PI, sx < 0 ? 4.3 : 2.5); ctx.lineWidth = 10; ctx.stroke(); }
+  ctx.shadowBlur = 0; ctx.fillStyle = '#111'; ctx.fillRect(-64, 40, 128, 40); ctx.font = `400 26px ${FONT}`; ctx.fillStyle = GOLD; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('BEST EVER: ME', 0, 61); ctx.restore(); }
+function crown(x, y, s) { ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.fillStyle = GOLD; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.beginPath(); ctx.moveTo(-60, 30); ctx.lineTo(-70, -30); ctx.lineTo(-30, 0); ctx.lineTo(0, -45); ctx.lineTo(30, 0); ctx.lineTo(70, -30); ctx.lineTo(60, 30); ctx.closePath(); ctx.fill(); ctx.stroke(); ctx.fillStyle = '#e04a6a'; ctx.beginPath(); ctx.arc(0, -10, 9, 0, 7); ctx.fill(); ctx.stroke(); ctx.restore(); }
+
+// ---------------- timeline
+let HAND_K = 1.2;
+const T = { A: 0, B: 3.6, C: 8.2, D: 11.2, E: 14.2, flip: 17.3, F: 20.0, G: 24.8, END: 28.0 };
+const MX = 420, MY = 1250, RX = 770, RY = 1640;
+function stageScene(t, o = {}) { // everything in one frame: Messi on stage, Ronaldo in the front row (bystander reactions always on)
+  gala(t, t < T.C ? 2021 : 2023);
+  const m = { x: o.mx ?? MX, y: MY, s: SC.messi, f: 1 }, r = { x: o.rx ?? RX, y: o.ry ?? RY, s: SC.ronaldo * 1.08, f: -1 };
+  // Messi: ball in the back hand (when he has one), mate in the front hand
+  const hasBall = (t > 1.25 && t < T.C) || (t > 9.0), ballP = [m.x - 150, m.y - 330 - (t < 3 && t > 1.25 ? Math.sin(clamp((t - 1.25) / 0.6) * Math.PI) * 60 : 0)];
+  const sipK = o.sip ? 1 : 0, mateP = o.mateP || [lerp(m.x + 130, m.x - 18, sipK), lerp(m.y - 300, m.y - 330, sipK)];
+  const mPose = { bArm: hasBall ? reach('messi', m, 'b', ballP[0], ballP[1] + 50) : [-14, -6], fArm: reach('messi', m, 'f', mateP[0] - 10, mateP[1] + 50), bLeg: [-8, -4], fLeg: [8, 4] };
+  if (o.messiPose) Object.assign(mPose, o.messiPose(m));
+  CB('messi', Object.assign({}, m, { pose: mPose, expr: o.mexpr || 'deadpan', hands: { f: 'grab', b: 'grab' } }), t, 0.4);
+  if (hasBall && !o.noBall) goldBall(ballP[0], ballP[1], 70, t, { deflate: o.deflate || 0, wrinkle: (o.deflate || 0) > 0.4 });
+  mate(mateP[0], mateP[1], 0.9, o.sip ? -0.12 : 0.1);
+  if (o.extra) o.extra(t, m, r);
+  // Ronaldo, front row, turned toward the stage
+  seats(t); if (!o.noRonaldo) { const rp = o.rpose || { bArm: [-20, -10], fArm: [30, 20], bLeg: [-8, -4], fLeg: [8, 4] }; CB('ronaldo', Object.assign({}, r, { pose: rp, expr: o.rexpr || 'angry', hop: o.rhop || 0, lean: o.rlean || 0 }), t, 1.3); if (o.rprop) o.rprop(r); }
+}
+function phone(t) { // over-the-shoulder: his phone fills the lower frame
+  const k = eOut((t - T.B) / 0.5); ctx.save(); ctx.translate(560, lerp(2300, 1330, k)); ctx.rotate(-0.08);
+  ctx.fillStyle = '#111'; ctx.strokeStyle = INK; ctx.lineWidth = 8; ctx.beginPath(); ctx.roundRect(-250, -430, 500, 860, 50); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#fafafa'; ctx.beginPath(); ctx.roundRect(-225, -400, 450, 800, 34); ctx.fill();
+  ctx.fillStyle = '#d9a27c'; ctx.beginPath(); ctx.arc(-170, -340, 32, 0, 7); ctx.fill(); ctx.font = `400 34px ${FONT}`; ctx.fillStyle = INK; ctx.textAlign = 'left'; ctx.fillText('cristiano · 2021', -125, -330);
+  const full = '"…lie in this way"', n = Math.floor(clamp((t - 4.3) / 1.6) * full.length); ctx.font = `400 58px ${FONT}`; ctx.fillStyle = INK; ctx.textAlign = 'center';
+  ctx.fillText(full.slice(0, n) + (n < full.length && Math.floor(t * 4) % 2 ? '|' : ''), 0, -150);
+  if (t > 6.2) { ctx.font = `400 40px ${FONT}`; ctx.fillStyle = '#c0281c'; ctx.fillText('POSTED ✓', 0, -40); const likes = Math.floor(clamp((t - 6.3) / 1.6) ** 2 * 2400000); ctx.fillStyle = '#e04a6a'; ctx.fillText('♥ ' + likes.toLocaleString('en-US'), 0, 40); }
+  ctx.font = `400 30px ${FONT}`; ctx.fillStyle = '#888'; ctx.fillText('"I don’t win against someone"', 0, 150);
+  // his thumb, typing
+  const tap = Math.abs(Math.sin(t * 22)) * (t > 4.3 && t < 6.0 ? 14 : 0); ctx.fillStyle = '#d9a27c'; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.beginPath(); ctx.ellipse(180, 330 - tap, 52, 90, -0.5, 0, 7); ctx.fill(); ctx.stroke();
+  ctx.beginPath(); ctx.ellipse(-250, 120, 50, 80, 0.3, 0, 7); ctx.fill(); ctx.stroke(); for (let i = 0; i < 3; i++) { ctx.beginPath(); ctx.ellipse(-240 + i * 6, 0 - i * 70, 30, 20, 0.2, 0, 7); ctx.fill(); ctx.stroke(); }
+  ctx.restore(); }
+function frame(t) {
+  if (t < T.B) { // 2021: the glove hands Messi ball #7, Ronaldo stands up fuming
+    SHOT.wide(ctx, () => { stageScene(t, { rexpr: t < 1.6 ? 'smug' : 'angry', rhop: t > 1.6 ? Math.min(30, (t - 1.6) * 120) : 0, rpose: t > 1.6 ? { bArm: [-40 + Math.sin(t * 18) * 8, -30], fArm: [60 + Math.sin(t * 18 + 1) * 8, 50], bLeg: [-8, -4], fLeg: [8, 4] } : undefined, noBall: t < 1.25,
+      extra: (t) => { if (t > 0.2 && t < 1.6) { const y = lerp(-100, MY - 470, eOut((t - 0.2) / 0.9)); glove(MX - 150, y, t); if (t < 1.25) goldBall(MX - 150, y + 90, 70, t); } } }); }, { x: 560, y: 1060, zoom: 0.86 });
+  } else if (t < T.C) { // over Ronaldo's shoulder: the phone
+    SHOT.ots(ctx, () => stageScene(t, { noRonaldo: true, sip: Math.sin(t * 1.5) > 0.7 }), { x: 470, y: 1000, zoom: 1.25, side: 1, fg: '#16100b', shirt: '#1b1b24' }); phone(t);
+  } else if (t < T.D) { // 2023: ball #8, deadpan sip
+    SHOT.cu(ctx, () => stageScene(t, { mexpr: 'deadpan', sip: t > 9.5 && t < 10.6, noBall: t < 9.0, extra: (t) => { if (t > 8.3 && t < 9.3) { const y = lerp(-100, MY - 470, eOut((t - 8.3) / 0.6)); glove(MX - 150, y, t); if (t < 9.0) goldBall(MX - 150, y + 90, 70, t); } } }), { x: MX, y: MY - 330, zoom: 1.55 });
+  } else if (t < T.E) { // at the mic: 'losing credibility' — and the golden ball deflates; Messi taps it, it pops back
+    const def = t < 12.6 ? 0 : t < 13.5 ? eOut((t - 12.6) / 0.7) * 0.75 : 0.75 * (1 - eBack((t - 13.5) / 0.35));
+    if (t < 12.6) SHOT.xcu(ctx, () => stageScene(t, { rexpr: 'angry', rx: 760, ry: RY, extra: () => {}, rprop: (r) => mic(r.x - 150, r.y - 430) }), { x: 700, y: RY - 470, zoom: 2.3 });
+    else SHOT.xcu(ctx, () => stageScene(t, { deflate: def, mexpr: t < 13.4 ? 'deadpan' : 'smug', messiPose: t > 13.3 && t < 13.7 ? (m) => ({ fArm: reach('messi', m, 'f', MX - 110, MY - 330) }) : null }), { x: MX - 80, y: MY - 340, zoom: 2.4 });
+  } else if (t < T.F) { // the board: '54' — the numbers don't deceive… Messi flips it: 8-5
+    const bx = lerp(1400, 520, eOut((t - T.E) / 1.0)), flip = clamp((t - T.flip) / 0.45);
+    SHOT.low(ctx, () => stageScene(t, { mx: t < 16.4 ? 170 : lerp(170, 210, eIO((t - 16.4) / 0.8)), rx: 975, ry: 1640, rexpr: t < T.flip + 0.2 ? 'smug' : 'shock',
+      rpose: t < T.flip ? { bArm: [-30, -20], fArm: [100, 90], bLeg: [-8, -4], fLeg: [8, 4] } : { bArm: [-150, -140], fArm: [150, 140], bLeg: [-12, -6], fLeg: [12, 6] }, rhop: t > T.flip && t < T.flip + 0.4 ? 20 : 0,
+      messiPose: t > 16.9 && t < T.flip + 0.4 ? (m) => ({ fArm: reach('messi', m, 'f', bx - 225, 900) }) : null, mexpr: t > T.flip ? 'smug' : 'deadpan',
+      extra: (t) => board(t, bx, 960, flip) }), { x: 570, y: 1150, zoom: 0.92, lift: 160 });
+  } else if (t < T.G) { // he makes his own trophy, crowns himself, SIUUU; Messi slow-claps
+    const up = t > 21.4, siu = t > 22.0 && t < 23.4;
+    SHOT.dutch(ctx, () => stageScene(t, { rx: 700, ry: 1500, rexpr: up ? 'laugh' : 'angry', rhop: siu ? Math.sin(clamp((t - 22.0) / 0.9) * Math.PI) * 140 : 0,
+      rpose: siu ? { bArm: [-60, -40], fArm: [60, 40], bLeg: [-25, -10], fLeg: [25, 10] } : { bArm: [-35, -25], fArm: [178, 178], bLeg: [-8, -4], fLeg: [8, 4] },   // one arm straight up: the trophy lift
+      messiPose: (m) => { const c = Math.abs(Math.sin(t * 3)); return { bArm: [-40 - c * 20, -60], fArm: [40 + c * 20, 60] }; }, mexpr: 'deadpan', mx: 290,
+      rprop: (r) => { const jump = siu ? Math.sin(clamp((t - 22.0) / 0.9) * Math.PI) * 140 : 0, L = lay('ronaldo'), R0 = CC.ronaldo.head.R, top = W2(Object.assign({}, r, { s: SC.ronaldo * 1.08, f: -1, y: r.y - jump }), 0, L.shY - R0 * 2.05);
+        if (!siu) { const rr = { x: r.x, y: r.y, s: SC.ronaldo * 1.08, f: -1 }, hand = W2(rr, L.fs[0], L.fs[1] - CC.ronaldo.arm * HAND_K); window.__HAND = hand; trophy(hand[0], hand[1] - 72 + (t < 20.6 ? (20.6 - t) * 600 : 0), 0.95, t); }
+        if (t > 20.8) crown(top[0] + 6, up ? top[1] + 20 : lerp(top[1] - 300, top[1] + 20, clamp((t - 20.8) / 0.6)), 0.9); } }), { x: 600, y: 1100, zoom: 1.0, rot: 0.16 });
+  } else { // 4th wall: Messi to camera, slurp
+    SHOT.cu(ctx, () => stageScene(t, { mexpr: t < 26.6 ? 'deadpan' : 'smug', sip: t > 25.2 && t < 26.6, noRonaldo: false, rx: 980, rexpr: 'laugh' }), { x: MX + 20, y: MY - 360, zoom: lerp(1.6, 1.85, (t - T.G) / 3.2) });
+  }
+}
+function hud(t) {
+  if (t < 3.4) card('2021: Messi #7 🏆', 540, 420, 66, { pop: (t - 1.3) / 0.3 });
+  if (t > 6.5 && t < T.C) card('Ronaldo, 2021 📱', 540, 380, 52, { pop: (t - 6.5) / 0.3, bg: '#e8f0ff' });
+  if (t > 8.9 && t < T.D) card('2023: Messi #8 🏆', 540, 420, 66, { pop: (t - 8.9) / 0.3 });
+  if (t > 11.5 && t < 12.9) card('"losing credibility"', 540, 420, 64, { pop: (t - 11.5) / 0.3, bg: '#fff3b0' });
+  if (t > 12.8 && t < T.E) stamp('PFFFT 🎈', 300, 1500, 90, t - 12.8, '#7a4b00');
+  if (t > 15.5 && t < 17.25) card('"the numbers don’t deceive"', 540, 400, 56, { pop: (t - 15.5) / 0.3, bg: '#fff3b0' });
+  if (t > T.flip + 0.35 && t < T.F) stamp('THEY DON’T 🤓', 540, 420, 84, t - T.flip - 0.35);
+  if (t > 22.0 && t < 23.6) stamp('SIUUU!', 540, 420, 110, t - 22.0, '#1f3c88');
+  if (t > 25.4) card('🧉', 820, 520, 90, { pop: (t - 25.4) / 0.3 });
+  if (t > 25.0) { ctx.font = '600 26px Inter'; ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.textAlign = 'center'; ctx.fillText('Cartoon parody · real quotes in " " · AI voices', 540, 1560); }
+}
+const SHAKE = [1.25, 9.0, T.flip + 0.3, 22.9];
+function grade() { ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); const v = ctx.createRadialGradient(540, 960, 560, 540, 960, 1250); v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,0,.4)'); ctx.fillStyle = v; ctx.fillRect(0, 0, W, H); ctx.restore(); }
+window.DURATION = T.END; window.render = function (t) { window.T2T = t; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.clearRect(0, 0, W, H); ctx.fillStyle = '#12081f'; ctx.fillRect(0, 0, W, H);
+  const hs = SHAKE.reduce((m, a) => Math.max(m, t >= a && t < a + 0.25 ? 14 * (1 - (t - a) / 0.25) : 0), 0);
+  ctx.save(); ctx.translate(Math.sin(t * 91) * hs, Math.cos(t * 77) * hs); frame(t); ctx.restore(); grade(); ctx.setTransform(1, 0, 0, 1, 0, 0); if (!window.NO_HUD) hud(t); };
+if (!location.search.includes('render')) { const t0 = performance.now(); (window.CAST_READY || Promise.resolve()).then(() => (function loop() { render(((performance.now() - t0) / 1000) % DURATION); requestAnimationFrame(loop); })()); }
+</script></body></html>

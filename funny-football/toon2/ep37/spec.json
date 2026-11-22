@@ -1,0 +1,22 @@
+{
+ "logline": "Every time Messi collects another Ballon d'Or, Ronaldo has a new excuse — until his own 'the numbers don't deceive' board flips to Messi 8, CR7 5, so he gives himself a trophy.",
+ "beats": [
+  {"shot": "wide", "idea": "2021 gala: Messi gets ball #7, Ronaldo fuming in the front row", "text": "2021: Messi #7"},
+  {"shot": "ots", "idea": "over Ronaldo's shoulder: angry phone post '…lie in this way'", "text": "…lie in this way"},
+  {"shot": "cu", "idea": "2023: Messi gets #8, deadpan mate sip", "text": "2023: Messi #8"},
+  {"shot": "xcu", "idea": "Ronaldo at the mic: 'losing credibility' — the golden ball deflates", "text": "losing credibility"},
+  {"shot": "low", "idea": "Ronaldo rolls in a giant 54 GOALS board: 'the numbers don't deceive'; Messi flips it: 8-5", "text": "numbers don't deceive"},
+  {"shot": "dutch", "idea": "Ronaldo makes his own trophy and crowns himself, SIUUU", "text": "BEST EVER: ME"},
+  {"shot": "cu", "idea": "Messi looks into the camera and slurps his mate", "text": "🧉"}
+ ],
+ "techniques": ["escalation", "rule-of-3", "deadpan", "visual pun", "4th-wall"],
+ "gags": ["excuse-escalation-ladder", "deflating-golden-ball", "numbers-board-flips-8-5", "self-made-trophy", "mate-slurp-4th-wall"],
+ "twist": "his own 'numbers don't deceive' board shows Messi 8 Ronaldo 5",
+ "callback": "the golden ball that deflated at 'credibility' re-inflates when Messi touches it",
+ "ending": "4th-wall",
+ "hidden_details": ["Messi's mate never spills", "the tally on the wall behind Messi counts 8", "Ronaldo's phone wallpaper is himself"],
+ "meme_frame": "Messi flipping the board with one finger while Ronaldo points at it",
+ "style": "chibi-caricature-gala",
+ "prev_style": "voxel-iso",
+ "hook_frame0": "gala stage: Messi holding a golden ball, Ronaldo in the front row standing up furious"
+}

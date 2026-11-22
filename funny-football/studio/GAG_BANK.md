@@ -37,6 +37,11 @@ Columns: id | gag | technique (rule-of-3, misdirection, escalation, cutaway, dea
 | U30 | Penalty off a laughing goalpost, ball rolls down the whole staircase | Ep35 |
 | U31 | Stats robot pulls a disputed goal out Jenga-style | Ep35 |
 | U32 | Rubber arms grab the block back: "MINE!!" | Ep35 |
+| U33 | Excuse ladder: each Messi award, a new Ronaldo excuse | Ep37 |
+| U34 | Golden ball deflates at 'credibility', pops back when Messi taps it | Ep37 |
+| U35 | His own stat board flips to Messi 8 – CR7 5 | Ep37 |
+| U36 | Self-made 'BEST EVER: ME' trophy + self-crowning | Ep37 |
+| U37 | Messi 4th-wall mate slurp | Ep37 |
 
 ## FRESH (60 — pick ≥4 per episode, mix groups)
 ### A. Impact (physics, escalation)
