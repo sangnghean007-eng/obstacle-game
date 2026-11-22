@@ -1,0 +1,22 @@
+{
+ "logline": "On the La Liga podium, Mbappé and Yamal each try to show off with a penalty — both miss (as they really did this weekend), Raphinha takes the ball back, and their teams win anyway.",
+ "beats": [
+  {"shot": "cu", "idea": "podium: Yamal top (Barça 36), Mbappé below (Real 33), Atlético 28 sad", "text": "LaLiga top 3"},
+  {"shot": "low", "idea": "Mbappé shoots a penalty at the trophy above Yamal — skied, flies off", "text": "39' PEN ❌"},
+  {"shot": "xcu", "idea": "Yamal shows how — shanks it off his ankle, it bonks Mbappé", "text": "PEN ❌ too"},
+  {"shot": "cu", "idea": "Raphinha snatches the ball: 'MY BALL'; Flick may give pens back to Raphinha", "text": "MY BALL"},
+  {"shot": "wide", "idea": "points flip: Barça 36 (3-2 from 0-2), Real 33 (9 wins in a row); Atlético climbs", "text": "36 · 33 · 28"},
+  {"shot": "dutch", "idea": "Mbappé and Yamal both run at the same ball; Raphinha scores into the trophy", "text": "GOAL"},
+  {"shot": "cu", "idea": "they point at each other: worse miss?", "text": "Worse miss?"}
+ ],
+ "techniques": ["rule-of-3", "misdirection", "escalation", "deadpan", "callback"],
+ "gags": ["penalty-at-the-trophy", "shank-bonks-rival", "teammate-snatches-ball", "podium-points-flip", "both-miss-third-scores"],
+ "twist": "the one who scores is the player whose penalty was taken from him",
+ "callback": "the trophy target from beat 2 is finally hit by Raphinha; Mbappé's skied ball falls back on his head at the end",
+ "ending": "callback-button",
+ "hidden_details": ["Atlético's step shows '12 games'", "the skied ball lands back at the end", "Flick's clipboard says RAPHINHA"],
+ "meme_frame": "Yamal's shank hitting Mbappé on the head",
+ "style": "chibi-caricature-podium",
+ "prev_style": "voxel-iso",
+ "hook_frame0": "Yamal on the top step holding a ball, Mbappé glaring up from below"
+}

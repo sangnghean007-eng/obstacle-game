@@ -60,6 +60,10 @@ Columns: id | gag | technique (rule-of-3, misdirection, escalation, cutaway, dea
 | U53 | Rival's catchphrase shouted from off-screen above | Ep39 |
 | U54 | Trophy tower rises past the rival's goal staircase | Ep39 |
 | U55 | Loss-score block lands on the next step, backheeled away | Ep39 |
+| U56 | Penalty aimed at the rival's trophy, skied into orbit | Ep40 |
+| U57 | 'Let me show you' — shank bonks the rival | Ep40 |
+| U58 | Teammate snatches the ball: MY BALL | Ep40 |
+| U59 | Skied ball falls back on the shooter's head at the end | Ep40 |
 
 ## FRESH (60 — pick ≥4 per episode, mix groups)
 ### A. Impact (physics, escalation)
