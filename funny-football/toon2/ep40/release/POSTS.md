@@ -3,7 +3,7 @@ Facts: ep40/facts.md. Real: Barça 3-2 Villarreal (from 0-2), Yamal took the pen
 Invented: the podium, the trophy target, the ball hitting Mbappé, Raphinha's goal into the trophy.
 
 ## YouTube Shorts
-Title (69 chars):
+Title (77 chars):
 Mbappé Missed. Yamal Missed. Raphinha Said "MY BALL" 😂 #shorts #yamal #mbappe
 
 Description:
