@@ -1,0 +1,65 @@
+{
+ "logline": "Messi's throw-in hits Tapia in the face, the ref books both and calls the force negligible — then Columbus win 3-0 and Messi practises his throw-ins for Game 2.",
+ "beats": [
+  {
+   "shot": "cu",
+   "idea": "Messi throw-in, Tapia too close",
+   "text": "Throw-in 44'"
+  },
+  {
+   "shot": "wide",
+   "idea": "ball into the face",
+   "text": "BONK"
+  },
+  {
+   "shot": "slowmo",
+   "idea": "triple flop",
+   "text": "ROLL x3"
+  },
+  {
+   "shot": "wide",
+   "idea": "both booked",
+   "text": "BOTH BOOKED"
+  },
+  {
+   "shot": "xcu",
+   "idea": "Force-O-Meter",
+   "text": "negligible"
+  },
+  {
+   "shot": "cu",
+   "idea": "FT 0-3, Tapia 2 goals",
+   "text": "FT 0-3"
+  },
+  {
+   "shot": "wide",
+   "idea": "practice poster",
+   "text": "Game 2 Friday"
+  }
+ ],
+ "techniques": [
+  "escalation",
+  "deadpan",
+  "misdirection",
+  "callback",
+  "rule-of-3"
+ ],
+ "gags": [
+  "throw-in to the face",
+  "triple flop",
+  "force-o-meter",
+  "practice poster"
+ ],
+ "twist": "Tapia scored twice in the 3-0",
+ "callback": "Messi practises throw-ins at a Tapia poster for Game 2",
+ "ending": "callback-button",
+ "hidden_details": [
+  "scorebug shows Miami down to 10 men",
+  "Columbus subs laugh when Messi is booked",
+  "the coach's red card only appears as an arm"
+ ],
+ "meme_frame": "ball hitting the back-to-camera Tapia",
+ "style": "chibi-caricature-broadcast",
+ "prev_style": "chibi-caricature-stadium",
+ "hook_frame0": "'Messi. Throw-in. 44'' card with Messi holding the ball high and Tapia too close"
+}
