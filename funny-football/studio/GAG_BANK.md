@@ -33,6 +33,10 @@ Columns: id | gag | technique (rule-of-3, misdirection, escalation, cutaway, dea
 | U26 | Revenge trust fall ('oops… MADRID') | Ep32 v3 (replaced) |
 | U27 | Trust fall: two catches, then the catcher steps back | Ep32 v5 |
 | U28 | Face-plant close-up, grass in the face | Ep32 v5 |
+| U29 | Goals as numbered blocks on a staircase to the sky | Ep35 |
+| U30 | Penalty off a laughing goalpost, ball rolls down the whole staircase | Ep35 |
+| U31 | Stats robot pulls a disputed goal out Jenga-style | Ep35 |
+| U32 | Rubber arms grab the block back: "MINE!!" | Ep35 |
 
 ## FRESH (60 — pick ≥4 per episode, mix groups)
 ### A. Impact (physics, escalation)

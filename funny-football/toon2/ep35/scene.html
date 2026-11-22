@@ -1,0 +1,189 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Block by Block</title><style>html,body{margin:0;background:#000}</style></head><body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../styles.js"></script><script src="../shots.js"></script><script src="../castimg.js"></script><script src="../voxel.js"></script>
+<script>
+// Ep35 "BLOCK BY BLOCK" (facts: ep35/facts.md, checked 22 Nov 2026). Ronaldo: goal 986 on 20 Nov (Al Ahli 3-1 Al Nassr), ~4 min later a penalty off the post,
+// 14 short of 1,000; the 23 Oct goal is credited by the league but logged as an own goal by Opta. Block-world parody, original look (voxel.js).
+const W = 1080, H = 1920, cv = document.getElementById('c'), ctx = cv.getContext('2d');
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v)), lerp = (a, b, k) => a + (b - a) * k, eOut = k => 1 - (1 - clamp(k)) ** 3, eIO = k => { k = clamp(k); return k < .5 ? 4 * k * k * k : 1 - (-2 * k + 2) ** 3 / 2; };
+const eBack = k => { k = clamp(k); const c = 1.7; return 1 + (c + 1) * (k - 1) ** 3 + c * (k - 1) ** 2; };
+const FONT = '"Bangers","Impact",Inter,sans-serif', PIX = '"Press Start 2P",monospace', INK = '#1a1410';
+CASTIMG.preload(['ronaldo']); window.CAST_READY = Promise.all([window.CAST_READY, document.fonts.load(`20px ${PIX}`), document.fonts.load('40px Bangers')]);
+function card(s, x, y, size, o = {}) { ctx.save(); ctx.font = `400 ${size}px ${o.font || FONT}`; const tw = ctx.measureText(s).width, pw = tw + size * 0.9, ph = size * 1.4;
+  ctx.translate(x, y); ctx.rotate(o.rot || 0); const sc = o.pop != null ? eBack(o.pop) : 1; ctx.scale(sc, sc);
+  ctx.fillStyle = 'rgba(0,0,0,.25)'; ctx.fillRect(-pw / 2 + 9, -ph / 2 + 11, pw, ph);
+  ctx.fillStyle = o.bg || '#fffaf0'; ctx.strokeStyle = INK; ctx.lineWidth = 7; ctx.fillRect(-pw / 2, -ph / 2, pw, ph); ctx.strokeRect(-pw / 2, -ph / 2, pw, ph);
+  if (o.tail) { ctx.beginPath(); ctx.moveTo(o.tail * 40 - 26, ph / 2 - 3); ctx.lineTo(o.tail * 100, ph / 2 + 60); ctx.lineTo(o.tail * 40 + 26, ph / 2 - 3); ctx.fill(); ctx.stroke(); ctx.fillRect(o.tail * 40 - 23, ph / 2 - 8, 46, 9); }
+  ctx.fillStyle = o.col || INK; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(s, 0, 4); ctx.restore(); }
+function stamp(s, x, y, size, k, col = '#c0281c') { if (k <= 0) return; ctx.save(); ctx.translate(x, y); ctx.rotate(-0.06); const sc = 1.6 - 0.6 * eOut(k * 2.5); ctx.scale(sc, sc); ctx.globalAlpha = clamp(k * 4);
+  ctx.font = `400 ${size}px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineWidth = 16; ctx.strokeStyle = '#fffaf0'; ctx.strokeText(s, 0, 0); ctx.fillStyle = col; ctx.fillText(s, 0, 0);
+  const tw = ctx.measureText(s).width; ctx.lineWidth = 7; ctx.strokeStyle = col; ctx.strokeRect(-tw / 2 - 30, -size * 0.65, tw + 60, size * 1.3); ctx.restore(); }
+
+// ---------------- world: a floating staircase of goal blocks, 7 steps per flight, switchbacks up into the sky
+const N0 = 930, TOP = 986, SUM = 1000, FL = 7;
+function step(n) { const i = n - N0, leg = Math.floor(i / FL), j = i % FL; return { x: leg % 2 ? FL - 1 - j : j, y: -leg, z: i }; }
+const P = (x, y, z) => VOX.p(x, y, z), S = VOX.S;
+const stand = n => { const s = step(n); return P(s.x + 0.5, s.y + 0.5, s.z + 1); };                 // feet point on top of step n
+const STONE = ['#8f8172', '#9b8b77', '#857868', '#a09080'];
+const CLOUDS = Array.from({ length: 26 }, (_, i) => ({ x: (VOX.hash(i, 3, 9) - 0.5) * 2600, y: -600 - i * 150 + VOX.hash(i, 5, 1) * 120, s: 0.6 + VOX.hash(i, 7, 2) * 0.9, d: VOX.hash(i, 2, 8) }));
+function sky() { const g = ctx.createLinearGradient(0, -6500, 0, 600); g.addColorStop(0, '#24357d'); g.addColorStop(0.36, '#4b8fe0'); g.addColorStop(0.75, '#8fd0fa'); g.addColorStop(1, '#fde7b0');
+  ctx.fillStyle = g; ctx.fillRect(-4000, -6000, 8000, 9000);
+  for (const c of CLOUDS) { ctx.save(); ctx.translate(c.x + (window.__T || 0) * (20 + c.d * 40), c.y); ctx.scale(c.s, c.s); ctx.globalAlpha = 0.85; for (let k = 0; k < 5; k++) { ctx.fillStyle = k % 2 ? '#ffffff' : '#eef6ff'; ctx.fillRect(-160 + k * 60, -30 - (k % 3) * 22, 110, 60 + (k % 3) * 22); } ctx.restore(); } }
+function cloudFloor(t) { const s0 = P(0, 0, 0); ctx.save(); for (let i = 0; i < 9; i++) { const x = s0[0] - 700 + i * 220 + Math.sin(t * 0.4 + i) * 20, y = s0[1] + 40 + (i % 3) * 30;
+  ctx.fillStyle = 'rgba(255,255,255,.93)'; ctx.fillRect(x - 140, y - 50, 300, 120); ctx.fillRect(x - 80, y - 100, 180, 80); } ctx.restore(); }
+let PULL = 0, WOB = 0, BLOCK986 = 1;   // OCT 23 block pulled out (cubes), wobble of the flights above it, 986 placed (0..1)
+const OCT = 962;
+function stairs(t, from = N0, to = SUM - 1) {
+  const list = []; for (let n = from; n <= to; n++) list.push(n);
+  for (const n of list) { const s = step(n); let { x, y, z } = s;
+    if (n > TOP && n < SUM) { VOX.cube(ctx, x, y, z, '#ffffff', { ghost: 'rgba(255,255,255,.75)', label: n === 987 ? '987?' : null, labelSize: 22, labelCol: '#fff' }); continue; }
+    if (n === TOP) { if (BLOCK986 <= 0) continue; const dz = (1 - eOut(BLOCK986)) * 2.2; VOX.cube(ctx, x, y, z + dz, '#f2c230', { glow: '#ffe066', label: '986', labelSize: 30, labelCol: '#fffaf0', labelEdge: '#7a4b00' }); continue; }
+    if (n === OCT) { VOX.cube(ctx, x, y + PULL, z, '#c9b48a', { label: 'OCT23', labelSize: 18, labelCol: '#fff3b0' }); continue; }
+    VOX.cube(ctx, x, y, z, STONE[n % 4], { label: String(n), labelSize: 26 }); }
+  // the summit: a 3x3 gold plateau with the 1000 sign, and Ep8's goat still holding the flag
+  const s = step(SUM); for (let a = -1; a <= 1; a++) for (let b = -1; b <= 1; b++) VOX.cube(ctx, s.x + a, s.y + b, s.z, '#e0b13a', { label: a === 1 && b === 1 ? '1000' : null, labelSize: 26 });
+}
+function goat(t, x, y, sc = 1) { ctx.save(); ctx.translate(x, y); ctx.scale(sc, sc); const b = Math.sin(t * 6) * 3;
+  VOX.box(ctx, -40, -60 + b, 80, 42, '#f3efe6', { d: 18 }); for (const lx of [-34, -14, 12, 26]) VOX.box(ctx, lx, -20, 10, 20, '#d9d3c4', { d: 4, tex: false });
+  VOX.box(ctx, 34, -92 + b, 36, 36, '#f3efe6', { d: 12, tex: false }); ctx.fillStyle = INK; ctx.fillRect(56, -82 + b, 6, 6); ctx.fillStyle = '#c8b28a'; ctx.fillRect(40, -104 + b, 8, 14); ctx.fillRect(58, -104 + b, 8, 14);
+  ctx.fillStyle = '#f3efe6'; ctx.fillRect(60, -62 + b, 12, 10);   // beard
+  ctx.strokeStyle = '#5a3a1a'; ctx.lineWidth = 6; ctx.beginPath(); ctx.moveTo(-30, -50 + b); ctx.lineTo(-30, -190); ctx.stroke();
+  const wv = Math.sin(t * 5) * 8; ctx.fillStyle = '#c0281c'; ctx.beginPath(); ctx.moveTo(-30, -190); ctx.lineTo(70, -180 + wv); ctx.lineTo(56, -150 + wv); ctx.lineTo(-30, -140); ctx.closePath(); ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = INK; ctx.stroke();
+  ctx.font = `400 20px ${PIX}`; ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.fillText('1000', 14, -158 + wv * 0.5); ctx.restore(); }   // the corner is chewed (hidden detail)
+// ---------------- the laughing goalpost on step 988 ("goal 987")
+function goalFrame(t, laugh) { const g = stand(988); ctx.save(); ctx.translate(g[0] + 10, g[1]); const w = 120, h = 96;
+  ctx.strokeStyle = 'rgba(255,255,255,.55)'; ctx.lineWidth = 2; for (let i = 1; i < 6; i++) { ctx.beginPath(); ctx.moveTo(-w / 2 + i * w / 6, -h); ctx.lineTo(-w / 2 + i * w / 6 + 14, -8); ctx.stroke(); }
+  VOX.box(ctx, -w / 2 - 14, -h, 16, h, '#f6f6f6', { d: 8, tex: false }); VOX.box(ctx, w / 2 - 2, -h, 16, h, '#f6f6f6', { d: 8, tex: false }); VOX.box(ctx, -w / 2 - 14, -h - 14, w + 30, 16, '#f6f6f6', { d: 8, tex: false });
+  // face on the left post
+  const px = -w / 2 - 6, sh = laugh ? Math.sin(t * 40) * 3 : 0; ctx.save(); ctx.translate(px, -h + 20 + sh);   // face on the left post (bigger than the post: cartoon)
+  ctx.fillStyle = '#f6f6f6'; ctx.fillRect(-16, -6, 34, 66); ctx.strokeStyle = INK; ctx.lineWidth = 3; ctx.strokeRect(-16, -6, 34, 66);
+  ctx.fillStyle = INK; ctx.fillRect(-11, 6, 9, laugh ? 4 : 11); ctx.fillRect(4, 6, 9, laugh ? 4 : 11);
+  if (laugh) { ctx.fillStyle = '#8a1c1c'; ctx.fillRect(-11, 26, 24, 24); ctx.fillStyle = '#fff'; ctx.fillRect(-11, 26, 24, 6); ctx.strokeRect(-11, 26, 24, 24); } else ctx.fillRect(-9, 34, 20, 5);
+  ctx.restore(); if (laugh) { ctx.font = `400 26px ${PIX}`; ctx.textAlign = 'center'; ctx.lineWidth = 6; ctx.strokeStyle = INK; ctx.fillStyle = '#ffe066'; const y = -h - 40 - Math.abs(Math.sin(t * 9)) * 12; ctx.strokeText('HA HA', 10, y); ctx.fillText('HA HA', 10, y); }
+  ctx.restore(); }
+// ---------------- Ronaldo (block body + caricature head)
+const RKIT = { shirt: '#f7d117', trim: '#1f3c88', shorts: '#1f3c88', sock: '#f7d117', boot: '#111111', skin: '#d9a070', num: '7', numCol: '#1f3c88', name: 'RONALDO' };
+function ronaldo(x, y, o = {}) { const c = S * 1.05;
+  VOX.figure(ctx, Object.assign({ x, y, c, kit: RKIT, headFn: (g, hx, hy) => { const h = c * (o.head || 1.55); CASTIMG.face(g, 'ronaldo', o.expr || 'smug', hx + (o.hdx || 0), hy - h * 0.4, h, o.tilt || 0); } }, o)); }
+function goldBlockHeld(label, glowK = 1) { return (g, hx, hy) => { const c = S * 1.05; g.save(); g.translate(hx - c * 0.55, hy - c * 2.55); g.shadowColor = '#ffe066'; g.shadowBlur = 30 * glowK;
+  VOX.box(g, 0, 0, c * 1.1, c * 1.1, label === '987?' ? '#f7e7a0' : '#f2c230', { d: c * 0.35 }); g.shadowBlur = 0; g.font = `400 ${c * 0.3}px ${PIX}`; g.textAlign = 'center'; g.textBaseline = 'middle';
+  g.lineWidth = 6; g.strokeStyle = '#7a4b00'; g.strokeText(label, c * 0.55, c * 0.57); g.fillStyle = '#fffaf0'; g.fillText(label, c * 0.55, c * 0.57); g.restore(); }; }
+// ---------------- the stats robot
+function robot(t, x, y, o = {}) { ctx.save(); ctx.translate(x, y + Math.sin(t * 7) * 6); ctx.rotate(o.rot || 0);
+  ctx.strokeStyle = INK; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(0, -70); ctx.lineTo(0, -92); ctx.stroke(); const pw = Math.abs(Math.cos(t * 30)) * 60 + 8; ctx.fillStyle = '#c9d2da'; ctx.fillRect(-pw / 2, -98, pw, 8); ctx.strokeRect(-pw / 2, -98, pw, 8);
+  VOX.box(ctx, -55, -70, 110, 90, '#9aa6b2', { d: 22, seed: 4 }); ctx.fillStyle = '#10261a'; ctx.fillRect(-42, -58, 84, 50); ctx.strokeRect(-42, -58, 84, 50);
+  ctx.fillStyle = '#5cff8a'; ctx.font = `400 13px ${PIX}`; ctx.textAlign = 'center'; ctx.fillText(o.screen || '985.5', 0, -36); ctx.fillRect(-22, -24, 8, 6); ctx.fillRect(14, -24, 8, 6);
+  ctx.fillStyle = INK; ctx.font = `400 11px ${PIX}`; ctx.fillText('STATS', 0, 8);
+  // arm + magnifier / grabber
+  const a = o.arm ?? 0.4; ctx.save(); ctx.translate(55, -20); ctx.rotate(-a); VOX.box(ctx, 0, -6, 60 + (o.reach || 0), 12, '#7d8894', { d: 5, tex: false }); ctx.translate(o.reach || 0, 0);   // arm reaches right, to the block
+  if (o.lens !== false) { ctx.lineWidth = 7; ctx.strokeStyle = '#3b2a1a'; ctx.beginPath(); ctx.arc(86, 0, 26, 0, 7); ctx.stroke(); ctx.fillStyle = 'rgba(200,235,255,.35)'; ctx.fill(); }
+  else { ctx.fillStyle = '#7d8894'; ctx.fillRect(60, -18, 16, 36); ctx.strokeRect(60, -18, 16, 36); ctx.fillRect(60, -18, 30, 10); ctx.strokeRect(60, -18, 30, 10); ctx.fillRect(60, 8, 30, 10); ctx.strokeRect(60, 8, 30, 10); }
+  ctx.restore(); ctx.restore(); }
+// ---------------- Al Ahli ground (split panel)
+const AKIT = { shirt: '#0f7a3a', trim: '#ffffff', shorts: '#ffffff', sock: '#0f7a3a', boot: '#111', skin: '#b5835a', num: '', name: '' };
+function blockHead(skin, hair) { return (g, hx, hy) => { const c = S; VOX.box(g, hx - c * 0.45, hy - c * 0.9, c * 0.9, c * 0.9, skin, { d: c * 0.3, tex: false }); g.fillStyle = hair; g.fillRect(hx - c * 0.45, hy - c * 0.9, c * 0.9, c * 0.22);
+  g.fillStyle = '#fff'; g.fillRect(hx - c * 0.28, hy - c * 0.55, c * 0.18, c * 0.14); g.fillRect(hx + c * 0.1, hy - c * 0.55, c * 0.18, c * 0.14); g.fillStyle = INK; g.fillRect(hx - c * 0.22, hy - c * 0.53, c * 0.08, c * 0.1); g.fillRect(hx + c * 0.16, hy - c * 0.53, c * 0.08, c * 0.1);
+  g.fillStyle = '#5a2a1a'; g.fillRect(hx - c * 0.2, hy - c * 0.3, c * 0.4, c * 0.08); }; }
+function ground(t) { // its own little world, centred on (540, 1150)
+  const ox = VOX.ox, oy = VOX.oy; VOX.ox = 540; VOX.oy = 1000;
+  const g = ctx.createLinearGradient(0, 300, 0, 1700); g.addColorStop(0, '#7cc6f2'); g.addColorStop(1, '#fde7b0'); ctx.fillStyle = g; ctx.fillRect(-1500, -800, 4000, 4000);
+  for (let i = -3; i <= 3; i++) for (let j = -3; j <= 3; j++) VOX.cube(ctx, i, j, 0, (i + j) % 2 ? '#4caf50' : '#43a047', { tex: true });
+  // scoreboard towers: Al Nassr 1 (yellow), Al Ahli 1-2-3 (green; the 3rd is Ronaldo's own penalty ball)
+  VOX.cube(ctx, -1, -2, 1, '#f7d117', { label: '1', labelSize: 40, labelCol: '#1f3c88', labelEdge: '#fff' });
+  const st = [12.2, 12.75, 13.3]; for (let k = 0; k < 3; k++) { const kk = eOut((t - st[k]) / 0.3); if (kk <= 0) continue; const dz = (1 - kk) * 3;
+    if (k < 2) VOX.cube(ctx, 1, -1, 1 + k + dz, '#0f7a3a', { label: String(k + 1), labelSize: 40 }); else ball(...VOX.p(1.5, -0.5, 3 + dz), 0.95, t); }
+  // three players: the stackers, then a celebration jump
+  const cel = t > 13.4 ? Math.abs(Math.sin((t - 13.4) * 9)) * 30 : 0;
+  [[-2.4, 1.6, -0.1], [3.2, -1.9, 0.2], [2.2, 2.6, 0]].forEach(([x, y, l], k) => { const p = VOX.p(x, y, 1), act = t > st[k] - 0.35 && t < st[k] + 0.25;
+    VOX.figure(ctx, { x: p[0], y: p[1] - cel * (k % 2 ? 1 : 0.7), c: S * 0.95, kit: AKIT, armL: act ? 2.6 : 0.3 + Math.sin(t * 5 + k) * 0.15, armR: act ? 2.6 : (cel ? 2.8 : 0.3), legL: Math.sin(t * 8 + k) * 0.1, lean: l, headFn: blockHead(AKIT.skin, '#1a1410') }); });
+  VOX.ox = ox; VOX.oy = oy; }
+// ---------------- the ball (a little checked block)
+function ball(x, y, sc = 1, t = 0, spin = 0) { ctx.save(); ctx.translate(x, y); ctx.rotate(spin); const r = 20 * sc; VOX.box(ctx, -r, -r, 2 * r, 2 * r, '#ffffff', { d: r * 0.5, tex: false, lw: 3 });
+  ctx.fillStyle = INK; ctx.fillRect(-r * 0.3, -r * 0.3, r * 0.6, r * 0.6); ctx.fillRect(-r, -r, r * 0.4, r * 0.4); ctx.fillRect(r * 0.6, r * 0.6, r * 0.4, r * 0.4); ctx.restore(); }
+// dust puffs (blocky)
+function dust(x, y, k, n = 8) { if (k <= 0 || k >= 1) return; for (let i = 0; i < n; i++) { const a = (i / n) * Math.PI - Math.PI, r = 30 + k * 90; ctx.fillStyle = `rgba(240,230,210,${1 - k})`; const s = 18 * (1 - k * 0.5); ctx.fillRect(x + Math.cos(a) * r - s / 2, y + Math.sin(a) * r * 0.5 - s / 2, s, s); } }
+
+// ---------------- story time-line (seconds)
+const T = { slam: 0.95, hop: 1.2, siu: 2.25, wideA: 3.4, low: 7.0, kick: 8.55, post: 8.85, split: 11.4, xcu: 15.0, pull: 16.5, dutch: 18.6, land: 19.25, back: 20.5, cuEnd: 22.2, END: 27.0 };
+function ballDown(t) { // after the post: over his head, then down the flights one step every 0.12 s
+  const a = stand(988), r = stand(TOP); if (t < T.post + 0.35) { const k = (t - T.post) / 0.35; return [lerp(a[0] - 40, r[0] - 70, k), lerp(a[1] - 60, r[1] - 190, k) - Math.sin(k * Math.PI) * 60, k * 9]; }
+  const s = (t - T.post - 0.35) / 0.12, n = TOP - 1 - Math.floor(s), f = s % 1; if (n < N0) return null; const p0 = stand(n + 1), p1 = stand(n);
+  return [lerp(p0[0], p1[0], f), lerp(p0[1], p1[1], f) - Math.sin(f * Math.PI) * 50 - 18, s * 2.5]; }
+const pullAt = t => t < T.pull ? 0 : t < T.dutch ? eIO((t - T.pull) / 1.3) * 1.25 : t < T.back - 0.9 ? 1.25 + Math.sin(t * 22) * 0.06 : t < T.back ? 1.25 * (1 - eIO((t - T.back + 0.9) / 0.9)) : 0;
+function world(t) { // everything on the staircase
+  window.__T = t; sky(); cloudFloor(t);
+  WOB = t > T.pull + 0.6 && t < T.back + 0.6 ? Math.sin(t * 17) * 0.02 * clamp((t - T.pull - 0.6) / 0.4) * clamp((T.back + 0.6 - t) / 0.4) : 0;
+  PULL = pullAt(t);
+  BLOCK986 = t < T.slam - 0.25 ? 0 : clamp((t - T.slam + 0.25) / 0.25);
+  // lower flights, then the flights above the pulled block (they wobble)
+  stairs(t, N0, OCT); const pv = stand(OCT); ctx.save(); ctx.translate(pv[0], pv[1]); ctx.rotate(WOB); ctx.translate(-pv[0], -pv[1]); stairs(t, OCT + 1, SUM - 1);
+  const s = step(SUM), g = P(s.x + 0.5, s.y + 0.5, s.z + 1); goat(t, g[0] - 20, g[1], 0.9);
+  if (t < T.split) goalFrame(t, t > T.post && t < T.post + 2.2);
+  // Ronaldo on the top step
+  const top = stand(TOP), prev = stand(TOP - 1); let rx = top[0], ry = top[1], o = { expr: 'laugh', bob: Math.sin(t * 4) * 2 };
+  if (t < T.hop) { rx = prev[0]; ry = prev[1]; if (t < T.slam) Object.assign(o, { armL: 2.9, armR: 2.9, hold: goldBlockHeld('986'), expr: 'laugh' }); else Object.assign(o, { armL: 1.2, armR: 1.2, expr: 'laugh', sq: 0.08 * clamp(1 - (t - T.slam) / 0.2) }); }
+  else if (t < T.hop + 0.45) { const k = (t - T.hop) / 0.45; rx = lerp(prev[0], top[0], k); ry = lerp(prev[1], top[1], k) - Math.sin(k * Math.PI) * 70; Object.assign(o, { armL: 1.6, armR: 1.6, legL: 0.4, legR: -0.4 }); }
+  else if (t < T.siu) Object.assign(o, { armL: 1.9 + Math.sin(t * 14) * 0.2, armR: 1.9 + Math.sin(t * 14 + 1) * 0.2, expr: 'laugh' });       // flex
+  else if (t < T.siu + 0.95) { const k = (t - T.siu) / 0.95; ry -= Math.sin(clamp(k / 0.8) * Math.PI) * 120; Object.assign(o, { lean: Math.sin(k * Math.PI * 2) * 0.25, armL: k < 0.8 ? 2.4 : 0.9, armR: k < 0.8 ? 2.4 : 0.9, legL: 0.35, legR: -0.35, expr: 'laugh', sq: k > 0.8 ? 0.1 : 0 }); }
+  else if (t < T.low) Object.assign(o, { expr: 'smug', armR: t > 4.0 ? 2.7 : 0.4 + (t - T.siu - 0.95) * 0.8, armL: 0.2 });                 // points up at the summit
+  else if (t < T.kick) { const k = clamp((t - 7.4) / 0.6), run = clamp((t - 8.0) / 0.55); rx -= 46 * k - 46 * run; ry += 26 * k - 26 * run; Object.assign(o, { expr: 'angry', armL: 0.5 + run * 0.6, armR: 0.3, legL: run ? Math.sin(t * 30) * 0.5 : 0, legR: run ? -Math.sin(t * 30) * 0.5 : 0, lean: -run * 0.1 }); }
+  else if (t < T.post + 0.05) Object.assign(o, { expr: 'angry', legR: -1.2, armL: 1.2, armR: 0.8, lean: 0.12 });
+  else if (t < T.post + 0.4) Object.assign(o, { expr: 'shock', sq: 0.18, armL: 2.3, armR: 2.3 });            // ducks: the ball flies back over his head
+  else if (t < T.cuEnd && !(t > T.dutch)) Object.assign(o, { expr: t < T.post + 1.2 ? 'shock' : 'cry', armL: 0.15, armR: 0.15, lean: Math.sin(t * 2) * 0.04, tilt: 0.12 });
+  if (t > T.dutch && t < T.cuEnd) { // he dives down to save the disputed block
+    const a = stand(OCT + 1), k = clamp((t - T.dutch - 0.1) / (T.land - T.dutch - 0.1)); rx = a[0] - 55; ry = lerp(a[1] - 700, a[1], eIO(k)); const tug = t > T.land + 0.25 && t < T.back;
+    Object.assign(o, { expr: t < T.back ? 'angry' : 'laugh', armL: t >= T.back ? 1.3 : 2.6, armR: t >= T.back ? 1.3 : 2.6, sq: k >= 1 && t < T.land + 0.15 ? 0.15 : 0 });
+    if (tug || (t >= T.back && t < T.back + 0.5)) { const so = step(OCT), pl = pullAt(t), g1 = P(so.x + 1, so.y + 0.6 + pl, so.z + 0.75), g2 = P(so.x + 1, so.y + 0.35 + pl, so.z + 0.35), c = S * 1.05;   // both hands ON the block (rubber arms)
+      const L = VOX.reachArm(c, rx, ry, -1, g1[0], g1[1]), R = VOX.reachArm(c, rx, ry, 1, g2[0], g2[1]); Object.assign(o, { armL: L.a, stretchL: L.k * (1 + Math.sin(t * 20) * 0.03), armR: R.a, stretchR: R.k }); } }
+  if (t >= T.cuEnd) { const k = clamp((t - 22.6) / 0.7); Object.assign(o, { expr: k < 1 ? 'smug' : 'laugh', armL: lerp(0.3, 2.9, eOut(k)), armR: lerp(0.3, 2.9, eOut(k)), hold: t > 22.6 ? goldBlockHeld('987?', clamp((t - 22.6) / 0.6)) : null }); }
+  ronaldo(rx, ry, o);
+  if (t > T.slam - 0.02 && t < T.slam + 0.5) dust(top[0], top[1], (t - T.slam) / 0.5);
+  if (t > T.land && t < T.land + 0.5) { const a = stand(OCT + 1); dust(a[0], a[1], (t - T.land) / 0.5); }
+  // the penalty ball
+  if (t > 7.2 && t < T.kick) { const f = stand(TOP); ball(f[0] + 34, f[1] - 18, 0.9, t); }
+  else if (t >= T.kick && t < T.post) { const k = (t - T.kick) / (T.post - T.kick), a = stand(TOP), b = stand(988); ball(lerp(a[0] + 34, b[0] - 40, k), lerp(a[1] - 18, b[1] - 60, k) - Math.sin(k * Math.PI) * 30, 0.9, t, k * 6); }
+  else if (t >= T.post && t < T.split + 3.6) { const b = ballDown(t); if (b) ball(b[0], b[1], 0.9, t, b[2]); }
+  ctx.restore();
+  // the stats robot at the OCT 23 block
+  if (t > T.xcu - 0.1 && t < T.cuEnd) { const s = step(OCT), lab = P(s.x + 0.5, s.y + 1 + PULL, s.z + 0.5); let rx2 = lab[0] - 205, ry2 = lab[1] - 30, rot = 0;
+    if (t < T.xcu + 0.4) { rx2 -= (1 - eOut((t - T.xcu + 0.1) / 0.5)) * 500; }
+    if (t > T.back) { const k = (t - T.back) / 0.9; rx2 -= k * 900; ry2 -= k * 400; rot = -k * 9; }
+    const grab = t > T.pull - 0.2 && t < T.back;
+    robot(t, rx2, ry2, { arm: grab ? -0.25 : 0.25 + Math.sin(t * 3) * 0.08, reach: grab ? 10 : 0, lens: !grab, rot, screen: t > T.pull + 0.9 && t < T.back ? '985' : '985.5' }); }
+}
+// ---------------- camera + HUD
+function counter(t) { const n = t > T.pull + 0.9 && t < T.back ? 985 : 986; const red = n === 985; ctx.save(); const k = t < T.slam ? 0 : 1;
+  ctx.fillStyle = red ? '#c0281c' : '#1f3c88'; ctx.fillRect(300, 250, 480, 92); ctx.strokeStyle = INK; ctx.lineWidth = 7; ctx.strokeRect(300, 250, 480, 92);
+  ctx.font = `400 34px ${PIX}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#fffaf0'; ctx.fillText(`${t < T.slam ? 985 : n} / 1000`, 540, 298);
+  if (k && t < T.slam + 0.4) { ctx.globalAlpha = 1 - (t - T.slam) / 0.4; ctx.fillStyle = '#ffe066'; ctx.fillRect(300, 250, 480, 92); } ctx.restore(); }
+const lerp2 = (a, b, k) => [lerp(a[0], b[0], k), lerp(a[1], b[1], k)];
+function frame(t) {
+  const top = stand(TOP), sum = stand(SUM), oct = stand(OCT);
+  if (t < T.wideA) SHOT.cu(ctx, () => world(t), { x: top[0] - 10, y: top[1] - 95, zoom: lerp(3.1, 2.8, t / T.wideA) });
+  else if (t < T.low) { const k = eIO((t - T.wideA) / 2.2) * 0.9 + clamp((t - T.wideA) / 3.6) * 0.1, c = lerp2([top[0] - 10, top[1] - 95], [(top[0] + sum[0]) / 2 - 60, (top[1] + sum[1]) / 2 + 220], k); SHOT.wide(ctx, () => world(t), { x: c[0], y: c[1], zoom: lerp(2.8, 0.62, k) * (1 + clamp((t - 5.6) / 1.4) * 0.12) }); }
+  else if (t < T.split) SHOT.low(ctx, () => world(t), { x: top[0] + 50, y: top[1] - 70, zoom: 2.2, lift: 120 });
+  else if (t < T.xcu) { const b = ballDown(t) || [oct[0], oct[1]];
+    SHOT.split(ctx, [{ draw: () => world(t), shot: 'cu', opts: { x: b[0], y: b[1], zoom: 2.0 } }, { draw: () => ground(t), shot: 'cu', opts: { x: 560, y: 930, zoom: 1.75 } }]); }
+  else if (t < T.dutch) SHOT.xcu(ctx, () => world(t), { x: oct[0] - 110 - pullAt(t) * 48, y: oct[1] - 10 + pullAt(t) * 28, zoom: lerp(3.1, 3.4, (t - T.xcu) / 3.6) });
+  else if (t < T.cuEnd) SHOT.dutch(ctx, () => world(t), { x: oct[0] - 60 - pullAt(t) * 60, y: oct[1] - 90, zoom: 2.6, rot: -0.2 });
+  else SHOT.cu(ctx, () => world(t), { x: top[0] - 10, y: top[1] - 95, zoom: lerp(2.8, 3.1, (t - T.cuEnd) / 4.8) });
+}
+function hud(t) {
+  counter(t);
+  if (t < 2.6) card('Road to 1000 🧱', 540, 420, 64, { pop: t / 0.3 });
+  if (t > T.wideA + 0.8 && t < T.low) card('14 to go', 790, 1250, 72, { pop: (t - T.wideA - 0.8) / 0.3, bg: '#fff3b0' });
+  if (t > T.low && t < T.low + 1.4) card('4 min later…', 540, 430, 60, { pop: (t - T.low) / 0.3, bg: '#e8f0ff' });
+  if (t > T.post && t < T.split) stamp('PEN… POST 😬', 540, 480, 92, t - T.post);
+  if (t > 13.45 && t < T.xcu) stamp('AL AHLI 3-1', 540, 1090, 80, t - 13.45, '#0f7a3a');
+  if (t > T.xcu + 0.5 && t < T.dutch) card('Opta: own goal 🤓', 540, 430, 62, { pop: (t - T.xcu - 0.5) / 0.3 });
+  if (t > T.land && t < T.back) card('MINE!!', 790, 1480, 80, { pop: (t - T.land) / 0.25, bg: '#fff3b0', rot: 0.04 });
+  if (t > T.back + 0.1 && t < T.cuEnd) stamp('League: GOAL ✅', 540, 470, 80, t - T.back - 0.1, '#1f7a2a');
+  if (t > 23.4) card('987? 👀', 540, 1470, 76, { pop: (t - 23.4) / 0.3, bg: '#fff3b0' });
+  if (t > 24.6) { ctx.font = `400 22px ${PIX}`; ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.textAlign = 'center'; ctx.fillText('cartoon parody · AI voices', 540, 1560); }
+}
+const SHAKE = [T.slam, T.post, T.land, T.back];
+function grade() { ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); const v = ctx.createRadialGradient(540, 960, 560, 540, 960, 1250); v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,0,.38)'); ctx.fillStyle = v; ctx.fillRect(0, 0, W, H); ctx.restore(); }
+window.DURATION = T.END; window.render = function (t) { ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.clearRect(0, 0, W, H); ctx.fillStyle = '#1b2a6b'; ctx.fillRect(0, 0, W, H);
+  const hs = SHAKE.reduce((m, a) => Math.max(m, t >= a && t < a + 0.25 ? 16 * (1 - (t - a) / 0.25) : 0), 0);
+  ctx.save(); ctx.translate(Math.sin(t * 91) * hs, Math.cos(t * 77) * hs); frame(t); ctx.restore(); grade(); ctx.setTransform(1, 0, 0, 1, 0, 0); if (!window.NO_HUD) hud(t); };
+if (!location.search.includes('render')) { const t0 = performance.now(); (window.CAST_READY || Promise.resolve()).then(() => (function loop() { render(((performance.now() - t0) / 1000) % DURATION); requestAnimationFrame(loop); })()); }
+</script></body></html>

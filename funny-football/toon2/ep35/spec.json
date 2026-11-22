@@ -1,0 +1,22 @@
+{
+ "logline": "Ronaldo stacks goal 986 on his block staircase to 1000, misses the next penalty off the post, loses 3-1, and a stats robot tries to pull out his disputed goal before he grabs block 987.",
+ "beats": [
+  {"shot": "cu", "idea": "Ronaldo slams gold block 986 on top", "text": "986 / 1000"},
+  {"shot": "wide", "idea": "crane up: staircase into the clouds, 14 empty slots, goat with the flag", "text": "14 to go"},
+  {"shot": "low", "idea": "4 min later: block-ball penalty hits the laughing post", "text": "PEN… POST"},
+  {"shot": "split", "idea": "ball rolls down, Al Ahli stack 3 blocks", "text": "3-1 Al Ahli"},
+  {"shot": "xcu", "idea": "stats robot magnifies block OCT 23 and pulls it out", "text": "Opta: own goal"},
+  {"shot": "dutch", "idea": "tower wobbles, Ronaldo hugs the block back in", "text": "League: MINE"},
+  {"shot": "cu", "idea": "he lifts ghost block 987 in the opening pose (loop)", "text": "987?"}
+ ],
+ "techniques": ["escalation", "misdirection", "visual pun", "sound gag", "callback", "deadpan"],
+ "gags": ["goal-blocks-staircase", "laughing-post-pen-ricochet", "stats-robot-jenga", "hug-the-disputed-block"],
+ "twist": "the stats robot tries to take a goal away (Opta own goal)",
+ "callback": "Ep8 goat still holds the 1000 flag; final pose = opening pose",
+ "ending": "loop",
+ "hidden_details": ["block 700 has a tiny crown (700th club goal)", "the goat chews the flag corner", "the stats robot's screen shows 985.5"],
+ "meme_frame": "robot pulling the OCT 23 block while Ronaldo screams",
+ "style": "voxel-iso",
+ "prev_style": "chibi-caricature-broadcast",
+ "hook_frame0": "Ronaldo on a tall block tower slamming a glowing gold block 986, counter 986/1000"
+}
