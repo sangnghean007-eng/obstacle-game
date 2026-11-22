@@ -57,6 +57,9 @@ Columns: id | gag | technique (rule-of-3, misdirection, escalation, cutaway, dea
 | U50 | Spinning plank bonks the crew's hard hats off | Ep36 v3 |
 | U51 | Human wall shields itself, free kick curls into the window | Ep36 v3 |
 | U52 | Rivals take a group selfie at the rubble | Ep36 v3 |
+| U53 | Rival's catchphrase shouted from off-screen above | Ep39 |
+| U54 | Trophy tower rises past the rival's goal staircase | Ep39 |
+| U55 | Loss-score block lands on the next step, backheeled away | Ep39 |
 
 ## FRESH (60 — pick ≥4 per episode, mix groups)
 ### A. Impact (physics, escalation)

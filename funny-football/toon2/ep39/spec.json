@@ -1,0 +1,22 @@
+{
+ "logline": "Road to 1000, Messi edition: Messi calmly places block 937 while Ronaldo yells SIUUU from 986 above — then Messi stops climbing and stacks a trophy tower (8 Ballons d'Or + the World Cup) that towers over Ronaldo's stairs.",
+ "beats": [
+  {"shot": "cu", "idea": "Messi places block 937 calmly and sips mate", "text": "937 / 1000"},
+  {"shot": "low", "idea": "SIUUU from above: Ronaldo at 986; Messi looks up deadpan", "text": "986 vs 937"},
+  {"shot": "wide", "idea": "both staircases: 14 to go vs 63 to go", "text": "14 vs 63"},
+  {"shot": "xcu", "idea": "Messi's 2026 blocks flash +1: 30 goals; 0.79 per game vs 0.73", "text": "30 in 2026"},
+  {"shot": "dutch", "idea": "Messi stacks a trophy tower: 8 Ballons d'Or + World Cup, taller than Ronaldo's stairs", "text": "8 > 5"},
+  {"shot": "low", "idea": "a grey '0-3' Columbus block lands on his next step; he backheels it away", "text": "Game 2: Friday"},
+  {"shot": "cu", "idea": "he lifts block 938? (loop); question: goals or trophies?", "text": "Goals or trophies?"}
+ ],
+ "techniques": ["deadpan", "misdirection", "visual pun", "callback", "escalation"],
+ "gags": ["siuuu-from-above", "trophy-tower-overtakes-stairs", "columbus-block-backheel", "messi-calm-block-placing"],
+ "twist": "Messi isn't racing the stairs — his trophy tower wins the height contest",
+ "callback": "Ep35's staircase and Ronaldo's SIUUU; loop to the opening pose",
+ "ending": "question",
+ "hidden_details": ["Ronaldo's top block glows 986", "the mate never spills", "a goat flag on the 1000 summit"],
+ "meme_frame": "trophy tower rising past Ronaldo who stops mid-SIUUU",
+ "style": "voxel-iso",
+ "prev_style": "chibi-caricature-feed",
+ "hook_frame0": "big Messi placing gold block 937, counter 937/1000"
+}

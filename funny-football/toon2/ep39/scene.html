@@ -1,0 +1,111 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Block by Block: Messi</title><style>html,body{margin:0;background:#000}</style></head><body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../styles.js"></script><script src="../shots.js"></script><script src="../castimg.js"></script><script src="../voxel.js"></script>
+<script>
+// Ep39 "BLOCK BY BLOCK: MESSI" (series part 2; facts: ep39/facts.md). Built on Ep35.
+// Ep35 "BLOCK BY BLOCK" (facts: ep35/facts.md, checked 22 Nov 2026). Ronaldo: goal 986 on 20 Nov (Al Ahli 3-1 Al Nassr), ~4 min later a penalty off the post,
+// 14 short of 1,000; the 23 Oct goal is credited by the league but logged as an own goal by Opta. Block-world parody, original look (voxel.js).
+const W = 1080, H = 1920, cv = document.getElementById('c'), ctx = cv.getContext('2d');
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v)), lerp = (a, b, k) => a + (b - a) * k, eOut = k => 1 - (1 - clamp(k)) ** 3, eIO = k => { k = clamp(k); return k < .5 ? 4 * k * k * k : 1 - (-2 * k + 2) ** 3 / 2; };
+const eBack = k => { k = clamp(k); const c = 1.7; return 1 + (c + 1) * (k - 1) ** 3 + c * (k - 1) ** 2; };
+const FONT = '"Bangers","Impact",Inter,sans-serif', PIX = '"Press Start 2P",monospace', INK = '#1a1410';
+CASTIMG.preload(['messi', 'ronaldo']); window.CAST_READY = Promise.all([window.CAST_READY, document.fonts.load(`20px ${PIX}`), document.fonts.load('40px Bangers')]);
+function card(s, x, y, size, o = {}) { ctx.save(); ctx.font = `400 ${size}px ${o.font || FONT}`; const tw = ctx.measureText(s).width, pw = tw + size * 0.9, ph = size * 1.4;
+  ctx.translate(x, y); ctx.rotate(o.rot || 0); const sc = o.pop != null ? eBack(o.pop) : 1; ctx.scale(sc, sc);
+  ctx.fillStyle = 'rgba(0,0,0,.25)'; ctx.fillRect(-pw / 2 + 9, -ph / 2 + 11, pw, ph);
+  ctx.fillStyle = o.bg || '#fffaf0'; ctx.strokeStyle = INK; ctx.lineWidth = 7; ctx.fillRect(-pw / 2, -ph / 2, pw, ph); ctx.strokeRect(-pw / 2, -ph / 2, pw, ph);
+  if (o.tail) { ctx.beginPath(); ctx.moveTo(o.tail * 40 - 26, ph / 2 - 3); ctx.lineTo(o.tail * 100, ph / 2 + 60); ctx.lineTo(o.tail * 40 + 26, ph / 2 - 3); ctx.fill(); ctx.stroke(); ctx.fillRect(o.tail * 40 - 23, ph / 2 - 8, 46, 9); }
+  ctx.fillStyle = o.col || INK; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(s, 0, 4); ctx.restore(); }
+function stamp(s, x, y, size, k, col = '#c0281c') { if (k <= 0) return; ctx.save(); ctx.translate(x, y); ctx.rotate(-0.06); const sc = 1.6 - 0.6 * eOut(k * 2.5); ctx.scale(sc, sc); ctx.globalAlpha = clamp(k * 4);
+  ctx.font = `400 ${size}px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineWidth = 16; ctx.strokeStyle = '#fffaf0'; ctx.strokeText(s, 0, 0); ctx.fillStyle = col; ctx.fillText(s, 0, 0);
+  const tw = ctx.measureText(s).width; ctx.lineWidth = 7; ctx.strokeStyle = col; ctx.strokeRect(-tw / 2 - 30, -size * 0.65, tw + 60, size * 1.3); ctx.restore(); }
+
+// ---------------- world: a floating staircase of goal blocks, 7 steps per flight, switchbacks up into the sky
+
+// ---------------- two staircases: Messi's (front, 937) and Ronaldo's (behind-right, 986); one cube = one goal
+const N0 = 900, FL = 7, MTOP = 937, RTOP = 986, SUM = 1000;
+function step(n) { const i = n - N0, leg = Math.floor(i / FL), j = i % FL; return { x: leg % 2 ? FL - 1 - j : j, y: -leg, z: i }; }
+const eIn = k => clamp(k) ** 2;
+const S = VOX.S; const R_OFF = [9, -3];                                    // Ronaldo's staircase, offset in grid x / y
+const P = (x, y, z) => VOX.p(x, y, z);
+const stand = (n, who = 'm') => { const s = step(n), o = who === 'r' ? R_OFF : [0, 0]; return P(s.x + 0.5 + o[0], s.y + 0.5 + o[1], s.z + 1); };
+const STONE = ['#8f8172', '#9b8b77', '#857868', '#a09080'];
+const CLOUDS = Array.from({ length: 26 }, (_, i) => ({ x: (VOX.hash(i, 3, 9) - 0.5) * 2600, y: -600 - i * 150 + VOX.hash(i, 5, 1) * 120, s: 0.6 + VOX.hash(i, 7, 2) * 0.9, d: VOX.hash(i, 2, 8) }));
+function sky() { const g = ctx.createLinearGradient(0, -6500, 0, 600); g.addColorStop(0, '#24357d'); g.addColorStop(0.36, '#4b8fe0'); g.addColorStop(0.75, '#8fd0fa'); g.addColorStop(1, '#fde7b0');
+  ctx.fillStyle = g; ctx.fillRect(-4000, -6000, 8000, 9000);
+  for (const c of CLOUDS) { ctx.save(); ctx.translate(c.x + (window.__T || 0) * (20 + c.d * 40), c.y); ctx.scale(c.s, c.s); ctx.globalAlpha = 0.85; for (let k = 0; k < 5; k++) { ctx.fillStyle = k % 2 ? '#ffffff' : '#eef6ff'; ctx.fillRect(-160 + k * 60, -30 - (k % 3) * 22, 110, 60 + (k % 3) * 22); } ctx.restore(); } }
+function cloudFloor(t) { const s0 = P(0, 0, 0); ctx.save(); for (let i = 0; i < 9; i++) { const x = s0[0] - 700 + i * 220 + Math.sin(t * 0.4 + i) * 20, y = s0[1] + 40 + (i % 3) * 30;
+  ctx.fillStyle = 'rgba(255,255,255,.93)'; ctx.fillRect(x - 140, y - 50, 300, 120); ctx.fillRect(x - 80, y - 100, 180, 80); } ctx.restore(); }
+let FLASH = -1, BLK937 = 1;
+function stairs(t, who) { const o = who === 'r' ? R_OFF : [0, 0], top = who === 'r' ? RTOP : MTOP, from = who === 'r' ? 950 : 900;
+  for (let n = from; n <= top + 12 && n < SUM; n++) { const s = step(n), x = s.x + o[0], y = s.y + o[1], z = s.z;
+    if (n > top) { if (n === top + 1 && who === 'm' && t > T.col0 && t < T.kick + 0.5) continue; VOX.cube(ctx, x, y, z, '#fff', { ghost: 'rgba(255,255,255,.7)', label: n === top + 1 ? `${n}?` : null, labelSize: 22, labelCol: '#fff' }); continue; }
+    if (who === 'm' && n === MTOP) { if (BLK937 <= 0) continue; const dz = (1 - eOut(BLK937)) * 1.5; VOX.cube(ctx, x, y, z + dz, '#f5a3c7', { glow: '#ffd1e6', label: '937', labelSize: 30, labelCol: '#fffaf0', labelEdge: '#7a2a52' }); continue; }
+    const hot = who === 'm' && n >= 908 && n < MTOP && FLASH >= n;
+    VOX.cube(ctx, x, y, z, hot ? '#f5a3c7' : who === 'r' ? '#b8a07a' : STONE[n % 4], { label: String(n), labelSize: 24, glow: hot && FLASH - n < 3 ? '#ffd1e6' : null }); } }
+// Messi (Inter Miami pink) + Ronaldo (Al Nassr yellow): block bodies, caricature heads
+const MK = { shirt: '#f5a3c7', trim: '#111111', shorts: '#111111', sock: '#f5a3c7', boot: '#111111', skin: '#e0b090', num: '10', numCol: '#111', name: 'MESSI' };
+const RK = { shirt: '#f7d117', trim: '#1f3c88', shorts: '#1f3c88', sock: '#f7d117', boot: '#111111', skin: '#d9a070', num: '7', numCol: '#1f3c88', name: 'RONALDO' };
+function person(who, x, y, o = {}) { const c = S * (o.k || 1.05);
+  VOX.figure(ctx, Object.assign({ x, y, c, kit: who === 'messi' ? MK : RK, headFn: (g, hx, hy) => { const h = c * (o.head || 1.55); CASTIMG.face(g, who, o.expr || 'smug', hx, hy - h * 0.4, h, o.tilt || 0); } }, o)); }
+function mateHeld(t, sip) { return (g, hx, hy) => { const c = S * 1.05; g.save(); g.translate(hx + c * 0.75, hy + c * (sip ? -0.55 : 0.35)); g.rotate(sip ? -0.5 : 0.1); g.scale(0.7, 0.7);
+  g.strokeStyle = '#c9c9d1'; g.lineWidth = 6; g.beginPath(); g.moveTo(6, -36); g.lineTo(22, -80); g.stroke(); g.fillStyle = '#7a4a22'; g.strokeStyle = INK; g.lineWidth = 4; g.beginPath(); g.ellipse(0, 0, 30, 36, 0, 0, 7); g.fill(); g.stroke();
+  g.fillStyle = '#c9a227'; g.fillRect(-26, -34, 52, 10); g.restore(); }; }
+function blockHeld(label, col) { return (g, hx, hy) => { const c = S * 1.05; g.save(); g.translate(hx - c * 0.55, hy - c * 2.55); g.shadowColor = '#ffd1e6'; g.shadowBlur = 24;
+  VOX.box(g, 0, 0, c * 1.1, c * 1.1, col, { d: c * 0.35 }); g.shadowBlur = 0; g.font = `400 ${c * 0.3}px ${PIX}`; g.textAlign = 'center'; g.textBaseline = 'middle'; g.lineWidth = 6; g.strokeStyle = '#7a2a52'; g.strokeText(label, c * 0.55, c * 0.57); g.fillStyle = '#fffaf0'; g.fillText(label, c * 0.55, c * 0.57); g.restore(); }; }
+// the trophy tower: 8 Ballon d'Or blocks + the World Cup block, rising next to Messi's stairs
+function trophyTower(t) { if (t < T.tower) return; const k = clamp((t - T.tower) / 3.2), base = P(-3, 2, 0), bw = 320, bh = 660;
+  const labels = ['⚽ 2009', '⚽ 2010', '⚽ 2011', '⚽ 2012', '⚽ 2015', '⚽ 2019', '⚽ 2021', '⚽ 2023', '🏆 WORLD CUP'];
+  for (let i = 0; i < 9; i++) { const ki = clamp(k * 9 - i); if (ki <= 0) continue; const y = base[1] - (i + 1) * bh + (1 - eOut(ki)) * 400;
+    ctx.save(); ctx.globalAlpha = clamp(ki * 3); ctx.shadowColor = '#ffe680'; ctx.shadowBlur = 30; VOX.box(ctx, base[0] - bw / 2, y, bw, bh - 6, i === 8 ? '#f7c948' : '#e8b93a', { d: 60 }); ctx.shadowBlur = 0;
+    ctx.font = `400 ${i === 8 ? 54 : 64}px ${FONT}`; ctx.fillStyle = '#fffaf0'; ctx.strokeStyle = '#7a4b00'; ctx.lineWidth = 8; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.strokeText(labels[i], base[0], y + bh / 2); ctx.fillText(labels[i], base[0], y + bh / 2); ctx.restore(); } }
+function goatTop(t) { const s = step(SUM), g = P(s.x + 0.5 + R_OFF[0], s.y + 0.5 + R_OFF[1], s.z + 1); ctx.save(); ctx.translate(g[0], g[1]); ctx.fillStyle = '#f3efe6'; ctx.strokeStyle = INK; ctx.lineWidth = 4; ctx.fillRect(-30, -40, 60, 30); ctx.strokeRect(-30, -40, 60, 30);
+  ctx.strokeStyle = '#5a3a1a'; ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(-20, -40); ctx.lineTo(-20, -130); ctx.stroke(); ctx.fillStyle = '#c0281c'; ctx.fillRect(-20, -130, 70, 36); ctx.font = `400 16px ${PIX}`; ctx.fillStyle = '#fff'; ctx.fillText('1000', -14, -105); ctx.restore(); }
+function colBlock(t) { if (t < T.col0 || t > T.kick + 1.2) return; const s = step(MTOP + 1); let x = s.x, y = s.y, z = s.z + (1 - eIn(clamp((t - T.col0) / 0.5))) * 6;
+  if (t > T.kick) { const k = (t - T.kick) / 1.2; x += k * 6; z -= k * k * 14; }
+  VOX.cube(ctx, x, y, z, '#6e7078', { label: '0-3', labelSize: 30, labelCol: '#ffcf33' }); }
+// ---------------- time-line
+const T = { place: 0.9, sip: 1.6, siu: 3.4, C: 7.0, D: 10.8, E: 14.6, tower: 15.0, F: 19.6, col0: 19.9, kick: 22.3, G: 23.6, END: 28.0 };
+function world(t) { sky(); cloudFloor(t);
+  FLASH = t > T.D + 0.3 && t < T.E ? 908 + Math.floor((t - T.D - 0.3) / 2.8 * 30) : t >= T.E ? 999 : -1;
+  BLK937 = t < T.place - 0.25 ? 0 : clamp((t - T.place + 0.25) / 0.25);
+  stairs(t, 'r'); goatTop(t);
+  const rt = stand(RTOP, 'r'), siu = t > T.siu && t < T.siu + 1.6; person('ronaldo', rt[0], rt[1] - (siu ? Math.sin((t - T.siu) / 1.6 * Math.PI) * 60 : 0), { k: 1.0, expr: t > T.tower + 2.2 ? 'shock' : 'laugh', armL: siu ? 2.4 : 0.4, armR: siu ? 2.4 : (t > T.C ? 2.7 : 0.4) });
+  trophyTower(t); stairs(t, 'm'); colBlock(t);
+  const top = stand(MTOP), prev = stand(MTOP - 1), lookUp = t > T.siu && t < T.C;
+  let mx = t < T.place + 0.3 ? prev[0] : top[0], my = t < T.place + 0.3 ? prev[1] : top[1], o = { expr: 'deadpan', tilt: lookUp ? -0.25 : 0 };
+  if (t > T.place + 0.3 && t < T.place + 0.7) { const k = (t - T.place - 0.3) / 0.4; mx = lerp(prev[0], top[0], k); my = lerp(prev[1], top[1], k) - Math.sin(k * Math.PI) * 50; }
+  if (t < T.place) Object.assign(o, { armL: 0.3, armR: 2.9, hold: blockHeld('937', '#f5a3c7') });
+  else if (t < T.G) { const sip = (t > T.sip && t < T.sip + 1.0) || (t > T.tower + 3.3 && t < T.tower + 4.3) || (t > T.kick + 0.4 && t < T.kick + 1.2); Object.assign(o, { armR: sip ? 2.0 : 0.6, armL: 0.3, hold: mateHeld(t, sip), expr: t > T.tower + 3.0 && t < T.F ? 'smug' : 'deadpan' });
+    if (t > T.kick - 0.3 && t < T.kick + 0.2) Object.assign(o, { legR: 0.9, lean: -0.1 }); }
+  else { const k = clamp((t - 24.0) / 0.6); Object.assign(o, { armL: lerp(0.3, 0.3, k), armR: lerp(0.6, 2.9, eOut(k)), hold: t > 24.0 ? blockHeld('938?', '#f8d0e2') : mateHeld(t, false), expr: 'smug' }); }
+  person('messi', mx, my, o);
+}
+function frame(t) { const top = stand(MTOP), rt = stand(RTOP, 'r');
+  if (t < T.siu) SHOT.cu(ctx, () => world(t), { x: top[0] - 10, y: top[1] - 95, zoom: lerp(3.1, 2.9, t / T.siu) });
+  else if (t < T.C) SHOT.low(ctx, () => world(t), { x: top[0] + 20, y: top[1] - 120, zoom: 2.4, lift: 160 });
+  else if (t < T.D) { const k = eIO((t - T.C) / 2.4); SHOT.wide(ctx, () => world(t), { x: lerp(top[0], (top[0] + rt[0]) / 2, k), y: lerp(top[1] - 120, (top[1] + rt[1]) / 2, k), zoom: lerp(2.4, 0.42, k) * (1 + clamp((t - 9.4) / 1.4) * 0.05) }); }
+  else if (t < T.E) { const n = Math.max(908, Math.min(936, FLASH)), s = stand(n); SHOT.xcu(ctx, () => world(t), { x: lerp(stand(908)[0], top[0], (t - T.D) / 3.8), y: lerp(stand(908)[1], top[1], (t - T.D) / 3.8) - 60, zoom: 1.6 }); }
+  else if (t < T.F) { const b = P(-3, 2, 0), kk = clamp((t - T.tower) / 3.2), ty = b[1] - kk * 9 * 660, zo = clamp((t - 18.3) / 1.2);   // follow the top of the rising tower, then pull back past Ronaldo
+    SHOT.dutch(ctx, () => world(t), { x: lerp(b[0] + 120, (b[0] + rt[0]) / 2, eIO(zo)), y: lerp(ty + 350, (ty + rt[1]) / 2 + 400, eIO(zo)), zoom: lerp(0.85, 0.36, eIO(zo)), rot: 0.1 }); }
+  else if (t < T.G) SHOT.low(ctx, () => world(t), { x: top[0] + 60 + Math.sin((t - T.F) * 0.9) * 40, y: top[1] - 90, zoom: lerp(2.15, 2.55, (t - T.F) / 4) + Math.sin(t * 2.2) * 0.03, lift: 160 });
+  else SHOT.cu(ctx, () => world(t), { x: top[0] - 10, y: top[1] - 95, zoom: lerp(2.9, 3.1, (t - T.G) / 4.4) });
+}
+function counter(t) { ctx.save(); ctx.fillStyle = '#7a2a52'; ctx.fillRect(300, 250, 480, 92); ctx.strokeStyle = INK; ctx.lineWidth = 7; ctx.strokeRect(300, 250, 480, 92);
+  ctx.font = `400 34px ${PIX}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#fffaf0'; ctx.fillText(`${t < T.place ? 936 : 937} / 1000`, 540, 298); ctx.restore(); }
+function hud(t) { counter(t);
+  if (t < 2.8) card('Road to 1000 · Part 2 🧱', 540, 420, 58, { pop: t / 0.3 });
+  if (t > T.siu && t < T.C) { card('SIUUU! 986 😎', 700, 500, 66, { pop: (t - T.siu) / 0.3, bg: '#fff3b0', rot: 0.05 }); if (t > 4.8) card('Messi: 937 🧉', 380, 1450, 60, { pop: (t - 4.8) / 0.3 }); }
+  if (t > 8.6 && t < T.D) { card('CR7: 14 to go', 540, 420, 56, { pop: (t - 8.6) / 0.3, bg: '#fff3b0' }); card('Messi: 63 to go', 540, 1450, 56, { pop: (t - 8.9) / 0.3 }); }
+  if (t > T.D + 0.2 && t < T.E) { card('30 goals in 2026 ⚡', 540, 420, 62, { pop: (t - T.D - 0.2) / 0.3 }); if (t > 12.4) card('0.79 / game · CR7 0.73', 540, 1450, 50, { pop: (t - 12.4) / 0.3, bg: '#e8f0ff' }); }
+  if (t > T.tower + 1.0 && t < T.F) { card("Ballon d'Or: 8 vs 5 🏆", 540, 420, 58, { pop: (t - T.tower - 1.0) / 0.3 }); if (t > T.tower + 2.4) stamp('+ WORLD CUP', 540, 1450, 80, t - T.tower - 2.4, '#b8860b'); }
+  if (t > T.col0 + 0.5 && t < T.kick) card('Columbus 3-0 😬', 540, 420, 62, { pop: (t - T.col0 - 0.5) / 0.3, bg: '#e8f0ff' });
+  if (t > T.kick + 0.2 && t < T.G) card('Game 2: Friday 👀', 540, 420, 62, { pop: (t - T.kick - 0.2) / 0.3 });
+  if (t > T.G + 0.3) { card('GOALS 🧱 or TROPHIES 🏆?', 540, 420, 58, { pop: (t - T.G - 0.3) / 0.3, bg: '#fff3b0' }); if (t > T.G + 1.6) card('👇 Part 3: next goal', 540, 1450, 52, { pop: (t - T.G - 1.6) / 0.3 }); }
+  if (t > 25.5) { ctx.font = `400 20px ${PIX}`; ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.textAlign = 'center'; ctx.fillText('cartoon parody', 540, 1560); } }
+const SHAKE = [T.place, T.kick, T.tower + 3.2];
+function grade() { ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); const v = ctx.createRadialGradient(540, 960, 560, 540, 960, 1250); v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,0,.38)'); ctx.fillStyle = v; ctx.fillRect(0, 0, W, H); ctx.restore(); }
+window.DURATION = T.END; window.render = function (t) { window.__T = t; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.clearRect(0, 0, W, H); ctx.fillStyle = '#1b2a6b'; ctx.fillRect(0, 0, W, H);
+  const hs = SHAKE.reduce((m, a) => Math.max(m, t >= a && t < a + 0.25 ? 14 * (1 - (t - a) / 0.25) : 0), 0);
+  ctx.save(); ctx.translate(Math.sin(t * 91) * hs, Math.cos(t * 77) * hs); frame(t); ctx.restore(); grade(); ctx.setTransform(1, 0, 0, 1, 0, 0); if (!window.NO_HUD) hud(t); };
+if (!location.search.includes('render')) { const t0 = performance.now(); (window.CAST_READY || Promise.resolve()).then(() => (function loop() { render(((performance.now() - t0) / 1000) % DURATION); requestAnimationFrame(loop); })()); }
+</script></body></html>
