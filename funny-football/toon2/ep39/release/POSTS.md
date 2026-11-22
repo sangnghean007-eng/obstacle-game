@@ -3,7 +3,7 @@ Facts: ep39/facts.md. Real: Messi 937 career goals (tracker count; 63 to 1,000),
 Invented: the staircases, trophy tower, the 0-3 block, the mate.
 
 ## YouTube Shorts
-Title (66 chars):
+Title (72 chars):
 Messi's Road to 1000… He Built Something Else 🏆🧱 #shorts #messi #ronaldo
 
 Description:
