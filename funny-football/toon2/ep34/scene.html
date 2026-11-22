@@ -268,22 +268,22 @@ const SEG = [[0, 24, 'touchline', (z, T) => { if (mapT(T) === null) { SHOT.wide(
     const slow = t > 4.55 && t < 5.4 ? 0.35 : 1; SHOT.wide(ctx, () => scene(t), { x: cx, y: cy, zoom: zm });
     if (t > 4.62 && t < 5.4) SHOT.speedlines(ctx, t, { alpha: 0.25 }); }
   else SHOT.low(ctx, () => training(t), { x: 560, y: 1300, lift: 180, zoom: 1.05 }); },   // worm's-eye: the hero practising
- (z, T) => { if (mapT(T) === null) { const k = T - WI0; card('IF IT WAS RONALDO… 🤔', 540, 300, 74, { pop: k / 0.3, bg: '#fff3b0' }); if (k > 1.5) stamp('RED RED RED 🟥', 540, 500, 84, k - 1.5);
-    if (k > 2.0) { ctx.fillStyle = '#c0281c'; ctx.fillRect(0, 1380, W, 90); ctx.fillStyle = '#fff'; ctx.font = `400 46px ${FONT}`; ctx.textAlign = 'center'; ctx.fillText('BREAKING: RONALDO BANNED 10 GAMES', 540, 1440); }
-    ctx.font = '600 30px Inter'; ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.textAlign = 'center'; ctx.fillText('(imaginary — this never happened)', 540, 380); return; }
+ (z, T) => { if (mapT(T) === null) { const k = T - WI0; card('IF RONALDO DID IT…', 540, 300, 80, { pop: k / 0.3, bg: '#fff3b0' }); if (k > 1.5) stamp('🟥 RED ×3', 540, 500, 100, k - 1.5);
+    if (k > 2.0) { ctx.fillStyle = '#c0281c'; ctx.fillRect(0, 1380, W, 90); ctx.fillStyle = '#fff'; ctx.font = `400 46px ${FONT}`; ctx.textAlign = 'center'; ctx.fillText('BANNED 10 GAMES', 540, 1440); }
+    ctx.font = '600 30px Inter'; ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.textAlign = 'center'; ctx.fillText('(imaginary)', 540, 380); return; }
   const t = mapT(T);
   if (t < 17.2) scoreBug(t);
-  if (t < 2.6) { card('Messi: “the nicest guy in football” 😇', 540, 400, 56, { pop: 0.7 + t / 0.3, rot: -0.02 }); card('Throw-in. 44\u2032. Tapia too close…', 540, 500, 48, { pop: 0.7 + (t - 0.6) / 0.3, bg: '#ffe9a8' }); }
+  if (t < 2.6) { card('“Nicest guy” 😇', 540, 400, 80, { pop: 0.7 + t / 0.3, rot: -0.02 }); card('Throw-in. 44\u2032', 540, 510, 60, { pop: 0.7 + (t - 0.6) / 0.3, bg: '#ffe9a8' }); }
   if (t > 4.62 && t < 5.8) stamp('BONK', 760, 560, 140, t - 4.62);
   if (t > 6.3 && t < 7.9) stamp('ROLL ×3 🎭', 700, 560, 90, t - 6.3);
-  if (t > 6.9 && t < 8.3) card('It’s a throw-in 🤷', 360, 700, 56, { pop: (t - 6.9) / 0.3, tail: -1 });
-  if (t > 8.5 && t < 9.7) card('He did it ON PURPOSE! RED! 🟥', 640, 660, 46, { pop: (t - 8.5) / 0.25, tail: -1, bg: '#fff3b0' });
-  if (t > 9.8 && t < 11.2) card('Relax… I’m not Ronaldo 😏', 400, 600, 50, { pop: (t - 9.8) / 0.25, tail: -1 });
-  if (t > 10.7 && t < 11.25) stamp('🟨🟨 BOTH BOOKED', 600, 470, 58, t - 10.7);
-  if (t > 11.3 && t < 12.6) card('“More than a yellow!”', 420, 560, 56, { pop: (t - 11.3) / 0.3, bg: '#ffd9d9', rot: -0.03 });
-  gauge(t); if (t > 13.0 && t < 14.2) card('Ref: “force was negligible” 🪶', 540, 420, 50, { pop: (t - 13.0) / 0.3 });
-  if (t > 14.4 && t < 17.2) stamp('FT 0–3 · TAPIA ⚽⚽', 540, 545, 74, t - 14.4); if (t > 15.2 && t < 17.2) card('Nice guy? 😇 ➡️ 😈', 540, 405, 62, { pop: (t - 15.2) / 0.3, bg: '#ffd9d9' });
-  if (t > 17.2) { card('Game 2: Friday in Columbus 👀', 540, 330, 64, { pop: (t - 17.2) / 0.3 }); if (t > 18.8) stamp('PRACTICE ✅', 760, 560, 100, t - 18.8); }
+  if (t > 6.9 && t < 8.3) card('Just a throw-in 🤷', 360, 700, 60, { pop: (t - 6.9) / 0.3, tail: -1 });
+  if (t > 8.5 && t < 9.7) card('ON PURPOSE! RED! 🟥', 640, 660, 58, { pop: (t - 8.5) / 0.25, tail: -1, bg: '#fff3b0' });
+  if (t > 9.8 && t < 11.2) card('I’m not Ronaldo 😏', 400, 600, 64, { pop: (t - 9.8) / 0.25, tail: -1 });
+  if (t > 10.7 && t < 11.25) stamp('🟨🟨 BOTH', 600, 470, 80, t - 10.7);
+  if (t > 11.3 && t < 12.6) card('Coach: “RED!”', 420, 560, 66, { pop: (t - 11.3) / 0.3, bg: '#ffd9d9', rot: -0.03 });
+  gauge(t); if (t > 13.0 && t < 14.2) card('Ref: “Negligible” 🪶', 540, 420, 64, { pop: (t - 13.0) / 0.3 });
+  if (t > 14.4 && t < 17.2) stamp('FT 0–3', 540, 545, 100, t - 14.4); if (t > 15.2 && t < 17.2) card('Nice guy? 😇 ➡️ 😈', 540, 405, 62, { pop: (t - 15.2) / 0.3, bg: '#ffd9d9' });
+  if (t > 17.2) { card('Game 2: Friday 👀', 540, 330, 76, { pop: (t - 17.2) / 0.3 }); if (t > 18.8) stamp('PRACTICE ✅', 760, 560, 100, t - 18.8); }
   ctx.font = '600 28px Inter'; ctx.fillStyle = 'rgba(255,255,255,.85)'; ctx.textAlign = 'center'; if (t > 19.5) ctx.fillText('Cartoon parody', 540, 232); }]];
 ALL.push(4.62, 21.65, 15.15);
 window.DURATION = 24; window.render = function (t) { window.T2T = t; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.filter = 'none'; ctx.clearRect(0, 0, W, H);

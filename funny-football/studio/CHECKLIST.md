@@ -17,6 +17,7 @@ Every item below came from an owner complaint. They are applied by default, neve
 - [ ] Real people = AI caricature heads (cast/*/caric) — exaggerated, funny, recognisable; generic only when the person can't be verified with 2 sources.
 - [ ] Head sits in the collar; limbs use the face's skin colour; body style matches the head.
 - [ ] Every hand has fingers; boots are boots; joints never break.
+- [ ] SHORT TEXT (owner, 22 Nov 2026: "Câu chữ ngắn gọn rõ ràng hơn"): every on-screen line ≤ 4–5 words, big font, one idea per card; cut every word the picture already says.
 - [ ] Names printed on shirts, readable on a phone; no text over faces; nothing mirrored (numbers).
 - [ ] Contacts really touch (catch, slap, hug) — arm IK, step in if out of reach.
 - [ ] Nobody frozen: breathing, sway, hops, laughing crowd.
