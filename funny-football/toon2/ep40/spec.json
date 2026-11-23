@@ -1,44 +1,44 @@
 {
- "logline": "Yamal and Mbappé watch Ronaldo hit the post; Yamal laughs, Mbappé fumes and vows to score for his idol — then misses; Yamal laughs again, snatches Raphinha's penalty to show them how — and misses too, so now Ronaldo and Mbappé laugh at him.",
+ "logline": "Every missed penalty flies out of the TV: Ronaldo's into the popcorn, Mbappé's through the ceiling — Yamal laughs both times, then his own miss rolls out to Ronaldo and Mbappé, and he must climb out of the TV for it.",
  "beats": [
   {
-   "shot": "wide",
-   "idea": "Yamal + Mbappé on a sofa with popcorn, TV on",
-   "text": "20 Nov · Ronaldo pen 🍿"
+   "shot": "low",
+   "idea": "TV: Ronaldo hits the post, the ball flies at the camera and cracks the TV glass",
+   "text": "POST 💥"
   },
   {
-   "shot": "low",
-   "idea": "TV: Ronaldo hits the post, blames himself",
+   "shot": "xcu",
+   "idea": "Ronaldo blames himself behind the cracked glass",
    "text": "Blames himself 😩"
   },
   {
    "shot": "cu",
-   "idea": "Yamal laughs, Mbappé fumes at him",
+   "idea": "sofa: the ball pops out of the TV into the popcorn; popcorn all over Mbappé; Yamal laughs",
    "text": "HEHEHE 😂"
   },
   {
    "shot": "xcu",
-   "idea": "Mbappé stands: for my idol",
-   "text": "I'll do it for my idol 🐐"
+   "idea": "Mbappé stands, popcorn falling off: for my idol",
+   "text": "For my idol 🐐"
   },
   {
    "shot": "dutch",
-   "idea": "TV: Mbappé skies his pen; back on the sofa Yamal laughs harder and rolls",
-   "text": "Mbappé ❌"
-  },
-  {
-   "shot": "cu",
-   "idea": "TV: Yamal grabs the ball from Raphinha, winks at the camera",
-   "text": "Let me show you 😎"
-  },
-  {
-   "shot": "low",
-   "idea": "TV: Yamal's pen rolls wide",
-   "text": "Yamal ❌"
+   "idea": "TV: Mbappé skies it",
+   "text": "SKY 🚀"
   },
   {
    "shot": "wide",
-   "idea": "Ronaldo + Mbappé laugh; Yamal squeezed between them crying; POST / WIDE / SKY",
+   "idea": "the ball crashes through the ceiling onto Mbappé's empty seat; Yamal laughs lying on the sofa",
+   "text": "HEHEHE 😂😂"
+  },
+  {
+   "shot": "cu",
+   "idea": "TV: Yamal takes Raphinha's ball, winks at the camera, shanks it toward us",
+   "text": "Watch this 😎 / WIDE 🙈"
+  },
+  {
+   "shot": "wide",
+   "idea": "ball rolls out to Ronaldo + Mbappé: look, high-five, laugh; Yamal climbs out of the TV for his ball",
    "text": "Worst miss? 👇"
   }
  ],
@@ -50,21 +50,21 @@
   "callback"
  ],
  "gags": [
-  "sofa-reversal",
-  "hehe-escalates",
-  "sofa-roll",
-  "wink-at-tv",
-  "post-wide-sky-stamps"
+  "miss-cracks-the-tv",
+  "ball-into-popcorn",
+  "ball-through-ceiling",
+  "ball-rolls-out-of-tv",
+  "climbs-out-of-tv"
  ],
- "twist": "the one who laughed twice is the third to miss — and the other two get the last laugh",
- "callback": "the HEHEHE laugh returns from the opposite side of the sofa",
+ "twist": "the ball that rolls out of the TV is Yamal's — and he has to climb out of the TV to ask for it",
+ "callback": "the HEHEHE comes back from the other side of the sofa; the TV crack from 0:01 stays on every later TV shot",
  "ending": "question-plus-series-promise",
  "hidden_details": [
-  "the HEHEHE gets one HE longer every time",
-  "the popcorn vanishes while Yamal is alone",
-  "TV scorebugs carry the real fixtures and minutes"
+  "the crack from Ronaldo's ball stays on the TV for the rest of the video",
+  "the popcorn is gone after the ceiling crash",
+  "the HEHEHE grows one HE each time"
  ],
- "meme_frame": "Yamal crying between laughing Ronaldo and Mbappé",
+ "meme_frame": "Yamal crying, climbing out of the TV, while Ronaldo and Mbappé laugh",
  "style": "chibi-caricature-sofa-tv",
  "prev_style": "voxel-iso",
  "hook_frame0": "cover: the three on the sofa, WHO LAUGHS LAST?"

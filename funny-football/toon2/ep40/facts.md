@@ -11,3 +11,4 @@
 Invented (cartoon): the podium, the trophy target, the ball hitting Mbappé, Raphinha snatching the ball, all staging. The owner's reference image (another channel) used only as inspiration — own design.
 
 v3 'Who Laughs Last' (owner's story): invented — the sofa, the popcorn, Yamal laughing at the others, Mbappé's line 'I'll do it for my idol', Yamal's 'Let me show you', Ronaldo and Mbappé laughing at Yamal, the POST / WIDE / SKY labels (Mbappé's miss shown as skied — the exact way it was missed is cartoon). Real: the three misses on 20, 21 and 22 Nov in that order; Yamal took the ball from regular taker Raphinha.
+v4 (owner: not engaging): same facts; added invented gags — the balls fly out of the TV (crack, popcorn, ceiling, roll), Yamal climbs out of the TV.

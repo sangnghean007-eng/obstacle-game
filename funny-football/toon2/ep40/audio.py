@@ -1,49 +1,53 @@
-"""Ep40 v3 "Who Laughs Last" sound — fully synthesized (ElevenLabs credits out until ~3 Dec):
-lo-fi living-room bed (new seed/key), TV-broadcast whistles + crowd, post CLANG, the running 'HEHEHE' laugh (escalates each time), vox2 for Ronaldo / Mbappé / Yamal."""
+"""Ep40 v4 "Who Laughs Last" sound — fully synthesized (ElevenLabs credits out until ~3 Dec).
+Lo-fi living-room bed + one rising 'HEHEHE' that grows every time; each missed ball that leaves the TV gets its own big sound:
+glass crack (Ronaldo), ceiling crash (Mbappé), slow roll (Yamal)."""
 import os, sys, numpy as np
 H = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, os.path.join(H, '..', 'sfx'))
 from music import Song, SR
 from mix import Desk
 from fx2 import Mix2
-D = 29.4; d = Desk(D); m = Mix2(D, ep=403)
-song = Song('lofi', key='F', minor=False, seed=403).form([('intro', 2), ('verse', 3), ('drop', 3), ('break', 2), ('drop', 3), ('outro', 3)]); st = song.render()
+D = 29.4; d = Desk(D); m = Mix2(D, ep=404)
+song = Song('lofi', key='F', minor=False, seed=404).form([('intro', 2), ('verse', 3), ('drop', 3), ('break', 2), ('drop', 3), ('outro', 3)]); st = song.render()
 L = min(len(st['drums']), int(D * SR)); env = np.ones(L)
-for a, b, g in ((2.6, 3.9, 0.3), (11.0, 12.3, 0.3), (20.0, 21.3, 0.3), (6.0, 8.4, 0.55), (14.4, 16.6, 0.55), (23.0, 26.0, 0.55)): env[int(a * SR):int(b * SR)] = g
+for a, b, g in ((0.3, 1.6, 0.35), (2.7, 3.4, 0.3), (8.6, 9.8, 0.3), (11.3, 12.6, 0.15), (18.2, 19.4, 0.3), (21.4, 22.8, 0.2)): env[int(a * SR):int(b * SR)] = g
 env = np.convolve(env, np.ones(1500) / 1500, 'same'); d.add_stems({k: v[:L] * env for k, v in st.items()})
-r = np.random.default_rng(403)
+r = np.random.default_rng(404)
 def tt(dur): return np.arange(int(dur * SR)) / SR
 def whistle(t, dur=.35, g=.3):
     k = tt(dur); x = np.sin(2 * np.pi * 3050 * k) * (0.6 + 0.4 * np.sin(2 * np.pi * 30 * k)) * np.minimum(1, k * 40) * np.minimum(1, (dur - k) * 30); m.f(x * g, t, .3)
-def munch(t, n=4, g=.12):
-    for i in range(n): k = tt(.06); m.f(r.standard_normal(len(k)) * np.exp(-k * 60) * g, t + i * .17, -.2)
-def hehe(who, t, n, g=.6, pan=0):  # the running laugh: more 'HE's each time
-    for i in range(n): m.vo(who, 'laugh', t + i * .55, g, pan, 'snicker')
-def tvon(t, g=.25):
-    k = tt(.25); m.f(np.sin(2 * np.pi * 15600 * k) * np.exp(-k * 10) * g * .3 + r.standard_normal(len(k)) * np.exp(-k * 30) * g, t, 0)
-# A — sofa, popcorn, TV on
-tvon(0.05); munch(0.6); m.vo('yamal', 'hmm', 1.4, .4, -.3); munch(1.8, 3)
-# B — TV: Ronaldo pen hits the post, he blames himself
-m.crowd(2.4, 'cheer', 1.0, .25); whistle(2.5, .4); [m.thump(2.7 + i * .18, .12) for i in range(4)]; m.thump(3.4, .7); m.whoosh(3.42, .3, .35)
-m.clang(3.7, .7, .4); m.crowd(3.8, 'ooh', 1.6, .45); m.vo('ronaldo', 'no', 4.0, .7, .1); m.vo('ronaldo', 'cry', 4.7, .5, 0, 'sob'); m.thump(4.75, .3)
-# C — Yamal: HEHEHE; Mbappé fumes
-tvon(6.0, .15); hehe('yamal', 6.25, 3, .65, -.3); m.vo('mbappe', 'hmph', 7.3, .6, .3); m.honk(7.9, .18)
-# D — Mbappé stands: for my idol
-m.whoosh(8.4, .35, .3); m.timpani(8.6, 98, .4); m.vo('mbappe', 'grunt', 8.7, .55, .3); m.xylo_rise(9.2, .18); m.vo('yamal', 'hmm', 10.2, .4, -.3)
-# E — TV: Mbappé skies it
-m.crowd(10.8, 'cheer', 1.0, .25); whistle(10.9, .4); [m.thump(11.1 + i * .18, .12) for i in range(4)]; m.thump(11.8, .7); m.whoosh(11.85, 1.2, .45); m.slide_whistle(11.9, True, 1.1, .3)
-m.crowd(12.2, 'ooh', 1.6, .45); m.vo('mbappe', 'no', 12.4, .7, .1); m.wahwah(13.2, .22)
-# F — Yamal laughs harder, rolls over
-tvon(14.4, .15); hehe('yamal', 14.6, 4, .7, -.1); m.thump(15.6, .35); m.squeak(15.7, .3)
-# G — TV: Yamal grabs the ball from Raphinha
-m.crowd(16.6, 'cheer', 1.0, .25); m.whoosh(17.0, .4, .35); m.whip(17.4, .45); m.vo('generic_m', 'gasp', 17.5, .5, .3); m.vo('yamal', 'laugh', 17.9, .5, -.2, 'snicker'); m.cowbell(18.6, .15)
-# H — Yamal's pen rolls wide
-whistle(19.9, .4); [m.thump(20.1 + i * .18, .12) for i in range(4)]; m.squeak(20.8, .45); m.thump(20.82, .35); m.kazoo(21.1, ['A4', 'G4', 'F4', 'E4'], .25, .15)
-m.crowd(21.3, 'ooh', 1.6, .4); m.vo('yamal', 'uhoh', 21.6, .55, 0)
-# I — now Ronaldo and Mbappé laugh (who laughs last)
-tvon(23.0, .15); hehe('ronaldo', 23.2, 4, .6, -.35); hehe('mbappe', 23.45, 4, .6, .35); m.crowd(24.0, 'laugh', 1.8, .25)
-# J — Yamal squeezed in the middle; POST / WIDE / SKY stamps
-m.whoosh(26.0, .4, .3); m.thump(26.35, .7); m.vo('yamal', 'hmph', 26.6, .6, 0); [m.smack(26.4 + i * .25, .35) for i in range(3)]
-m.vo('yamal', 'cry', 27.3, .5, 0, 'wail'); hehe('ronaldo', 27.9, 2, .45, -.4); hehe('mbappe', 28.1, 2, .45, .4)
+def glass(t, g=.7):  # shatter: bright noise bursts + tinkles
+    k = tt(.9); m.f(r.standard_normal(len(k)) * np.exp(-k * 7) * g * .6, t, 0)
+    for i in range(14): f = r.uniform(2500, 6500); kk = tt(.18); m.f(np.sin(2 * np.pi * f * kk) * np.exp(-kk * 30) * g * .35, t + .05 + i * .045, 0)
+def popcorn(t, n=22, g=.3):
+    for i in range(n): kk = tt(.04); m.f(r.standard_normal(len(kk)) * np.exp(-kk * 120) * g, t + r.uniform(0, .7), r.uniform(-.6, .6))
+def roll(t, dur=1.0, g=.35):
+    k = tt(dur); x = r.standard_normal(len(k)); x = np.convolve(x, np.ones(60) / 60, 'same') * (1 + .5 * np.sin(2 * np.pi * 7 * k)) * np.exp(-k * 1.5); m.f(x * g * 4, t, .3)
+def hehe(who, t, n, g=.6, pan=0):
+    for i in range(n): m.vo(who, 'laugh', t + i * .5, g, pan, 'snicker')
+# Ronaldo: run, post, ball at the camera, glass breaks, he blames himself
+whistle(0.0, .3); m.thump(0.2, .12); m.thump(0.35, .12); m.thump(0.5, .7); m.clang(0.8, .8, .3); m.whoosh(0.85, .55, .5); m.thump(1.33, .6); glass(1.35, .8)
+m.crowd(1.5, 'ooh', 1.2, .4); m.vo('ronaldo', 'no', 1.6, .7, 0); m.vo('ronaldo', 'cry', 2.1, .5, 0)
+# the ball comes out of the TV into the popcorn
+m.whoosh(2.72, .35, .45); m.thump(3.05, .6); m.cork(3.05, .5); popcorn(3.05, 26, .35); m.vo('mbappe', 'gasp', 3.2, .5, .3)
+hehe('yamal', 3.6, 3, .65, -.3); m.vo('mbappe', 'hmph', 5.0, .6, .3)
+# Mbappé: for my idol
+m.whoosh(6.0, .35, .3); m.timpani(6.2, 98, .4); m.vo('mbappe', 'grunt', 6.4, .55, .2); popcorn(6.3, 9, .2); m.xylo_rise(7.0, .18)
+# Mbappé's pen: skied
+whistle(8.35, .35); [m.thump(8.5 + i * .17, .12) for i in range(4)]; m.thump(9.2, .7); m.whoosh(9.25, 1.1, .45); m.slide_whistle(9.3, True, 1.0, .3); m.crowd(9.6, 'ooh', 1.3, .4); m.vo('mbappe', 'no', 9.9, .6, .1)
+# ...and it comes down through the ceiling
+[m.thump(11.4 + i * .09, .12) for i in range(6)]; m.slide_whistle(11.5, False, .4, .25); m.boom(11.9, .6); m.thump(12.25, .8); m.spring(12.3, .35)
+[m.thump(12.0 + i * .07, .1) for i in range(8)]; m.vo('yamal', 'gasp', 12.0, .5, -.3)
+hehe('yamal', 12.6, 4, .7, -.1); m.squeak(13.25, .3)
+# Yamal takes Raphinha's ball: watch this
+m.crowd(14.6, 'cheer', 1.0, .25); m.whoosh(15.0, .4, .35); m.whip(15.4, .45); m.vo('generic_m', 'gasp', 15.5, .5, .3); m.vo('yamal', 'laugh', 15.9, .5, -.2, 'snicker'); m.cowbell(16.6, .15)
+# Yamal's pen: shank, rolls at the camera
+whistle(18.0, .35); [m.thump(18.15 + i * .17, .12) for i in range(4)]; m.squeak(18.8, .45); m.thump(18.82, .35); m.kazoo(19.0, ['A4', 'G4', 'F4', 'E4'], .22, .15); m.crowd(19.3, 'ooh', 1.3, .35)
+# ...and rolls out of the TV to Ronaldo and Mbappé
+roll(20.8, 1.0, .4); m.thump(21.75, .2); m.timpani(21.6, 70, .3); m.zip(22.2, .2); m.zip(22.35, .2)
+m.smack(22.8, .6); hehe('ronaldo', 22.9, 4, .6, -.35); hehe('mbappe', 23.1, 4, .6, .35); m.crowd(23.4, 'laugh', 1.6, .2)
+# Yamal climbs out of the TV
+m.slide_whistle(24.8, True, .7, .25); m.vo('yamal', 'cry', 25.6, .55, 0, 'wail'); [m.smack(26.4 + i * .25, .35) for i in range(3)]
+hehe('ronaldo', 27.2, 3, .45, -.4); hehe('mbappe', 27.4, 3, .45, .4)
 d.add('fx', (m.fx + m.music).T, 0, 1.0); d.add('vox', m.vox.T, 0, 1.25)
-d.duck('music', [3.4, 3.7, 11.8, 20.8, 26.35], .45, .15, .4); d.room('fx', 'room', .1)
+d.duck('music', [0.8, 1.35, 3.05, 9.2, 11.9, 18.8], .45, .15, .4); d.room('fx', 'room', .1)
 print(d.master(sys.argv[1], os.path.join(H, 'release', 'stems')))

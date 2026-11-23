@@ -45,10 +45,10 @@ function CB(n, o, t, ph = 0) { const k = o.life ?? 1, sw = Math.sin(t * 2.1 + ph
   ctx.beginPath(); ctx.arc(0, 0, 7 * z, 0, 7); ctx.fill(); ctx.restore(); }
 
 
-// ---------------- v3 (owner's story, 23 Nov 2026): WHO LAUGHS LAST. Facts: ep40/facts.md.
+// ---------------- v4 (owner: "Không hấp dẫn"): WHO LAUGHS LAST — every missed ball flies OUT of the TV and wrecks the living room a bit more. Facts: ep40/facts.md.
 // Ronaldo hits the post (20 Nov, Al Nassr v Al Ahli, 18') and blames himself; Mbappé misses (21 Nov, Real v Celta, 39'); Yamal takes it from Raphinha and misses (22 Nov, Barça v Villarreal).
 // Clean staging: TV broadcast shot, then a sofa reaction shot. Max 2 faces per shot until the final line-up; one caption at a time.
-const T = { A: 0, B: 2.4, rk: 3.4, post: 3.7, blame: 4.6, C: 6.0, D: 8.4, E: 10.8, mk: 11.8, F: 14.4, G: 16.6, run: 17.0, show: 17.8, H: 20.0, yk: 20.8, I: 23.0, J: 26.0, END: 29.4 };
+const T = { A: 0, rk: 0.5, post: 0.8, crack: 1.35, B: 1.5, C: 2.7, out: 2.75, pop: 3.05, D: 6.0, E: 8.3, mk: 9.2, F: 11.0, rumble: 11.4, crash: 11.9, land: 12.25, roll: 13.2, G: 14.6, run: 15.0, show: 15.8, H: 18.0, yk: 18.8, I: 20.6, look: 21.6, eye: 22.2, five: 22.8, J: 24.6, climb: 24.8, END: 29.4 };
 const ROOM = '#f3d9b1', SOFA = '#c0392b', SOFAD = '#8e2a20';
 const GK = Object.assign({}, CH.mate1, { kit: kit('#2fbf71', '#111', '#111', '#2fbf71', '#111'), num: '1', numSize: 52 });
 // ---- TV broadcast: camera behind the goal, taker runs toward us
@@ -75,36 +75,70 @@ function penalty(n, t, t0, kind, o = {}) { // run-up 0.8 s before t0, kick at t0
   const pose = t < t0 - 0.8 ? o.pose : t < t0 ? RUNP(t) : t < t0 + 0.6 ? KICKP : o.after;
   CB(n, { x, y, f: 1, s: 1.15, expr: t < t0 ? (o.e0 || 'smug') : t < t0 + 0.5 ? 'shock' : (o.e1 || 'cry'), pose }, t, 0.7);
   if (t < t0) ball(700, 1560, 34);
-  else { const b = (t - t0); if (kind === 'post') { if (b < 0.3) { const q = b / 0.3; ball(lerp(700, 1000, q), lerp(1560, 760, q), 34 + q * 14, q * 9); } else { const q = clamp((b - 0.3) / 0.9); ball(lerp(1000, 380, q), lerp(760, 1500, q) - Math.sin(q * Math.PI) * 260, 48, q * -12); } }
+  else { const b = (t - t0); if (kind === 'post') { if (b < 0.3) { const q = b / 0.3; ball(lerp(700, 1000, q), lerp(1560, 760, q), 34 + q * 14, q * 9); } else if (b < 0.9) { const q = (b - 0.3) / 0.6; ball(lerp(1000, 560, q), lerp(760, 1000, q), 48 + q * q * 700, q * -8); } }
     if (kind === 'sky') { const q = b / 1.2; ball(lerp(700, 800, q), lerp(1560, -1200, Math.min(1, q)), 34 + q * 30, q * 16); }
-    if (kind === 'wide') { const q = clamp(b / 2.0); ball(lerp(700, 1250, q), 1560 - q * 60, 34, q * 22); } } }
+    if (kind === 'wide') { const q = clamp(b / 1.4); if (q < 1) ball(lerp(700, 980, q), lerp(1560, 2350, q * q), 34 + q * q * 330, q * 14); } } }
 function tvChrome(t, bug) { ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.fillStyle = 'rgba(0,0,0,.06)'; for (let y = (t * 120) % 6; y < H; y += 6) ctx.fillRect(0, y, W, 2);
   ctx.fillStyle = 'rgba(10,14,30,.88)'; ctx.beginPath(); ctx.roundRect(40, 1700, 680, 76, 14); ctx.fill(); ctx.font = `400 46px ${FONT}`; ctx.fillStyle = '#fff'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText(bug, 66, 1740);
   ctx.fillStyle = '#e53935'; ctx.beginPath(); ctx.roundRect(870, 1700, 170, 76, 14); ctx.fill(); ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.fillText('● LIVE', 955, 1740);
   ctx.lineWidth = 40; ctx.strokeStyle = '#151515'; ctx.strokeRect(0, 0, W, H); ctx.restore(); }
-// ---- the sofa (living room). Seated look: characters drawn behind the sofa front, so only the upper body shows.
-function room(t) { ctx.fillStyle = ROOM; ctx.fillRect(-400, -400, W + 800, H + 800); ctx.fillStyle = '#e8c99a'; for (let i = -4; i < 16; i++) ctx.fillRect(i * 110, -400, 50, 1700);
-  ctx.fillStyle = '#7a4a2a'; ctx.fillRect(-400, 1650, W + 800, 700); ctx.fillStyle = '#fff8e8'; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.fillRect(720, 380, 230, 170); ctx.strokeRect(720, 380, 230, 170); ctx.font = `400 56px ${FONT}`; ctx.fillStyle = '#c0281c'; ctx.textAlign = 'center'; ctx.fillText('⚽', 835, 485);
-  ctx.fillStyle = SOFAD; ctx.beginPath(); ctx.roundRect(40, 940, 1000, 420, 60); ctx.fill(); ctx.stroke(); }
-function sofaFront(t, pop = true) { ctx.fillStyle = SOFA; ctx.strokeStyle = INK; ctx.lineWidth = 7; ctx.beginPath(); ctx.roundRect(60, 1330, 960, 330, 50); ctx.fill(); ctx.stroke();
-  ctx.beginPath(); ctx.roundRect(-20, 1120, 140, 560, 50); ctx.fill(); ctx.stroke(); ctx.beginPath(); ctx.roundRect(960, 1120, 140, 560, 50); ctx.fill(); ctx.stroke();
-  if (pop) { ctx.fillStyle = '#e34b3c'; ctx.beginPath(); ctx.moveTo(470, 1400); ctx.lineTo(610, 1400); ctx.lineTo(590, 1520); ctx.lineTo(490, 1520); ctx.closePath(); ctx.fill(); ctx.stroke(); ctx.fillStyle = '#fff6d8'; for (let i = 0; i < 9; i++) { ctx.beginPath(); ctx.arc(485 + i * 14, 1395 - (i % 3) * 14, 20, 0, 7); ctx.fill(); } } }
+
 function tvGlow(t) { ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 0.10 + 0.05 * Math.sin(t * 13) * Math.sin(t * 7); ctx.fillStyle = '#6fa8ff'; ctx.fillRect(0, 0, W, H); ctx.restore(); }
 const LAUGH = (t) => ({ bArm: [-30 + Math.sin(t * 18) * 25, -60], fArm: [30 - Math.sin(t * 18) * 25, 60], bLeg: [-8, -4], fLeg: [8, 4] });
 const POINT = { bArm: [-14, -6], fArm: [95, 85], bLeg: [-8, -4], fLeg: [8, 4] };
 const CHEST = { bArm: [-14, -6], fArm: [150, 175], bLeg: [-8, -4], fLeg: [8, 4] };
+// ---- the TV glass crack (Ronaldo's ricochet) stays on every TV shot after it happens
+function crack(t) { if (t < T.crack) return; const k = clamp((t - T.crack) / 0.12); ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.strokeStyle = 'rgba(255,255,255,.6)'; ctx.lineWidth = 4; const cx = 880, cy = 560;
+  for (let i = 0; i < 11; i++) { const a = i * 0.571 + 0.2; let x = cx, y = cy; ctx.beginPath(); ctx.moveTo(x, y); for (let j = 1; j <= 4; j++) { x = cx + Math.cos(a + Math.sin(i * 7 + j) * 0.25) * j * 170 * k; y = cy + Math.sin(a + Math.sin(i * 3 + j) * 0.25) * j * 170 * k; ctx.lineTo(x, y); } ctx.stroke(); }
+  ctx.beginPath(); ctx.arc(cx, cy, 60 * k, 0, 7); ctx.stroke(); ctx.beginPath(); ctx.arc(cx, cy, 150 * k, 0, 7); ctx.stroke(); ctx.restore(); }
+// ---- the living room. Camera behind the TV: the TV's back is in the foreground, the sofa faces us.
+function room(t) { ctx.fillStyle = ROOM; ctx.fillRect(-400, -400, W + 800, H + 800); ctx.fillStyle = '#e8c99a'; for (let i = -4; i < 16; i++) ctx.fillRect(i * 110, 120, 50, 1200);
+  ctx.fillStyle = '#f7efdf'; ctx.fillRect(-400, -400, W + 800, 760); ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.beginPath(); ctx.moveTo(-400, 360); ctx.lineTo(W + 400, 360); ctx.stroke();
+  if (t > T.rumble && t < T.D + 30 && t >= T.F && t < T.G) { const k = clamp((t - T.rumble) / 0.5); ctx.strokeStyle = INK; ctx.lineWidth = 5; for (let i = 0; i < 7; i++) { const a = i * 0.9; ctx.beginPath(); ctx.moveTo(760, 300); ctx.lineTo(760 + Math.cos(a) * 170 * k, 300 + Math.sin(a) * 70 * k); ctx.stroke(); }
+    if (t > T.crash) { ctx.fillStyle = '#2a2018'; ctx.beginPath(); ctx.ellipse(760, 300, 130, 60, 0, 0, 7); ctx.fill(); ctx.stroke(); } }
+  ctx.fillStyle = '#7a4a2a'; ctx.fillRect(-400, 1650, W + 800, 700); ctx.fillStyle = '#fff8e8'; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.fillRect(140, 300, 200, 150); ctx.strokeRect(140, 300, 200, 150); ctx.font = `400 56px ${FONT}`; ctx.fillStyle = '#c0281c'; ctx.textAlign = 'center'; ctx.fillText('⚽', 240, 395);
+  ctx.fillStyle = SOFAD; ctx.beginPath(); ctx.roundRect(40, 940, 1000, 420, 60); ctx.fill(); ctx.stroke(); }
+function bowl(x, y, full = 1) { ctx.fillStyle = '#e34b3c'; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.beginPath(); ctx.moveTo(x - 75, y); ctx.lineTo(x + 75, y); ctx.lineTo(x + 58, y + 120); ctx.lineTo(x - 58, y + 120); ctx.closePath(); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#fff'; for (let i = 0; i < 4; i++) ctx.fillRect(x - 60 + i * 34, y + 6, 14, 108); if (full > 0) { ctx.fillStyle = '#fff6d8'; for (let i = 0; i < 9; i++) { ctx.beginPath(); ctx.arc(x - 60 + i * 15, y - 4 - (i % 3) * 14 * full, 20, 0, 7); ctx.fill(); } } }
+function kernel(x, y, r = 16) { ctx.fillStyle = '#fff6d8'; ctx.strokeStyle = '#c9a65a'; ctx.lineWidth = 2; for (let j = 0; j < 3; j++) { ctx.beginPath(); ctx.arc(x + Math.cos(j * 2.1) * r * 0.5, y + Math.sin(j * 2.1) * r * 0.5, r * 0.7, 0, 7); ctx.fill(); ctx.stroke(); } }
+function popcornBurst(t) { if (t < T.pop || t > T.D) return; const tau = t - T.pop; for (let i = 0; i < 46; i++) { const a = -Math.PI * (0.08 + 0.84 * ((i * 0.618) % 1)), v = 900 + (i * 37 % 7) * 140;
+    const x = 540 + Math.cos(a) * v * tau, y0 = 1390 + Math.sin(a) * v * tau + 1900 * tau * tau, y = Math.min(y0, 1620 + (i % 5) * 20); kernel(x, y, 16); } }
+function tvBack(t) { ctx.save(); ctx.fillStyle = 'rgba(111,168,255,.25)'; ctx.beginPath(); ctx.ellipse(540, 1830, 360, 50, 0, 0, 7); ctx.fill(); ctx.fillStyle = '#1b1b1f'; ctx.strokeStyle = '#000'; ctx.lineWidth = 6;
+  ctx.beginPath(); ctx.roundRect(300, 1830, 480, 300, 26); ctx.fill(); ctx.stroke(); ctx.fillStyle = '#2b2b31'; for (let i = 0; i < 5; i++) ctx.fillRect(370 + i * 75, 1890, 40, 110); ctx.restore(); }
 function seat(n, x, t, o = {}) { CB(n, Object.assign({ x, y: 1470 - (o.up || 0), f: o.f || 1, s: 1.15, expr: o.expr || 'smug', hop: o.hop || 0 }, o), t, x * 0.01); }
+const HEADY = 1040;
 function sofa(t) { room(t); const hh = (a) => Math.abs(Math.sin(t * 16)) * a;
-  if (t < T.C) { seat('yamal', 330, t, { expr: 'smug' }); seat('mbappe', 750, t, { f: -1, expr: 'smug' }); }
-  else if (t < T.D) { seat('yamal', 330, t, { expr: 'laugh', pose: LAUGH(t), hop: hh(40), lean: -0.12 }); seat('mbappe', 750, t, { f: -1, expr: t < T.C + 0.6 ? 'shock' : 'angry', pose: t > T.C + 0.9 ? POINT : undefined }); }
-  else if (t < T.E) { const k = eOut((t - T.D) / 0.5); seat('yamal', 330, t, { expr: 'smug' }); seat('mbappe', 750, t, { f: -1, expr: 'angry', up: k * 330, pose: CHEST }); }
-  else if (t < T.I) { const k = clamp((t - T.F - 0.9) / 0.8); seat('yamal', lerp(330, 600, k), t, { expr: 'laugh', pose: LAUGH(t), hop: hh(50), lean: -0.15 + k * 1.15, up: k * 40 }); }
-  else if (t < T.J) { seat('ronaldo', 330, t, { expr: 'laugh', pose: t > T.I + 0.8 ? POINT : LAUGH(t), hop: hh(36) }); seat('mbappe', 750, t, { f: -1, expr: 'laugh', pose: LAUGH(t), hop: hh(36) }); }
-  else { const k = eOut((t - T.J) / 0.6); seat('ronaldo', 230, t, { expr: 'laugh', pose: LAUGH(t), hop: hh(24) }); seat('mbappe', 850, t, { f: -1, expr: 'laugh', pose: LAUGH(t), hop: hh(24) });
-    seat('yamal', 540, t, { expr: t < T.J + 1.2 ? 'angry' : 'cry', up: lerp(-500, 0, k) }); }
-  sofaFront(t, t < T.E || t >= T.I); }
-function tv(t) { // what is on the TV right now
-  if (t < T.C) { pitchBG(t, ['#f5d000', '#1f3f8f', '#2e8b57', '#ffffff']); if (t < T.blame) { penalty('ronaldo', t, T.rk, 'post', { e1: 'shock' }); goalFront(); keeperBack(t); if (t > T.post && t < T.post + 0.35) FX.burst ? FX.burst(ctx, 1010, 760, t - T.post, { n: 14, col: '#fff' }) : 0; }
+  if (t < T.D) { const covered = t > T.pop + 0.25; seat('yamal', 330, t, { expr: t < T.pop ? 'smug' : t < T.pop + 0.5 ? 'shock' : 'laugh', pose: t > T.pop + 0.5 ? LAUGH(t) : undefined, hop: t > T.pop + 0.5 ? hh(40) : 0, lean: t > T.pop + 0.5 ? -0.12 : 0 });
+    seat('mbappe', 750, t, { f: -1, expr: t < T.pop ? 'smug' : t < T.pop + 0.6 ? 'shock' : 'angry', pose: t > T.pop + 1.4 ? POINT : undefined });
+    if (covered) for (let i = 0; i < 9; i++) kernel(690 + (i % 5) * 30 + Math.sin(i) * 8, HEADY - 140 + Math.floor(i / 5) * 26 + Math.cos(i * 3) * 6, 15); }
+  else if (t < T.E) { const k = eOut((t - T.D) / 0.5); seat('yamal', 330, t, { expr: 'smug' }); seat('mbappe', 750, t, { f: -1, expr: 'angry', up: k * 330, pose: CHEST });
+    for (let i = 0; i < 9; i++) { const fall = clamp((t - T.D - 0.2 - i * 0.08) / 0.5); kernel(690 + (i % 5) * 30, HEADY - 140 - k * 330 + Math.floor(i / 5) * 26 + fall * fall * 900, 15); } }
+  else if (t < T.G) { const lie = clamp((t - T.roll) / 0.4), q = (t - T.roll);
+    if (t < T.roll) seat('yamal', 330, t, { expr: t < T.rumble ? 'smug' : t < T.land + 0.3 ? 'shock' : 'laugh', pose: t > T.land + 0.3 ? LAUGH(t) : undefined, hop: t > T.land + 0.3 ? hh(30) : 0 }); }
+  else if (t < T.J) { const lk = t > T.look && t < T.eye, ey = t > T.eye && t < T.five, lau = t >= T.five;
+    seat('ronaldo', 330, t, { expr: lk ? 'shock' : ey ? 'smug' : lau ? 'laugh' : 'smug', tilt: lk ? 0.25 : 0, pose: lau ? (t < T.five + 0.5 ? { bArm: [-14, -6], fArm: [150, 140], bLeg: [-8, -4], fLeg: [8, 4] } : LAUGH(t)) : undefined, hop: lau ? hh(36) : 0 });
+    seat('mbappe', 750, t, { f: -1, expr: lk ? 'shock' : ey ? 'smug' : lau ? 'laugh' : 'smug', tilt: lk ? 0.25 : 0, pose: lau ? (t < T.five + 0.5 ? { bArm: [-14, -6], fArm: [150, 140], bLeg: [-8, -4], fLeg: [8, 4] } : LAUGH(t)) : undefined, hop: lau ? hh(36) : 0 }); }
+  else { seat('ronaldo', 330, t, { expr: 'laugh', pose: LAUGH(t), hop: hh(26) }); seat('mbappe', 750, t, { f: -1, expr: 'laugh', pose: LAUGH(t), hop: hh(26) }); }
+  // sofa front + popcorn bowl (gone after the ceiling crash)
+  ctx.fillStyle = SOFA; ctx.strokeStyle = INK; ctx.lineWidth = 7; ctx.beginPath(); ctx.roundRect(60, 1330, 960, 330, 50); ctx.fill(); ctx.stroke();
+  ctx.beginPath(); ctx.roundRect(-20, 1120, 140, 560, 50); ctx.fill(); ctx.stroke(); ctx.beginPath(); ctx.roundRect(960, 1120, 140, 560, 50); ctx.fill(); ctx.stroke();
+  if (t < T.out || (t >= T.D && t < T.F)) bowl(540, 1400); else if (t < T.D) bowl(540, 1400, 0);
+  // Yamal laughing so hard he lies across the seat, legs kicking
+  if (t >= T.F && t < T.G && t >= T.roll) { const lie = clamp((t - T.roll) / 0.4); CB('yamal', { x: lerp(330, 470, lie), y: 1430 + lie * 40, f: 1, s: 1.1, expr: 'laugh', lean: lie * 1.45, pose: { bArm: [-40, -70], fArm: [40 + Math.sin(t * 20) * 30, 70], bLeg: [-30 + Math.sin(t * 24) * 35, -10], fLeg: [30 - Math.sin(t * 24) * 35, 10] }, hop: Math.abs(Math.sin(t * 14)) * 22 }, t, 0.3); }
+  // ball 1: out of the TV into the popcorn
+  if (t >= T.out && t < T.pop) { const q = (t - T.out) / (T.pop - T.out); ball(540, lerp(1860, 1380, q) - Math.sin(q * Math.PI) * 260, lerp(70, 40, q), q * 9); }
+  if (t >= T.pop && t < T.D) ball(540, 1380, 44);
+  // ball 2: through the ceiling onto Mbappé's empty seat, plaster rain
+  if (t >= T.F && t < T.G) { if (t > T.crash) { const q = clamp((t - T.crash) / (T.land - T.crash)); const by = q < 1 ? lerp(300, 1320, q * q) : 1330 - Math.abs(Math.sin((t - T.land) * 9)) * 60 * Math.exp(-(t - T.land) * 3); ball(760, by, 64, t * 6);
+      for (let i = 0; i < 14; i++) { const tau = t - T.crash - i * 0.03; if (tau < 0) continue; ctx.fillStyle = i % 2 ? '#e9dcc4' : '#cdbf9f'; ctx.strokeStyle = INK; ctx.lineWidth = 3; const x = 700 + (i * 53 % 130), y = Math.min(320 + 1500 * tau * tau, 1630 - (i % 4) * 30); ctx.beginPath(); ctx.rect(x, y, 22 + i % 3 * 8, 16); ctx.fill(); ctx.stroke(); } } }
+  // ball 3: Yamal's miss rolls out of the TV to their feet
+  if (t >= T.I && t < T.J) { const q = clamp((t - T.I - 0.2) / 1.0); ball(lerp(1000, 820, eOut(q)), lerp(2100, 1760, eOut(q)), 56, q * 9); }
+  if (t >= T.J) ball(820, 1760, 56);
+  // Yamal climbs out of the TV to get his ball back
+  if (t >= T.climb) { const k = eOut((t - T.climb) / 0.8); CB('yamal', { x: 540, y: lerp(2500, 2010, k), f: 1, s: 1.15, expr: t < T.climb + 1.0 ? 'shock' : 'cry', pose: { bArm: [-150, -120], fArm: [150, 120], bLeg: [-8, -4], fLeg: [8, 4] } }, t, 0.3); }
+  tvBack(t); popcornBurst(t); }
+function tv(t) {
+  if (t < T.C) { pitchBG(t, ['#f5d000', '#1f3f8f', '#2e8b57', '#ffffff']); if (t < T.B) { penalty('ronaldo', t, T.rk, 'post', { e1: 'shock' }); goalFront(); keeperBack(t); }
     else { CB('ronaldo', { x: 660, y: 1520, f: 1, s: 1.15, expr: 'cry', pose: FACEP, sq: 0.04 }, t, 0.2); goalFront(); keeperBack(t); } }
   else if (t >= T.E && t < T.F) { pitchBG(t, ['#ffffff', '#c9a227', '#8fc6ea', '#1b2a5c']); penalty('mbappe', t, T.mk, 'sky', { e1: 'angry' }); goalFront(); keeperBack(t, t > T.mk + 0.1 ? clamp((t - T.mk - 0.1) / 0.4) : 0, -1); }
   else if (t >= T.G && t < T.H) { pitchBG(t, ['#a50044', '#004d98', '#ffd60a', '#ffffff']); const k = eOut((t - T.run) / 0.6);
@@ -114,27 +148,27 @@ function tv(t) { // what is on the TV right now
   else if (t >= T.H && t < T.I) { pitchBG(t, ['#a50044', '#004d98', '#ffd60a', '#ffffff']); penalty('yamal', t, T.yk, 'wide', { e1: 'deadpan' }); goalFront(); keeperBack(t); } }
 function isTV(t) { return t < T.C || (t >= T.E && t < T.F) || (t >= T.G && t < T.I); }
 function frame(t) {
-  if (t < T.B) { SHOT.wide(ctx, () => sofa(t), { x: 540, y: 1250, zoom: lerp(1.0, 1.06, t / T.B) }); tvGlow(t); }
-  else if (t < T.C) { if (t < T.post + 0.2) SHOT.low(ctx, () => tv(t), { x: 600, y: 1200, zoom: 1.0, lift: 100 }); else SHOT.cu(ctx, () => tv(t), { x: 640, y: 1150, zoom: t < T.blame ? 0.95 : 1.4 }); tvChrome(t, 'AL NASSR 1-0 AL AHLI · 18′'); }
-  else if (t < T.D) { SHOT.cu(ctx, () => sofa(t), { x: 540, y: 1250, zoom: 1.15 }); tvGlow(t); }
+  if (t < T.B) { SHOT.low(ctx, () => tv(t), { x: 620, y: 1200, zoom: 1.0, lift: 100 }); crack(t); tvChrome(t, 'AL NASSR 1-0 AL AHLI · 18′'); }
+  else if (t < T.C) { SHOT.xcu(ctx, () => tv(t), { x: 660, y: 1080, zoom: 1.7 }); crack(t); tvChrome(t, 'AL NASSR 1-0 AL AHLI · 18′'); }
+  else if (t < T.D) { SHOT.cu(ctx, () => sofa(t), { x: 540, y: 1330, zoom: 1.08 }); tvGlow(t); }
   else if (t < T.E) { SHOT.xcu(ctx, () => sofa(t), { x: 700, y: 1000, zoom: 1.6 }); tvGlow(t); }
-  else if (t < T.F) { SHOT.dutch(ctx, () => tv(t), { x: 600, y: 1150, zoom: 0.95, rot: -0.08 }); tvChrome(t, 'REAL v CELTA · 39′'); }
-  else if (t < T.G) { SHOT.wide(ctx, () => sofa(t), { x: 540, y: 1300, zoom: 1.0 }); tvGlow(t); }
-  else if (t < T.H) { SHOT.cu(ctx, () => tv(t), { x: t < T.show ? 600 : 600, y: 1180, zoom: t < T.show ? 0.95 : 1.2 }); tvChrome(t, 'BARÇA v VILLARREAL'); }
-  else if (t < T.I) { SHOT.low(ctx, () => tv(t), { x: 600, y: 1200, zoom: 0.95, lift: 100 }); tvChrome(t, 'BARÇA v VILLARREAL'); }
-  else if (t < T.J) { SHOT.cu(ctx, () => sofa(t), { x: 540, y: 1250, zoom: 1.12 }); tvGlow(t); }
-  else { SHOT.wide(ctx, () => sofa(t), { x: 540, y: 1300, zoom: lerp(0.98, 1.04, (t - T.J) / 3.4) }); tvGlow(t); } }
-const CAPS = [[0.2, T.B, '20 Nov · Ronaldo pen 🍿'], [T.post + 0.1, T.blame, 'POST 💥'], [T.blame + 0.2, T.C, 'Blames himself 😩'], [T.C + 0.3, T.D, 'HEHEHE 😂'],
-  [T.D + 0.5, T.E, '"I’ll do it for my idol 🐐"', 1], [T.E + 0.1, T.mk, '21 Nov · Mbappé pen'], [T.mk + 0.3, T.F, 'Mbappé ❌'], [T.F + 0.3, T.G, 'HEHEHE 😂😂'],
-  [T.G + 0.1, T.run + 0.4, '22 Nov · Raphinha pen…'], [T.show, T.H, '"Let me show you 😎"', -1], [T.yk + 0.4, T.I, 'Yamal ❌'], [T.I + 0.3, T.J, 'HEHEHE 😂😂😂'], [T.J + 1.3, T.END, 'Worst miss? 👇']];
-function hud(t) { for (const c of CAPS) if (t >= c[0] && t < c[1]) card(c[2], 540, isTV(t) ? 250 : 300, c[2].length > 22 ? 54 : 64, { pop: (t - c[0]) / 0.3, bg: c[2].includes('❌') || c[2].includes('HEHE') ? '#fff3b0' : '#fffaf0', tail: c[3] });
-  if (t > T.J + 0.4) { const lab = [['POST', 230], ['WIDE', 540], ['SKY', 850]]; lab.forEach((l, i) => stamp(l[0], l[1], 1060, 64, clamp((t - T.J - 0.4 - i * 0.25) / 0.6))); }
-  if (t > T.J + 2.2) { ctx.font = `400 60px ${FONT}`; ctx.fillStyle = '#fff'; ctx.strokeStyle = INK; ctx.lineWidth = 10; ctx.textAlign = 'center'; ctx.strokeText('Who laughs next? 🍿', 540, 1760); ctx.fillText('Who laughs next? 🍿', 540, 1760); }
-  if (t > T.J + 2.6) { ctx.font = '600 26px Inter'; ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.fillText('Cartoon parody', 540, 1850); } }
-const SHAKE = [T.post, T.mk, T.yk, T.J];
+  else if (t < T.F) { SHOT.dutch(ctx, () => tv(t), { x: 600, y: 1150, zoom: 0.95, rot: -0.08 }); crack(t); tvChrome(t, 'REAL v CELTA · 39′'); }
+  else if (t < T.G) { SHOT.wide(ctx, () => sofa(t), { x: 560, y: 1080, zoom: lerp(0.93, 1.0, (t - T.F) / 3.6) }); tvGlow(t); }
+  else if (t < T.H) { SHOT.cu(ctx, () => tv(t), { x: 600, y: 1180, zoom: t < T.show ? 0.95 : 1.2 }); crack(t); tvChrome(t, 'BARÇA v VILLARREAL'); }
+  else if (t < T.I) { SHOT.low(ctx, () => tv(t), { x: 640, y: 1250, zoom: 0.95, lift: 100 }); crack(t); tvChrome(t, 'BARÇA v VILLARREAL'); }
+  else if (t < T.J) { SHOT.cu(ctx, () => sofa(t), { x: 540, y: 1330, zoom: 1.08 }); tvGlow(t); }
+  else { SHOT.wide(ctx, () => sofa(t), { x: 540, y: 1300, zoom: 0.98 }); tvGlow(t); } }
+const CAPS = [[0.1, T.post, '20 Nov · Ronaldo pen'], [T.post + 0.05, T.B, 'POST 💥'], [T.B + 0.1, T.C, 'Blames himself 😩'], [T.pop + 0.5, T.D, 'HEHEHE 😂'],
+  [T.D + 0.5, T.E, '"For my idol 🐐"', 1], [T.E + 0.1, T.mk, '21 Nov · Mbappé pen'], [T.mk + 0.3, T.F, 'SKY 🚀'], [T.land + 0.4, T.G, 'HEHEHE 😂😂'],
+  [T.G + 0.1, T.run + 0.4, '22 Nov · Raphinha pen…'], [T.show, T.H, '"Watch this 😎"', -1], [T.yk + 0.4, T.I, 'WIDE 🙈'], [T.five, T.J, 'HEHEHE 😂😂😂'], [T.climb + 0.6, T.climb + 2.2, '"My ball back? 🥺"', 1], [T.climb + 2.2, T.END, 'Worst miss? 👇']];
+function hud(t) { for (const c of CAPS) if (t >= c[0] && t < c[1]) card(c[2], 540, isTV(t) ? 250 : 300, c[2].length > 22 ? 54 : 64, { pop: (t - c[0]) / 0.3, bg: /❌|HEHE|💥|🚀|🙈/.test(c[2]) ? '#fff3b0' : '#fffaf0', tail: c[3] });
+  if (t > T.climb + 1.6) { const lab = [['POST', 250, 1010], ['WIDE', 540, 1420], ['SKY', 830, 1010]]; lab.forEach((l, i) => stamp(l[0], l[1], l[2], 60, clamp((t - T.climb - 1.6 - i * 0.25) / 0.6))); }
+  if (t > T.climb + 3.2) { ctx.font = `400 60px ${FONT}`; ctx.fillStyle = '#fff'; ctx.strokeStyle = INK; ctx.lineWidth = 10; ctx.textAlign = 'center'; ctx.strokeText('Who laughs next? 🍿', 540, 440); ctx.fillText('Who laughs next? 🍿', 540, 440); }
+  if (t > T.climb + 3.6) { ctx.font = '600 26px Inter'; ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.fillText('Cartoon parody', 540, 1880); } }
+const SHAKE = [T.post, T.crack, T.pop, T.mk, T.crash, T.land, T.yk, T.five];
 function grade() { ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); const v = ctx.createRadialGradient(540, 960, 560, 540, 960, 1250); v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,0,.3)'); ctx.fillStyle = v; ctx.fillRect(0, 0, W, H); ctx.restore(); }
 window.DURATION = T.END; window.render = function (t) { window.T2T = t; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.clearRect(0, 0, W, H); ctx.fillStyle = '#1d2550'; ctx.fillRect(0, 0, W, H);
-  const hs = SHAKE.reduce((m, a) => Math.max(m, t >= a && t < a + 0.25 ? 14 * (1 - (t - a) / 0.25) : 0), 0);
+  const hs = SHAKE.reduce((m, a) => Math.max(m, t >= a && t < a + 0.25 ? 16 * (1 - (t - a) / 0.25) : 0), 0) + (t > T.rumble && t < T.crash ? 6 : 0);
   ctx.save(); ctx.translate(Math.sin(t * 91) * hs, Math.cos(t * 77) * hs); frame(t); ctx.restore(); grade(); ctx.setTransform(1, 0, 0, 1, 0, 0); if (!window.NO_HUD) hud(t); };
 if (!location.search.includes('render')) { const t0 = performance.now(); (window.CAST_READY || Promise.resolve()).then(() => (function loop() { render(((performance.now() - t0) / 1000) % DURATION); requestAnimationFrame(loop); })()); }
 </script></body></html>
