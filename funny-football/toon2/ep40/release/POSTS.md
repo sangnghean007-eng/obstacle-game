@@ -4,7 +4,7 @@ Real: Ronaldo hit the post from the spot (Fri 20 Nov, Al Nassr v Al Ahli) and bl
 Invented: the sofa, every line, the laughing, the balls flying out of the TV, the way each penalty flies.
 
 ## YouTube Shorts
-Title (74 chars):
+Title (79 chars):
 Their Missed Pens Flew Out of the TV 😂 Who Laughs Last? #shorts #yamal #ronaldo
 
 Description:
@@ -51,7 +51,7 @@ Alt text: Cartoon parody. Missed penalties fly out of a TV into a living room: R
 Pinned comment: Worst miss? 💥 POST · 🚀 SKY · 🙈 WIDE 👇
 Settings: Share to Feed on · Audio name "Soccer 365 – Who Laughs Last".
 
-## X (Twitter) — upload the mp4 natively (≈215 characters)
+## X (Twitter) — upload the mp4 natively (≈200 characters)
 Missed pens fly out of the TV 😂
 Ronaldo → POST 💥 Yamal laughs
 Mbappé → SKY 🚀 Yamal laughs
