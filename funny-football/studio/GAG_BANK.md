@@ -134,3 +134,8 @@ Columns: id | gag | technique (rule-of-3, misdirection, escalation, cutaway, dea
 | H04 | Character notices the "Cartoon parody" label and sighs | 4th-wall | S |
 | H05 | Subtitle lies; the picture shows the truth | misdirection | M |
 | H06 | Character pauses the video with a remote | 4th-wall | M |
+| U60 | Rivals watch each other's misses from one sofa; the laugher becomes the laughed-at (Ep40) | reversal | M |
+| U61 | The running 'HEHEHE' gets one 'HE' longer every time (Ep40) | escalation | S |
+| U62 | Laughing so hard he rolls along the sofa (Ep40) | escalation | S |
+| U63 | Player winks into the TV camera at his rivals before the kick (Ep40) | 4th-wall | S |
+| U64 | Final line-up stamped with how each one missed: POST / WIDE / SKY (Ep40) | visual pun | M |

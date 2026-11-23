@@ -1,0 +1,148 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Penalty Podium</title><style>html,body{margin:0;background:#000}</style></head><body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../styles.js"></script><script src="../pro.js"></script><script src="../fx.js"></script><script src="../shots.js"></script><script src="../chibi.js"></script><script src="../chibi_cast.js"></script><script src="../rig2.js"></script><script src="../castimg.js"></script><script src="../cast/skins.js"></script>
+<script>
+// Ep40 "PENALTY PODIUM" (facts: ep40/facts.md). Barça 36, Real 33, Atlético 28; Yamal and Mbappé both missed penalties this weekend; both teams won.
+// (helpers from Ep37) Ep37 "THE EXCUSES" (facts: ep37/facts.md, checked 22 Nov 2026). Messi 8 Ballons d'Or, Ronaldo 5. Real words on screen in quotes only:
+// 2021 Instagram "…lie in this way"; 2023 to Record "losing credibility" / "the numbers don't deceive" (he scored 54 in 2023). Everything else is cartoon.
+const W = 1080, H = 1920, cv = document.getElementById('c'), ctx = cv.getContext('2d');
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v)), lerp = (a, b, k) => a + (b - a) * k, eOut = k => 1 - (1 - clamp(k)) ** 3, eIO = k => { k = clamp(k); return k < .5 ? 4 * k * k * k : 1 - (-2 * k + 2) ** 3 / 2; };
+const eBack = k => { k = clamp(k); const c = 1.7; return 1 + (c + 1) * (k - 1) ** 3 + c * (k - 1) ** 2; };
+const FONT = '"Bangers","Impact",Inter,sans-serif', INK = '#1a1410', GOLD = '#f2c230';
+CASTIMG.preload(['yamal', 'mbappe', 'raphinha']); window.CAST_READY = Promise.all([window.CAST_READY, document.fonts.load('40px Bangers'), document.fonts.load('40px Anton')]);
+function card(s, x, y, size, o = {}) { ctx.save(); ctx.font = `400 ${size}px ${o.font || FONT}`; const tw = ctx.measureText(s).width, pw = tw + size * 0.9, ph = size * 1.35;
+  ctx.translate(x, y); ctx.rotate(o.rot || 0); const sc = o.pop != null ? eBack(o.pop) : 1; ctx.scale(sc, sc);
+  ctx.fillStyle = 'rgba(0,0,0,.25)'; ctx.beginPath(); ctx.roundRect(-pw / 2 + 8, -ph / 2 + 10, pw, ph, 18); ctx.fill();
+  ctx.fillStyle = o.bg || '#fffaf0'; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.beginPath(); ctx.roundRect(-pw / 2, -ph / 2, pw, ph, 18); ctx.fill(); ctx.stroke();
+  if (o.tail) { ctx.beginPath(); ctx.moveTo(o.tail * 40 - 30, ph / 2 - 3); ctx.lineTo(o.tail * 110, ph / 2 + 70); ctx.lineTo(o.tail * 40 + 30, ph / 2 - 3); ctx.fill(); ctx.stroke(); ctx.fillRect(o.tail * 40 - 27, ph / 2 - 8, 54, 8); }
+  ctx.fillStyle = o.col || INK; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(s, 0, 4); ctx.restore(); }
+function stamp(s, x, y, size, k, col = '#c0281c') { if (k <= 0) return; ctx.save(); ctx.translate(x, y); ctx.rotate(-0.07); const sc = 1.6 - 0.6 * eOut(k * 2.5); ctx.scale(sc, sc); ctx.globalAlpha = clamp(k * 4);
+  ctx.font = `400 ${size}px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineWidth = 16; ctx.strokeStyle = '#fffaf0'; ctx.strokeText(s, 0, 0); ctx.fillStyle = col; ctx.fillText(s, 0, 0);
+  const tw = ctx.measureText(s).width; ctx.lineWidth = 7; ctx.strokeStyle = col; ctx.strokeRect(-tw / 2 - 30, -size * 0.65, tw + 60, size * 1.3); ctx.restore(); }
+// ---------------- cast: both in tuxedos (gala), caricature heads
+const kit = (shirt, trim, shorts, sock, num, boot = '#111') => ({ shirt, sleeve: shirt, cuff: trim, collar: trim, shorts, sock, sockShade: sock, sockBand: shirt, boot, num });
+const shadeOf = h => '#' + [1, 3, 5].map(i => Math.round(parseInt(h.slice(i, i + 2), 16) * 0.8).toString(16).padStart(2, '0')).join('');
+const BASE = { yamal: Object.assign({}, CH.mate1, { kit: Object.assign(kit('#a50044', '#004d98', '#004d98', '#004d98', '#ffd60a'), { stripes: '#004d98' }), num: '10', numSize: 56, name: 'YAMAL' }),
+  mbappe: Object.assign({}, CH.mate2, { kit: kit('#f7f7f7', '#c9a227', '#f7f7f7', '#f7f7f7', '#1b2a5c', '#f2f2f2'), num: '10', numSize: 56, name: 'MBAPPÉ' }),
+  raphinha: Object.assign({}, CH.mate3, { kit: Object.assign(kit('#a50044', '#004d98', '#004d98', '#004d98', '#ffd60a'), { stripes: '#004d98' }), num: '11', numSize: 56, name: 'RAPHINHA' }) };
+const CC = {}; for (const k in BASE) CC[k] = Object.assign({}, BASE[k], { arm: BASE[k].arm * 0.82, armW: BASE[k].armW * 1.35, skin: CAST_SKIN[k], shade: shadeOf(CAST_SKIN[k]) });
+const SC = { yamal: 1.0, mbappe: 1.05, raphinha: 1.0 };
+const lay = n => { const C = CC[n], hipY = -C.leg * 0.95, shY = hipY - C.torsoH; return { hipY, shY, fs: [C.shoulderW * 0.8, shY + 30], bs: [-C.shoulderW * 0.72, shY + 30] }; };
+function W2(o, lx, ly) { const s = o.s, f = o.f || 1, r = o.lean || 0, X = lx * s * f, Y = ly * s; return [o.x + X * Math.cos(r) - Y * Math.sin(r), o.y + X * Math.sin(r) + Y * Math.cos(r)]; }
+function reach(n, o, side, tx, ty) { const L = lay(n), p = side === 'f' ? L.fs : L.bs, S = W2(o, p[0], p[1]), r = o.lean || 0, f = o.f || 1;
+  const dx = tx - S[0], dy = ty - S[1], lx = (dx * Math.cos(-r) - dy * Math.sin(-r)) / f, ly = dx * Math.sin(-r) + dy * Math.cos(-r);
+  const a = Math.atan2(lx, ly) * 180 / Math.PI; return [a - 10, a + 10]; }
+const handAt = (n, o, side, dist = 0.95) => { const L = lay(n), C = CC[n], p = side === 'f' ? L.fs : L.bs, S = W2(o, p[0], p[1]); return S; };   // shoulder (for aiming)
+function CB(n, o, t, ph = 0) { const k = o.life ?? 1, sw = Math.sin(t * 2.1 + ph);
+  const pose = o.pose || { bArm: [-18 + sw * 6 * k, -8], fArm: [18 - sw * 6 * k, 8], bLeg: [-8, -4], fLeg: [8, 4] };
+  const q = Object.assign({ s: SC[n] }, o);
+  chibi.draw(ctx, CC[n], pose, 'neutral', q.x + Math.sin(t * 0.9 + ph) * 4 * k, q.y - (o.hop || 0), q.s, { f: o.f || 1, lean: (o.lean || 0) + Math.sin(t * 1.3 + ph) * 0.015 * k, sq: (o.sq || 0) + Math.sin(t * 3.1 + ph) * 0.012 * k,
+    headTilt: (o.tilt || 0) + Math.sin(t * 1.7 + ph) * 0.05 * k, hands: o.hands, headFn: CASTIMG.head(ctx, n, o.expr || 'smug', { collar: CC[n].kit.collar }) }); return;
+  // bow tie + shirt front over the collar
+  const L = lay(n), b = W2(q, 0, L.shY + 26); ctx.save(); ctx.translate(b[0], b[1]); ctx.rotate(q.lean || 0); const z = q.s;
+  ctx.fillStyle = '#fffaf0'; ctx.beginPath(); ctx.moveTo(-26 * z, -6 * z); ctx.lineTo(26 * z, -6 * z); ctx.lineTo(0, 70 * z); ctx.closePath(); ctx.fill(); ctx.strokeStyle = INK; ctx.lineWidth = 3; ctx.stroke();
+  ctx.fillStyle = '#111'; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(-30 * z, -14 * z); ctx.lineTo(-30 * z, 14 * z); ctx.closePath(); ctx.moveTo(0, 0); ctx.lineTo(30 * z, -14 * z); ctx.lineTo(30 * z, 14 * z); ctx.closePath(); ctx.fill();
+  ctx.beginPath(); ctx.arc(0, 0, 7 * z, 0, 7); ctx.fill(); ctx.restore(); }
+
+// ---------------- set: stadium at dusk + the podium
+const RED = '#c0281c';
+const BG = {}; function stadium(t) { if (!BG.c) { const c = document.createElement('canvas'); c.width = W + 1200; c.height = H + 1200; const g = c.getContext('2d'); g.translate(600, 600);
+    const sky = g.createLinearGradient(0, -600, 0, 1200); sky.addColorStop(0, '#2a2f6b'); sky.addColorStop(1, '#8b7bb8'); g.fillStyle = sky; g.fillRect(-600, -600, W + 1200, H + 1200);
+    g.fillStyle = '#1c2333'; g.fillRect(-600, 760, W + 1200, 420); for (let i = -6; i < 14; i++) { g.fillStyle = '#e8e8e8'; g.fillRect(i * 160, 640, 10, 120); g.fillStyle = '#fffbe0'; g.beginPath(); g.ellipse(i * 160 + 5, 630, 40, 16, 0, 0, 7); g.fill(); }
+    for (let i = 0; i < 14; i++) { g.fillStyle = i % 2 ? '#3f9e45' : '#4aae4f'; g.fillRect(-600, 1180 + i * 90, W + 1200, 90); } BG.c = c; }
+  ctx.drawImage(BG.c, -600, -600); FX.crowd(ctx, t, { y0: 800, rows: 5, rowH: 70, cols: ['#a50044', '#004d98', '#ffffff', '#c0281c'], jump: 0.15, flags: true, phones: true, w: 1500, x0: -210, density: 0.8 }); }
+const POD = { b: { x: 540, top: 1000, w: 330, col: '#004d98', stripe: '#a50044', crest: 'BARÇA' }, r: { x: 200, top: 1180, w: 320, col: '#f4f4f4', stripe: '#c9a227', crest: 'REAL' }, a: { x: 880, top: 1300, w: 320, col: '#d81e2c', stripe: '#ffffff', crest: 'ATLÉTI' } };
+const PTS = t => ({ b: t < T.flip ? 33 : 36, r: t < T.flip ? 30 : 33, a: 28 });
+function podium(t) { const pts = PTS(t), base = 1720;
+  for (const k of ['r', 'a', 'b']) { const p = POD[k], x0 = p.x - p.w / 2, h = base - p.top;
+    ctx.fillStyle = p.col; ctx.strokeStyle = INK; ctx.lineWidth = 8; ctx.fillRect(x0, p.top, p.w, h); ctx.strokeRect(x0, p.top, p.w, h);
+    ctx.fillStyle = p.stripe; for (let i = 0; i < 3; i++) ctx.fillRect(x0 + 30 + i * 100, p.top + 8, 40, h - 16);
+    ctx.fillStyle = 'rgba(255,255,255,.18)'; ctx.fillRect(x0 + 6, p.top + 6, p.w - 12, 24);
+    ctx.fillStyle = '#c9a227'; ctx.fillRect(x0 - 10, p.top - 20, p.w + 20, 24); ctx.strokeRect(x0 - 10, p.top - 20, p.w + 20, 24);
+    const flip = t > T.flip - 0.3 && t < T.flip + 0.3 && k !== 'a' ? Math.abs(Math.cos((t - T.flip + 0.3) / 0.6 * Math.PI)) : 1;
+    ctx.save(); ctx.translate(p.x, p.top + 150); ctx.scale(1, flip); ctx.fillStyle = '#fffaf0'; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.beginPath(); ctx.roundRect(-120, -80, 240, 160, 20); ctx.fill(); ctx.stroke();
+    ctx.font = `400 96px ${FONT}`; ctx.fillStyle = INK; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(String(pts[k]), 0, -6); ctx.font = `400 30px ${FONT}`; ctx.fillText('PTS', 0, 56); ctx.restore();
+    ctx.font = `400 54px ${FONT}`; ctx.lineWidth = 10; ctx.strokeStyle = INK; ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.strokeText(p.crest, p.x, p.top + 300); ctx.fillText(p.crest, p.x, p.top + 300);
+    ctx.font = `400 120px ${FONT}`; ctx.fillStyle = 'rgba(255,255,255,.85)'; ctx.fillText(k === 'b' ? '1' : k === 'r' ? '2' : '3', p.x, p.top + 420);
+    if (k === 'a') { ctx.font = '600 26px Inter'; ctx.fillStyle = '#fff'; ctx.fillText('12 games', p.x, base - 40); } } }
+function trophy(x, y, s) { ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.shadowColor = '#ffffff'; ctx.shadowBlur = 20; ctx.fillStyle = '#d7dbe2'; ctx.strokeStyle = INK; ctx.lineWidth = 6;
+  ctx.beginPath(); ctx.moveTo(-60, -130); ctx.lineTo(60, -130); ctx.quadraticCurveTo(60, -30, 12, -10); ctx.lineTo(12, 30); ctx.lineTo(45, 50); ctx.lineTo(-45, 50); ctx.lineTo(-12, 30); ctx.lineTo(-12, -10); ctx.quadraticCurveTo(-60, -30, -60, -130); ctx.closePath(); ctx.fill(); ctx.stroke(); ctx.shadowBlur = 0; ctx.restore(); }
+function ball(x, y, r = 30, rot = 0) { ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.fillStyle = '#fff'; ctx.strokeStyle = INK; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(0, 0, r, 0, 7); ctx.fill(); ctx.stroke(); ctx.fillStyle = INK;
+  ctx.beginPath(); for (let i = 0; i < 5; i++) { const a = i * 1.2566; ctx.lineTo(Math.cos(a) * r * 0.38, Math.sin(a) * r * 0.38); } ctx.fill(); ctx.restore(); }
+// ---------------- characters (caricature heads on chibi bodies, kits)
+function atleti(t, x, y, o = {}) { const C = Object.assign({}, CH.mate4, { kit: Object.assign(kit('#d81e2c', '#ffffff', '#1b2a5c', '#d81e2c', '#ffffff'), { stripes: '#ffffff' }), num: '', name: 'ATLÉTI', arm: CH.mate4.arm * 0.82, armW: CH.mate4.armW * 1.35 });
+  chibi.draw(ctx, C, o.pose || { bArm: [-10, -4], fArm: [10, 4], bLeg: [-8, -4], fLeg: [8, 4] }, o.expr || 'sad', x, y - (o.hop || 0), 0.9, { f: o.f || -1, lean: o.lean || 0 }); }
+const T = { A: 0, B: 3.4, mkick: 4.6, C: 7.6, ykick: 8.6, bonk: 9.15, D: 11.4, snatch: 12.0, E: 15.0, flip: 16.2, F: 20.0, rkick: 21.6, G: 24.0, fall: 26.3, END: 28.5 };
+const STAND = { yamal: () => [POD.b.x, POD.b.top - 20], mbappe: () => [POD.r.x + 10, POD.r.top - 20], raphinha: () => [1180, 1600] };
+function scene(t) { stadium(t); podium(t);
+  const trophyY = POD.b.top - 520 + Math.sin(t * 2) * 6, tx = POD.b.x + 120; if (t < T.rkick + 0.3) trophy(tx, trophyY, 0.9);
+  // Atlético: on the 3rd step, tries to climb in E
+  const ah = t > T.E && t < T.F ? Math.abs(Math.sin((t - T.E) * 5)) * 40 : 0; atleti(t, POD.a.x, POD.a.top - 20, { expr: t > T.E && t < T.F ? 'strain' : 'sad', hop: ah, pose: ah ? { bArm: [-150, -170], fArm: [150, 170], bLeg: [-20, -6], fLeg: [20, 6] } : undefined });
+  // Mbappé
+  const [mx, my] = STAND.mbappe(); let mo = { x: mx, y: my, f: 1, expr: 'angry' };
+  if (t < T.B) mo.expr = 'angry';
+  else if (t < T.mkick + 0.6) { mo.expr = 'smug'; if (t > T.mkick - 0.4) mo.pose = { bArm: [-40, -20], fArm: [40, 20], bLeg: [-10, -4], fLeg: [70, 40] }; }
+  else if (t < T.C) mo.expr = 'shock';
+  else if (t < T.bonk) mo.expr = 'smug';
+  else if (t < T.bonk + 0.7) { mo.expr = 'dizzy'; mo.sq = 0.12; }
+  else if (t < T.D) mo.expr = 'laugh';
+  else if (t < T.F) mo.expr = t > T.flip ? 'smug' : 'deadpan';
+  if (t >= T.F && t < T.G) { const k = clamp((t - T.F) / 1.2); mo.x = lerp(mx, 300, k); mo.y = lerp(my, 1640, k); mo.expr = 'angry'; mo.pose = { bArm: [-50 * Math.sin(t * 18), -30], fArm: [50 * Math.sin(t * 18), 30], bLeg: [-40 * Math.sin(t * 18), -20], fLeg: [40 * Math.sin(t * 18), 20] }; if (t > T.rkick) { mo.expr = 'shock'; mo.pose = undefined; } }
+  if (t >= T.G) { mo.x = 330; mo.y = 1640; mo.expr = t > T.fall ? 'dizzy' : 'angry'; mo.pose = t < T.fall ? { bArm: [-14, -6], fArm: reach('mbappe', Object.assign({ s: SC.mbappe, f: 1 }, mo), 'f', 600, 1250), bLeg: [-8, -4], fLeg: [8, 4] } : undefined; mo.sq = t > T.fall && t < T.fall + 0.5 ? 0.15 : 0; }
+  CB('mbappe', mo, t, 1.1);
+  // Yamal (top step)
+  const [yx, yy] = STAND.yamal(); let yo = { x: yx, y: yy, f: -1, expr: 'smug' };
+  if (t > T.mkick + 0.3 && t < T.C) { yo.expr = 'laugh'; yo.pose = { bArm: [-14, -6], fArm: reach('yamal', Object.assign({ s: SC.yamal }, yo), 'f', mx, my - 300), bLeg: [-8, -4], fLeg: [8, 4] }; }
+  if (t >= T.C && t < T.D) { yo.expr = t < T.ykick ? 'smug' : t < T.bonk + 0.2 ? 'shock' : 'deadpan'; if (t > T.ykick - 0.4 && t < T.ykick + 0.2) yo.pose = { bArm: [-40, -20], fArm: [40, 20], bLeg: [-10, -4], fLeg: [-70, -40] }; }
+  if (t >= T.D && t < T.E) yo.expr = t < T.snatch ? 'smug' : 'shock';
+  if (t >= T.E && t < T.F) { yo.expr = t > T.flip ? 'laugh' : 'smug'; if (t > T.flip) yo.hop = Math.abs(Math.sin((t - T.flip) * 8)) * 30; }
+  if (t >= T.F && t < T.G) { const k = clamp((t - T.F) / 1.2); yo.x = lerp(yx, 800, k); yo.y = lerp(yy, 1640, k); yo.expr = 'angry'; yo.pose = { bArm: [-50 * Math.sin(t * 18 + 1), -30], fArm: [50 * Math.sin(t * 18 + 1), 30], bLeg: [-40 * Math.sin(t * 18 + 1), -20], fLeg: [40 * Math.sin(t * 18 + 1), 20] }; if (t > T.rkick) { yo.expr = 'shock'; yo.pose = undefined; } }
+  if (t >= T.G) { yo.x = 760; yo.y = 1640; yo.f = -1; yo.expr = t > T.fall ? 'laugh' : 'angry'; yo.pose = { bArm: [-14, -6], fArm: reach('yamal', Object.assign({ s: SC.yamal }, yo), 'f', 470, 1250), bLeg: [-8, -4], fLeg: [8, 4] }; }
+  CB('yamal', yo, t, 0.3);
+  // Raphinha: enters in D, snatches the ball; in F he scores into the trophy
+  if (t >= T.D) { let ro = { x: 1180, y: 1640, f: -1, expr: 'angry' }; if (t < T.snatch) ro.x = lerp(1250, 820, clamp((t - T.D) / 0.6));
+    else if (t < T.E) { ro.x = 820; ro.expr = 'smug'; ro.pose = { bArm: [-14, -6], fArm: [150, 130], bLeg: [-8, -4], fLeg: [8, 4] }; }
+    else if (t < T.F) { ro.x = 960; ro.expr = 'smug'; }
+    else if (t < T.G) { ro.x = lerp(960, 560, clamp((t - T.F) / 1.0)); ro.y = 1760; ro.f = 1; ro.expr = t > T.rkick ? 'laugh' : 'smug'; if (t > T.rkick - 0.4 && t < T.rkick + 0.2) ro.pose = { bArm: [-40, -20], fArm: [40, 20], bLeg: [-10, -4], fLeg: [70, 40] }; }
+    else { ro.x = 560; ro.y = 1760; ro.f = 1; ro.expr = 'smug'; ro.pose = { bArm: [-14, -6], fArm: [150, 130], bLeg: [-8, -4], fLeg: [8, 4] }; }
+    CB('raphinha', ro, t, 2.1); if ((t > T.snatch && t < T.E) || t >= T.G) { const L = lay('raphinha'), h = W2(Object.assign({ s: SC.raphinha, f: ro.f }, ro), CC.raphinha.shoulderW * 0.8, L.shY - 120); ball(h[0], h[1] - 40, 32); } }
+  // the balls: Mbappé skies it (B), Yamal shanks it into Mbappé (C), Yamal holds it (A, D before the snatch), Raphinha scores (F), the skied ball falls back (G)
+  if (t < T.mkick - 0.4 || (t > T.C && t < T.ykick) || (t >= T.D && t < T.snatch)) { const L = lay('yamal'), h = W2(Object.assign({ s: SC.yamal, f: -1 }, yo), CC.yamal.shoulderW * 0.8, L.shY - 120); if (t < T.mkick - 0.4 || t >= T.D) ball(h[0], h[1] - 40, 32); }
+  if (t > T.mkick - 0.4 && t < T.mkick) ball(mx + 70, my - 20, 30);
+  if (t >= T.mkick && t < T.C) { const k = (t - T.mkick) / 1.6; ball(lerp(mx + 70, tx + 260, k), lerp(my - 20, -1400, Math.min(1, k)) , 30, k * 12); }
+  if (t > T.C && t < T.ykick) ball(yx - 60, yy - 20, 30);
+  if (t >= T.ykick && t < T.bonk) { const k = (t - T.ykick) / (T.bonk - T.ykick); ball(lerp(yx - 60, mx + 10, k), lerp(yy - 20, my - 330, k) - Math.sin(k * Math.PI) * 80, 30, k * 9); }
+  if (t >= T.bonk && t < T.bonk + 1.2) { const k = (t - T.bonk) / 1.2; ball(mx + 10 - k * 300, my - 330 - Math.sin(k * Math.PI) * 200 + k * k * 400, 30, k * 8); }
+  if (t > T.F && t < T.rkick) ball(600, 1760, 30);
+  if (t >= T.rkick && t < T.rkick + 0.5) { const k = (t - T.rkick) / 0.5; ball(lerp(640, tx, k), lerp(1760, trophyY - 40, k), 30, k * 10); }
+  if (t >= T.rkick + 0.3 && t < T.G) { const k = (t - T.rkick - 0.3) / 1.4; for (let i = 0; i < 12; i++) { ctx.fillStyle = `rgba(215,219,226,${1 - k})`; ctx.fillRect(tx + Math.cos(i) * 200 * k, trophyY + Math.sin(i * 1.7) * 160 * k + 300 * k * k, 18, 12); } }
+  if (t > T.fall - 0.6 && t < T.fall + 0.6) { const k = (t - T.fall + 0.6) / 0.6; ball(330 + (k > 1 ? (k - 1) * 300 : 0), k < 1 ? lerp(-300, 1640 - 330, eIO(k)) : 1640 - 330 - Math.sin((k - 1) * Math.PI) * 150, 30, k * 7); }
+}
+function frame(t) {
+  if (t < T.B) SHOT.cu(ctx, () => scene(t), { x: 400, y: 1050, zoom: lerp(1.35, 1.25, t / T.B) });
+  else if (t < T.C) SHOT.low(ctx, () => scene(t), { x: 420, y: 1120, zoom: 1.05, lift: 140 });
+  else if (t < T.D) SHOT.xcu(ctx, () => scene(t), { x: 380, y: 980, zoom: 1.55 });
+  else if (t < T.E) SHOT.cu(ctx, () => scene(t), { x: 680, y: 1150, zoom: 1.3 });
+  else if (t < T.F) SHOT.wide(ctx, () => scene(t), { x: 540, y: 1180, zoom: lerp(0.95, 0.9, (t - T.E) / 5) });
+  else if (t < T.G) SHOT.dutch(ctx, () => scene(t), { x: 560, y: 1250, zoom: 1.05, rot: -0.12 });
+  else SHOT.cu(ctx, () => scene(t), { x: 540, y: 1330, zoom: lerp(1.3, 1.4, (t - T.G) / 4.5) });
+}
+function hud(t) {
+  if (t < T.B) card('LaLiga top 3 🏆', 540, 1500, 70, { pop: t / 0.3 });
+  if (t > T.mkick + 0.2 && t < T.C) stamp("Mbappé 39′ PEN ❌", 540, 1500, 76, t - T.mkick - 0.2);
+  if (t > T.ykick + 0.3 && t < T.D) stamp('Yamal PEN ❌ too', 540, 1500, 76, t - T.ykick - 0.3);
+  if (t > T.bonk && t < T.bonk + 1.0) stamp('BONK', 820, 1250, 90, t - T.bonk, '#7a4b00');
+  if (t > T.snatch && t < T.E) { card('MY BALL 😤', 820, 560, 66, { pop: (t - T.snatch) / 0.3, bg: '#fff3b0' }); if (t > 13.2) card('Flick: pens → Raphinha?', 540, 1520, 52, { pop: (t - 13.2) / 0.3, bg: '#e8f0ff' }); }
+  if (t > T.flip && t < T.F) { card('Barça 3-2 (from 0-2) · Real 2-1', 540, 300, 46, { pop: (t - T.flip) / 0.3 }); }
+  if (t > 17.6 && t < T.F) card('Real: 9 wins in a row', 540, 420, 50, { pop: (t - 17.6) / 0.3, bg: '#fff3b0' });
+  if (t > T.rkick + 0.2 && t < T.G) stamp('GOAL ✅', 540, 420, 100, t - T.rkick - 0.2, '#1f7a2a');
+  if (t > T.G + 0.3) card('Worse miss? 👇', 540, 300, 72, { pop: (t - T.G - 0.3) / 0.3, bg: '#fff3b0' });
+  if (t > T.G + 0.9) { card('Mbappé 🇫🇷', 300, 420, 50, { pop: (t - T.G - 0.9) / 0.3 }); card('Yamal 🇪🇸', 780, 420, 50, { pop: (t - T.G - 1.1) / 0.3 }); }
+  if (t > 26.8) { ctx.font = '600 26px Inter'; ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.textAlign = 'center'; ctx.fillText('Cartoon parody', 540, 1590); }
+}
+const SHAKE = [T.mkick, T.bonk, T.rkick + 0.5, T.fall];
+function grade() { ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); const v = ctx.createRadialGradient(540, 960, 560, 540, 960, 1250); v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,0,.38)'); ctx.fillStyle = v; ctx.fillRect(0, 0, W, H); ctx.restore(); }
+window.DURATION = T.END; window.render = function (t) { window.T2T = t; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.clearRect(0, 0, W, H); ctx.fillStyle = '#2a2f6b'; ctx.fillRect(0, 0, W, H);
+  const hs = SHAKE.reduce((m, a) => Math.max(m, t >= a && t < a + 0.25 ? 14 * (1 - (t - a) / 0.25) : 0), 0);
+  ctx.save(); ctx.translate(Math.sin(t * 91) * hs, Math.cos(t * 77) * hs); frame(t); ctx.restore(); grade(); ctx.setTransform(1, 0, 0, 1, 0, 0); if (!window.NO_HUD) hud(t); };
+if (!location.search.includes('render')) { const t0 = performance.now(); (window.CAST_READY || Promise.resolve()).then(() => (function loop() { render(((performance.now() - t0) / 1000) % DURATION); requestAnimationFrame(loop); })()); }
+</script></body></html>

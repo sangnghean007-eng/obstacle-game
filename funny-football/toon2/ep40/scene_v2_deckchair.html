@@ -1,0 +1,139 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Penalty Podium</title><style>html,body{margin:0;background:#000}</style></head><body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../styles.js"></script><script src="../pro.js"></script><script src="../fx.js"></script><script src="../shots.js"></script><script src="../chibi.js"></script><script src="../chibi_cast.js"></script><script src="../rig2.js"></script><script src="../castimg.js"></script><script src="../cast/skins.js"></script>
+<script>
+// Ep40 "PENALTY PODIUM" (facts: ep40/facts.md). Barça 36, Real 33, Atlético 28; Yamal and Mbappé both missed penalties this weekend; both teams won.
+// (helpers from Ep37) Ep37 "THE EXCUSES" (facts: ep37/facts.md, checked 22 Nov 2026). Messi 8 Ballons d'Or, Ronaldo 5. Real words on screen in quotes only:
+// 2021 Instagram "…lie in this way"; 2023 to Record "losing credibility" / "the numbers don't deceive" (he scored 54 in 2023). Everything else is cartoon.
+const W = 1080, H = 1920, cv = document.getElementById('c'), ctx = cv.getContext('2d');
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v)), lerp = (a, b, k) => a + (b - a) * k, eOut = k => 1 - (1 - clamp(k)) ** 3, eIO = k => { k = clamp(k); return k < .5 ? 4 * k * k * k : 1 - (-2 * k + 2) ** 3 / 2; };
+const eBack = k => { k = clamp(k); const c = 1.7; return 1 + (c + 1) * (k - 1) ** 3 + c * (k - 1) ** 2; };
+const FONT = '"Bangers","Impact",Inter,sans-serif', INK = '#1a1410', GOLD = '#f2c230';
+CASTIMG.preload(['yamal', 'mbappe', 'raphinha']); window.CAST_READY = Promise.all([window.CAST_READY, document.fonts.load('40px Bangers'), document.fonts.load('40px Anton')]);
+function card(s, x, y, size, o = {}) { ctx.save(); ctx.font = `400 ${size}px ${o.font || FONT}`; const tw = ctx.measureText(s).width, pw = tw + size * 0.9, ph = size * 1.35;
+  ctx.translate(x, y); ctx.rotate(o.rot || 0); const sc = o.pop != null ? eBack(o.pop) : 1; ctx.scale(sc, sc);
+  ctx.fillStyle = 'rgba(0,0,0,.25)'; ctx.beginPath(); ctx.roundRect(-pw / 2 + 8, -ph / 2 + 10, pw, ph, 18); ctx.fill();
+  ctx.fillStyle = o.bg || '#fffaf0'; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.beginPath(); ctx.roundRect(-pw / 2, -ph / 2, pw, ph, 18); ctx.fill(); ctx.stroke();
+  if (o.tail) { ctx.beginPath(); ctx.moveTo(o.tail * 40 - 30, ph / 2 - 3); ctx.lineTo(o.tail * 110, ph / 2 + 70); ctx.lineTo(o.tail * 40 + 30, ph / 2 - 3); ctx.fill(); ctx.stroke(); ctx.fillRect(o.tail * 40 - 27, ph / 2 - 8, 54, 8); }
+  ctx.fillStyle = o.col || INK; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(s, 0, 4); ctx.restore(); }
+function stamp(s, x, y, size, k, col = '#c0281c') { if (k <= 0) return; ctx.save(); ctx.translate(x, y); ctx.rotate(-0.07); const sc = 1.6 - 0.6 * eOut(k * 2.5); ctx.scale(sc, sc); ctx.globalAlpha = clamp(k * 4);
+  ctx.font = `400 ${size}px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineWidth = 16; ctx.strokeStyle = '#fffaf0'; ctx.strokeText(s, 0, 0); ctx.fillStyle = col; ctx.fillText(s, 0, 0);
+  const tw = ctx.measureText(s).width; ctx.lineWidth = 7; ctx.strokeStyle = col; ctx.strokeRect(-tw / 2 - 30, -size * 0.65, tw + 60, size * 1.3); ctx.restore(); }
+// ---------------- cast: both in tuxedos (gala), caricature heads
+const kit = (shirt, trim, shorts, sock, num, boot = '#111') => ({ shirt, sleeve: shirt, cuff: trim, collar: trim, shorts, sock, sockShade: sock, sockBand: shirt, boot, num });
+const shadeOf = h => '#' + [1, 3, 5].map(i => Math.round(parseInt(h.slice(i, i + 2), 16) * 0.8).toString(16).padStart(2, '0')).join('');
+const BASE = { yamal: Object.assign({}, CH.mate1, { kit: Object.assign(kit('#a50044', '#004d98', '#004d98', '#004d98', '#ffd60a'), { stripes: '#004d98' }), num: '10', numSize: 56, name: 'YAMAL' }),
+  mbappe: Object.assign({}, CH.mate2, { kit: kit('#f7f7f7', '#c9a227', '#f7f7f7', '#f7f7f7', '#1b2a5c', '#f2f2f2'), num: '10', numSize: 56, name: 'MBAPPÉ' }),
+  raphinha: Object.assign({}, CH.mate3, { kit: Object.assign(kit('#a50044', '#004d98', '#004d98', '#004d98', '#ffd60a'), { stripes: '#004d98' }), num: '11', numSize: 56, name: 'RAPHINHA' }) };
+const CC = {}; for (const k in BASE) CC[k] = Object.assign({}, BASE[k], { arm: BASE[k].arm * 0.82, armW: BASE[k].armW * 1.35, skin: CAST_SKIN[k], shade: shadeOf(CAST_SKIN[k]) });
+const SC = { yamal: 1.0, mbappe: 1.05, raphinha: 1.0 };
+const lay = n => { const C = CC[n], hipY = -C.leg * 0.95, shY = hipY - C.torsoH; return { hipY, shY, fs: [C.shoulderW * 0.8, shY + 30], bs: [-C.shoulderW * 0.72, shY + 30] }; };
+function W2(o, lx, ly) { const s = o.s, f = o.f || 1, r = o.lean || 0, X = lx * s * f, Y = ly * s; return [o.x + X * Math.cos(r) - Y * Math.sin(r), o.y + X * Math.sin(r) + Y * Math.cos(r)]; }
+function reach(n, o, side, tx, ty) { const L = lay(n), p = side === 'f' ? L.fs : L.bs, S = W2(o, p[0], p[1]), r = o.lean || 0, f = o.f || 1;
+  const dx = tx - S[0], dy = ty - S[1], lx = (dx * Math.cos(-r) - dy * Math.sin(-r)) / f, ly = dx * Math.sin(-r) + dy * Math.cos(-r);
+  const a = Math.atan2(lx, ly) * 180 / Math.PI; return [a - 10, a + 10]; }
+const handAt = (n, o, side, dist = 0.95) => { const L = lay(n), C = CC[n], p = side === 'f' ? L.fs : L.bs, S = W2(o, p[0], p[1]); return S; };   // shoulder (for aiming)
+function CB(n, o, t, ph = 0) { const k = o.life ?? 1, sw = Math.sin(t * 2.1 + ph);
+  const pose = o.pose || { bArm: [-18 + sw * 6 * k, -8], fArm: [18 - sw * 6 * k, 8], bLeg: [-8, -4], fLeg: [8, 4] };
+  const q = Object.assign({ s: SC[n] }, o);
+  chibi.draw(ctx, CC[n], pose, 'neutral', q.x + Math.sin(t * 0.9 + ph) * 4 * k, q.y - (o.hop || 0), q.s, { f: o.f || 1, lean: (o.lean || 0) + Math.sin(t * 1.3 + ph) * 0.015 * k, sq: (o.sq || 0) + Math.sin(t * 3.1 + ph) * 0.012 * k,
+    headTilt: (o.tilt || 0) + Math.sin(t * 1.7 + ph) * 0.05 * k, hands: o.hands, headFn: CASTIMG.head(ctx, n, o.expr || 'smug', { collar: CC[n].kit.collar }) }); return;
+  // bow tie + shirt front over the collar
+  const L = lay(n), b = W2(q, 0, L.shY + 26); ctx.save(); ctx.translate(b[0], b[1]); ctx.rotate(q.lean || 0); const z = q.s;
+  ctx.fillStyle = '#fffaf0'; ctx.beginPath(); ctx.moveTo(-26 * z, -6 * z); ctx.lineTo(26 * z, -6 * z); ctx.lineTo(0, 70 * z); ctx.closePath(); ctx.fill(); ctx.strokeStyle = INK; ctx.lineWidth = 3; ctx.stroke();
+  ctx.fillStyle = '#111'; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(-30 * z, -14 * z); ctx.lineTo(-30 * z, 14 * z); ctx.closePath(); ctx.moveTo(0, 0); ctx.lineTo(30 * z, -14 * z); ctx.lineTo(30 * z, 14 * z); ctx.closePath(); ctx.fill();
+  ctx.beginPath(); ctx.arc(0, 0, 7 * z, 0, 7); ctx.fill(); ctx.restore(); }
+
+
+// ---------------- v2 (owner: "Lộn xộn thế — làm ý khác"): CLEAN staging — max 2 characters per shot, 1 text at a time.
+// Camera behind the goal: a keeper in a deckchair (back to camera, generic) reads the paper; the taker faces the camera.
+const RED = '#c0281c';
+const T = { A: 0, B: 3.4, mk: 5.0, C: 8.4, wave: 8.8, yk: 10.6, D: 13.0, snatch: 13.6, E: 16.2, rk: 17.4, F: 20.2, G: 23.4, fall: 24.4, END: 26.5 };
+const GL = 1180;                                    // goal line y (world); taker stands at y 1540
+const BG = {}; function pitch(t) { if (!BG.c) { const c = document.createElement('canvas'); c.width = W + 1200; c.height = H + 1200; const g = c.getContext('2d'); g.translate(600, 600);
+    const sky = g.createLinearGradient(0, -600, 0, 900); sky.addColorStop(0, '#1d2550'); sky.addColorStop(1, '#4d5f9a'); g.fillStyle = sky; g.fillRect(-600, -600, W + 1200, H + 1200);
+    g.fillStyle = '#1c2333'; g.fillRect(-600, 560, W + 1200, 420); for (let i = -6; i < 14; i++) { g.fillStyle = '#fffbe0'; g.beginPath(); g.ellipse(i * 170 + 5, 420, 46, 18, 0, 0, 7); g.fill(); }
+    for (let i = 0; i < 16; i++) { g.fillStyle = i % 2 ? '#3f9e45' : '#4aae4f'; g.fillRect(-600, 980 + i * 100, W + 1200, 100); }
+    g.strokeStyle = 'rgba(255,255,255,.85)'; g.lineWidth = 10; g.beginPath(); g.moveTo(-600, 1080); g.lineTo(W + 600, 1080); g.stroke(); g.beginPath(); g.ellipse(540, 1540, 14, 8, 0, 0, 7); g.fillStyle = '#fff'; g.fill(); BG.c = c; }
+  ctx.drawImage(BG.c, -600, -600); FX.crowd(ctx, t, { y0: 600, rows: 5, rowH: 70, cols: ['#a50044', '#004d98', '#ffffff', '#c9a227'], jump: t > T.mk && t < T.mk + 1.2 || t > T.yk && t < T.yk + 1.2 ? 0.6 : 0.12, flags: true, phones: true, w: 1500, x0: -210, density: 0.8 }); }
+function goalFront() { // the frame + net seen from behind (foreground)
+  ctx.save(); ctx.strokeStyle = 'rgba(255,255,255,.35)'; ctx.lineWidth = 3; for (let i = 0; i <= 16; i++) { ctx.beginPath(); ctx.moveTo(-60 + i * 75, 380); ctx.lineTo(-60 + i * 75, 2000); ctx.stroke(); } for (let j = 0; j < 22; j++) { ctx.beginPath(); ctx.moveTo(-100, 380 + j * 75); ctx.lineTo(1180, 380 + j * 75); ctx.stroke(); }
+  ctx.fillStyle = '#f6f6f6'; ctx.strokeStyle = INK; ctx.lineWidth = 8; ctx.fillRect(-80, 300, 60, 1700); ctx.strokeRect(-80, 300, 60, 1700); ctx.fillRect(1100, 300, 60, 1700); ctx.strokeRect(1100, 300, 60, 1700); ctx.fillRect(-80, 260, 1240, 60); ctx.strokeRect(-80, 260, 1240, 60); ctx.restore(); }
+function keeper(t, o = {}) { // back view in a deckchair, newspaper up; o.dive for the late dive
+  const x = o.x ?? 250, y = o.y ?? 1900; ctx.save(); ctx.translate(x, y); ctx.scale(0.78, 0.78); { ctx.fillStyle = '#2f6fbf'; ctx.strokeStyle = INK; ctx.lineWidth = 7; ctx.beginPath(); ctx.moveTo(-190, -40); ctx.lineTo(190, -40); ctx.lineTo(160, -330); ctx.lineTo(-160, -330); ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#fff'; for (let i = 0; i < 4; i++) ctx.fillRect(-150 + i * 80, -320, 36, 270); ctx.strokeStyle = '#8a6a3a'; ctx.lineWidth = 12; ctx.beginPath(); ctx.moveTo(-170, -30); ctx.lineTo(-210, 90); ctx.moveTo(170, -30); ctx.lineTo(210, 90); ctx.stroke(); }
+  if (o.dive) { ctx.translate(o.dive * 330, -o.dive * 260); ctx.rotate(o.dive * 1.25); }
+  // head (back): grey kit, cap
+  ctx.fillStyle = '#5a5f6a'; ctx.strokeStyle = INK; ctx.lineWidth = 7; ctx.beginPath(); ctx.roundRect(-120, -430, 240, 190, 40); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#c98a5e'; ctx.beginPath(); ctx.ellipse(0, -500, 90, 96, 0, 0, 7); ctx.fill(); ctx.stroke(); ctx.fillStyle = '#1a1410'; ctx.beginPath(); ctx.ellipse(0, -540, 92, 62, 0, Math.PI, 0); ctx.fill();
+  ctx.fillStyle = '#ffcc33'; ctx.beginPath(); ctx.ellipse(0, -560, 96, 40, 0, Math.PI, 0); ctx.fill(); ctx.stroke(); ctx.font = `400 40px ${FONT}`; ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.fillText('1', 0, -300);
+  // the newspaper (back page faces us) or the coffee
+  if (!o.dive && !o.noPaper) { const turn = o.turn || 0; ctx.save(); ctx.translate(0, -560); ctx.scale(1 - Math.sin(turn * Math.PI) * 0.6, 1); ctx.fillStyle = '#f2efe6'; ctx.strokeStyle = INK; ctx.lineWidth = 5; ctx.fillRect(-250, -170, 500, 300); ctx.strokeRect(-250, -170, 500, 300);
+    ctx.font = `400 44px ${FONT}`; ctx.fillStyle = INK; ctx.fillText('LALIGA', 0, -110); ctx.font = `400 56px ${FONT}`; ctx.fillStyle = RED; ctx.fillText('BARÇA 36 · REAL 33', 0, -40); ctx.fillStyle = '#999'; for (let i = 0; i < 4; i++) ctx.fillRect(-210, 0 + i * 26, 420, 10); ctx.restore(); }
+  if (o.cup != null) { ctx.save(); ctx.translate(230, -380 - (o.sip ? 60 : 0)); ctx.fillStyle = '#fff'; ctx.strokeStyle = INK; ctx.lineWidth = 5; ctx.fillRect(-34, -50, 68, 80); ctx.strokeRect(-34, -50, 68, 80); ctx.beginPath(); ctx.arc(40, -10, 18, -1.4, 1.4); ctx.stroke();
+    ctx.fillStyle = '#6b3e1f'; ctx.fillRect(-28, -44, 56, 14); if (o.cup > 0) { ctx.fillStyle = '#6b3e1f'; for (let i = 0; i < 16; i++) { const a = i * 0.39 + Math.PI, r = 40 + o.cup * 260; ctx.beginPath(); ctx.arc(Math.cos(a) * r, -50 + Math.sin(a) * r * 0.8 - o.cup * 120 + o.cup * o.cup * 200, 26 * (1 - o.cup * 0.4), 0, 7); ctx.fill(); } ctx.fillStyle = 'rgba(107,62,31,.85)'; ctx.beginPath(); ctx.ellipse(-230, -60, 60 + o.cup * 120, 30 + o.cup * 60, 0, 0, 7); ctx.fill(); } ctx.restore(); }
+  if (o.dive) { ctx.fillStyle = '#5a5f6a'; ctx.strokeStyle = INK; ctx.lineWidth = 7; ctx.fillRect(-300, -380, 180, 50); ctx.strokeRect(-300, -380, 180, 50); ctx.fillStyle = '#ffcc33'; ctx.beginPath(); ctx.arc(-320, -355, 34, 0, 7); ctx.fill(); ctx.stroke(); }
+  ctx.restore(); }
+function ball(x, y, r = 34, rot = 0) { ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.fillStyle = '#fff'; ctx.strokeStyle = INK; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(0, 0, r, 0, 7); ctx.fill(); ctx.stroke(); ctx.fillStyle = INK;
+  ctx.beginPath(); for (let i = 0; i < 5; i++) { const a = i * 1.2566; ctx.lineTo(Math.cos(a) * r * 0.38, Math.sin(a) * r * 0.38); } ctx.fill(); ctx.restore(); }
+const SPOT = [660, 1540];
+function kickPose(k) { return k < 0.6 ? { bArm: [-30, -20], fArm: [30, 20], bLeg: [-10, -4], fLeg: [-40 + k * 60, -20] } : { bArm: [-60, -40], fArm: [60, 40], bLeg: [-10, -4], fLeg: [80, 40] }; }
+function taker(n, t, t0, o = {}) { // run-up toward the camera, kick at t0
+  const k = clamp((t - (t0 - 0.8)) / 0.8), run = t < t0, x = o.x ?? 660, y = lerp(1300, SPOT[1] - 10, eIO(k));
+  const pose = t < t0 - 0.8 ? (o.pose || undefined) : run ? { bArm: [-50 * Math.sin(t * 20), -30], fArm: [50 * Math.sin(t * 20), 30], bLeg: [-40 * Math.sin(t * 20), -20], fLeg: [40 * Math.sin(t * 20), 20] } : kickPose(clamp((t - t0) / 0.25));
+  CB(n, Object.assign({ x, y: t < t0 - 0.8 ? 1300 : y, f: 1, s: 1.1, expr: o.expr || 'smug', pose }, o.extra || {}), t, n === 'yamal' ? 0.3 : 1.1); }
+function scene(t) { pitch(t);
+  // the taker(s): ONE at a time (max 2 characters on screen: taker + keeper)
+  if (t < T.C) { taker('mbappe', t, T.mk, { expr: t < T.mk ? 'smug' : t < T.mk + 0.6 ? 'shock' : 'angry' }); }
+  else if (t < T.D) { const wave = t > T.wave && t < T.wave + 1.2; taker('yamal', t, T.yk, { expr: t < T.yk ? 'smug' : t < T.yk + 0.7 ? 'shock' : 'deadpan', pose: wave ? { bArm: [-14, -6], fArm: [160, 150], bLeg: [-8, -4], fLeg: [8, 4] } : undefined }); }
+  else if (t < T.E) { const k = clamp((t - T.D) / 0.6); CB('yamal', { x: lerp(640, 480, clamp((t - T.snatch) / 0.5)), y: 1300, f: 1, s: 1.05, expr: t < T.snatch ? 'smug' : 'shock' }, t, 0.3);
+    CB('raphinha', { x: lerp(1250, 850, k), y: 1300, f: -1, s: 1.05, expr: 'angry', pose: t > T.snatch ? { bArm: [-14, -6], fArm: [150, 130], bLeg: [-8, -4], fLeg: [8, 4] } : undefined }, t, 2.1); }
+  else if (t < T.F) taker('raphinha', t, T.rk, { expr: t < T.rk ? 'angry' : 'laugh' });
+  // balls
+  if (t < T.mk) ball(SPOT[0] + 40, SPOT[1] + 10, 34);
+  if (t >= T.mk && t < T.C) { const k = (t - T.mk) / 1.4; ball(lerp(700, 1000, k), lerp(SPOT[1], -900, Math.min(1, k)), 34 * (1 + k * 0.6), k * 14); }
+  if (t > T.C && t < T.yk) ball(SPOT[0] + 40, SPOT[1] + 10, 34);
+  if (t >= T.yk && t < T.D) { const k = (t - T.yk) / 2.2; ball(lerp(700, 1300, k), SPOT[1] + Math.sin(k * 3) * 10 - k * 120, 34, k * 20); }
+  if (t >= T.snatch && t < T.E) { ball(880, 1060, 34); }
+  if (t >= T.E && t < T.rk) ball(SPOT[0] + 40, SPOT[1] + 10, 34);
+  if (t >= T.rk && t < T.rk + 0.45) { const k = (t - T.rk) / 0.45; ball(lerp(700, 980, k), lerp(SPOT[1], 1500, k), 34 * (1 + k * 1.5), k * 10); }
+  // the keeper (foreground) — sits, turns the page, sips, late dive, then the coffee gets hit
+  const kp = {}; if (t > T.mk + 0.4 && t < T.mk + 1.2) kp.turn = (t - T.mk - 0.4) / 0.8; if (t > T.yk + 0.3 && t < T.D) { kp.cup = 0; kp.sip = t > T.yk + 0.8; }
+  if (t > T.rk - 0.15 && t < T.F) { kp.dive = clamp((t - T.rk - 0.1) / 0.4); }
+  if (t >= T.G) { kp.cup = t > T.fall ? clamp((t - T.fall) / 0.6) : 0; kp.noPaper = false; }
+  goalFront(); keeper(t, kp);
+  if (t >= T.rk + 0.45 && t < T.F) { ball(980, 1500, 80); }
+  if (t > T.fall - 0.5 && t < T.fall + 0.1) { const k = (t - T.fall + 0.5) / 0.5; ball(430, lerp(-200, 1560, eIO(k)), 50, k * 8); }
+}
+function splitEnd(t) { // two clean panels: Mbappé | Yamal looking at each other
+  SHOT.split(ctx, [{ draw: () => { pitch(t); CB('mbappe', { x: 540, y: 1500, f: 1, s: 1.3, expr: t > 21.4 ? 'angry' : 'smug', pose: t > 21.4 ? { bArm: [-14, -6], fArm: [100, 85], bLeg: [-8, -4], fLeg: [8, 4] } : undefined }, t, 1.1); }, shot: 'cu', opts: { x: 560, y: 1120, zoom: 1.0 } },
+    { draw: () => { pitch(t); CB('yamal', { x: 540, y: 1500, f: -1, s: 1.3, expr: t > 21.4 ? 'angry' : 'smug', pose: t > 21.4 ? { bArm: [-14, -6], fArm: [100, 85], bLeg: [-8, -4], fLeg: [8, 4] } : undefined }, t, 0.3); }, shot: 'cu', opts: { x: 520, y: 1120, zoom: 1.0 } }], { vertical: false, border: '#fff' }); }
+function frame(t) {
+  if (t < T.B) SHOT.wide(ctx, () => scene(t), { x: 540, y: 1200, zoom: lerp(0.82, 0.88, t / T.B) });
+  else if (t < T.mk + 0.6) SHOT.cu(ctx, () => scene(t), { x: 540, y: 1240, zoom: 1.25 });
+  else if (t < T.C) SHOT.xcu(ctx, () => scene(t), { x: 660, y: 1120, zoom: 1.9 });
+  else if (t < T.yk + 0.4) SHOT.low(ctx, () => scene(t), { x: 540, y: 1250, zoom: 1.1, lift: 120 });
+  else if (t < T.D) SHOT.wide(ctx, () => scene(t), { x: 620, y: 1250, zoom: 0.9 });
+  else if (t < T.E) SHOT.cu(ctx, () => scene(t), { x: 540, y: 1180, zoom: 1.2 });
+  else if (t < T.F) SHOT.dutch(ctx, () => scene(t), { x: 540, y: 1250, zoom: 0.95, rot: 0.1 });
+  else if (t < T.G) splitEnd(t);
+  else SHOT.wide(ctx, () => scene(t), { x: 600, y: 1300, zoom: lerp(0.95, 1.1, (t - T.G) / 3) });
+}
+function hud(t) { // ONE text at a time
+  let c = null;
+  if (t < T.B) c = ['This weekend in LaLiga 📰', '#fffaf0'];
+  else if (t > T.mk + 0.3 && t < T.C) c = ["Mbappé · 39′ ❌", '#fff3b0'];
+  else if (t > T.wave && t < T.yk) c = ['Yamal: "Watch this" 😎', '#fffaf0'];
+  else if (t > T.yk + 0.4 && t < T.D) c = ['Yamal ❌', '#fff3b0'];
+  else if (t > T.snatch && t < T.E) c = ['MY BALL 😤', '#fff3b0'];
+  else if (t > T.rk + 0.3 && t < T.F) c = ['Both teams still won 😂', '#fffaf0'];
+  else if (t > T.F + 0.3 && t < T.G) c = ['Worse miss? 👇', '#fff3b0'];
+  else if (t > T.fall + 0.1) c = ['BLOP ☕', '#fffaf0'];
+  if (c) { const t0 = [0, T.mk + 0.3, T.wave, T.yk + 0.4, T.snatch, T.rk + 0.3, T.F + 0.3, T.fall + 0.1].filter(v => v <= t).pop(); card(c[0], 540, 300, 64, { pop: (t - t0) / 0.3, bg: c[1] }); }
+  if (t > 25.0) { ctx.font = '600 26px Inter'; ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.textAlign = 'center'; ctx.fillText('Cartoon parody', 540, 1600); } }
+const SHAKE = [T.mk, T.yk, T.rk + 0.45, T.fall];
+function grade() { ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); const v = ctx.createRadialGradient(540, 960, 560, 540, 960, 1250); v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,0,.35)'); ctx.fillStyle = v; ctx.fillRect(0, 0, W, H); ctx.restore(); }
+window.DURATION = T.END; window.render = function (t) { window.T2T = t; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.clearRect(0, 0, W, H); ctx.fillStyle = '#1d2550'; ctx.fillRect(0, 0, W, H);
+  const hs = SHAKE.reduce((m, a) => Math.max(m, t >= a && t < a + 0.25 ? 14 * (1 - (t - a) / 0.25) : 0), 0);
+  ctx.save(); ctx.translate(Math.sin(t * 91) * hs, Math.cos(t * 77) * hs); frame(t); ctx.restore(); grade(); ctx.setTransform(1, 0, 0, 1, 0, 0); if (!window.NO_HUD) hud(t); };
+if (!location.search.includes('render')) { const t0 = performance.now(); (window.CAST_READY || Promise.resolve()).then(() => (function loop() { render(((performance.now() - t0) / 1000) % DURATION); requestAnimationFrame(loop); })()); }
+</script></body></html>
