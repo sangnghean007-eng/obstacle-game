@@ -56,6 +56,13 @@ class Mix2(Mix):
         d = 1.2; fs = [523 * self.j(), 1245 * self.j(), 1873 * self.j(), 2650 * self.j()]; self.f(sum(osc(f, d) * dec(d, 2 + i) for i, f in enumerate(fs)) * .3, t, g, pan, .3)
     def boom(self, t, g=.9): d = 1.4; self.f(lp(noise(d), 700) * dec(d, 3) + osc(glide(70, 30, d), d) * dec(d, 4), t, g, 0, .2); self.crash(t + .02, .35)
     def rain(self, t, d, g=.1): n = int(d * SR); x = hp(noise(d), 2500) * .5; drops = np.zeros(n); idx = self.r.integers(0, n, int(d * 40)); drops[idx] = self.r.uniform(.3, 1, len(idx)); self.f(x + lp(drops, 4000) * 2, t, g, 0, .2)
+    # --- meme-style punctuation (synthesized here, no sampled meme audio; lesson from Remotion's sfx rule, 24 Nov 2026)
+    def record_scratch(self, t, g=.5):  # vinyl stop: noisy pitch-dive + scratch
+        d = .45; k = T(d); f = 900 * np.exp(-k * 7) + 80; x = bp(noise(d), 300, 3000) * (1 + np.sin(2 * np.pi * np.cumsum(f) / SR)) * dec(d, 5); self.f(x * g, t, 0)
+    def sub_boom(self, t, g=.8):  # deep reverb boom for a reveal (vine-boom-like, own synth)
+        d = 1.6; k = T(d); x = osc(glide(60 * self.j(), 32, d), d) * np.exp(-k * 2.2) + lp(noise(d), 180) * np.exp(-k * 6) * .6; self.f(x * g, t, 0, .3)
+    def fail_horn(self, t, g=.3):  # descending trombone-style "wah wah wah waaah"
+        for i, n in enumerate((392, 370, 349, 330)): d = .3 if i < 3 else .9; self.f(bp(osc(glide(n, n * (.94 if i == 3 else 1), d), d, 'saw'), 200, 2200) * env(int(d * SR), .03, .08) * (1 + .3 * np.sin(2 * np.pi * 6 * T(d)) * (i == 3)), t + i * .32, g)
     def wahwah(self, t, g=.22):  # muted-trumpet fail, randomized key
         k = self.r.integers(-3, 3)
         for i, n in enumerate([0, -1, -2, -3]): d = .35 if i < 3 else 1.0; tt = T(d); f = 330 * 2 ** ((n + k) / 12); o = osc(f, d, 'saw'); w = (np.sin(2 * np.pi * 4 * tt) > 0); x = bp(o, 300, 1300) * (1 - w) + bp(o, 300, 2800) * w; self.m(x * env(len(tt), .02, .1), t + i * .36, g, 0, .3)

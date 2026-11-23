@@ -9,7 +9,7 @@ from fx2 import Mix2
 D = 29.4; d = Desk(D); m = Mix2(D, ep=404)
 song = Song('lofi', key='F', minor=False, seed=404).form([('intro', 2), ('verse', 3), ('drop', 3), ('break', 2), ('drop', 3), ('outro', 3)]); st = song.render()
 L = min(len(st['drums']), int(D * SR)); env = np.ones(L)
-for a, b, g in ((0.3, 1.6, 0.35), (2.7, 3.4, 0.3), (8.6, 9.8, 0.3), (11.3, 12.6, 0.15), (18.2, 19.4, 0.3), (21.4, 22.8, 0.2)): env[int(a * SR):int(b * SR)] = g
+for a, b, g in ((0.3, 1.6, 0.35), (2.7, 3.4, 0.3), (8.6, 9.8, 0.3), (11.3, 12.6, 0.15), (18.2, 19.4, 0.3), (21.4, 22.8, 0.05)): env[int(a * SR):int(b * SR)] = g
 env = np.convolve(env, np.ones(1500) / 1500, 'same'); d.add_stems({k: v[:L] * env for k, v in st.items()})
 r = np.random.default_rng(404)
 def tt(dur): return np.arange(int(dur * SR)) / SR
@@ -41,12 +41,12 @@ hehe('yamal', 12.6, 4, .7, -.1); m.squeak(13.25, .3)
 # Yamal takes Raphinha's ball: watch this
 m.crowd(14.6, 'cheer', 1.0, .25); m.whoosh(15.0, .4, .35); m.whip(15.4, .45); m.vo('generic_m', 'gasp', 15.5, .5, .3); m.vo('yamal', 'laugh', 15.9, .5, -.2, 'snicker'); m.cowbell(16.6, .15)
 # Yamal's pen: shank, rolls at the camera
-whistle(18.0, .35); [m.thump(18.15 + i * .17, .12) for i in range(4)]; m.squeak(18.8, .45); m.thump(18.82, .35); m.kazoo(19.0, ['A4', 'G4', 'F4', 'E4'], .22, .15); m.crowd(19.3, 'ooh', 1.3, .35)
+whistle(18.0, .35); [m.thump(18.15 + i * .17, .12) for i in range(4)]; m.squeak(18.8, .45); m.thump(18.82, .35); m.fail_horn(19.0, .22); m.crowd(19.3, 'ooh', 1.3, .35)
 # ...and rolls out of the TV to Ronaldo and Mbappé
-roll(20.8, 1.0, .4); m.thump(21.75, .2); m.timpani(21.6, 70, .3); m.zip(22.2, .2); m.zip(22.35, .2)
-m.smack(22.8, .6); hehe('ronaldo', 22.9, 4, .6, -.35); hehe('mbappe', 23.1, 4, .6, .35); m.crowd(23.4, 'laugh', 1.6, .2)
+roll(20.8, 1.0, .4); m.thump(21.75, .2); m.record_scratch(21.6, .45); m.timpani(21.6, 70, .3); m.zip(22.2, .2); m.zip(22.35, .2)
+m.smack(22.8, .6); [m.whoosh(x, .25, .25) for x in (2.7, 8.3, 11.0, 14.6, 20.6)]; hehe('ronaldo', 22.9, 4, .6, -.35); hehe('mbappe', 23.1, 4, .6, .35); m.crowd(23.4, 'laugh', 1.6, .2)
 # Yamal climbs out of the TV
-m.slide_whistle(24.8, True, .7, .25); m.vo('yamal', 'cry', 25.6, .55, 0, 'wail'); [m.smack(26.4 + i * .25, .35) for i in range(3)]
+m.sub_boom(24.7, .7); m.slide_whistle(24.9, True, .7, .25); m.vo('yamal', 'cry', 25.6, .55, 0, 'wail'); [m.smack(26.4 + i * .25, .35) for i in range(3)]
 hehe('ronaldo', 27.2, 3, .45, -.4); hehe('mbappe', 27.4, 3, .45, .4)
 d.add('fx', (m.fx + m.music).T, 0, 1.0); d.add('vox', m.vox.T, 0, 1.25)
 d.duck('music', [0.8, 1.35, 3.05, 9.2, 11.9, 18.8], .45, .15, .4); d.room('fx', 'room', .1)

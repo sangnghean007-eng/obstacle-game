@@ -1,5 +1,5 @@
 <!doctype html><html><head><meta charset="utf-8"><title>Who Laughs Last</title><style>html,body{margin:0;background:#000}</style></head><body><canvas id="c" width="1080" height="1920"></canvas>
-<script src="../styles.js"></script><script src="../pro.js"></script><script src="../fx.js"></script><script src="../shots.js"></script><script src="../chibi.js"></script><script src="../chibi_cast.js"></script><script src="../rig2.js"></script><script src="../castimg.js"></script><script src="../cast/skins.js"></script>
+<script src="../styles.js"></script><script src="../pro.js"></script><script src="../fx.js"></script><script src="../shots.js"></script><script src="../chibi.js"></script><script src="../chibi_cast.js"></script><script src="../rig2.js"></script><script src="../castimg.js"></script><script src="../motion.js"></script><script src="../cast/skins.js"></script>
 <script>
 // Ep40 "PENALTY PODIUM" (facts: ep40/facts.md). Barça 36, Real 33, Atlético 28; Yamal and Mbappé both missed penalties this weekend; both teams won.
 // (helpers from Ep37) Ep37 "THE EXCUSES" (facts: ep37/facts.md, checked 22 Nov 2026). Messi 8 Ballons d'Or, Ronaldo 5. Real words on screen in quotes only:
@@ -111,7 +111,7 @@ function sofa(t) { room(t); const hh = (a) => Math.abs(Math.sin(t * 16)) * a;
   if (t < T.D) { const covered = t > T.pop + 0.25; seat('yamal', 330, t, { expr: t < T.pop ? 'smug' : t < T.pop + 0.5 ? 'shock' : 'laugh', pose: t > T.pop + 0.5 ? LAUGH(t) : undefined, hop: t > T.pop + 0.5 ? hh(40) : 0, lean: t > T.pop + 0.5 ? -0.12 : 0 });
     seat('mbappe', 750, t, { f: -1, expr: t < T.pop ? 'smug' : t < T.pop + 0.6 ? 'shock' : 'angry', pose: t > T.pop + 1.4 ? POINT : undefined });
     if (covered) for (let i = 0; i < 9; i++) kernel(690 + (i % 5) * 30 + Math.sin(i) * 8, HEADY - 140 + Math.floor(i / 5) * 26 + Math.cos(i * 3) * 6, 15); }
-  else if (t < T.E) { const k = eOut((t - T.D) / 0.5); seat('yamal', 330, t, { expr: 'smug' }); seat('mbappe', 750, t, { f: -1, expr: 'angry', up: k * 330, pose: CHEST });
+  else if (t < T.E) { const k = MOTION.spring((t - T.D) / 0.7); seat('yamal', 330, t, { expr: 'smug' }); seat('mbappe', 750, t, { f: -1, expr: 'angry', up: k * 330, pose: CHEST });
     for (let i = 0; i < 9; i++) { const fall = clamp((t - T.D - 0.2 - i * 0.08) / 0.5); kernel(690 + (i % 5) * 30, HEADY - 140 - k * 330 + Math.floor(i / 5) * 26 + fall * fall * 900, 15); } }
   else if (t < T.G) { const lie = clamp((t - T.roll) / 0.4), q = (t - T.roll);
     if (t < T.roll) seat('yamal', 330, t, { expr: t < T.rumble ? 'smug' : t < T.land + 0.3 ? 'shock' : 'laugh', pose: t > T.land + 0.3 ? LAUGH(t) : undefined, hop: t > T.land + 0.3 ? hh(30) : 0 }); }
@@ -135,7 +135,7 @@ function sofa(t) { room(t); const hh = (a) => Math.abs(Math.sin(t * 16)) * a;
   if (t >= T.I && t < T.J) { const q = clamp((t - T.I - 0.2) / 1.0); ball(lerp(1000, 820, eOut(q)), lerp(2100, 1760, eOut(q)), 56, q * 9); }
   if (t >= T.J) ball(820, 1760, 56);
   // Yamal climbs out of the TV to get his ball back
-  if (t >= T.climb) { const k = eOut((t - T.climb) / 0.8); CB('yamal', { x: 540, y: lerp(2500, 2010, k), f: 1, s: 1.15, expr: t < T.climb + 1.0 ? 'shock' : 'cry', pose: { bArm: [-150, -120], fArm: [150, 120], bLeg: [-8, -4], fLeg: [8, 4] } }, t, 0.3); }
+  if (t >= T.climb) { const k = MOTION.spring((t - T.climb) / 1.0, { damping: 7, stiffness: 16 }); CB('yamal', { x: 540, y: lerp(2500, 2010, k), f: 1, s: 1.15, expr: t < T.climb + 1.0 ? 'shock' : 'cry', pose: { bArm: [-150, -120], fArm: [150, 120], bLeg: [-8, -4], fLeg: [8, 4] } }, t, 0.3); }
   tvBack(t); popcornBurst(t); }
 function tv(t) {
   if (t < T.C) { pitchBG(t, ['#f5d000', '#1f3f8f', '#2e8b57', '#ffffff']); if (t < T.B) { penalty('ronaldo', t, T.rk, 'post', { e1: 'shock' }); goalFront(); keeperBack(t); }
@@ -165,10 +165,11 @@ function hud(t) { for (const c of CAPS) if (t >= c[0] && t < c[1]) card(c[2], 54
   if (t > T.climb + 1.6) { const lab = [['POST', 250, 1010], ['WIDE', 540, 1420], ['SKY', 830, 1010]]; lab.forEach((l, i) => stamp(l[0], l[1], l[2], 60, clamp((t - T.climb - 1.6 - i * 0.25) / 0.6))); }
   if (t > T.climb + 3.2) { ctx.font = `400 60px ${FONT}`; ctx.fillStyle = '#fff'; ctx.strokeStyle = INK; ctx.lineWidth = 10; ctx.textAlign = 'center'; ctx.strokeText('Who laughs next? 🍿', 540, 440); ctx.fillText('Who laughs next? 🍿', 540, 440); }
   if (t > T.climb + 3.6) { ctx.font = '600 26px Inter'; ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.fillText('Cartoon parody', 540, 1880); } }
+const CUTS = [[T.B, 'flash'], [T.C, 'whip'], [T.E, 'whip'], [T.F, 'whip'], [T.G, 'whip'], [T.H, 'flash'], [T.I, 'whip'], [T.J, 'leak']];
 const SHAKE = [T.post, T.crack, T.pop, T.mk, T.crash, T.land, T.yk, T.five];
 function grade() { ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); const v = ctx.createRadialGradient(540, 960, 560, 540, 960, 1250); v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,0,.3)'); ctx.fillStyle = v; ctx.fillRect(0, 0, W, H); ctx.restore(); }
 window.DURATION = T.END; window.render = function (t) { window.T2T = t; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.clearRect(0, 0, W, H); ctx.fillStyle = '#1d2550'; ctx.fillRect(0, 0, W, H);
   const hs = SHAKE.reduce((m, a) => Math.max(m, t >= a && t < a + 0.25 ? 16 * (1 - (t - a) / 0.25) : 0), 0) + (t > T.rumble && t < T.crash ? 6 : 0);
-  ctx.save(); ctx.translate(Math.sin(t * 91) * hs, Math.cos(t * 77) * hs); frame(t); ctx.restore(); grade(); ctx.setTransform(1, 0, 0, 1, 0, 0); if (!window.NO_HUD) hud(t); };
+  ctx.save(); ctx.translate(Math.sin(t * 91) * hs, Math.cos(t * 77) * hs); frame(t); ctx.restore(); grade(); ctx.setTransform(1, 0, 0, 1, 0, 0); for (const [tc, kind] of CUTS) MOTION.cut(ctx, t, tc, kind); if (!window.NO_HUD) hud(t); };
 if (!location.search.includes('render')) { const t0 = performance.now(); (window.CAST_READY || Promise.resolve()).then(() => (function loop() { render(((performance.now() - t0) / 1000) % DURATION); requestAnimationFrame(loop); })()); }
 </script></body></html>
