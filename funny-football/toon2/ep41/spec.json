@@ -1,0 +1,23 @@
+{
+ "logline": "Barça and Real play tug of war for the LaLiga trophy: Real's 9 straight wins move it 0 cm, Barça nearly lose it at 0-2 then yank it back, both stars let go to miss penalties, and the gap stays 36-33.",
+ "beats": [
+  {"shot": "wide", "idea": "tug of war, trophy on the rope, scoreboard 36 · 33", "text": "LaLiga title race 🏆"},
+  {"shot": "cu", "idea": "Mbappé heaves 9 times (9 wins in a row) — trophy moves 0 cm, Yamal relaxed", "text": "Real: 9 wins in a row 💪"},
+  {"shot": "low", "idea": "Barça dragged toward Real (0-2 down v Villarreal)", "text": "Barça 0-2 down 😱"},
+  {"shot": "dutch", "idea": "3-2 comeback: Barça yank, Mbappé falls on his face", "text": "3-2 COMEBACK ⚡"},
+  {"shot": "cu", "idea": "Mbappé lets go to take a penalty — skied", "text": "Mbappé pen ❌"},
+  {"shot": "xcu", "idea": "Yamal lets go to take a penalty — wide; Raphinha alone on the rope", "text": "MY ROPE 😤"},
+  {"shot": "wide", "idea": "Barça laugh with the trophy, Mbappé cries; scoreboard unchanged", "text": "Still 36 · 33 😂"},
+  {"shot": "split", "idea": "laugh | cry split", "text": "Who lifts it in May? 👇"}
+ ],
+ "techniques": ["rule-of-3", "escalation", "deadpan", "visual pun", "callback"],
+ "gags": ["nine-heaves-zero-cm", "dust-skid-drag", "comeback-yank-faceplant", "let-go-to-miss-a-pen", "my-rope"],
+ "twist": "nine straight wins move the trophy 0 cm — the gap only changes when someone lets go",
+ "callback": "'MY ROPE' calls back Raphinha's 'MY BALL' (Ep40); the 36 · 33 board opens and closes the video",
+ "ending": "split-vote",
+ "hidden_details": ["the WINS IN A ROW tally fills to 9 bars", "Mbappé's skied ball never comes down", "Yamal walks off after his miss"],
+ "meme_frame": "Barça laughing with the trophy while Mbappé cries",
+ "style": "chibi-caricature-stadium-tug",
+ "prev_style": "chibi-caricature-sofa-tv",
+ "hook_frame0": "cover: 9 WINS IN A ROW… STILL 2ND 😭 — laugh vs cry under the 36 · 33 board"
+}

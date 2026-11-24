@@ -140,3 +140,8 @@ Columns: id | gag | technique (rule-of-3, misdirection, escalation, cutaway, dea
 | U63 | Shanked penalty rolls out of the TV to the rivals' feet; they look down, look at each other, high-five (Ep40) | reversal | M |
 | U64 | The player climbs out of the TV to ask for his ball back (Ep40) | 4th-wall | M |
 | U65 | The running 'HEHEHE' switches sides of the sofa (Ep40) | callback | S |
+| U66 | Nine huge heaves (9 straight wins) move the trophy 0 cm (Ep41) | deadpan | M |
+| U67 | Team dragged across the grass with dust skid while 0-2 down (Ep41) | escalation | S |
+| U68 | Comeback yank sends the rival face-first (Ep41) | escalation | S |
+| U69 | Players let go of the rope to go and miss penalties (Ep41) | visual pun | M |
+| U70 | 'MY ROPE' — teammate alone on the rope (callback to 'MY BALL') (Ep41) | callback | S |
