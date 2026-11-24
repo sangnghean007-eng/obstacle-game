@@ -48,6 +48,7 @@ Cartoon parody
 #manutd #pochettino #liverpool #premierleague #footballcartoon
 Cover: cover-9x16.jpg
 Alt text: Cartoon of Pochettino and a Man United work crew (Fernandes, De Ligt, Yoro, Mainoo, Mbeumo) at a crumbling house whose door is a leaking goal; De Ligt's plank bonks his teammates, Yoro trips Isak and gets a red card, Szoboszlai and Wirtz smash the windows, Liverpool players wreck the house with a wrecking ball and take a selfie.
+Pinned comment: Pochettino: how many games until a win? 1 / 3 / 5+ 👇
 Settings: Share to Feed on · Audio name "Soccer 365 – The Rebuild".
 
 ## X (Twitter) — upload the mp4 natively
@@ -59,22 +60,14 @@ FT: Liverpool 4-0 … then a selfie 🤳
 (cartoon parody) #MUFC #Pochettino
 Alt text (media): Cartoon of Pochettino's Man United rebuild collapsing at Anfield: red card, broken windows, wrecking ball, 4-0.
 
-## Facebook (Reels)
+## Facebook (Reels) (312 characters)
 The Rebuild: Man United edition 🔨
-
-18th in the league. 1 win in 10. Carrick out.
-Pochettino arrives: "You will see, give me time."
-In our cartoon the whole crew flips an hourglass… and De Ligt's plank knocks everyone's hard hat off.
-
-Anfield, his first game:
-8' De Ligt error, Yoro sent off 🟥
-10' Szoboszlai free kick, 13' Wirtz
-A Premier League first for a manager's debut.
-Final: Liverpool 4-0 (28 shots to 10).
-
-United have conceded 34 this season, the most in Europe.
-Liverpool's crew finishes with a wrecking ball and a group selfie.
-Next: Sporting on Wednesday. How much time does he need?
-
+18th, 1 win in 10, and Pochettino arrives: "Give me time."
+His first game at Anfield:
+8' Yoro sent off 🟥
+10' Szoboszlai, 13' Wirtz
+Final: Liverpool 4-0.
+In our cartoon the whole crew rebuilds… and it all falls down.
+How much time does he need?
 Cartoon parody
 #ManUtd #Pochettino

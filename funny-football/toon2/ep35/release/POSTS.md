@@ -44,6 +44,7 @@ Cartoon parody · invented lines
 #ronaldo #cr7 #alnassr #footballcartoon #roadto1000
 Cover: cover-9x16.jpg
 Alt text: Block-style cartoon of Ronaldo on a staircase of numbered goal blocks reaching 986; a small robot tries to pull out a block labelled OCT23 while Ronaldo grabs it back.
+Pinned comment: Which month does he hit 1000? 📅👇
 Settings: Share to Feed on · Audio name "Soccer 365 – Block by Block".
 
 ## X (Twitter) — upload the mp4 natively
@@ -54,17 +55,12 @@ Opta: one of them is an own goal 🤓 League: no ✅
 (cartoon parody) #Ronaldo #CR7
 Alt text (media): Block-style cartoon of Ronaldo building a staircase of goal blocks to 1000 and fighting a robot over a disputed block.
 
-## Facebook (Reels)
+## Facebook (Reels) (276 characters)
 Ronaldo's road to 1000, block by block 🧱
-
-Goal 986 vs Al Ahli ✅ SIUUU!
-4 minutes later: penalty… off the post 😬
-Al Nassr lose 3-1
-
-One goal from October: Opta says own goal, the league says it's Ronaldo's.
-In our cartoon he grabs it back: "MINE!!"
-
+Goal 986 vs Al Ahli ✅ Siuuu!
+Minutes later: penalty… off the post 😬
+Al Nassr lose 3-1.
+In our cartoon he grabs back his disputed October goal: "Mine!"
 14 to go. When will he reach 1000?
-
 Cartoon parody · invented lines
 #Ronaldo #AlNassr

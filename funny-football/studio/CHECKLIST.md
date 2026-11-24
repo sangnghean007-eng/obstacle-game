@@ -1,3 +1,5 @@
+> **Enforced, not just written (owner 24 Nov: "Lưu thì nhớ mà làm… Bộ lưu cho vui à")**: post rules live in `studio/post_gate.py` and a hook blocks sending files of an episode whose posts fail. Every new owner correction about posts = a new check in post_gate.py.
+
 # MANDATORY SELF-CHECK — run on EVERY episode before sending (owner, 22 Nov 2026: "Ghi nhớ và áp dụng chứ không phải cứ nhắc mới làm")
 Every item below came from an owner complaint. They are applied by default, never waited for. If one fails → fix it, then send (Rule 0b).
 

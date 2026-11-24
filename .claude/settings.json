@@ -1,0 +1,12 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "SendUserFile",
+        "hooks": [
+          { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/funny-football/studio/post_gate.py\" --hook" }
+        ]
+      }
+    ]
+  }
+}

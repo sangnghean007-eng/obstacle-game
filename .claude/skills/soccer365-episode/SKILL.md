@@ -42,5 +42,6 @@ python3 qa.py epNN/release/<name>-9x16.mp4      # must print QA PASS (15–30 s)
 ```
 
 ## 6. Records + posts + ship
+- **Posts must pass `python3 funny-football/studio/post_gate.py toon2/epNN/release/POSTS.md`** (a PreToolUse hook also blocks SendUserFile on failure). When the owner corrects a post, add a CHECK to post_gate.py — a note alone is not enough.
 - Update `studio/EPISODES.csv` (one row), `GAG_BANK.md`, `spec.json`; posts in `epNN/release/POSTS.md` (YouTube title + 3 hashtags incl. #shorts, description, tags, settings; TikTok; Instagram + alt text + pinned comment; X ≤280; Facebook short lines; "Cartoon parody · invented lines").
 - Keep old versions as `scene_vN_<name>.html` backups. Commit with the session attribution lines, push to the working branch, send the mp4 + POSTS.md with SendUserFile, report in Vietnamese.

@@ -27,6 +27,7 @@ Road to 1000, Part 2 🧱
 Ronaldo: 986 SIUUU 😎
 Messi: 937… then builds a trophy tower 🏆 (8 Ballons d'Or + World Cup)
 Goals 🧱 or trophies 🏆? 👇
+Cartoon parody
 #messi #ronaldo #goat #roadto1000 #footballtiktok
 Settings: Sound name "Soccer 365 – Block by Block: Messi" · Comments on.
 

@@ -44,6 +44,7 @@ Cartoon parody · real quotes in " "
 #ronaldo #messi #ballondor #goat #footballcartoon
 Cover: cover-9x16.jpg
 Alt text: Cartoon awards gala: Messi holds a golden ball while Ronaldo points at a board that flips to read Messi 8, Ronaldo 5; later Ronaldo crowns himself with his own trophy.
+Pinned comment: Ballon d'Or count: who ends with more, Messi or Ronaldo? 👇
 Settings: Share to Feed on · Audio name "Soccer 365 – The Excuses".
 
 ## X (Twitter) — upload the mp4 natively
@@ -54,19 +55,12 @@ Who's the GOAT? 👇
 (cartoon parody) #Messi #Ronaldo
 Alt text (media): Cartoon gala where Ronaldo's stats board flips to Messi 8, Ronaldo 5 Ballons d'Or.
 
-## Facebook (Reels)
+## Facebook (Reels) (301 characters)
 Messi vs Ronaldo: the Ballon d'Or excuses 😂
-
-2021: Messi wins his 7th.
-Ronaldo on Instagram: "…lie in this way"
-
-2023: Messi wins his 8th.
-Ronaldo: "losing credibility" and "the numbers don't deceive"
-
+2021: Messi wins his 7th. Ronaldo: "…lie in this way"
+2023: Messi wins his 8th. Ronaldo: "losing credibility"
 The numbers: Messi 8, Ronaldo 5.
 In our cartoon, Ronaldo makes his own trophy 👑
-
 Who's the GOAT?
-
 Cartoon parody · real quotes in " "
 #Messi #Ronaldo
