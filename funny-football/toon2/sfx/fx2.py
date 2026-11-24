@@ -63,6 +63,10 @@ class Mix2(Mix):
         d = 1.6; k = T(d); x = osc(glide(60 * self.j(), 32, d), d) * np.exp(-k * 2.2) + lp(noise(d), 180) * np.exp(-k * 6) * .6; self.f(x * g, t, 0, .3)
     def fail_horn(self, t, g=.3):  # descending trombone-style "wah wah wah waaah"
         for i, n in enumerate((392, 370, 349, 330)): d = .3 if i < 3 else .9; self.f(bp(osc(glide(n, n * (.94 if i == 3 else 1), d), d, 'saw'), 200, 2200) * env(int(d * SR), .03, .08) * (1 + .3 * np.sin(2 * np.pi * 6 * T(d)) * (i == 3)), t + i * .32, g)
+    def cta(self, t0, g=.35):  # end-card support call: pop-in + a tap/pop on each of LIKE, FOLLOW (bell), SHARE (cta2.js TAP times)
+        self.cork(t0 + .05, g * .8)
+        for i, u in enumerate((.45, 1.0, 1.55)):
+            self.cork(t0 + u, g); self.xylo(t0 + u + .04, (['E6'], ['C6', 'G6', 'C7'], ['G5', 'D6'])[i], .05, g * .5)
     def wahwah(self, t, g=.22):  # muted-trumpet fail, randomized key
         k = self.r.integers(-3, 3)
         for i, n in enumerate([0, -1, -2, -3]): d = .35 if i < 3 else 1.0; tt = T(d); f = 330 * 2 ** ((n + k) / 12); o = osc(f, d, 'saw'); w = (np.sin(2 * np.pi * 4 * tt) > 0); x = bp(o, 300, 1300) * (1 - w) + bp(o, 300, 2800) * w; self.m(x * env(len(tt), .02, .1), t + i * .36, g, 0, .3)

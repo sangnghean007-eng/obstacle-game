@@ -45,6 +45,14 @@ def check(path):
         c = fb.strip(); need(10 <= len(c) <= 350, f'Facebook caption {len(c)} chars (Meta: 10–400; ours ≤350)'); need(len(tags(c)) <= 3, f'Facebook {len(tags(c))} hashtags (≤3)')
         need(not re.search(r'https?://|www\.', c), 'Facebook caption has a link'); cp = caps(c); need(not cp, f'Facebook ALL-CAPS words {cp} (Meta flags excess capitals)')
         need('?' in c, 'Facebook caption has no question'); need('cartoon parody' in c.lower(), 'Facebook lacks "Cartoon parody"')
+    # video end-card support call (owner 24 Nov: "quên kêu gọi sự ủng hộ … ở cuối video") — from Ep40 on
+    ep = re.search(r'ep(\d+)', path); scene = os.path.join(os.path.dirname(os.path.dirname(path)), 'scene.html')
+    if ep and int(ep.group(1)) >= 40 and os.path.exists(scene):
+        sc = open(scene).read(); need('cta2.js' in sc and 'CTA2.draw' in sc, 'video has no end-card support call (include ../cta2.js and call CTA2.draw on the last 2.4 s)')
+        au = os.path.join(os.path.dirname(scene), 'audio.py'); need(os.path.exists(au) and 'm.cta(' in open(au).read(), 'audio has no CTA sound (m.cta)')
+    for sec in ('YouTube Shorts', 'TikTok', 'Instagram'):
+        b = section(md, sec)
+        if b and ep and int(ep.group(1)) >= 41: need('follow' in b.lower(), f'{sec} caption has no follow ask')
     return E
 
 def main():

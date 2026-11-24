@@ -1,71 +1,74 @@
 {
- "logline": "Barça and Real play tug of war for the LaLiga trophy; Yamal pretends to hand Mbappé the cup, snatches it back, slaps him awake and turns his head to the 36-33 table.",
+ "logline": "On a LaLiga podium Mbappé shoves Yamal off step 1, gets kicked back to 2, Simeone hops up behind him, both stars miss penalties at the cup, Yamal fakes handing it over, slaps Mbappé awake and shows him the table.",
  "beats": [
   {
    "shot": "wide",
-   "idea": "tug of war, trophy on the rope, scoreboard 36 · 33",
-   "text": "LaLiga title race 🏆"
+   "idea": "podium 1 Barça 36 · 2 Real 33 · 3 Atlético 31; cup on a pole",
+   "text": "LaLiga podium 🏆"
   },
   {
    "shot": "cu",
-   "idea": "Mbappé heaves 9 times (9 wins in a row) — trophy moves 0 cm, Yamal relaxed",
-   "text": "Real: 9 wins in a row 💪"
-  },
-  {
-   "shot": "low",
-   "idea": "Barça dragged toward Real (0-2 down v Villarreal)",
+   "idea": "Mbappé shoves onto step 1 (9 wins in a row); Yamal hangs off the edge (0-2 down)",
    "text": "Barça 0-2 down 😱"
   },
   {
    "shot": "dutch",
-   "idea": "3-2 comeback: Barça yank, Mbappé falls on his face",
-   "text": "3-2 COMEBACK ⚡"
-  },
-  {
-   "shot": "cu",
-   "idea": "Mbappé lets go to take a penalty — skied",
-   "text": "Mbappé pen ❌"
-  },
-  {
-   "shot": "xcu",
-   "idea": "Yamal lets go to take a penalty — wide; Raphinha alone on the rope",
-   "text": "MY ROPE 😤"
-  },
-  {
-   "shot": "cu",
-   "idea": "Yamal offers the cup to Mbappé, Mbappé reaches… snatched back, three slaps",
-   "text": "Wake up! 👋"
+   "idea": "3-2 comeback kick launches Mbappé back to step 2",
+   "text": "3-2 comeback ⚡"
   },
   {
    "shot": "low",
-   "idea": "Yamal turns Mbappé's head up to the table: 36 · 33; then Barça laugh, Mbappé cries about 0 trophies",
-   "text": "A season with 0 trophies? 😭"
+   "idea": "Simeone hops three times (3-0 at Getafe), whispers to Mbappé: 2 points behind you",
+   "text": "2 points behind you 👀"
+  },
+  {
+   "shot": "wide",
+   "idea": "penalties at the cup: Mbappé skies it, Yamal's bonks Simeone",
+   "text": "Yamal pen ❌"
+  },
+  {
+   "shot": "low",
+   "idea": "Yamal just climbs the pole and takes the cup",
+   "text": "Easy way 😎"
+  },
+  {
+   "shot": "xcu",
+   "idea": "fake handover, snatch, three slaps, head turned up",
+   "text": "Wake up! 👋"
+  },
+  {
+   "shot": "wide",
+   "idea": "final LaLiga table 36-33-31; Yamal laughs, Mbappé cries; CTA",
+   "text": "Who lifts it in May? 👇"
   }
  ],
  "techniques": [
-  "rule-of-3",
   "escalation",
-  "deadpan",
+  "misdirection",
+  "rule-of-3",
   "visual pun",
   "callback"
  ],
  "gags": [
-  "nine-heaves-zero-cm",
-  "dust-skid-drag",
-  "let-go-to-miss-a-pen",
+  "podium-shove",
+  "cliff-hang-edge",
+  "comeback-kick-launch",
+  "goal-hops-plus-one",
+  "pen-bonks-third-place",
+  "pole-climb-shortcut",
   "fake-cup-handover",
   "slap-awake-turn-to-table"
  ],
- "twist": "Yamal hands Mbappé the cup — then snatches it back and slaps him awake",
- "callback": "the 36 · 33 board from the first shot is what Mbappé is forced to look at; 'MY ROPE' echoes 'MY BALL' (Ep40)",
+ "twist": "after the pushing and the penalties, Yamal simply climbs up and takes the cup — then fakes handing it to Mbappé",
+ "callback": "the podium labels from the first shot return as the final LaLiga table",
  "ending": "split-vote",
  "hidden_details": [
   "the WINS IN A ROW tally fills to 9 bars",
   "Mbappé's skied ball never comes down",
   "Yamal walks off after his miss"
  ],
- "meme_frame": "Yamal slapping Mbappé awake with the cup behind his back",
- "style": "chibi-caricature-stadium-tug",
+ "meme_frame": "Yamal slapping Mbappé on the podium, cup in the other hand",
+ "style": "chibi-caricature-podium-fight",
  "prev_style": "chibi-caricature-sofa-tv",
- "hook_frame0": "cover: 9 WINS IN A ROW… STILL 2ND 😭 — laugh vs cry under the 36 · 33 board"
+ "hook_frame0": "cover: \"FOR YOU\"… SLAP on the podium"
 }

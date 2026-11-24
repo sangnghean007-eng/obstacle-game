@@ -1,5 +1,5 @@
-<!doctype html><html><head><meta charset="utf-8"><title>Tug of War</title><style>html,body{margin:0;background:#000}</style></head><body><canvas id="c" width="1080" height="1920"></canvas>
-<script src="../styles.js"></script><script src="../pro.js"></script><script src="../fx.js"></script><script src="../shots.js"></script><script src="../chibi.js"></script><script src="../chibi_cast.js"></script><script src="../rig2.js"></script><script src="../castimg.js"></script><script src="../motion.js"></script><script src="../cast/skins.js"></script>
+<!doctype html><html><head><meta charset="utf-8"><title>Podium Fight</title><style>html,body{margin:0;background:#000}</style></head><body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../styles.js"></script><script src="../pro.js"></script><script src="../fx.js"></script><script src="../shots.js"></script><script src="../chibi.js"></script><script src="../chibi_cast.js"></script><script src="../rig2.js"></script><script src="../castimg.js"></script><script src="../motion.js"></script><script src="../cta2.js"></script><script src="../cast/skins.js"></script>
 <script>
 // Ep40 "PENALTY PODIUM" (facts: ep40/facts.md). Barça 36, Real 33, Atlético 28; Yamal and Mbappé both missed penalties this weekend; both teams won.
 // (helpers from Ep37) Ep37 "THE EXCUSES" (facts: ep37/facts.md, checked 22 Nov 2026). Messi 8 Ballons d'Or, Ronaldo 5. Real words on screen in quotes only:
@@ -24,13 +24,13 @@ const shadeOf = h => '#' + [1, 3, 5].map(i => Math.round(parseInt(h.slice(i, i +
 const BASE = { yamal: Object.assign({}, CH.mate1, { kit: Object.assign(kit('#a50044', '#004d98', '#004d98', '#004d98', '#ffd60a'), { stripes: '#004d98' }), num: '10', numSize: 56, name: 'YAMAL' }),
   mbappe: Object.assign({}, CH.mate2, { kit: kit('#f7f7f7', '#c9a227', '#f7f7f7', '#f7f7f7', '#1b2a5c', '#f2f2f2'), num: '10', numSize: 56, name: 'MBAPPÉ' }),
   raphinha: Object.assign({}, CH.mate3, { kit: Object.assign(kit('#a50044', '#004d98', '#004d98', '#004d98', '#ffd60a'), { stripes: '#004d98' }), num: '11', numSize: 56, name: 'RAPHINHA' }),
-  // BELLINGHAM (med, code likeness): short black buzz, light-brown skin, strong brows, light stubble, tall broad frame
-  bellingham: Object.assign({}, CH.mate4, { kit: kit('#f7f7f7', '#c9a227', '#f7f7f7', '#f7f7f7', '#1b2a5c', '#f2f2f2'), num: '5', numSize: 56, name: 'BELLINGHAM', shoulderW: 82, leg: 118,
-    head: { R: 100, hair: 'buzz', hairCol: '#141010', stubble: true, faceH: 1.06, faceW: 0.95, jaw: 0.75, chin: 0.6, browW: 0.15, browCol: '#141010', iris: '#2a1a10', nose: 0.4, mouthW: 1.05 } }),
+  // SIMEONE (high, well known): black suit, black hair slicked straight back, intense deep eyes, heavy brows, stubble, olive skin
+  simeone: Object.assign({}, CH.mate4, { kit: Object.assign(kit('#151515', '#f2f2f2', '#151515', '#151515', '#151515', '#0a0a0a'), {}), num: '', numSize: 10, name: 'SIMEONE',
+    head: { R: 100, hair: 'styled', hairCol: '#0d0d0d', stubble: true, faceH: 1.1, faceW: 0.92, jaw: 0.7, chin: 0.6, cheekbones: true, deepEyes: true, browW: 0.17, browCol: '#0d0d0d', browArch: 0.2, iris: '#2a1a10', nose: 0.45, noseLen: 1.1, mouthW: 1.0 } }),
   ronaldo: Object.assign({}, CH.mate4, { kit: kit('#f5d000', '#1f3f8f', '#1f3f8f', '#f5d000', '#1f3f8f'), num: '7', numSize: 56, name: 'RONALDO' }) };
-CAST_SKIN.bellingham = '#a8724c';
+CAST_SKIN.simeone = '#d6a07a';
 const CC = {}; for (const k in BASE) CC[k] = Object.assign({}, BASE[k], { arm: BASE[k].arm * 0.82, armW: BASE[k].armW * 1.35, skin: CAST_SKIN[k], shade: shadeOf(CAST_SKIN[k]) });
-const SC = { yamal: 1.0, mbappe: 1.05, raphinha: 1.0, ronaldo: 1.05, bellingham: 1.08 };
+const SC = { yamal: 1.0, mbappe: 1.05, raphinha: 1.0, ronaldo: 1.05, simeone: 1.05 };
 const lay = n => { const C = CC[n], hipY = -C.leg * 0.95, shY = hipY - C.torsoH; return { hipY, shY, fs: [C.shoulderW * 0.8, shY + 30], bs: [-C.shoulderW * 0.72, shY + 30] }; };
 function W2(o, lx, ly) { const s = o.s, f = o.f || 1, r = o.lean || 0, X = lx * s * f, Y = ly * s; return [o.x + X * Math.cos(r) - Y * Math.sin(r), o.y + X * Math.sin(r) + Y * Math.cos(r)]; }
 function reach(n, o, side, tx, ty) { const L = lay(n), p = side === 'f' ? L.fs : L.bs, S = W2(o, p[0], p[1]), r = o.lean || 0, f = o.f || 1;
@@ -40,8 +40,8 @@ const handAt = (n, o, side, dist = 0.95) => { const L = lay(n), C = CC[n], p = s
 function CB(n, o, t, ph = 0) { const k = o.life ?? 1, sw = Math.sin(t * 2.1 + ph);
   const pose = o.pose || { bArm: [-18 + sw * 6 * k, -8], fArm: [18 - sw * 6 * k, 8], bLeg: [-8, -4], fLeg: [8, 4] };
   const q = Object.assign({ s: SC[n] }, o);
-  chibi.draw(ctx, CC[n], pose, n === 'bellingham' ? (CODEX[o.expr] || 'neutral') : 'neutral', q.x + Math.sin(t * 0.9 + ph) * 4 * k, q.y - (o.hop || 0), q.s, { f: o.f || 1, lean: (o.lean || 0) + Math.sin(t * 1.3 + ph) * 0.015 * k, sq: (o.sq || 0) + Math.sin(t * 3.1 + ph) * 0.012 * k,
-    headTilt: (o.tilt || 0) + Math.sin(t * 1.7 + ph) * 0.05 * k, hands: o.hands, headFn: n === 'bellingham' ? undefined : CASTIMG.head(ctx, n, o.expr || 'smug', { collar: CC[n].kit.collar }) }); return;
+  chibi.draw(ctx, CC[n], pose, n === 'simeone' ? (CODEX[o.expr] || 'neutral') : 'neutral', q.x + Math.sin(t * 0.9 + ph) * 4 * k, q.y - (o.hop || 0), q.s, { f: o.f || 1, lean: (o.lean || 0) + Math.sin(t * 1.3 + ph) * 0.015 * k, sq: (o.sq || 0) + Math.sin(t * 3.1 + ph) * 0.012 * k,
+    headTilt: (o.tilt || 0) + Math.sin(t * 1.7 + ph) * 0.05 * k, hands: o.hands, headFn: n === 'simeone' ? undefined : CASTIMG.head(ctx, n, o.expr || 'smug', { collar: CC[n].kit.collar }) }); return;
   // bow tie + shirt front over the collar
   const L = lay(n), b = W2(q, 0, L.shY + 26); ctx.save(); ctx.translate(b[0], b[1]); ctx.rotate(q.lean || 0); const z = q.s;
   ctx.fillStyle = '#fffaf0'; ctx.beginPath(); ctx.moveTo(-26 * z, -6 * z); ctx.lineTo(26 * z, -6 * z); ctx.lineTo(0, 70 * z); ctx.closePath(); ctx.fill(); ctx.strokeStyle = INK; ctx.lineWidth = 3; ctx.stroke();
@@ -50,113 +50,103 @@ function CB(n, o, t, ph = 0) { const k = o.life ?? 1, sw = Math.sin(t * 2.1 + ph
 
 
 
-// ---------------- Ep41 TUG OF WAR (facts: ep41/facts.md). Barça 36 · Real 33 after 13 games each.
+
+// ---------------- Ep41 v3 PODIUM FIGHT (owner 24 Nov: podium 1-2-3, fight for places, then the cup; fake handover + slaps; final table)
 const CODEX = { smug: 'smug', strain: 'strain', shock: 'shock', angry: 'angry', laugh: 'happy', cry: 'sad', deadpan: 'bored' };
-const T = { A: 0, B: 2.4, C: 6.6, D: 9.6, yank: 10.0, E: 12.4, mk: 13.2, F: 15.4, yk: 16.2, rope: 17.0, G: 18.6, offer: 19.4, reach: 20.0, snatch: 20.6, turn: 22.2, look: 22.8, back: 24.1, Q: 26.4, END: 28.6 };
-const SLAPS = [21.0, 21.35, 21.7];
-const TUG = Array.from({ length: 9 }, (_, i) => 2.8 + i * 0.4);
-const RY = 1270, FEET = 1500;
-function off(t) { // trophy offset from the halfway line (negative = Barça side)
-  let o = -70 + Math.sin(t * 2.2) * 6;
-  if (t >= T.B && t < T.C) { const tu = TUG.filter(a => t >= a).pop(); if (tu != null) o += Math.max(0, 1 - (t - tu) / 0.2) * 28; }
-  if (t >= T.C && t < T.D) o = lerp(-70, 60, eIO((t - T.C) / 2.6));
-  if (t >= T.D) o = t < T.yank ? 60 : lerp(60, -110, eOut((t - T.yank) / 0.35));
-  if (t >= T.mk) o = lerp(-110, -170, eOut((t - T.mk) / 0.8));
-  if (t >= T.yk) o = lerp(-170, -90, eOut((t - T.yk) / 0.8));
-  if (t >= T.G) o = -90;
-  return o; }
+const T = { A: 0, B: 2.4, hang: 4.0, kick: 5.6, D: 7.0, whisper: 8.6, E: 10.0, mk: 10.8, yk: 12.0, bonk: 12.45, climb: 12.9, grab: 13.8, F: 14.6, reach: 15.4, snatch: 16.0, turn: 17.6, G: 18.6, Q: 21.6, END: 26.2 };
+const SLAPS = [16.4, 16.75, 17.1], HOPS = [7.2, 7.6, 8.0];
+const P = { 1: { x: 540, top: 1240, w: 300, col: '#f2c230' }, 2: { x: 230, top: 1380, w: 280, col: '#c9ced6' }, 3: { x: 850, top: 1480, w: 280, col: '#d08a4a' } };
+const LAB = { 1: ['BARÇA', '36', '#a50044'], 2: ['REAL', '33', '#f2f2f2'], 3: ['ATLÉTICO', '31', '#cb3524'] };
 const BGL = {}; function stadium(t) { if (!BGL.c) { const c = document.createElement('canvas'); c.width = W + 1200; c.height = H + 1200; const g = c.getContext('2d'); g.translate(600, 600);
     const sky = g.createLinearGradient(0, -600, 0, 900); sky.addColorStop(0, '#0d1433'); sky.addColorStop(1, '#2d3b78'); g.fillStyle = sky; g.fillRect(-600, -600, W + 1200, H + 1200);
     for (const x of [-60, 1140]) { g.fillStyle = '#ddd'; g.fillRect(x - 6, 120, 12, 420); g.fillStyle = '#fffbe0'; g.beginPath(); g.ellipse(x, 120, 120, 50, 0, 0, 7); g.fill(); }
-    g.fillStyle = '#1c2333'; g.fillRect(-600, 700, W + 1200, 380); for (let i = 0; i < 18; i++) { g.fillStyle = i % 2 ? '#3f9e45' : '#4aae4f'; g.fillRect(-600, 1080 + i * 90, W + 1200, 90); }
-    g.strokeStyle = 'rgba(255,255,255,.9)'; g.lineWidth = 12; g.beginPath(); g.moveTo(540, 1080); g.lineTo(540, 2400); g.stroke(); g.beginPath(); g.ellipse(540, 1560, 360, 110, 0, 0, 7); g.stroke(); BGL.c = c; }
-  ctx.drawImage(BGL.c, -600, -600); FX.crowd(ctx, t, { y0: 720, rows: 5, rowH: 72, cols: ['#a50044', '#004d98', '#ffffff', '#c9a227'], jump: (t > T.yank && t < T.yank + 1.5) || t > T.G ? 0.6 : 0.15, flags: true, phones: true, w: 1500, x0: -210, density: 0.85 }); }
-function board(t) { // scoreboard (no crests): BARÇA 36 / REAL 33, Real's 9-win tally
-  ctx.save(); ctx.translate(540, 380); ctx.fillStyle = 'rgba(8,10,26,.92)'; ctx.strokeStyle = '#7d5cff'; ctx.lineWidth = 10; ctx.shadowColor = '#5a8cff'; ctx.shadowBlur = 30; ctx.beginPath(); ctx.roundRect(-330, -170, 660, 340, 30); ctx.fill(); ctx.stroke(); ctx.shadowBlur = 0;
-  ctx.textBaseline = 'middle'; ctx.font = `400 74px ${FONT}`; ctx.textAlign = 'left'; ctx.fillStyle = '#c0284f'; ctx.fillRect(-290, -130, 26, 100); ctx.fillStyle = '#1d4ea8'; ctx.fillRect(-264, -130, 26, 100); ctx.fillStyle = '#fff'; ctx.fillText('BARÇA', -220, -78);
-  ctx.fillStyle = '#f2f2f2'; ctx.fillRect(-290, 30, 52, 100); ctx.strokeStyle = '#c9a227'; ctx.lineWidth = 5; ctx.strokeRect(-290, 30, 52, 100); ctx.fillStyle = '#fff'; ctx.fillText('REAL', -220, 82);
-  ctx.textAlign = 'right'; ctx.font = `400 120px ${FONT}`; ctx.fillText('36', 290, -78); ctx.fillText('33', 290, 82); ctx.fillStyle = '#ff3b5c'; ctx.fillRect(-300, -2, 600, 6);
-  const n = t >= T.B ? TUG.filter(a => t >= a).length : 0; if (n && t < T.G) { ctx.font = `400 40px ${FONT}`; ctx.fillStyle = '#ffd23f'; ctx.textAlign = 'left'; ctx.fillText('WINS IN A ROW: ' + '|'.repeat(n), -220, 145); } ctx.restore(); }
+    g.fillStyle = '#1c2333'; g.fillRect(-600, 640, W + 1200, 420); for (let i = 0; i < 18; i++) { g.fillStyle = i % 2 ? '#3f9e45' : '#4aae4f'; g.fillRect(-600, 1060 + i * 90, W + 1200, 90); } BGL.c = c; }
+  ctx.drawImage(BGL.c, -600, -600); FX.crowd(ctx, t, { y0: 660, rows: 5, rowH: 76, cols: ['#a50044', '#004d98', '#ffffff', '#cb3524'], jump: (t > T.kick && t < T.kick + 1.2) || t > T.G ? 0.6 : 0.15, flags: true, phones: true, w: 1500, x0: -210, density: 0.85 }); }
+function podium() { for (const n of [2, 3, 1]) { const p = P[n], h = 1900 - p.top; ctx.save(); ctx.fillStyle = p.col; ctx.strokeStyle = INK; ctx.lineWidth = 8; ctx.beginPath(); ctx.roundRect(p.x - p.w / 2, p.top, p.w, h, 14); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = 'rgba(255,255,255,.35)'; ctx.fillRect(p.x - p.w / 2 + 14, p.top + 12, 22, h - 40); ctx.font = `400 120px ${FONT}`; ctx.fillStyle = INK; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(String(n), p.x, p.top + 100);
+    const [tn, pts, c] = LAB[n]; ctx.fillStyle = c; ctx.strokeStyle = INK; ctx.lineWidth = 5; ctx.beginPath(); ctx.roundRect(p.x - p.w / 2 + 18, p.top + 180, p.w - 36, 120, 14); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = n === 2 ? INK : '#fff'; ctx.font = `400 ${tn.length > 6 ? 40 : 52}px ${FONT}`; ctx.fillText(tn, p.x, p.top + 222); ctx.font = `400 46px ${FONT}`; ctx.fillText(pts + ' PTS', p.x, p.top + 270); ctx.restore(); } }
 function trophy(x, y, s = 1, rot = 0) { ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s); ctx.strokeStyle = INK; ctx.lineWidth = 6; const g = ctx.createLinearGradient(-90, 0, 90, 0); g.addColorStop(0, '#9aa3ad'); g.addColorStop(0.5, '#f4f7fb'); g.addColorStop(1, '#8a939e'); ctx.fillStyle = g;
   ctx.beginPath(); ctx.moveTo(-80, 0); ctx.quadraticCurveTo(-90, 120, -20, 170); ctx.lineTo(-24, 210); ctx.lineTo(-60, 230); ctx.lineTo(60, 230); ctx.lineTo(24, 210); ctx.lineTo(20, 170); ctx.quadraticCurveTo(90, 120, 80, 0); ctx.closePath(); ctx.fill(); ctx.stroke();
   ctx.beginPath(); ctx.arc(-92, 60, 34, 1.6, 4.7); ctx.stroke(); ctx.beginPath(); ctx.arc(92, 60, 34, -1.6, 1.6); ctx.stroke(); ctx.fillStyle = '#ff4b4b'; ctx.fillRect(-30, 60, 60, 12); ctx.fillStyle = '#ffffff'; ctx.globalAlpha = 0.6; ctx.fillRect(-50, 20, 14, 90); ctx.restore(); }
-function puller(n, x, f, t, o = {}) { // leaning back, both hands on the rope
-  const lean = (o.lean ?? -0.32) * f, q = { x, y: FEET, f, s: SC[n] * 1.3, lean, expr: o.expr || 'strain' }; if (o.pose) { q.pose = o.pose; return CB(n, q, t, x * 0.01); }
-  const rx = x + f * 150; q.pose = { bArm: reach(n, q, 'b', rx - f * 30, RY), fArm: reach(n, q, 'f', rx + f * 30, RY), bLeg: [-30, -10], fLeg: [40, 20] }; q.life = 0.3; CB(n, q, t, x * 0.01); }
-const FALLP = { bArm: [100, 80], fArm: [110, 90], bLeg: [-60, -20], fLeg: [-40, -10] };
-function scene(t) { stadium(t); const o = off(t), mid = 540 + o;
-  const shake = (t > T.yank && t < T.yank + 0.4) ? 1 : 0;
-  // rope
-  ctx.strokeStyle = '#c9a26a'; ctx.lineWidth = 18; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(-200 + o, RY + 10); ctx.quadraticCurveTo(mid, RY + 26 + Math.sin(t * 9) * 4, 1280 + o, RY + 10); ctx.stroke();
-  ctx.strokeStyle = 'rgba(120,80,30,.6)'; ctx.lineWidth = 4; for (let i = -10; i < 30; i++) { ctx.beginPath(); ctx.moveTo(-200 + o + i * 50, RY + 2); ctx.lineTo(-180 + o + i * 50, RY + 20); ctx.stroke(); }
-  if (t < T.G) { ctx.fillStyle = '#ff3b5c'; ctx.fillRect(mid - 14, RY - 10, 28, 44); ctx.strokeStyle = INK; ctx.lineWidth = 3; ctx.strokeRect(mid - 14, RY - 10, 28, 44); trophy(mid, RY + 40, 0.75, Math.sin(t * 3) * 0.08); }
-  // Barça (left): Raphinha at the back, Yamal in front
-  const yamGone = t >= T.F && t < T.G, mbGone = t >= T.E && t < T.G;
-  if (t < T.G) {
-    const bDrag = t >= T.C && t < T.D ? 'shock' : 'strain';
-    puller('raphinha', 150 + o, 1, t, { expr: t >= T.rope ? 'angry' : t >= T.yank && t < T.yank + 1.2 ? 'laugh' : bDrag, lean: t >= T.C && t < T.D ? 0.1 : -0.32 });
-    if (!yamGone) puller('yamal', 360 + o, 1, t, t >= T.B && t < T.C ? { expr: 'smug', lean: -0.05 } : { expr: t >= T.yank && t < T.yank + 1.2 ? 'laugh' : bDrag, lean: t >= T.C && t < T.D ? 0.12 : -0.3 });
-    // Real (right): Mbappé in front, Bellingham behind
-    const fell = t >= T.yank && t < T.E;
-    if (!mbGone) puller('mbappe', 780 + o, -1, t, fell ? { expr: 'shock', pose: FALLP, lean: 0.9 } : { expr: t >= T.C && t < T.D ? 'laugh' : 'strain' });
-    if (t >= T.B && t < T.C) { ctx.save(); ctx.fillStyle = 'rgba(120,200,255,.85)'; for (const x of [800, 860]) for (let i = 0; i < 3; i++) { const k = ((t * 1.7 + i * 0.33) % 1); ctx.beginPath(); ctx.ellipse(x + o + i * 18 - 20, 950 + k * 140, 9, 14, 0, 0, 7); ctx.fill(); } ctx.restore(); }
-    if (t >= T.C && t < T.D) { ctx.fillStyle = 'rgba(160,120,70,.7)'; for (let i = 0; i < 10; i++) { const k = ((t * 2 + i * 0.1) % 1); ctx.beginPath(); ctx.arc(150 + o + i * 22 - k * 90, FEET - k * 60, 16 * (1 - k), 0, 7); ctx.fill(); } }
-  }
-  // Mbappé's penalty (lets go, skies it) and Yamal's (lets go, wide)
-  if (t >= T.E && t < T.F) { const k = clamp((t - T.E) / 0.6); CB('mbappe', { x: lerp(750 + o, 980, k), y: FEET + 60, f: 1, s: 1.15, expr: t < T.mk ? 'smug' : t < T.mk + 0.5 ? 'shock' : 'cry', pose: t >= T.mk && t < T.mk + 0.5 ? { bArm: [-60, -40], fArm: [60, 40], bLeg: [-10, -4], fLeg: [80, 40] } : undefined }, t, 1.1);
-    if (t < T.mk) ball(1050, FEET + 70, 30); else { const q = (t - T.mk) / 1.0; ball(lerp(1050, 1150, q), lerp(FEET + 70, -600, Math.min(1, q)), 30 + q * 20, q * 14); } }
-  if (t >= T.F && t < T.G) { const k = clamp((t - T.F) / 0.6); CB('yamal', { x: t < T.yk + 0.7 ? lerp(360 + o, 160, k) : lerp(160, -500, clamp((t - T.yk - 0.7) / 0.5)), y: FEET + 60, f: -1, s: 1.1, expr: t < T.yk ? 'smug' : t < T.yk + 0.5 ? 'shock' : 'deadpan', pose: t >= T.yk && t < T.yk + 0.5 ? { bArm: [-60, -40], fArm: [60, 40], bLeg: [-10, -4], fLeg: [80, 40] } : undefined }, t, 0.3);
-    if (t < T.yk) ball(60, FEET + 70, 30); else { const q = clamp((t - T.yk) / 1.4); ball(lerp(60, -400, q), FEET + 70 - q * 40, 30, -q * 18); } }
-  // final (owner's story): Yamal offers the cup to Mbappé… snatches it back, slaps him awake, turns his head to the table
-  if (t >= T.G) { const hop = Math.abs(Math.sin(t * 9)) * 30, lau = t >= T.back;
-    const yx = t < T.offer ? 400 : t < SLAPS[0] - 0.25 ? lerp(400, 560, eOut((t - T.offer) / 0.6)) : t < T.back ? lerp(560, 650, eOut((t - SLAPS[0] + 0.25) / 0.2)) : lerp(650, 420, eOut((t - T.back) / 0.5));
-    const slapI = SLAPS.findIndex(a => t >= a && t < a + 0.3), slapping = t >= SLAPS[0] - 0.15 && t < T.turn;
-    const yPose = lau ? { bArm: [-160, -130], fArm: [160, 130], bLeg: [-8, -4], fLeg: [8, 4] }
-      : t >= T.turn ? { bArm: [-14, -6], fArm: [150, 120], bLeg: [-8, -4], fLeg: [8, 4] }
-      : slapping ? { bArm: [-14, -6], fArm: slapI >= 0 ? reach('yamal', { x: yx, y: FEET, f: 1, s: 1.25 }, 'f', 800, 960) : [150, 140], bLeg: [-8, -4], fLeg: [8, 4] }
-      : t >= T.offer && t < T.snatch ? { bArm: [-14, -6], fArm: [95, 85], bLeg: [-8, -4], fLeg: [8, 4] } : { bArm: [-160, -140], fArm: [160, 140], bLeg: [-8, -4], fLeg: [8, 4] };
-    const yEx = lau ? 'laugh' : t >= T.snatch && t < T.turn ? 'angry' : 'smug';
-    CB('raphinha', { x: 170, y: FEET, f: 1, s: 1.3, expr: t >= T.snatch && t < T.back ? 'smug' : 'laugh', hop: lau ? hop : 0, pose: lau ? { bArm: [-14, -6], fArm: [110, 95], bLeg: [-8, -4], fLeg: [8, 4] } : undefined }, t, 2.1);
-    let cx = yx + 10, cy = 700, cr = 0; if (t >= T.offer && t < T.snatch) { cx = yx + 170; cy = 960; cr = 0.1; } if (t >= T.snatch && t < T.snatch + 0.25) { const q = (t - T.snatch) / 0.25; cx = lerp(yx + 190, yx - 80, q); cy = lerp(960, 760, q); cr = -q * 0.8; }
-    if (t >= T.snatch + 0.25 && t < T.back) { cx = yx - 110; cy = 1000; cr = -0.2; } if (lau) { cx = 300; cy = 600 - hop; }
-    trophy(cx, cy, 1.0, cr);
-    const mEx = t < T.offer ? 'cry' : t < T.snatch ? 'laugh' : t < SLAPS[0] ? 'shock' : t < T.turn ? (slapI >= 0 ? 'shock' : 'cry') : t < T.back ? 'shock' : 'cry';
-    const jerk = slapI >= 0 ? (slapI % 2 ? -1 : 1) * 0.45 * (1 - (t - SLAPS[slapI]) / 0.3) : 0;
-    const mPose = t >= T.reach && t < T.snatch + 0.4 ? { bArm: [-14, -6], fArm: [95, 85], bLeg: [-8, -4], fLeg: [8, 4] } : { bArm: [-40, -20], fArm: [40, 20], bLeg: [-20, -6], fLeg: [20, 6] };
-    CB('mbappe', { x: 880, y: FEET, f: -1, s: 1.3, expr: mEx, tilt: jerk + (t >= T.turn && t < T.back ? -0.35 : 0), sq: lau ? Math.sin(t * 20) * 0.03 : slapI >= 0 ? 0.06 : 0, pose: mPose }, t, 1.1);
-    CB('yamal', { x: yx, y: FEET, f: 1, s: 1.25, expr: yEx, hop: lau ? Math.abs(Math.sin(t * 9 + 1)) * 30 : 0, pose: yPose }, t, 0.3);
-    if (slapI >= 0) { const q = (t - SLAPS[slapI]) / 0.3; ctx.save(); ctx.globalAlpha = 1 - q; ctx.font = `400 ${90 + q * 40}px ${FONT}`; ctx.textAlign = 'center'; ctx.lineWidth = 10; ctx.strokeStyle = INK; ctx.fillStyle = '#ffd23f'; const sx = 760 + (slapI % 2 ? 1 : -1) * 120; ctx.strokeText('SLAP', sx, 820 - q * 60); ctx.fillText('SLAP', sx, 820 - q * 60);
-      ctx.fillStyle = '#ff6b6b'; ctx.globalAlpha = 0.5 * (1 - q); ctx.beginPath(); ctx.ellipse(860 + (slapI % 2 ? 40 : -40), 990, 50, 34, 0, 0, 7); ctx.fill(); ctx.restore(); }
-    if (t >= T.turn - 0.6 && t < T.back) { ctx.save(); ctx.fillStyle = '#fff'; ctx.strokeStyle = INK; ctx.lineWidth = 4; for (let i = 0; i < 3; i++) { const a = t * 6 + i * 2.1; ctx.beginPath(); ctx.arc(880 + Math.cos(a) * 90, 820 + Math.sin(a) * 26, 14, 0, 7); ctx.fill(); ctx.stroke(); } ctx.restore(); }
-    if (lau) { ctx.fillStyle = 'rgba(110,190,255,.9)'; for (const x of [830, 920]) for (let i = 0; i < 4; i++) { const k = ((t * 1.5 + i * 0.25) % 1); ctx.beginPath(); ctx.ellipse(x + (x > 875 ? k * 60 : -k * 60), 930 + k * 320, 12, 20, 0, 0, 7); ctx.fill(); } }
-    if (t >= T.Q - 0.4) { ctx.save(); ctx.globalAlpha = clamp((t - T.Q + 0.4) / 0.4); ctx.font = `400 120px ${FONT}`; ctx.textAlign = 'center'; ctx.fillText('🏆', 880, 760); ctx.lineWidth = 14; ctx.strokeStyle = '#e53935'; ctx.beginPath(); ctx.moveTo(810, 690); ctx.lineTo(950, 810); ctx.stroke(); ctx.restore(); } }
-
-}
 function ball(x, y, r = 30, rot = 0) { ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.fillStyle = '#fff'; ctx.strokeStyle = INK; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(0, 0, r, 0, 7); ctx.fill(); ctx.stroke(); ctx.fillStyle = INK; ctx.beginPath(); for (let i = 0; i < 5; i++) { const a = i * 1.2566; ctx.lineTo(Math.cos(a) * r * 0.38, Math.sin(a) * r * 0.38); } ctx.fill(); ctx.restore(); }
-function frame(t) { const draw = () => { scene(t); }; const o = off(t);
-  if (t < T.B) SHOT.wide(ctx, () => { scene(t); board(t); }, { x: 500, y: 1110, zoom: lerp(1.0, 1.06, t / T.B) });
-  else if (t < T.C) SHOT.cu(ctx, draw, { x: 700 + o, y: 1150, zoom: 1.2 });
-  else if (t < T.D) SHOT.low(ctx, draw, { x: 300 + o, y: 1250, zoom: 1.05, lift: 120 });
-  else if (t < T.E) SHOT.dutch(ctx, draw, { x: 600, y: 1200, zoom: 0.95, rot: 0.1 });
-  else if (t < T.F) SHOT.cu(ctx, draw, { x: 900, y: 1150, zoom: 1.15 });
-  else if (t < T.rope) SHOT.cu(ctx, draw, { x: 260, y: 1150, zoom: 1.15 });
-  else if (t < T.G) SHOT.xcu(ctx, draw, { x: 150 + o, y: 1000, zoom: 1.8 });
-  else if (t < T.snatch) SHOT.cu(ctx, () => { scene(t); board(t); }, { x: 560, y: 1050, zoom: 1.12 });
-  else if (t < T.turn) SHOT.xcu(ctx, () => { scene(t); board(t); }, { x: 760, y: 1060, zoom: 1.45 });
-  else if (t < T.look) SHOT.cu(ctx, () => { scene(t); board(t); }, { x: 760, y: lerp(1020, 700, eIO((t - T.turn) / 0.6)), zoom: 1.3 });
-  else if (t < T.back) SHOT.low(ctx, () => { scene(t); board(t); }, { x: 600, y: lerp(560, 480, (t - T.look) / 1.3), zoom: 1.5, lift: 0 });
-  else SHOT.wide(ctx, () => { scene(t); board(t); }, { x: 540, y: 1050, zoom: 0.98 }); }
-const CAPS = [[0.2, T.B, 'LaLiga title race 🏆'], [T.B + 0.4, T.B + 2.6, 'Real: 9 wins in a row 💪'], [T.B + 2.6, T.C, '…trophy moves 0 cm 😅'], [T.C + 0.2, T.D, 'Barça 0-2 down 😱'], [T.yank, T.E, '3-2 COMEBACK ⚡'],
-  [T.mk + 0.3, T.F, 'Mbappé pen ❌'], [T.yk + 0.3, T.rope, 'Yamal pen ❌'], [T.rope, T.G, 'MY ROPE 😤', 1], [T.offer, T.snatch, '"For you, Kylian 🥺"', -1], [T.snatch, SLAPS[0], 'Just kidding 😏'],
-  [SLAPS[0], T.turn, 'Wake up! 👋'], [T.turn + 0.2, T.back, 'Look: 36 · 33 👀'], [T.back + 0.2, T.Q, 'A season with 0 trophies? 😭'], [T.Q, T.END, 'Who lifts it in May? 👇']];
-function hud(t) { for (const c of CAPS) if (t >= c[0] && t < c[1]) card(c[2], 540, t < T.B || t >= T.G ? 1660 : 250, 64, { pop: (t - c[0]) / 0.3, bg: /❌|😱|⚡|😂/.test(c[2]) ? '#fff3b0' : '#fffaf0', tail: c[3] });
-  if (t > T.Q + 0.6) { ctx.font = `400 56px ${FONT}`; ctx.textAlign = 'center'; ctx.lineWidth = 10; ctx.strokeStyle = INK; ctx.fillStyle = '#fff'; ctx.strokeText('BARÇA 🔵🔴  or  REAL ⚪', 540, 1700); ctx.fillText('BARÇA 🔵🔴  or  REAL ⚪', 540, 1700);
-    ctx.font = '600 26px Inter'; ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.fillText('Cartoon parody', 540, 1860); } }
-const CUTS = [[T.B, 'whip'], [T.C, 'whip'], [T.D, 'flash'], [T.E, 'whip'], [T.F, 'whip'], [T.G, 'leak'], [T.snatch, 'flash'], [T.turn, 'whip'], [T.back, 'leak']];
-const SHAKE = [T.yank, T.mk, T.yk, T.snatch, ...SLAPS];
+function pop(txt, x, y, k, col = '#ffd23f') { if (k < 0 || k > 1) return; ctx.save(); ctx.globalAlpha = 1 - k; ctx.font = `400 ${80 + k * 30}px ${FONT}`; ctx.textAlign = 'center'; ctx.lineWidth = 10; ctx.strokeStyle = INK; ctx.fillStyle = col; ctx.strokeText(txt, x, y - k * 80); ctx.fillText(txt, x, y - k * 80); ctx.restore(); }
+const KICKP = { bArm: [-60, -40], fArm: [60, 40], bLeg: [-10, -4], fLeg: [80, 40] }, UP = { bArm: [-160, -140], fArm: [160, 140], bLeg: [-8, -4], fLeg: [8, 4] }, OUT = { bArm: [-14, -6], fArm: [95, 85], bLeg: [-8, -4], fLeg: [8, 4] };
+const CLING = { bArm: [-170, -175], fArm: [170, 175], bLeg: [-20, -40], fLeg: [30, 60] }, SITF = { bArm: [-60, -30], fArm: [60, 30], bLeg: [70, 0], fLeg: [80, 0] };
+function scene(t) { stadium(t);
+  // the cup on a golden pole above step 1 (until Yamal grabs it)
+  const poleOn = t < T.grab; if (poleOn) { ctx.fillStyle = '#c9a227'; ctx.strokeStyle = INK; ctx.lineWidth = 5; ctx.fillRect(722, 820, 22, 420); ctx.strokeRect(722, 820, 22, 420); ctx.beginPath(); ctx.ellipse(733, 820, 60, 16, 0, 0, 7); ctx.fill(); ctx.stroke(); trophy(733, 590 + Math.sin(t * 2) * 6, 0.9); }
+  podium();
+  // ---- Mbappé (starts on step 2)
+  let mx = 230, my = 1380, mEx = 'smug', mPose, mLean = 0, mTilt = 0, mSq = 0;
+  if (t >= T.B && t < T.hang) { const k = eOut((t - T.B) / 0.5); mx = lerp(230, 420, k); my = lerp(1380, 1240, k); mEx = 'strain'; mPose = { bArm: [70, 85], fArm: [60, 80], bLeg: [-35, -15], fLeg: [25, 40] }; mLean = 0.25; }
+  else if (t >= T.hang && t < T.kick) { mx = 520; my = 1240; mEx = 'laugh'; mPose = UP; }
+  else if (t >= T.kick && t < T.D) { const k = clamp((t - T.kick) / 0.8); mx = lerp(520, 230, k); my = k < 1 ? lerp(1240, 1380, k) - Math.sin(k * Math.PI) * 320 : 1380; mEx = 'shock'; mPose = k < 1 ? { bArm: [-150, -120], fArm: [160, 120], bLeg: [-50, -20], fLeg: [60, 20] } : SITF; mLean = k < 1 ? -k * 6 : 0; }
+  else if (t >= T.D && t < T.E) { mx = t >= T.whisper ? 290 : 230; mEx = t > T.whisper ? 'shock' : 'smug'; mPose = t > T.whisper ? { bArm: [-60, -30], fArm: [60, 30], bLeg: [-8, -4], fLeg: [8, 4] } : undefined; mSq = t > T.whisper ? Math.sin(t * 40) * 0.02 : 0; }
+  else if (t >= T.E && t < T.F) { mEx = t < T.mk ? 'smug' : t < T.mk + 0.5 ? 'shock' : 'cry'; mPose = t >= T.mk && t < T.mk + 0.5 ? KICKP : undefined; }
+  else if (t >= T.F && t < T.G) { const sI = SLAPS.findIndex(a => t >= a && t < a + 0.3); mx = 300; mEx = t < T.reach ? 'cry' : t < T.snatch ? 'laugh' : t < SLAPS[0] ? 'shock' : t < T.turn ? (sI >= 0 ? 'shock' : 'cry') : 'shock';
+    mPose = t >= T.reach && t < T.snatch + 0.4 ? OUT : undefined; mTilt = (sI >= 0 ? (sI % 2 ? 1 : -1) * 0.45 * (1 - (t - SLAPS[sI]) / 0.3) : 0) + (t >= T.turn ? 0.35 : 0); mSq = sI >= 0 ? 0.06 : 0; }
+  else if (t >= T.G) { mx = 250; mEx = 'cry'; mSq = Math.sin(t * 20) * 0.03; }
+  // ---- Simeone (step 3)
+  let sx = 850, sy = 1480, sEx = 'deadpan', sPose, sHop = 0;
+  if (t >= T.D && t < T.whisper) { const hi = HOPS.findIndex(a => t >= a && t < a + 0.35); sHop = hi >= 0 ? Math.sin((t - HOPS[hi]) / 0.35 * Math.PI) * 110 : 0; sEx = 'angry'; sPose = UP; }
+  else if (t >= T.whisper && t < T.E) { const k = eOut((t - T.whisper) / 0.5); sx = lerp(850, 110, k); sy = lerp(1480, 1380, k); sEx = 'smug'; sPose = { bArm: [-14, -6], fArm: [130, 150], bLeg: [-8, -4], fLeg: [8, 4] }; }
+  else if (t >= T.E && t < T.F) { sEx = t > T.bonk ? 'angry' : 'deadpan'; }
+  else if (t >= T.G) { sEx = 'smug'; sPose = { bArm: [-14, -6], fArm: [100, 85], bLeg: [-8, -4], fLeg: [8, 4] }; }
+  // ---- Yamal (step 1, holds the cup from T.grab)
+  let yx = 600, yy = 1240, yEx = 'smug', yPose, yLean = 0;
+  if (t >= T.B && t < T.hang) { yx = lerp(600, 680, clamp((t - T.B) / 1.4)); yEx = 'strain'; yLean = 0.25; yPose = { bArm: [-40, -20], fArm: [40, 20], bLeg: [-30, -10], fLeg: [30, 10] }; }
+  else if (t >= T.hang && t < T.kick) { yx = 700; yy = 1330; yEx = 'shock'; yPose = CLING; }
+  else if (t >= T.kick && t < T.D) { const k = eOut((t - T.kick) / 0.4); yx = lerp(700, 600, k); yy = lerp(1330, 1240, k); yEx = t < T.kick + 0.4 ? 'angry' : 'laugh'; yPose = t < T.kick + 0.4 ? KICKP : UP; }
+  else if (t >= T.E && t < T.F) { yEx = t < T.yk ? 'smug' : t < T.yk + 0.5 ? 'shock' : t < T.climb ? 'deadpan' : 'smug'; yPose = t >= T.yk && t < T.yk + 0.5 ? KICKP : undefined;
+    if (t >= T.climb) { const k = clamp((t - T.climb) / 0.9), k2 = clamp((t - T.grab) / 0.6); yx = lerp(600, 690, Math.min(1, k * 3)); yy = t < T.grab ? lerp(1240, 900, k) : lerp(900, 1240, k2); yPose = t < T.grab ? CLING : UP; } }
+  else if (t >= T.F && t < T.G) { const sI = SLAPS.findIndex(a => t >= a && t < a + 0.3); yx = t < SLAPS[0] - 0.25 ? 470 : 410; yEx = t >= T.snatch && t < T.turn ? 'angry' : 'smug';
+    yPose = t >= T.turn ? { bArm: [-14, -6], fArm: [150, 120], bLeg: [-8, -4], fLeg: [8, 4] } : t >= SLAPS[0] - 0.15 ? { bArm: [-14, -6], fArm: sI >= 0 ? reach('yamal', { x: yx, y: 1240, f: -1, s: 1.15 }, 'f', 320, 1010) : [150, 140], bLeg: [-8, -4], fLeg: [8, 4] } : t < T.snatch ? OUT : UP; }
+  else if (t >= T.G) { yEx = 'laugh'; yPose = UP; }
+  const yF = t >= T.F && t < T.G ? -1 : 1;
+  CB('simeone', { x: sx, y: sy, f: t >= T.whisper && t < T.E ? 1 : -1, s: 1.05, expr: sEx, pose: sPose, hop: sHop }, t, 1.7);
+  CB('mbappe', { x: mx, y: my, f: 1, s: 1.1, expr: mEx, pose: mPose, lean: mLean, tilt: mTilt, sq: mSq }, t, 1.1);
+  CB('yamal', { x: yx, y: yy, f: yF, s: 1.15, expr: yEx, pose: yPose, lean: yLean, hop: t >= T.G ? Math.abs(Math.sin(t * 9)) * 30 : 0 }, t, 0.3);
+  // the cup in Yamal's hands
+  if (t >= T.grab) { let cx = yx, cy = yy - 560, cr = 0; if (t >= T.F && t < T.G) { if (t < T.snatch) { cx = 380; cy = 1130; cr = -0.1; } else if (t < T.snatch + 0.25) { const q = (t - T.snatch) / 0.25; cx = lerp(380, 620, q); cy = lerp(1000, 820, q); cr = q * 0.8; } else { cx = 600; cy = 880; cr = 0.2; } }
+    if (t >= T.G) cy -= Math.abs(Math.sin(t * 9)) * 30; trophy(cx, cy, 0.9, cr); }
+  // pops & balls
+  HOPS.forEach((a, i) => pop('+1 ⚽', 850, 1000, (t - a) / 0.6, '#ff6b6b'));
+  if (t >= T.E && t < T.mk) ball(300, 1360, 28); if (t >= T.mk && t < T.mk + 1.2) { const q = (t - T.mk) / 1.0; ball(lerp(300, 520, q), lerp(1360, -400, Math.min(1, q)), 28 + q * 14, q * 14); }
+  if (t >= T.E && t < T.yk) ball(640, 1225, 28); if (t >= T.yk && t < T.bonk + 0.6) { const q = clamp((t - T.yk) / (T.bonk - T.yk)); const bx = t < T.bonk ? lerp(640, 840, q) : lerp(840, 1150, (t - T.bonk) / 0.6), by = t < T.bonk ? lerp(1225, 1020, q) : lerp(1020, 700, (t - T.bonk) / 0.6); ball(bx, by, 30, t * 12); }
+  pop('BONK', 900, 900, (t - T.bonk) / 0.5);
+  const sI = SLAPS.findIndex(a => t >= a && t < a + 0.3); if (sI >= 0) { const q = (t - SLAPS[sI]) / 0.3; pop('SLAP', 300 + (sI % 2 ? 140 : -110), 760, q); ctx.save(); ctx.fillStyle = 'rgba(255,90,90,.5)'; ctx.globalAlpha = 1 - q; ctx.beginPath(); ctx.ellipse(300 + (sI % 2 ? -40 : 40), 880, 46, 30, 0, 0, 7); ctx.fill(); ctx.restore(); }
+  if (t >= T.turn - 0.6 && t < T.G) { ctx.save(); ctx.fillStyle = '#fff'; ctx.strokeStyle = INK; ctx.lineWidth = 4; for (let i = 0; i < 3; i++) { const a = t * 6 + i * 2.1; ctx.beginPath(); ctx.arc(300 + Math.cos(a) * 90, 720 + Math.sin(a) * 26, 14, 0, 7); ctx.fill(); ctx.stroke(); } ctx.restore(); }
+  if (t >= T.G) { ctx.fillStyle = 'rgba(110,190,255,.9)'; for (const x of [215, 285]) for (let i = 0; i < 4; i++) { const k = ((t * 1.5 + i * 0.25) % 1); ctx.beginPath(); ctx.ellipse(x + (x > 250 ? k * 50 : -k * 50), 860 + k * 300, 12, 20, 0, 0, 7); ctx.fill(); } }
+}
+function table(t) { // final standings (screen space)
+  const k = eBack((t - T.G - 0.1) / 0.5); if (k <= 0) return; ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.translate(540, 330); ctx.scale(k, k);
+  ctx.fillStyle = 'rgba(8,10,26,.94)'; ctx.strokeStyle = '#7d5cff'; ctx.lineWidth = 10; ctx.shadowColor = '#5a8cff'; ctx.shadowBlur = 30; ctx.beginPath(); ctx.roundRect(-430, -230, 860, 460, 30); ctx.fill(); ctx.stroke(); ctx.shadowBlur = 0;
+  ctx.font = `400 52px ${FONT}`; ctx.fillStyle = '#ffd23f'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('LALIGA TABLE · 13 GAMES', 0, -170);
+  [['1', 'BARÇA', '36', '#a50044'], ['2', 'REAL MADRID', '33', '#f2f2f2'], ['3', 'ATLÉTICO', '31', '#cb3524']].forEach((r, i) => { const rk = clamp((t - T.G - 0.4 - i * 0.25) / 0.3); if (!rk) return; const y = -70 + i * 110;
+    ctx.globalAlpha = rk; ctx.fillStyle = r[3]; ctx.fillRect(-390, y - 40, 22, 80); ctx.fillStyle = '#fff'; ctx.textAlign = 'left'; ctx.font = `400 70px ${FONT}`; ctx.fillText(r[0] + '  ' + r[1], -340, y); ctx.textAlign = 'right'; ctx.fillText(r[2], 380, y); }); ctx.restore(); }
+function frame(t) { const S = () => scene(t);
+  if (t < T.B) SHOT.wide(ctx, S, { x: 540, y: 1150, zoom: lerp(0.98, 1.04, t / T.B) });
+  else if (t < T.kick) SHOT.cu(ctx, S, { x: 520, y: 1100, zoom: 1.15 });
+  else if (t < T.D) SHOT.dutch(ctx, S, { x: 420, y: 1120, zoom: 1.0, rot: -0.1 });
+  else if (t < T.whisper) SHOT.low(ctx, S, { x: 760, y: 1180, zoom: 1.05, lift: 80 });
+  else if (t < T.E) SHOT.cu(ctx, S, { x: 260, y: 1060, zoom: 1.35 });
+  else if (t < T.climb) SHOT.wide(ctx, S, { x: 560, y: 1100, zoom: 0.9 });
+  else if (t < T.F) SHOT.low(ctx, S, { x: 660, y: 1000, zoom: 1.1, lift: 60 });
+  else if (t < T.turn) SHOT.xcu(ctx, S, { x: 380, y: 1000, zoom: 1.45 });
+  else if (t < T.G) SHOT.cu(ctx, S, { x: 380, y: lerp(1000, 900, (t - T.turn) / 1.0), zoom: 1.3 });
+  else { SHOT.wide(ctx, S, { x: 540, y: 1250, zoom: 0.92 }); table(t); } }
+const CAPS = [[0.2, T.B, 'LaLiga podium 🏆'], [T.B + 0.2, T.hang, 'Real: 9 wins in a row 💪'], [T.hang, T.kick, 'Barça 0-2 down 😱'], [T.kick, T.D, '3-2 comeback ⚡'],
+  [T.D + 0.1, T.whisper, 'Atlético: 3-0 at Getafe 🔥'], [T.whisper + 0.2, T.E, '"2 points behind you" 👀', 1], [T.mk + 0.3, T.yk, 'Mbappé pen ❌'], [T.yk + 0.3, T.climb, 'Yamal pen ❌'], [T.climb + 0.1, T.F, 'Easy way 😎'],
+  [T.F + 0.1, T.snatch, '"For you, Kylian 🥺"', -1], [T.snatch, SLAPS[0], 'Just kidding 😏'], [SLAPS[0], T.turn, 'Wake up! 👋'], [T.turn + 0.1, T.G, 'Look at the table 👀'], [T.G + 1.4, T.Q, '0 trophies? 😭'], [T.Q, T.END, 'Who lifts it in May? 👇']];
+function hud(t) { const late = t >= T.G; for (const c of CAPS) if (t >= c[0] && t < c[1]) card(c[2], 540, late ? (t >= DURATION - CTA2.DUR ? 1430 : 1700) : 250, 62, { pop: (t - c[0]) / 0.3, bg: /❌|😱|⚡|😭|🔥/.test(c[2]) ? '#fff3b0' : '#fffaf0', tail: c[3] });
+  ctx.font = '600 24px Inter'; ctx.fillStyle = 'rgba(255,255,255,.75)'; ctx.textAlign = 'left'; ctx.fillText('Cartoon parody', 40, 1890); }
+const CUTS = [[T.B, 'whip'], [T.kick, 'flash'], [T.D, 'whip'], [T.E, 'whip'], [T.F, 'leak'], [T.snatch, 'flash'], [T.G, 'iris']];
+const SHAKE = [T.kick, T.mk, T.bonk, T.snatch, ...SLAPS, ...HOPS];
 function grade() { ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); const v = ctx.createRadialGradient(540, 960, 560, 540, 960, 1250); v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,0,.3)'); ctx.fillStyle = v; ctx.fillRect(0, 0, W, H); ctx.restore(); }
 window.DURATION = T.END; window.render = function (t) { window.T2T = t; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.clearRect(0, 0, W, H); ctx.fillStyle = '#0d1433'; ctx.fillRect(0, 0, W, H);
-  const hs = SHAKE.reduce((m, a) => Math.max(m, t >= a && t < a + 0.25 ? 16 * (1 - (t - a) / 0.25) : 0), 0) + (t >= T.B && t < T.C && TUG.some(a => t >= a && t < a + 0.1) ? 8 : 0);
-  ctx.save(); ctx.translate(Math.sin(t * 91) * hs, Math.cos(t * 77) * hs); frame(t); ctx.restore(); grade(); ctx.setTransform(1, 0, 0, 1, 0, 0); for (const [tc, kind] of CUTS) MOTION.cut(ctx, t, tc, kind); if (!window.NO_HUD) hud(t); };
+  const hs = SHAKE.reduce((m, a) => Math.max(m, t >= a && t < a + 0.25 ? 14 * (1 - (t - a) / 0.25) : 0), 0);
+  ctx.save(); ctx.translate(Math.sin(t * 91) * hs, Math.cos(t * 77) * hs); frame(t); ctx.restore(); grade(); ctx.setTransform(1, 0, 0, 1, 0, 0); for (const [tc, kind] of CUTS) MOTION.cut(ctx, t, tc, kind);
+  if (!window.NO_HUD) { hud(t); CTA2.draw(ctx, t - (DURATION - CTA2.DUR), { y: 1650 }); } };
 if (!location.search.includes('render')) { const t0 = performance.now(); (window.CAST_READY || Promise.resolve()).then(() => (function loop() { render(((performance.now() - t0) / 1000) % DURATION); requestAnimationFrame(loop); })()); }
 </script></body></html>

@@ -1,5 +1,5 @@
 <!doctype html><html><head><meta charset="utf-8"><title>Who Laughs Last</title><style>html,body{margin:0;background:#000}</style></head><body><canvas id="c" width="1080" height="1920"></canvas>
-<script src="../styles.js"></script><script src="../pro.js"></script><script src="../fx.js"></script><script src="../shots.js"></script><script src="../chibi.js"></script><script src="../chibi_cast.js"></script><script src="../rig2.js"></script><script src="../castimg.js"></script><script src="../motion.js"></script><script src="../cast/skins.js"></script>
+<script src="../styles.js"></script><script src="../pro.js"></script><script src="../fx.js"></script><script src="../shots.js"></script><script src="../chibi.js"></script><script src="../chibi_cast.js"></script><script src="../rig2.js"></script><script src="../castimg.js"></script><script src="../motion.js"></script><script src="../cta2.js"></script><script src="../cast/skins.js"></script>
 <script>
 // Ep40 "PENALTY PODIUM" (facts: ep40/facts.md). Barça 36, Real 33, Atlético 28; Yamal and Mbappé both missed penalties this weekend; both teams won.
 // (helpers from Ep37) Ep37 "THE EXCUSES" (facts: ep37/facts.md, checked 22 Nov 2026). Messi 8 Ballons d'Or, Ronaldo 5. Real words on screen in quotes only:
@@ -170,6 +170,6 @@ const SHAKE = [T.post, T.crack, T.pop, T.mk, T.crash, T.land, T.yk, T.five];
 function grade() { ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); const v = ctx.createRadialGradient(540, 960, 560, 540, 960, 1250); v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,0,.3)'); ctx.fillStyle = v; ctx.fillRect(0, 0, W, H); ctx.restore(); }
 window.DURATION = T.END; window.render = function (t) { window.T2T = t; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.clearRect(0, 0, W, H); ctx.fillStyle = '#1d2550'; ctx.fillRect(0, 0, W, H);
   const hs = SHAKE.reduce((m, a) => Math.max(m, t >= a && t < a + 0.25 ? 16 * (1 - (t - a) / 0.25) : 0), 0) + (t > T.rumble && t < T.crash ? 6 : 0);
-  ctx.save(); ctx.translate(Math.sin(t * 91) * hs, Math.cos(t * 77) * hs); frame(t); ctx.restore(); grade(); ctx.setTransform(1, 0, 0, 1, 0, 0); for (const [tc, kind] of CUTS) MOTION.cut(ctx, t, tc, kind); if (!window.NO_HUD) hud(t); };
+  ctx.save(); ctx.translate(Math.sin(t * 91) * hs, Math.cos(t * 77) * hs); frame(t); ctx.restore(); grade(); ctx.setTransform(1, 0, 0, 1, 0, 0); for (const [tc, kind] of CUTS) MOTION.cut(ctx, t, tc, kind); if (!window.NO_HUD) { hud(t); CTA2.draw(ctx, t - (DURATION - CTA2.DUR), { y: 1700 }); } };
 if (!location.search.includes('render')) { const t0 = performance.now(); (window.CAST_READY || Promise.resolve()).then(() => (function loop() { render(((performance.now() - t0) / 1000) % DURATION); requestAnimationFrame(loop); })()); }
 </script></body></html>

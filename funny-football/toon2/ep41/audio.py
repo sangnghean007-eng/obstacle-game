@@ -1,45 +1,38 @@
-"""Ep41 TUG OF WAR sound — fully synthesized. Trap bed (new seed/key), rope creaks and strain grunts,
-9 'heave' tugs that move nothing, dust skid, the comeback yank, two penalty misses, 'MY ROPE', laugh vs cry ending."""
+"""Ep41 v3 PODIUM FIGHT sound — fully synthesized. Trap bed; shove/strain, cliff-hang squeak, comeback kick launch,
+Simeone's three goal hops, two penalties at the cup (sky, bonk on Simeone), pole climb, fake handover, three slaps, table reveal, CTA."""
 import os, sys, numpy as np
 H = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, os.path.join(H, '..', 'sfx'))
 from music import Song, SR
 from mix import Desk
 from fx2 import Mix2
-D = 28.6; d = Desk(D); m = Mix2(D, ep=41)
-song = Song('trap', key='G', minor=True, seed=41).form([('intro', 2), ('verse', 3), ('drop', 3), ('break', 2), ('drop', 3), ('outro', 2)]); st = song.render()
+D = 26.2; d = Desk(D); m = Mix2(D, ep=413)
+song = Song('trap', key='G', minor=True, seed=413).form([('intro', 2), ('verse', 3), ('drop', 3), ('break', 2), ('drop', 3), ('outro', 2)]); st = song.render()
 L = min(len(st['drums']), int(D * SR)); env = np.ones(L)
-for a, b, g in ((6.4, 7.2, 0.3), (9.6, 10.2, 0.2), (20.6, 21.1, 0.15), (22.7, 24.0, 0.25)): env[int(a * SR):int(b * SR)] = g
+for a, b, g in ((4.0, 5.6, 0.35), (15.9, 16.4, 0.15), (17.6, 18.8, 0.3)): env[int(a * SR):int(b * SR)] = g
 env = np.convolve(env, np.ones(1500) / 1500, 'same'); d.add_stems({k: v[:L] * env for k, v in st.items()})
-r = np.random.default_rng(41)
-def tt(dur): return np.arange(int(dur * SR)) / SR
-def creak(t, g=.25):  # rope creak: slow pitch wobble through a bandpass
-    k = tt(.4); f = 180 + 60 * np.sin(2 * np.pi * 3 * k); x = np.sign(np.sin(2 * np.pi * np.cumsum(f) / SR)) * np.exp(-k * 4); m.f(x * g * .3, t, 0)
-def skid(t, dur=2.4, g=.3):
-    k = tt(dur); x = r.standard_normal(len(k)); x = np.convolve(x, np.ones(25) / 25, 'same') * (0.6 + 0.4 * np.sin(2 * np.pi * 5 * k)); m.f(x * g * 3, t, -.4)
-m.crowd(0.1, 'cheer', 2.0, .3)
-for i in range(6): creak(0.3 + i * 0.35, .2)
-m.vo('generic_m', 'grunt', 1.0, .4, -.4); m.vo('mbappe', 'grunt', 1.5, .4, .4)
-# B: 9 tugs, nothing moves
-for i, a in enumerate([2.8 + j * 0.4 for j in range(9)]): m.thump(a, .45 + i * .03); creak(a + .05, .25); m.vo('mbappe', 'grunt', a + .02, .35 + i * .02, .4)
-m.xylo(5.0, ['C5', 'E5', 'G5', 'C6'], .07, .15); m.wahwah(5.7, .2); m.vo('yamal', 'laugh', 5.2, .45, -.3, 'snicker')
-# C: Barça dragged (0-2)
-skid(6.6, 2.8, .35); m.slide_whistle(6.7, False, 1.4, .25); m.vo('yamal', 'yelp', 6.9, .5, -.3); m.vo('generic_m', 'gasp', 7.3, .45, -.4); m.crowd(7.6, 'ooh', 1.5, .3); m.vo('mbappe', 'laugh', 8.2, .45, .4, 'snicker')
-# D: the comeback yank
-m.timpani(9.6, 80, .45, .5); m.whip(10.0, .6); m.boom(10.05, .6); m.thump(10.3, .7); m.thump(10.45, .5); m.vo('mbappe', 'oof', 10.3, .6, .4); m.crowd(10.2, 'cheer', 2.0, .45); m.sub_boom(10.0, .5)
-# E: Mbappé lets go — penalty skied
-m.whoosh(12.4, .3, .3); m.vo('mbappe', 'hmm', 12.6, .4, .3); m.thump(13.2, .7); m.whoosh(13.25, 1.0, .45); m.slide_whistle(13.3, True, 1.0, .28); m.crowd(13.6, 'ooh', 1.3, .35); m.vo('mbappe', 'no', 13.9, .6, .3)
-# F: Yamal lets go — penalty wide
-m.whoosh(15.4, .3, .3); m.squeak(16.2, .45); m.thump(16.22, .3); m.fail_horn(16.5, .2); m.vo('yamal', 'uhoh', 16.9, .5, -.3)
-# MY ROPE
-m.record_scratch(17.0, .4); m.vo('generic_m', 'hmph', 17.1, .65, -.2); creak(17.4, .3); creak(17.9, .3)
-# G: Yamal offers the cup… snatches it back, slaps Mbappé awake, turns his head to the table; laugh vs cry
-m.crash(18.6, .25); m.crowd(18.7, 'cheer', 1.4, .3); m.vo('mbappe', 'cry', 18.8, .45, .4, 'wail')
-m.xylo(19.4, ['C5', 'E5', 'G5'], .09, .15); m.vo('yamal', 'hmm', 19.5, .45, -.2); m.vo('mbappe', 'yay', 20.05, .6, .3)
-m.whip(20.6, .6); m.record_scratch(20.62, .45); m.vo('yamal', 'laugh', 20.8, .45, -.2, 'snicker')
-for i, a in enumerate((21.0, 21.35, 21.7)): m.smack(a, .9 - i * .05, (-.3, .3)[i % 2]); m.vo('mbappe', 'ow', a + .04, .5, .3)
-m.spring(21.95, .3); m.whoosh(22.2, .4, .35); m.squeak(22.3, .35); m.sub_boom(22.8, .6); m.timpani(22.85, 70, .4, .6); m.vo('mbappe', 'gasp', 23.0, .55, .3)
-m.crowd(24.1, 'laugh', 2.4, .35); m.vo('yamal', 'laugh', 24.2, .6, -.4, 'belly'); m.vo('generic_m', 'laugh', 24.4, .55, -.5, 'belly'); m.vo('mbappe', 'cry', 24.5, .65, .4, 'wail'); m.fail_horn(25.2, .18)
-m.vo('mbappe', 'cry', 26.2, .55, .4, 'sob'); m.vo('yamal', 'laugh', 26.6, .45, -.4, 'snicker'); m.xylo_rise(27.4, .15)
+# A podium
+m.crowd(0.1, 'cheer', 2.0, .3); m.xylo_rise(0.3, .15); m.vo('yamal', 'laugh', 1.2, .4, 0, 'snicker')
+# B shove (9 wins), Yamal hangs off the edge (0-2), comeback kick
+m.whoosh(2.4, .4, .35); [m.thump(2.7 + i * .25, .35) for i in range(5)]; m.vo('mbappe', 'grunt', 2.8, .5, -.3); m.vo('mbappe', 'grunt', 3.4, .5, -.3)
+m.slide_whistle(4.0, False, .5, .25); m.squeak(4.2, .35); m.vo('yamal', 'yelp', 4.15, .55, .2); m.vo('mbappe', 'laugh', 4.6, .5, -.2, 'belly'); m.crowd(4.4, 'ooh', 1.2, .3)
+m.whip(5.6, .6); m.boom(5.65, .55); m.slide_whistle(5.7, True, .7, .3); m.vo('mbappe', 'ow', 5.8, .6, -.3); m.thump(6.4, .7); m.crowd(5.9, 'cheer', 1.6, .4)
+# D Simeone: three goal hops (3-0), then the whisper
+for a in (7.2, 7.6, 8.0): m.spring(a, .3); m.cork(a + .05, .35)
+m.vo('generic_m', 'grunt', 8.2, .5, .4); m.whoosh(8.6, .4, .3); m.vo('generic_m', 'hmm', 9.0, .5, -.4); m.vo('mbappe', 'gasp', 9.4, .55, -.2)
+# E penalties at the cup: sky, bonk on Simeone; Yamal climbs the pole
+m.thump(10.8, .7); m.whoosh(10.85, 1.0, .45); m.slide_whistle(10.9, True, 1.0, .28); m.vo('mbappe', 'no', 11.3, .55, -.3)
+m.squeak(12.0, .4); m.bonk(12.45, .9); m.vo('generic_m', 'ow', 12.5, .55, .4); m.crowd(12.6, 'laugh', 1.2, .3)
+[m.squeak(12.95 + i * .2, .15) for i in range(4)]; m.xylo(13.8, ['C6', 'E6', 'G6', 'C7'], .06, .2); m.vo('yamal', 'yay', 13.85, .55, .1)
+# F fake handover + slaps
+m.xylo(14.7, ['G5', 'C6'], .1, .14); m.vo('yamal', 'hmm', 14.8, .45, .1); m.vo('mbappe', 'yay', 15.45, .6, -.3)
+m.whip(16.0, .6); m.record_scratch(16.02, .45); m.vo('yamal', 'laugh', 16.15, .45, .1, 'snicker')
+for i, a in enumerate((16.4, 16.75, 17.1)): m.smack(a, .9 - i * .05, (-.3, .3)[i % 2]); m.vo('mbappe', 'ow', a + .04, .5, -.3)
+m.spring(17.35, .3); m.whoosh(17.6, .4, .3); m.squeak(17.7, .3)
+# G table + laugh/cry; CTA
+m.sub_boom(18.6, .6); m.timpani(18.65, 72, .4, .5); [m.thump(19.0 + i * .25, .3) for i in range(3)]
+m.crowd(19.4, 'cheer', 2.5, .35); m.vo('yamal', 'laugh', 19.6, .6, .1, 'belly'); m.vo('mbappe', 'cry', 19.9, .65, -.4, 'wail'); m.fail_horn(20.6, .16)
+m.vo('generic_m', 'laugh', 21.8, .4, .4, 'snicker'); m.vo('mbappe', 'cry', 22.6, .55, -.4, 'sob')
+m.cta(D - 2.4)  # end-card support call (cta2.js)
 d.add('fx', (m.fx + m.music).T, 0, 1.0); d.add('vox', m.vox.T, 0, 1.25)
-d.duck('music', [10.0, 13.2, 16.2, 17.0, 20.6, 21.0, 22.8], .45, .15, .4); d.room('fx', 'stadium', .15)
+d.duck('music', [5.6, 10.8, 12.45, 16.0, 16.4, 18.6], .45, .15, .4); d.room('fx', 'stadium', .15)
 print(d.master(sys.argv[1], os.path.join(H, 'release', 'stems')))

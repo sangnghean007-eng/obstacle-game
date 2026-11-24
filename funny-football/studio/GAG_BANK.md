@@ -147,3 +147,8 @@ Columns: id | gag | technique (rule-of-3, misdirection, escalation, cutaway, dea
 | U70 | 'MY ROPE' — teammate alone on the rope (callback to 'MY BALL') (Ep41) | callback | S |
 | U71 | Fake handover: offers the cup, rival reaches, snatched back 'just kidding' (Ep41, owner's idea) | misdirection | M |
 | U72 | Three wake-up slaps, then the rival's head is turned to the league table (Ep41, owner's idea) | escalation | M |
+| U73 | Rival shoves onto the top step; leader hangs off the edge by his fingers (Ep41 v3) | escalation | M |
+| U74 | Comeback kick launches the rival back down to his own step (Ep41 v3) | escalation | M |
+| U75 | Third place hops up once per goal (+1 ⚽ ×3) and whispers '2 points behind you' (Ep41 v3) | rule-of-3 | S |
+| U76 | Penalty at the cup bonks the third-placed coach (Ep41 v3) | slapstick | S |
+| U77 | After all the fighting, the leader just climbs the pole and takes the cup (Ep41 v3) | misdirection | M |

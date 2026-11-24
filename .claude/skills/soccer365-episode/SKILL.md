@@ -27,6 +27,8 @@ Talk to the owner in **Vietnamese**; everything on screen and in posts is **Engl
 - Check: `node --check` on the extracted script, then `node toon2/snap.js toon2/epNN/scene.html out.jpg t1,t2,... cols` and **look** at the sheet; fix overlap, hidden faces, off-frame action.
 - Pitfall: never append `// comment` mid-line in one-line functions.
 
+- **End-card support call** (owner 24 Nov): include `../cta2.js` and call `CTA2.draw(ctx, t - (DURATION - CTA2.DUR), { y })` after hud; audio `m.cta(D - 2.4)`. post_gate blocks episodes without it.
+
 ## 4. Sound (`toon2/epNN/audio.py`)
 - `music.py` genre not used in the last 6 episodes (registry column `music`); new seed/key.
 - `fx2.py`: a signature sound per gag (`record_scratch`, `sub_boom`, `fail_horn`, `clang`, `boom`, ...). Voices `vo()`; running laugh/catchphrase grows each time. ElevenLabs only if free credits remain.

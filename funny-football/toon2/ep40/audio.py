@@ -48,6 +48,7 @@ m.smack(22.8, .6); [m.whoosh(x, .25, .25) for x in (2.7, 8.3, 11.0, 14.6, 20.6)]
 # Yamal climbs out of the TV
 m.sub_boom(24.7, .7); m.slide_whistle(24.9, True, .7, .25); m.vo('yamal', 'cry', 25.6, .55, 0, 'wail'); [m.smack(26.4 + i * .25, .35) for i in range(3)]
 hehe('ronaldo', 27.2, 3, .45, -.4); hehe('mbappe', 27.4, 3, .45, .4)
+m.cta(29.4 - 2.4)  # end-card support call (cta2.js)
 d.add('fx', (m.fx + m.music).T, 0, 1.0); d.add('vox', m.vox.T, 0, 1.25)
 d.duck('music', [0.8, 1.35, 3.05, 9.2, 11.9, 18.8], .45, .15, .4); d.room('fx', 'room', .1)
 print(d.master(sys.argv[1], os.path.join(H, 'release', 'stems')))
