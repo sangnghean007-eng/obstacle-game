@@ -165,3 +165,8 @@ Columns: id | gag | technique (rule-of-3, misdirection, escalation, cutaway, dea
 | U88 | Penalty curse as a ghost keeper in a cloud goal (Ep43) | visual pun | S |
 | U89 | VAR robot flags offside and the 988 step slides away mid-celebration (Ep43) | misdirection | L |
 | U90 | Grabs the teammate's winning ball: 'MINE!' — teammate: 'No.' (Ep43) | callback | M |
+| U91 | After every goal the scorer sneaks in from behind and slaps the laughing rivals (Ep44, owner's idea) | escalation | L |
+| U92 | 'Wake up!' slap reversed on the one who said it last time (Ep44, callback Ep41) | callback | M |
+| U93 | Hiding behind cushions — the cushions get slapped away first (Ep44) | escalation | S |
+| U94 | Samba slaps to the beat (Ep44) | sound gag | S |
+| U95 | They laugh again at the table; five shadows already behind them; lights out, five slaps in the dark (Ep44) | misdirection | L |
