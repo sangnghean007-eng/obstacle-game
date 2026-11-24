@@ -60,22 +60,12 @@ Who laughs last? 👇
 (cartoon parody) #Yamal #Ronaldo #Mbappe
 Alt text (media): Cartoon parody: missed penalties by Ronaldo, Mbappé and Yamal fly out of a TV into a living room; Yamal laughs at the first two, then misses his own.
 
-## Facebook (Reels)
-3 stars, 3 days, 3 missed penalties 😂
-
-Friday: Ronaldo hits the post 💥
-The ball smashes the TV… into the popcorn 🍿
-Yamal laughs 😂
-
-Saturday: Mbappé, "for my idol" 🐐
-Skies it… through the ceiling 🚀
-Yamal laughs again 😂😂
-
-Sunday: Yamal takes the ball from Raphinha
-"Watch this" 😎 …it rolls out of the TV 🙈
-
-Now Ronaldo and Mbappé are laughing 😂😂😂
-Worst miss: POST, SKY or WIDE? 👇
-
+## Facebook (Reels) — Meta caption check: 10–400 characters, no links, no shouting caps, under 6 hashtags (339 characters)
+Three stars, three days, three missed penalties 😂
+Ronaldo hits the post and the ball smashes the TV 💥
+Mbappé skies his and it falls through the ceiling 🚀
+Yamal laughs at both… then takes Raphinha's penalty and misses too 🙈
+Now Ronaldo and Mbappé are the ones laughing 😂
+Worst miss? 👇
 Cartoon parody · invented lines
 #Yamal #Ronaldo #Mbappe

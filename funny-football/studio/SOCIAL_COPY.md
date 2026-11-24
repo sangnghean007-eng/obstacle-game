@@ -147,3 +147,9 @@ Rules from now on for Facebook: caption 200–400 characters (story recap + the 
 
 
 ## NO ARABIC (owner, 21 Nov 2026: "Bỏ tiếng ả rập") — overrides every earlier rule that asked for an Arabic line. Captions on every platform are English only.
+
+## Facebook Reels caption check (owner screenshot, 24 Nov 2026: "Bắt đầu tào lao")
+Facebook's "Tips for better performance" scores the caption: **10–400 characters, no links, no excessive capital letters, fewer than 6 hashtags**. Our Ep40 caption was 434 characters with all-caps words (HEHEHE, POST/SKY/WIDE) and failed.
+- Facebook caption: **≤350 characters**, sentence case only (no all-caps words), 3 hashtags, no links. Count the characters before sending.
+- Same tips also check resolution ≥720p and 9:16: our masters are 1080x1920 9:16 — if Facebook flags them, the uploaded copy was compressed in transfer; upload the original mp4.
+- Facebook's "AI label" toggle is the owner's choice; our videos are clearly-animated cartoons (code-drawn; some caricature heads were image-generated).

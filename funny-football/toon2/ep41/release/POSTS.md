@@ -62,21 +62,12 @@ Barça or Real? 👇
 (cartoon parody) #LaLiga
 Alt text (media): Cartoon parody: Barça and Real play tug of war for the LaLiga trophy; Real's nine straight wins don't move it, and Barça stay 36–33 ahead.
 
-## Facebook (Reels)
-LaLiga title race… tug of war edition 🏆
-
-Real win 9 in a row 💪
-The trophy moves 0 cm 😅
-
-Barça go 0-2 down 😱
-…and come back to win 3-2 ⚡
-
-Mbappé lets go to take a penalty ❌
-Yamal lets go to take a penalty ❌
-Raphinha: "MY ROPE" 😤
-
-Barça 36 · Real 33
+## Facebook (Reels) — Meta caption check: 10–400 characters, no links, no shouting caps, under 6 hashtags (281 characters)
+LaLiga title race, tug of war edition 🏆
+Real win 9 in a row… and the trophy doesn't move 😅
+Barça come back from 0-2 to win 3-2 ⚡
+Mbappé and Yamal both let go to miss penalties ❌
+Barça 36, Real 33
 Who lifts it in May? 👇
-
 Cartoon parody · invented lines
 #LaLiga #Barcelona #RealMadrid
