@@ -63,7 +63,7 @@ Alt text (media): Cartoon parody: Mbappé chases Dembélé, who rides PSG presid
 PSG 2 · Mbappé 0 🏆
 Al-Khelaifi drives, Dembélé waves both Champions League trophies 😜
 Wheelie, selfie, fishing rod… Mbappé gets hooked 😂
-Splat into the MADRID sign: he left PSG in 2024 🤦
+Splat into the Madrid sign: he left PSG in 2024 🤦
 Should he go back to PSG?
 Cartoon parody · invented lines
 #Mbappe #Dembele #PSG
