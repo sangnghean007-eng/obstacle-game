@@ -1,0 +1,72 @@
+{
+ "logline": "Ronaldo climbs the stairway to 1000: he beats his penalty curse for step 987, jumps to 988 — and VAR pulls the step away; then he tries to claim Félix's winner. 13 to go.",
+ "beats": [
+  {
+   "shot": "wide",
+   "idea": "giant staircase in the sky, each step a goal; Ronaldo on 986, glowing 1000 trophy at the top",
+   "text": "Road to 1000 · Part 3 🪜"
+  },
+  {
+   "shot": "low",
+   "idea": "step 987 is a penalty guarded by a ghost; flashback: last pen CLANG off the post",
+   "text": "Last pen: off the post 💥"
+  },
+  {
+   "shot": "cu",
+   "idea": "he scores, step 987 lights up gold: SIUUU",
+   "text": "987 ✅ Curse over"
+  },
+  {
+   "shot": "dutch",
+   "idea": "he leaps to 988 — the VAR robot flags offside and the step slides away; he falls back",
+   "text": "VAR: offside 🙅"
+  },
+  {
+   "shot": "cu",
+   "idea": "Félix runs past and scores the 2-1 winner",
+   "text": "Félix: 2-1 winner ⚡"
+  },
+  {
+   "shot": "xcu",
+   "idea": "close on the grab: Ronaldo holds Félix's ball 'MINE!', Félix takes it back: 'No.'",
+   "text": "MINE! / No."
+  },
+  {
+   "shot": "wide",
+   "idea": "camera climbs the last 13 steps to the 1000 trophy",
+   "text": "13 to go 👀"
+  },
+  {
+   "shot": "low",
+   "idea": "Ronaldo in his stance pointing to the top; question + follow card",
+   "text": "When does he hit 1000? 👇"
+  }
+ ],
+ "techniques": [
+  "rule-of-3",
+  "escalation",
+  "visual pun",
+  "callback",
+  "misdirection"
+ ],
+ "gags": [
+  "stairway-of-goals",
+  "penalty-curse-ghost",
+  "var-pulls-the-step",
+  "grab-teammates-goal-mine",
+  "988-ghost-step"
+ ],
+ "twist": "the step to 988 is pulled away by VAR mid-celebration",
+ "callback": "'MINE!' grab and the Siuuu take are the series' callbacks to Part 1 (Ep35)",
+ "ending": "series-countdown + question + follow card",
+ "hidden_details": [
+  "step 988 stays behind, faded, marked VAR ❌",
+  "the counter flips to 988? for a second",
+  "the clang ball in the flashback is the 20 Nov penalty"
+ ],
+ "meme_frame": "Ronaldo falling as VAR pulls step 988 away",
+ "style": "chibi-caricature-sky-staircase",
+ "prev_style": "chibi-caricature-street-chase",
+ "hook_frame0": "cover: 988? VAR SAYS NO 🙅 — 987 / 1000 · 13 to go",
+ "novelty_override": "lead ronaldo 3x in last 5: the owner asked for this Road to 1000 update (24 Nov)"
+}

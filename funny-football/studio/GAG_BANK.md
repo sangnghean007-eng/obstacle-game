@@ -161,3 +161,7 @@ Columns: id | gag | technique (rule-of-3, misdirection, escalation, cutaway, dea
 | U84 | Selfie with the trophies, crying rival photobombs, pops up as a social post (Ep42 v2) | visual pun | M |
 | U85 | Chaser bites the fishing hook and gets towed, boots sparking (Ep42 v2) | escalation | M |
 | U86 | Sudden brake slingshots the chaser into the MADRID road sign (Ep42 v2) | slapstick | M |
+| U87 | Career goals as a staircase in the sky, glowing 1000 trophy at the top (Ep43, Road to 1000 pt 3) | visual pun | M |
+| U88 | Penalty curse as a ghost keeper in a cloud goal (Ep43) | visual pun | S |
+| U89 | VAR robot flags offside and the 988 step slides away mid-celebration (Ep43) | misdirection | L |
+| U90 | Grabs the teammate's winning ball: 'MINE!' — teammate: 'No.' (Ep43) | callback | M |
