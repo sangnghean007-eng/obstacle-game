@@ -2,12 +2,12 @@
  [
   "length",
   "PASS",
-  "25.5 s"
+  "28.7 s"
  ],
  [
   "loudness",
   "PASS",
-  "-14.1 LUFS, true peak -4.0 dBTP"
+  "-14.2 LUFS, true peak -3.8 dBTP"
  ],
  [
   "silence",

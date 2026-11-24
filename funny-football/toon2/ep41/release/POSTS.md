@@ -3,8 +3,8 @@ Facts: ep41/facts.md. Real: Barça 36, Real 33 after 13 games each; Real 9 strai
 Invented: the tug of war, the trophy on the rope, every line, the falls, the laughing and crying.
 
 ## YouTube Shorts
-Title (85 chars):
-9 Wins in a Row… Trophy Moves 0 cm 😭 LaLiga Tug of War #shorts #barcelona #realmadrid
+Title (68 chars):
+Yamal Hands Mbappé the Trophy… Just Kidding 😏 #shorts #yamal #mbappe
 
 Description:
 Barça 36 · Real 33 — so we settled it with a tug of war 🏆
@@ -13,7 +13,9 @@ Barça 36 · Real 33 — so we settled it with a tug of war 🏆
 ⚡ 3-2 comeback — YANK
 ❌ Mbappé lets go to take a penalty… skied
 ❌ Yamal lets go to take a penalty… wide
-😤 Raphinha: "MY ROPE"
+🏆 Yamal: "For you, Kylian"… just kidding 😏
+👋 Three slaps: wake up! Look at the table: 36 · 33 👀
+😭 Mbappé: a season with 0 trophies?
 Who lifts it in May: Barça or Real? 👇
 Cartoon parody · invented lines
 #laliga #barcelona #realmadrid
@@ -28,7 +30,7 @@ Caption:
 Real: 9 wins in a row 💪
 Trophy: moves 0 cm 😭
 Barça 36 · Real 33 🏆
-Then both stars let go to miss penalties 😂
+Yamal: "For you, Kylian" 🏆… just kidding 😏 Wake up! 👋
 Barça or Real? 👇
 Cartoon parody
 #laliga #barcelona #realmadrid #yamal #mbappe
@@ -41,33 +43,33 @@ Real win 9 in a row 💪 → trophy moves 0 cm 😭
 Barça 0-2 down 😱 → 3-2 comeback ⚡
 Mbappé lets go → pen ❌
 Yamal lets go → pen ❌
-Raphinha: "MY ROPE" 😤
-Barça 36 · Real 33
+Yamal hands Mbappé the cup… just kidding 😏 👋👋👋
+Barça 36 · Real 33 👀
 Who lifts it in May? 👇
 
 Cartoon parody · invented lines
 .
 #laliga #barcelona #realmadrid #footballfunny #footballcartoon
 Cover: cover-9x16.jpg
-Alt text: Cartoon parody. Barça (Raphinha, Yamal) and Real (Mbappé) play tug of war for the LaLiga trophy under a 36–33 scoreboard; Real heave nine times without moving it, Barça come back, both stars let go to miss penalties, and Barça laugh while Mbappé cries.
+Alt text: Cartoon parody. Barça (Raphinha, Yamal) and Real (Mbappé) play tug of war for the LaLiga trophy under a 36–33 scoreboard; Real heave nine times without moving it, Barça come back, both stars miss penalties, then Yamal pretends to hand Mbappé the trophy, snatches it back, slaps him awake and turns his head to the table while Mbappé cries.
 Pinned comment: Who lifts it in May? 🔵🔴 Barça or ⚪ Real 👇
 Settings: Share to Feed on · Audio name "Soccer 365 – Tug of War".
 
 ## X (Twitter) — upload the mp4 natively (≈185 characters)
 LaLiga title race, tug of war edition 🏆
 Real: 9 wins in a row 💪 → trophy moves 0 cm 😭
-Mbappé & Yamal let go to miss pens ❌❌
+Yamal hands Mbappé the cup… just kidding 😏 Wake up 👋
 Barça 36 · Real 33
 Barça or Real? 👇
 (cartoon parody) #LaLiga
 Alt text (media): Cartoon parody: Barça and Real play tug of war for the LaLiga trophy; Real's nine straight wins don't move it, and Barça stay 36–33 ahead.
 
-## Facebook (Reels) — Meta caption check: 10–400 characters, no links, no shouting caps, under 6 hashtags (281 characters)
+## Facebook (Reels) (320 characters)
 LaLiga title race, tug of war edition 🏆
 Real win 9 in a row… and the trophy doesn't move 😅
-Barça come back from 0-2 to win 3-2 ⚡
-Mbappé and Yamal both let go to miss penalties ❌
-Barça 36, Real 33
+Mbappé and Yamal both miss penalties ❌
+Then Yamal hands Mbappé the cup… just kidding 😏
+Three slaps and a look at the table: Barça 36, Real 33 👀
 Who lifts it in May? 👇
 Cartoon parody · invented lines
 #LaLiga #Barcelona #RealMadrid

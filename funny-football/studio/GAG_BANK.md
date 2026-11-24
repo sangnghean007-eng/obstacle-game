@@ -145,3 +145,5 @@ Columns: id | gag | technique (rule-of-3, misdirection, escalation, cutaway, dea
 | U68 | Comeback yank sends the rival face-first (Ep41) | escalation | S |
 | U69 | Players let go of the rope to go and miss penalties (Ep41) | visual pun | M |
 | U70 | 'MY ROPE' — teammate alone on the rope (callback to 'MY BALL') (Ep41) | callback | S |
+| U71 | Fake handover: offers the cup, rival reaches, snatched back 'just kidding' (Ep41, owner's idea) | misdirection | M |
+| U72 | Three wake-up slaps, then the rival's head is turned to the league table (Ep41, owner's idea) | escalation | M |

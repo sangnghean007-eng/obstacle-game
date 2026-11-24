@@ -5,10 +5,10 @@ H = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, os.path.join(
 from music import Song, SR
 from mix import Desk
 from fx2 import Mix2
-D = 25.4; d = Desk(D); m = Mix2(D, ep=41)
+D = 28.6; d = Desk(D); m = Mix2(D, ep=41)
 song = Song('trap', key='G', minor=True, seed=41).form([('intro', 2), ('verse', 3), ('drop', 3), ('break', 2), ('drop', 3), ('outro', 2)]); st = song.render()
 L = min(len(st['drums']), int(D * SR)); env = np.ones(L)
-for a, b, g in ((6.4, 7.2, 0.3), (9.6, 10.2, 0.2), (21.8, 22.4, 0.3)): env[int(a * SR):int(b * SR)] = g
+for a, b, g in ((6.4, 7.2, 0.3), (9.6, 10.2, 0.2), (20.6, 21.1, 0.15), (22.7, 24.0, 0.25)): env[int(a * SR):int(b * SR)] = g
 env = np.convolve(env, np.ones(1500) / 1500, 'same'); d.add_stems({k: v[:L] * env for k, v in st.items()})
 r = np.random.default_rng(41)
 def tt(dur): return np.arange(int(dur * SR)) / SR
@@ -32,9 +32,14 @@ m.whoosh(12.4, .3, .3); m.vo('mbappe', 'hmm', 12.6, .4, .3); m.thump(13.2, .7); 
 m.whoosh(15.4, .3, .3); m.squeak(16.2, .45); m.thump(16.22, .3); m.fail_horn(16.5, .2); m.vo('yamal', 'uhoh', 16.9, .5, -.3)
 # MY ROPE
 m.record_scratch(17.0, .4); m.vo('generic_m', 'hmph', 17.1, .65, -.2); creak(17.4, .3); creak(17.9, .3)
-# G/H: laugh vs cry
-m.crash(18.6, .3); m.crowd(18.7, 'cheer', 2.5, .4); m.vo('yamal', 'laugh', 18.9, .6, -.4, 'belly'); m.vo('generic_m', 'laugh', 19.2, .55, -.3, 'belly'); m.vo('mbappe', 'cry', 19.4, .6, .4, 'wail')
-m.cowbell(20.4, .15); m.cowbell(20.7, .15); m.vo('mbappe', 'cry', 22.0, .55, .4, 'wail'); m.vo('yamal', 'laugh', 22.4, .5, -.4, 'snicker'); m.xylo_rise(23.6, .15)
+# G: Yamal offers the cup… snatches it back, slaps Mbappé awake, turns his head to the table; laugh vs cry
+m.crash(18.6, .25); m.crowd(18.7, 'cheer', 1.4, .3); m.vo('mbappe', 'cry', 18.8, .45, .4, 'wail')
+m.xylo(19.4, ['C5', 'E5', 'G5'], .09, .15); m.vo('yamal', 'hmm', 19.5, .45, -.2); m.vo('mbappe', 'yay', 20.05, .6, .3)
+m.whip(20.6, .6); m.record_scratch(20.62, .45); m.vo('yamal', 'laugh', 20.8, .45, -.2, 'snicker')
+for i, a in enumerate((21.0, 21.35, 21.7)): m.smack(a, .9 - i * .05, (-.3, .3)[i % 2]); m.vo('mbappe', 'ow', a + .04, .5, .3)
+m.spring(21.95, .3); m.whoosh(22.2, .4, .35); m.squeak(22.3, .35); m.sub_boom(22.8, .6); m.timpani(22.85, 70, .4, .6); m.vo('mbappe', 'gasp', 23.0, .55, .3)
+m.crowd(24.1, 'laugh', 2.4, .35); m.vo('yamal', 'laugh', 24.2, .6, -.4, 'belly'); m.vo('generic_m', 'laugh', 24.4, .55, -.5, 'belly'); m.vo('mbappe', 'cry', 24.5, .65, .4, 'wail'); m.fail_horn(25.2, .18)
+m.vo('mbappe', 'cry', 26.2, .55, .4, 'sob'); m.vo('yamal', 'laugh', 26.6, .45, -.4, 'snicker'); m.xylo_rise(27.4, .15)
 d.add('fx', (m.fx + m.music).T, 0, 1.0); d.add('vox', m.vox.T, 0, 1.25)
-d.duck('music', [10.0, 13.2, 16.2, 17.0], .45, .15, .4); d.room('fx', 'stadium', .15)
+d.duck('music', [10.0, 13.2, 16.2, 17.0, 20.6, 21.0, 22.8], .45, .15, .4); d.room('fx', 'stadium', .15)
 print(d.master(sys.argv[1], os.path.join(H, 'release', 'stems')))

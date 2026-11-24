@@ -52,7 +52,8 @@ function CB(n, o, t, ph = 0) { const k = o.life ?? 1, sw = Math.sin(t * 2.1 + ph
 
 // ---------------- Ep41 TUG OF WAR (facts: ep41/facts.md). Barça 36 · Real 33 after 13 games each.
 const CODEX = { smug: 'smug', strain: 'strain', shock: 'shock', angry: 'angry', laugh: 'happy', cry: 'sad', deadpan: 'bored' };
-const T = { A: 0, B: 2.4, C: 6.6, D: 9.6, yank: 10.0, E: 12.4, mk: 13.2, F: 15.4, yk: 16.2, rope: 17.0, G: 18.6, H: 21.8, END: 25.4 };
+const T = { A: 0, B: 2.4, C: 6.6, D: 9.6, yank: 10.0, E: 12.4, mk: 13.2, F: 15.4, yk: 16.2, rope: 17.0, G: 18.6, offer: 19.4, reach: 20.0, snatch: 20.6, turn: 22.2, look: 22.8, back: 24.1, Q: 26.4, END: 28.6 };
+const SLAPS = [21.0, 21.35, 21.7];
 const TUG = Array.from({ length: 9 }, (_, i) => 2.8 + i * 0.4);
 const RY = 1270, FEET = 1500;
 function off(t) { // trophy offset from the halfway line (negative = Barça side)
@@ -106,12 +107,30 @@ function scene(t) { stadium(t); const o = off(t), mid = 540 + o;
     if (t < T.mk) ball(1050, FEET + 70, 30); else { const q = (t - T.mk) / 1.0; ball(lerp(1050, 1150, q), lerp(FEET + 70, -600, Math.min(1, q)), 30 + q * 20, q * 14); } }
   if (t >= T.F && t < T.G) { const k = clamp((t - T.F) / 0.6); CB('yamal', { x: t < T.yk + 0.7 ? lerp(360 + o, 160, k) : lerp(160, -500, clamp((t - T.yk - 0.7) / 0.5)), y: FEET + 60, f: -1, s: 1.1, expr: t < T.yk ? 'smug' : t < T.yk + 0.5 ? 'shock' : 'deadpan', pose: t >= T.yk && t < T.yk + 0.5 ? { bArm: [-60, -40], fArm: [60, 40], bLeg: [-10, -4], fLeg: [80, 40] } : undefined }, t, 0.3);
     if (t < T.yk) ball(60, FEET + 70, 30); else { const q = clamp((t - T.yk) / 1.4); ball(lerp(60, -400, q), FEET + 70 - q * 40, 30, -q * 18); } }
-  // final: Barça laugh with the trophy, Real cry
-  if (t >= T.G) { const hop = Math.abs(Math.sin(t * 9)) * 30;
-    CB('raphinha', { x: 170, y: FEET, f: 1, s: 1.3, expr: 'laugh', hop, pose: { bArm: [-160, -130], fArm: [160, 130], bLeg: [-8, -4], fLeg: [8, 4] } }, t, 2.1);
-    CB('yamal', { x: 400, y: FEET, f: 1, s: 1.25, expr: 'laugh', hop: Math.abs(Math.sin(t * 9 + 1)) * 30 }, t, 0.3); trophy(270, 600 - hop, 1.1);
-    CB('mbappe', { x: 800, y: FEET, f: -1, s: 1.4, expr: 'cry', sq: Math.sin(t * 20) * 0.03, pose: { bArm: [-40, -20], fArm: [40, 20], bLeg: [-20, -6], fLeg: [20, 6] } }, t, 1.1);
-    ctx.fillStyle = 'rgba(110,190,255,.9)'; for (const x of [760, 840]) for (let i = 0; i < 4; i++) { const k = ((t * 1.5 + i * 0.25) % 1); ctx.beginPath(); ctx.ellipse(x + (x > 800 ? k * 50 : -k * 50), 930 + k * 320, 12, 20, 0, 0, 7); ctx.fill(); } }
+  // final (owner's story): Yamal offers the cup to Mbappé… snatches it back, slaps him awake, turns his head to the table
+  if (t >= T.G) { const hop = Math.abs(Math.sin(t * 9)) * 30, lau = t >= T.back;
+    const yx = t < T.offer ? 400 : t < SLAPS[0] - 0.25 ? lerp(400, 560, eOut((t - T.offer) / 0.6)) : t < T.back ? lerp(560, 650, eOut((t - SLAPS[0] + 0.25) / 0.2)) : lerp(650, 420, eOut((t - T.back) / 0.5));
+    const slapI = SLAPS.findIndex(a => t >= a && t < a + 0.3), slapping = t >= SLAPS[0] - 0.15 && t < T.turn;
+    const yPose = lau ? { bArm: [-160, -130], fArm: [160, 130], bLeg: [-8, -4], fLeg: [8, 4] }
+      : t >= T.turn ? { bArm: [-14, -6], fArm: [150, 120], bLeg: [-8, -4], fLeg: [8, 4] }
+      : slapping ? { bArm: [-14, -6], fArm: slapI >= 0 ? reach('yamal', { x: yx, y: FEET, f: 1, s: 1.25 }, 'f', 800, 960) : [150, 140], bLeg: [-8, -4], fLeg: [8, 4] }
+      : t >= T.offer && t < T.snatch ? { bArm: [-14, -6], fArm: [95, 85], bLeg: [-8, -4], fLeg: [8, 4] } : { bArm: [-160, -140], fArm: [160, 140], bLeg: [-8, -4], fLeg: [8, 4] };
+    const yEx = lau ? 'laugh' : t >= T.snatch && t < T.turn ? 'angry' : 'smug';
+    CB('raphinha', { x: 170, y: FEET, f: 1, s: 1.3, expr: t >= T.snatch && t < T.back ? 'smug' : 'laugh', hop: lau ? hop : 0, pose: lau ? { bArm: [-14, -6], fArm: [110, 95], bLeg: [-8, -4], fLeg: [8, 4] } : undefined }, t, 2.1);
+    let cx = yx + 10, cy = 700, cr = 0; if (t >= T.offer && t < T.snatch) { cx = yx + 170; cy = 960; cr = 0.1; } if (t >= T.snatch && t < T.snatch + 0.25) { const q = (t - T.snatch) / 0.25; cx = lerp(yx + 190, yx - 80, q); cy = lerp(960, 760, q); cr = -q * 0.8; }
+    if (t >= T.snatch + 0.25 && t < T.back) { cx = yx - 110; cy = 1000; cr = -0.2; } if (lau) { cx = 300; cy = 600 - hop; }
+    trophy(cx, cy, 1.0, cr);
+    const mEx = t < T.offer ? 'cry' : t < T.snatch ? 'laugh' : t < SLAPS[0] ? 'shock' : t < T.turn ? (slapI >= 0 ? 'shock' : 'cry') : t < T.back ? 'shock' : 'cry';
+    const jerk = slapI >= 0 ? (slapI % 2 ? -1 : 1) * 0.45 * (1 - (t - SLAPS[slapI]) / 0.3) : 0;
+    const mPose = t >= T.reach && t < T.snatch + 0.4 ? { bArm: [-14, -6], fArm: [95, 85], bLeg: [-8, -4], fLeg: [8, 4] } : { bArm: [-40, -20], fArm: [40, 20], bLeg: [-20, -6], fLeg: [20, 6] };
+    CB('mbappe', { x: 880, y: FEET, f: -1, s: 1.3, expr: mEx, tilt: jerk + (t >= T.turn && t < T.back ? -0.35 : 0), sq: lau ? Math.sin(t * 20) * 0.03 : slapI >= 0 ? 0.06 : 0, pose: mPose }, t, 1.1);
+    CB('yamal', { x: yx, y: FEET, f: 1, s: 1.25, expr: yEx, hop: lau ? Math.abs(Math.sin(t * 9 + 1)) * 30 : 0, pose: yPose }, t, 0.3);
+    if (slapI >= 0) { const q = (t - SLAPS[slapI]) / 0.3; ctx.save(); ctx.globalAlpha = 1 - q; ctx.font = `400 ${90 + q * 40}px ${FONT}`; ctx.textAlign = 'center'; ctx.lineWidth = 10; ctx.strokeStyle = INK; ctx.fillStyle = '#ffd23f'; const sx = 760 + (slapI % 2 ? 1 : -1) * 120; ctx.strokeText('SLAP', sx, 820 - q * 60); ctx.fillText('SLAP', sx, 820 - q * 60);
+      ctx.fillStyle = '#ff6b6b'; ctx.globalAlpha = 0.5 * (1 - q); ctx.beginPath(); ctx.ellipse(860 + (slapI % 2 ? 40 : -40), 990, 50, 34, 0, 0, 7); ctx.fill(); ctx.restore(); }
+    if (t >= T.turn - 0.6 && t < T.back) { ctx.save(); ctx.fillStyle = '#fff'; ctx.strokeStyle = INK; ctx.lineWidth = 4; for (let i = 0; i < 3; i++) { const a = t * 6 + i * 2.1; ctx.beginPath(); ctx.arc(880 + Math.cos(a) * 90, 820 + Math.sin(a) * 26, 14, 0, 7); ctx.fill(); ctx.stroke(); } ctx.restore(); }
+    if (lau) { ctx.fillStyle = 'rgba(110,190,255,.9)'; for (const x of [830, 920]) for (let i = 0; i < 4; i++) { const k = ((t * 1.5 + i * 0.25) % 1); ctx.beginPath(); ctx.ellipse(x + (x > 875 ? k * 60 : -k * 60), 930 + k * 320, 12, 20, 0, 0, 7); ctx.fill(); } }
+    if (t >= T.Q - 0.4) { ctx.save(); ctx.globalAlpha = clamp((t - T.Q + 0.4) / 0.4); ctx.font = `400 120px ${FONT}`; ctx.textAlign = 'center'; ctx.fillText('🏆', 880, 760); ctx.lineWidth = 14; ctx.strokeStyle = '#e53935'; ctx.beginPath(); ctx.moveTo(810, 690); ctx.lineTo(950, 810); ctx.stroke(); ctx.restore(); } }
+
 }
 function ball(x, y, r = 30, rot = 0) { ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.fillStyle = '#fff'; ctx.strokeStyle = INK; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(0, 0, r, 0, 7); ctx.fill(); ctx.stroke(); ctx.fillStyle = INK; ctx.beginPath(); for (let i = 0; i < 5; i++) { const a = i * 1.2566; ctx.lineTo(Math.cos(a) * r * 0.38, Math.sin(a) * r * 0.38); } ctx.fill(); ctx.restore(); }
 function frame(t) { const draw = () => { scene(t); }; const o = off(t);
@@ -122,15 +141,19 @@ function frame(t) { const draw = () => { scene(t); }; const o = off(t);
   else if (t < T.F) SHOT.cu(ctx, draw, { x: 900, y: 1150, zoom: 1.15 });
   else if (t < T.rope) SHOT.cu(ctx, draw, { x: 260, y: 1150, zoom: 1.15 });
   else if (t < T.G) SHOT.xcu(ctx, draw, { x: 150 + o, y: 1000, zoom: 1.8 });
-  else if (t < T.H) SHOT.wide(ctx, () => { scene(t); board(t); }, { x: 520, y: 1110, zoom: 1.0 });
-  else SHOT.split(ctx, [{ draw: () => scene(t), shot: 'cu', opts: { x: 265, y: 1000, zoom: 1.25 } }, { draw: () => scene(t), shot: 'cu', opts: { x: 800, y: 1050, zoom: 1.2 } }], { vertical: false, border: '#fff' }); }
+  else if (t < T.snatch) SHOT.cu(ctx, () => { scene(t); board(t); }, { x: 560, y: 1050, zoom: 1.12 });
+  else if (t < T.turn) SHOT.xcu(ctx, () => { scene(t); board(t); }, { x: 760, y: 1060, zoom: 1.45 });
+  else if (t < T.look) SHOT.cu(ctx, () => { scene(t); board(t); }, { x: 760, y: lerp(1020, 700, eIO((t - T.turn) / 0.6)), zoom: 1.3 });
+  else if (t < T.back) SHOT.low(ctx, () => { scene(t); board(t); }, { x: 600, y: lerp(560, 480, (t - T.look) / 1.3), zoom: 1.5, lift: 0 });
+  else SHOT.wide(ctx, () => { scene(t); board(t); }, { x: 540, y: 1050, zoom: 0.98 }); }
 const CAPS = [[0.2, T.B, 'LaLiga title race 🏆'], [T.B + 0.4, T.B + 2.6, 'Real: 9 wins in a row 💪'], [T.B + 2.6, T.C, '…trophy moves 0 cm 😅'], [T.C + 0.2, T.D, 'Barça 0-2 down 😱'], [T.yank, T.E, '3-2 COMEBACK ⚡'],
-  [T.mk + 0.3, T.F, 'Mbappé pen ❌'], [T.yk + 0.3, T.rope, 'Yamal pen ❌'], [T.rope, T.G, 'MY ROPE 😤', 1], [T.G + 0.3, T.H, 'Still 36 · 33 😂'], [T.H + 0.3, T.END, 'Who lifts it in May? 👇']];
-function hud(t) { for (const c of CAPS) if (t >= c[0] && t < c[1]) card(c[2], 540, (T.G <= t && t < T.H) || t < T.B ? 1640 : 250, 64, { pop: (t - c[0]) / 0.3, bg: /❌|😱|⚡|😂/.test(c[2]) ? '#fff3b0' : '#fffaf0', tail: c[3] });
-  if (t > T.H + 1.0) { ctx.font = `400 56px ${FONT}`; ctx.textAlign = 'center'; ctx.lineWidth = 10; ctx.strokeStyle = INK; ctx.fillStyle = '#fff'; ctx.strokeText('BARÇA 🔵🔴  or  REAL ⚪', 540, 1700); ctx.fillText('BARÇA 🔵🔴  or  REAL ⚪', 540, 1700);
+  [T.mk + 0.3, T.F, 'Mbappé pen ❌'], [T.yk + 0.3, T.rope, 'Yamal pen ❌'], [T.rope, T.G, 'MY ROPE 😤', 1], [T.offer, T.snatch, '"For you, Kylian 🥺"', -1], [T.snatch, SLAPS[0], 'Just kidding 😏'],
+  [SLAPS[0], T.turn, 'Wake up! 👋'], [T.turn + 0.2, T.back, 'Look: 36 · 33 👀'], [T.back + 0.2, T.Q, 'A season with 0 trophies? 😭'], [T.Q, T.END, 'Who lifts it in May? 👇']];
+function hud(t) { for (const c of CAPS) if (t >= c[0] && t < c[1]) card(c[2], 540, t < T.B || t >= T.G ? 1660 : 250, 64, { pop: (t - c[0]) / 0.3, bg: /❌|😱|⚡|😂/.test(c[2]) ? '#fff3b0' : '#fffaf0', tail: c[3] });
+  if (t > T.Q + 0.6) { ctx.font = `400 56px ${FONT}`; ctx.textAlign = 'center'; ctx.lineWidth = 10; ctx.strokeStyle = INK; ctx.fillStyle = '#fff'; ctx.strokeText('BARÇA 🔵🔴  or  REAL ⚪', 540, 1700); ctx.fillText('BARÇA 🔵🔴  or  REAL ⚪', 540, 1700);
     ctx.font = '600 26px Inter'; ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.fillText('Cartoon parody', 540, 1860); } }
-const CUTS = [[T.B, 'whip'], [T.C, 'whip'], [T.D, 'flash'], [T.E, 'whip'], [T.F, 'whip'], [T.G, 'leak'], [T.H, 'iris']];
-const SHAKE = [T.yank, T.mk, T.yk, T.G];
+const CUTS = [[T.B, 'whip'], [T.C, 'whip'], [T.D, 'flash'], [T.E, 'whip'], [T.F, 'whip'], [T.G, 'leak'], [T.snatch, 'flash'], [T.turn, 'whip'], [T.back, 'leak']];
+const SHAKE = [T.yank, T.mk, T.yk, T.snatch, ...SLAPS];
 function grade() { ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); const v = ctx.createRadialGradient(540, 960, 560, 540, 960, 1250); v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,0,.3)'); ctx.fillStyle = v; ctx.fillRect(0, 0, W, H); ctx.restore(); }
 window.DURATION = T.END; window.render = function (t) { window.T2T = t; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.clearRect(0, 0, W, H); ctx.fillStyle = '#0d1433'; ctx.fillRect(0, 0, W, H);
   const hs = SHAKE.reduce((m, a) => Math.max(m, t >= a && t < a + 0.25 ? 16 * (1 - (t - a) / 0.25) : 0), 0) + (t >= T.B && t < T.C && TUG.some(a => t >= a && t < a + 0.1) ? 8 : 0);
