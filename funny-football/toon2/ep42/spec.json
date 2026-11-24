@@ -3,42 +3,42 @@
  "beats": [
   {
    "shot": "wide",
-   "idea": "PSG motorbike through Paris (Al-Khelaifi driving), Dembélé on the back holding UCL 2025 + 2026",
+   "idea": "PSG bike: Al-Khelaifi honks a horn fanfare, Dembélé kisses the trophies (MWAH)",
    "text": "PSG: 2 Champions Leagues 🏆🏆"
   },
   {
    "shot": "xcu",
-   "idea": "Mbappé running behind, drooling",
+   "idea": "Mbappé running behind, drooling, a clear gap to the cups",
    "text": "Mbappé: 0 😩"
   },
   {
    "shot": "low",
-   "idea": "Dembélé waggles the cups; Mbappé's fingertips almost there",
-   "text": "Come get it 😜"
+   "idea": "Mbappé closes in; the president looks back in sunglasses",
+   "text": "Almost… 🤏"
   },
   {
    "shot": "dutch",
-   "idea": "VROOM: exhaust soot all over Mbappé's face",
-   "text": "VROOM 💨"
-  },
-  {
-   "shot": "wide",
-   "idea": "flying leap over the bike, misses, faceplant",
-   "text": "So close… 😭"
+   "idea": "WHEELIE: the bike pops up and zooms off, soot all over Mbappé's face",
+   "text": "Bye 😎💨"
   },
   {
    "shot": "cu",
-   "idea": "Dembélé dangles the 2025 cup on a fishing rod, yanks it at every lunge",
-   "text": "Come on, Kylian 😜"
+   "idea": "Dembélé's selfie with both cups, crying Mbappé photobombs; it pops up as a post",
+   "text": "📸 Selfie time"
   },
   {
    "shot": "wide",
-   "idea": "road sign MADRID (🏆 0) | PARIS (🏆🏆): he left PSG in 2024",
+   "idea": "trophy on a fishing rod; on the 3rd lunge Mbappé bites the hook and is towed, sparks flying",
+   "text": "HOOKED 😂"
+  },
+  {
+   "shot": "cu",
+   "idea": "sudden brake: Mbappé slingshots into the MADRID road sign (🏆 0) — SPLAT",
    "text": "2024: left PSG for Madrid 🤦"
   },
   {
    "shot": "low",
-   "idea": "bike rides off into the sunset, Mbappé sits crying; question + follow card",
+   "idea": "horn fanfare again, the bike rides off, Mbappé crying under MADRID; question + follow card",
    "text": "Back to PSG? 👇"
   }
  ],
@@ -50,23 +50,25 @@
   "callback"
  ],
  "gags": [
-  "trophy-motorbike-tease",
+  "president-horn-fanfare",
+  "trophy-kiss",
+  "sunglasses-look-back-wheelie",
   "exhaust-soot-face",
-  "leap-faceplant",
-  "trophy-on-fishing-rod",
-  "madrid-paris-road-sign"
+  "selfie-photobomb-post",
+  "trophy-on-fishing-rod-hooked-tow",
+  "brake-slingshot-splat-sign"
  ],
  "twist": "the road sign: he chose the Madrid road in 2024 — PSG won it twice right after",
- "callback": "the two cups from the first shot ride off into the sunset while Mbappé sits on the road",
+ "callback": "the president's horn fanfare opens and closes the video; the 2025/2026 cups from shot 1 leave with the bike",
  "ending": "two-sided question + follow card",
  "hidden_details": [
   "the cups are dated 2025 and 2026",
   "the sign shows 🏆 0 under MADRID and 🏆🏆 under PARIS",
   "the bike carries the president's name"
  ],
- "meme_frame": "Mbappé drooling, fingertips inches from the two trophies",
+ "meme_frame": "Mbappé hooked on the fishing line, towed behind the PSG bike",
  "style": "chibi-caricature-street-chase",
  "prev_style": "chibi-caricature-podium-fight",
- "hook_frame0": "cover: SO CLOSE… 🏆🏆 — PSG 2 · Mbappé 0",
+ "hook_frame0": "cover: HOOKED 🎣😂 — PSG 🏆🏆 · Mbappé 0",
  "novelty_override": "lead mbappe 3x in last 5: the owner asked for this Mbappé story explicitly (24 Nov)"
 }

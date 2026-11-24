@@ -156,3 +156,8 @@ Columns: id | gag | technique (rule-of-3, misdirection, escalation, cutaway, dea
 | U79 | VROOM: exhaust soot covers the chaser's face, only blinking eyes left (Ep42) | slapstick | S |
 | U80 | Trophy dangled on a fishing rod like a carrot, yanked up at every lunge (Ep42) | visual pun | M |
 | U81 | Road sign MADRID 🏆0 / PARIS 🏆🏆 at the moment he stops (Ep42) | misdirection | M |
+| U82 | Club president honks a horn that plays a fanfare (open + close callback) (Ep42 v2) | sound gag | S |
+| U83 | Sunglasses look-back, then a wheelie away from the chaser (Ep42 v2) | escalation | M |
+| U84 | Selfie with the trophies, crying rival photobombs, pops up as a social post (Ep42 v2) | visual pun | M |
+| U85 | Chaser bites the fishing hook and gets towed, boots sparking (Ep42 v2) | escalation | M |
+| U86 | Sudden brake slingshots the chaser into the MADRID road sign (Ep42 v2) | slapstick | M |

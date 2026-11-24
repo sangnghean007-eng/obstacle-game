@@ -1,0 +1,152 @@
+<!doctype html><html><head><meta charset="utf-8"><title>The Chase</title><style>html,body{margin:0;background:#000}</style></head><body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="../styles.js"></script><script src="../pro.js"></script><script src="../fx.js"></script><script src="../shots.js"></script><script src="../chibi.js"></script><script src="../chibi_cast.js"></script><script src="../rig2.js"></script><script src="../castimg.js"></script><script src="../motion.js"></script><script src="../cta2.js"></script><script src="../cast/skins.js"></script>
+<script>
+// Ep40 "PENALTY PODIUM" (facts: ep40/facts.md). Barça 36, Real 33, Atlético 28; Yamal and Mbappé both missed penalties this weekend; both teams won.
+// (helpers from Ep37) Ep37 "THE EXCUSES" (facts: ep37/facts.md, checked 22 Nov 2026). Messi 8 Ballons d'Or, Ronaldo 5. Real words on screen in quotes only:
+// 2021 Instagram "…lie in this way"; 2023 to Record "losing credibility" / "the numbers don't deceive" (he scored 54 in 2023). Everything else is cartoon.
+const W = 1080, H = 1920, cv = document.getElementById('c'), ctx = cv.getContext('2d');
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v)), lerp = (a, b, k) => a + (b - a) * k, eOut = k => 1 - (1 - clamp(k)) ** 3, eIO = k => { k = clamp(k); return k < .5 ? 4 * k * k * k : 1 - (-2 * k + 2) ** 3 / 2; };
+const eBack = k => { k = clamp(k); const c = 1.7; return 1 + (c + 1) * (k - 1) ** 3 + c * (k - 1) ** 2; };
+const FONT = '"Bangers","Impact",Inter,sans-serif', INK = '#1a1410', GOLD = '#f2c230';
+CASTIMG.preload(['mbappe']); const CODEH = new Set(['dembele', 'pres']); window.CAST_READY = Promise.all([window.CAST_READY, document.fonts.load('40px Bangers'), document.fonts.load('40px Anton')]);
+function card(s, x, y, size, o = {}) { ctx.save(); ctx.font = `400 ${size}px ${o.font || FONT}`; const tw = ctx.measureText(s).width, pw = tw + size * 0.9, ph = size * 1.35;
+  ctx.translate(x, y); ctx.rotate(o.rot || 0); const sc = o.pop != null ? eBack(o.pop) : 1; ctx.scale(sc, sc);
+  ctx.fillStyle = 'rgba(0,0,0,.25)'; ctx.beginPath(); ctx.roundRect(-pw / 2 + 8, -ph / 2 + 10, pw, ph, 18); ctx.fill();
+  ctx.fillStyle = o.bg || '#fffaf0'; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.beginPath(); ctx.roundRect(-pw / 2, -ph / 2, pw, ph, 18); ctx.fill(); ctx.stroke();
+  if (o.tail) { ctx.beginPath(); ctx.moveTo(o.tail * 40 - 30, ph / 2 - 3); ctx.lineTo(o.tail * 110, ph / 2 + 70); ctx.lineTo(o.tail * 40 + 30, ph / 2 - 3); ctx.fill(); ctx.stroke(); ctx.fillRect(o.tail * 40 - 27, ph / 2 - 8, 54, 8); }
+  ctx.fillStyle = o.col || INK; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(s, 0, 4); ctx.restore(); }
+function stamp(s, x, y, size, k, col = '#c0281c') { if (k <= 0) return; ctx.save(); ctx.translate(x, y); ctx.rotate(-0.07); const sc = 1.6 - 0.6 * eOut(k * 2.5); ctx.scale(sc, sc); ctx.globalAlpha = clamp(k * 4);
+  ctx.font = `400 ${size}px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineWidth = 16; ctx.strokeStyle = '#fffaf0'; ctx.strokeText(s, 0, 0); ctx.fillStyle = col; ctx.fillText(s, 0, 0);
+  const tw = ctx.measureText(s).width; ctx.lineWidth = 7; ctx.strokeStyle = col; ctx.strokeRect(-tw / 2 - 30, -size * 0.65, tw + 60, size * 1.3); ctx.restore(); }
+// ---------------- cast: both in tuxedos (gala), caricature heads
+const kit = (shirt, trim, shorts, sock, num, boot = '#111') => ({ shirt, sleeve: shirt, cuff: trim, collar: trim, shorts, sock, sockShade: sock, sockBand: shirt, boot, num });
+const shadeOf = h => '#' + [1, 3, 5].map(i => Math.round(parseInt(h.slice(i, i + 2), 16) * 0.8).toString(16).padStart(2, '0')).join('');
+const BASE = { yamal: Object.assign({}, CH.mate1, { kit: Object.assign(kit('#a50044', '#004d98', '#004d98', '#004d98', '#ffd60a'), { stripes: '#004d98' }), num: '10', numSize: 56, name: 'YAMAL' }),
+  mbappe: Object.assign({}, CH.mate2, { kit: kit('#f7f7f7', '#c9a227', '#f7f7f7', '#f7f7f7', '#1b2a5c', '#f2f2f2'), num: '10', numSize: 56, name: 'MBAPPÉ' }),
+  raphinha: Object.assign({}, CH.mate3, { kit: Object.assign(kit('#a50044', '#004d98', '#004d98', '#004d98', '#ffd60a'), { stripes: '#004d98' }), num: '11', numSize: 56, name: 'RAPHINHA' }),
+  // DEMBÉLÉ (med, code likeness): dark skin, short black twists, thin beard + moustache, slim, PSG navy #10
+  dembele: Object.assign({}, CH.mate4, { kit: kit('#0b1f4d', '#d6203a', '#0b1f4d', '#0b1f4d', '#ffffff'), num: '10', numSize: 56, name: 'DEMBÉLÉ', shoulderW: 70,
+    head: { R: 100, hair: 'twists', hairCol: '#0d0d0d', twistH: -0.02, beard: 'trim', beardCol: '#141010', faceH: 1.06, faceW: 0.92, jaw: 0.45, chin: 0.5, browW: 0.12, browCol: '#111', iris: '#2a1a10', nose: 0.45, mouthW: 1.12, earSize: 1.05 } }),
+  // PSG PRESIDENT NASSER AL-KHELAIFI (code likeness, med): short dark hair, short salt-and-pepper beard, dark suit, PSG tie
+  pres: Object.assign({}, CH.mate4, { kit: kit('#20222e', '#f2f2f2', '#20222e', '#20222e', '#20222e', '#0a0a0a'), num: '', numSize: 10, name: 'AL-KHELAIFI',
+    head: { R: 100, hair: 'sidepart', hairCol: '#1e1e1e', stubble: true, faceW: 1.06, faceH: 1.0, jaw: 0.85, chin: 0.7, browW: 0.15, browCol: '#1a1a1a', iris: '#2a1a10', nose: 0.45, mouthW: 1.05 } }),
+  ronaldo: Object.assign({}, CH.mate4, { kit: kit('#f5d000', '#1f3f8f', '#1f3f8f', '#f5d000', '#1f3f8f'), num: '7', numSize: 56, name: 'RONALDO' }) };
+CAST_SKIN.dembele = '#5a3622'; CAST_SKIN.pres = '#c49470';
+const CC = {}; for (const k in BASE) CC[k] = Object.assign({}, BASE[k], { arm: BASE[k].arm * 0.82, armW: BASE[k].armW * 1.35, skin: CAST_SKIN[k], shade: shadeOf(CAST_SKIN[k]) });
+const SC = { yamal: 1.0, mbappe: 1.05, raphinha: 1.0, ronaldo: 1.05, dembele: 1.08, pres: 1.05 };
+const lay = n => { const C = CC[n], hipY = -C.leg * 0.95, shY = hipY - C.torsoH; return { hipY, shY, fs: [C.shoulderW * 0.8, shY + 30], bs: [-C.shoulderW * 0.72, shY + 30] }; };
+function W2(o, lx, ly) { const s = o.s, f = o.f || 1, r = o.lean || 0, X = lx * s * f, Y = ly * s; return [o.x + X * Math.cos(r) - Y * Math.sin(r), o.y + X * Math.sin(r) + Y * Math.cos(r)]; }
+function reach(n, o, side, tx, ty) { const L = lay(n), p = side === 'f' ? L.fs : L.bs, S = W2(o, p[0], p[1]), r = o.lean || 0, f = o.f || 1;
+  const dx = tx - S[0], dy = ty - S[1], lx = (dx * Math.cos(-r) - dy * Math.sin(-r)) / f, ly = dx * Math.sin(-r) + dy * Math.cos(-r);
+  const a = Math.atan2(lx, ly) * 180 / Math.PI; return [a - 10, a + 10]; }
+const handAt = (n, o, side, dist = 0.95) => { const L = lay(n), C = CC[n], p = side === 'f' ? L.fs : L.bs, S = W2(o, p[0], p[1]); return S; };   // shoulder (for aiming)
+function CB(n, o, t, ph = 0) { const k = o.life ?? 1, sw = Math.sin(t * 2.1 + ph);
+  const pose = o.pose || { bArm: [-18 + sw * 6 * k, -8], fArm: [18 - sw * 6 * k, 8], bLeg: [-8, -4], fLeg: [8, 4] };
+  const q = Object.assign({ s: SC[n] }, o);
+  chibi.draw(ctx, CC[n], pose, CODEH.has(n) ? (CODEX[o.expr] || 'neutral') : 'neutral', q.x + Math.sin(t * 0.9 + ph) * 4 * k, q.y - (o.hop || 0), q.s, { f: o.f || 1, lean: (o.lean || 0) + Math.sin(t * 1.3 + ph) * 0.015 * k, sq: (o.sq || 0) + Math.sin(t * 3.1 + ph) * 0.012 * k,
+    headTilt: (o.tilt || 0) + Math.sin(t * 1.7 + ph) * 0.05 * k, hands: o.hands, headFn: CODEH.has(n) ? undefined : CASTIMG.head(ctx, n, o.expr || 'smug', { collar: CC[n].kit.collar }) }); return;
+  // bow tie + shirt front over the collar
+  const L = lay(n), b = W2(q, 0, L.shY + 26); ctx.save(); ctx.translate(b[0], b[1]); ctx.rotate(q.lean || 0); const z = q.s;
+  ctx.fillStyle = '#fffaf0'; ctx.beginPath(); ctx.moveTo(-26 * z, -6 * z); ctx.lineTo(26 * z, -6 * z); ctx.lineTo(0, 70 * z); ctx.closePath(); ctx.fill(); ctx.strokeStyle = INK; ctx.lineWidth = 3; ctx.stroke();
+  ctx.fillStyle = '#111'; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(-30 * z, -14 * z); ctx.lineTo(-30 * z, 14 * z); ctx.closePath(); ctx.moveTo(0, 0); ctx.lineTo(30 * z, -14 * z); ctx.lineTo(30 * z, 14 * z); ctx.closePath(); ctx.fill();
+  ctx.beginPath(); ctx.arc(0, 0, 7 * z, 0, 7); ctx.fill(); ctx.restore(); }
+
+
+
+
+
+// ---------------- Ep42 THE CHASE (owner 24 Nov): Mbappé chases Dembélé, who rides on the back of the PSG president's motorbike
+// holding two Champions League trophies (2025, 2026). Mbappé never reaches them. Facts: ep42/facts.md.
+const CODEX = { smug: 'smug', strain: 'strain', shock: 'shock', angry: 'angry', laugh: 'happy', cry: 'sad', deadpan: 'bored' };
+const T = { A: 0, B: 2.6, C: 5.4, vroom: 7.2, D: 8.6, leap: 9.6, land: 10.6, E: 12.0, F: 16.0, stop: 16.6, G: 19.5, END: 24.4 };
+const LUNGE = [12.8, 13.8, 14.8], ROAD = 1520;
+function speed(t) { return t >= T.stop && t < T.G ? Math.max(0, 1 - (t - T.stop) / 0.5) * 0.3 : 1; }
+let SC0 = 0, ST0 = 0; function scroll(t) { // integrated scroll distance (deterministic: integrate from 0 each frame)
+  let s = 0, dt = 1 / 30; for (let u = 0; u < t; u += dt) s += 900 * speed(u) * Math.min(dt, t - u); return s; }
+const BGC = {}; function city(t, sc) {
+  const g0 = ctx.createLinearGradient(0, -300, 0, 1200); g0.addColorStop(0, '#2b2d6e'); g0.addColorStop(0.55, '#e96b5a'); g0.addColorStop(1, '#ffc66b'); ctx.fillStyle = g0; ctx.fillRect(-500, -500, W + 1000, 1700);
+  ctx.fillStyle = 'rgba(255,240,200,.9)'; ctx.beginPath(); ctx.arc(820, 760, 120, 0, 7); ctx.fill();
+  // Eiffel tower (far, slow parallax)
+  const ex = 760 - (sc * 0.03) % 2400; ctx.save(); ctx.translate(ex, 1060); ctx.fillStyle = '#3a2f4d'; ctx.beginPath(); ctx.moveTo(-150, 0); ctx.quadraticCurveTo(-40, -260, -12, -560); ctx.lineTo(12, -560); ctx.quadraticCurveTo(40, -260, 150, 0); ctx.lineTo(90, 0); ctx.quadraticCurveTo(0, -120, -90, 0); ctx.closePath(); ctx.fill(); ctx.fillRect(-4, -640, 8, 90); ctx.fillRect(-110, -230, 220, 18); ctx.fillRect(-60, -420, 120, 14); ctx.restore();
+  // Haussmann buildings (mid parallax)
+  const off = (sc * 0.35) % 420; for (let i = -2; i < 6; i++) { const x = i * 420 - off; ctx.fillStyle = i % 2 ? '#e9d8bd' : '#dcc7a6'; ctx.fillRect(x, 820, 410, 520); ctx.fillStyle = '#5b6a8a'; ctx.beginPath(); ctx.moveTo(x - 6, 820); ctx.lineTo(x + 30, 740); ctx.lineTo(x + 380, 740); ctx.lineTo(x + 416, 820); ctx.fill();
+    ctx.fillStyle = '#6f88b0'; for (let r = 0; r < 4; r++) for (let c = 0; c < 4; c++) ctx.fillRect(x + 30 + c * 95, 860 + r * 110, 50, 74); ctx.fillStyle = '#2b2b2b'; for (let r = 0; r < 4; r++) ctx.fillRect(x + 20, 930 + r * 110, 370, 6); }
+  ctx.fillStyle = '#b9b2a6'; ctx.fillRect(-500, 1340, W + 1000, 80); ctx.fillStyle = '#44474f'; ctx.fillRect(-500, 1420, W + 1000, 900);
+  ctx.fillStyle = '#f2f2f2'; const d = sc % 300; for (let i = -2; i < 6; i++) ctx.fillRect(i * 300 - d, 1700, 160, 18); }
+function ucl(x, y, s, lab, rot = 0) { // big-eared Champions League trophy
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s); ctx.strokeStyle = INK; ctx.lineWidth = 7; const g = ctx.createLinearGradient(-110, 0, 110, 0); g.addColorStop(0, '#8e98a4'); g.addColorStop(0.5, '#f7fafd'); g.addColorStop(1, '#808a96'); ctx.fillStyle = g;
+  for (const sx of [-1, 1]) { ctx.beginPath(); ctx.ellipse(sx * 110, 40, 60, 110, sx * 0.25, 0, 7); ctx.stroke(); ctx.lineWidth = 22; ctx.strokeStyle = '#c4ccd6'; ctx.stroke(); ctx.lineWidth = 7; ctx.strokeStyle = INK; ctx.beginPath(); ctx.ellipse(sx * 110, 40, 72, 122, sx * 0.25, 0, 7); ctx.stroke(); }
+  ctx.beginPath(); ctx.moveTo(-80, -60); ctx.quadraticCurveTo(-95, 140, -24, 190); ctx.lineTo(-30, 240); ctx.lineTo(-70, 270); ctx.lineTo(70, 270); ctx.lineTo(30, 240); ctx.lineTo(24, 190); ctx.quadraticCurveTo(95, 140, 80, -60); ctx.closePath(); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = 'rgba(255,255,255,.7)'; ctx.fillRect(-55, -40, 14, 150); if (lab) { ctx.fillStyle = '#0b1f4d'; ctx.beginPath(); ctx.roundRect(-62, 60, 124, 60, 10); ctx.fill(); ctx.font = `400 50px ${FONT}`; ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(lab, 0, 92); } ctx.restore(); }
+function wheel(x, y, r, a) { ctx.save(); ctx.translate(x, y); ctx.fillStyle = '#151515'; ctx.beginPath(); ctx.arc(0, 0, r, 0, 7); ctx.fill(); ctx.fillStyle = '#c9ced6'; ctx.beginPath(); ctx.arc(0, 0, r * 0.55, 0, 7); ctx.fill(); ctx.strokeStyle = '#555'; ctx.lineWidth = 6; for (let i = 0; i < 5; i++) { ctx.rotate(1.2566); ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(0, r * 0.5); ctx.stroke(); } ctx.rotate(a); ctx.restore(); }
+function bikeX(t) { let x = 790; if (t >= T.vroom && t < T.D) x += eOut((t - T.vroom) / 0.4) * 260 - eIO((t - T.vroom - 0.6) / 0.8) * 260 * (t > T.vroom + 0.6 ? 1 : 0);
+  if (t >= T.leap && t < T.E) x += Math.sin(clamp((t - T.leap) / 1.6) * Math.PI) * 140; if (t >= T.stop && t < T.G) x += eIO((t - T.stop) / 2.5) * 900; if (t >= T.G) x = 900 + (t - T.G) * 0; return x; }
+const UPH = { bArm: [-145, -135], fArm: [145, 135], bLeg: [80, 0], fLeg: [90, 0] }, DRIVE = { bArm: [70, 40], fArm: [60, 30], bLeg: [80, 0], fLeg: [90, 0] }, ROD = { bArm: [-60, -20], fArm: [140, 90], bLeg: [80, 0], fLeg: [90, 0] };
+const RUNP = (t, k = 22) => ({ bArm: [-60 * Math.sin(t * k), -40], fArm: [60 * Math.sin(t * k), 40], bLeg: [-45 * Math.sin(t * k), -25], fLeg: [45 * Math.sin(t * k), 25] });
+function bike(t, bx, bob, far = 0) { const y = ROAD - 40 + bob, sc = far ? 0.55 : 1; ctx.save(); ctx.translate(bx, y); ctx.scale(sc, sc); ctx.translate(-bx, -y);
+  // riders (behind the body): president driving (faces right), Dembélé on the back facing Mbappé (left)
+  CB('pres', { x: bx + 90, y: y - 70, f: 1, s: 1.0, expr: t >= T.vroom && t < T.vroom + 1 ? 'laugh' : 'smug', pose: DRIVE, life: 0.4 }, t, 1.3);
+  const rod = t >= T.E && t < T.F; CB('dembele', { x: bx - 110, y: y - 70, f: -1, s: 1.05, expr: t < T.B ? 'smug' : 'laugh', pose: rod ? ROD : UPH, hop: Math.abs(Math.sin(t * 7)) * 12 }, t, 0.4);
+  // body
+  ctx.fillStyle = '#0b1f4d'; ctx.strokeStyle = INK; ctx.lineWidth = 8; ctx.beginPath(); ctx.moveTo(bx - 250, y - 90); ctx.quadraticCurveTo(bx - 260, y - 10, bx - 200, y + 10); ctx.lineTo(bx + 170, y + 10); ctx.quadraticCurveTo(bx + 240, y - 40, bx + 200, y - 130); ctx.lineTo(bx + 120, y - 120); ctx.lineTo(bx + 60, y - 70); ctx.lineTo(bx - 200, y - 95); ctx.closePath(); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#d6203a'; ctx.fillRect(bx - 200, y - 60, 360, 22); ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#fff'; ctx.font = `400 24px ${FONT}`; ctx.fillText('PSG PRESIDENT', bx + 10, y - 49); ctx.font = `400 34px ${FONT}`; ctx.fillText('NASSER AL-KHELAIFI', bx + 30, y - 12);
+  ctx.strokeStyle = '#222'; ctx.lineWidth = 12; ctx.beginPath(); ctx.moveTo(bx + 180, y - 120); ctx.lineTo(bx + 220, y - 230); ctx.lineTo(bx + 170, y - 250); ctx.stroke(); ctx.fillStyle = '#ffe27a'; ctx.beginPath(); ctx.ellipse(bx + 230, y - 110, 26, 20, 0, 0, 7); ctx.fill();
+  ctx.fillStyle = '#777'; ctx.fillRect(bx - 300, y - 20, 90, 22); wheel(bx - 180, y + 40, 72, t * 18); wheel(bx + 170, y + 40, 72, t * 18);
+  // the trophies
+  if (!rod) { const w = Math.sin(t * 6) * 0.12; ucl(bx - 320, y - 640 + Math.sin(t * 6) * 14, 0.58, '2025', -0.25 + w); ucl(bx + 100, y - 680 - Math.sin(t * 6) * 14, 0.58, '2026', 0.25 - w); }
+  else { ucl(bx + 100, y - 680, 0.58, '2026', 0.2); }
+  ctx.restore(); }
+function smoke(t, bx) { const v = t >= T.vroom && t < T.D; for (let i = 0; i < 12; i++) { const k = ((t * (v ? 1.6 : 0.8) + i / 12) % 1), big = v ? 1 : 0.35; ctx.fillStyle = v ? `rgba(40,40,45,${0.7 * (1 - k)})` : `rgba(200,200,210,${0.5 * (1 - k)})`; ctx.beginPath(); ctx.arc(bx - 310 - k * 520, ROAD - 40 - k * 120 + Math.sin(i * 3) * 30, (30 + k * 120) * big, 0, 7); ctx.fill(); } }
+function scene(t) { const sc = scroll(t); city(t, sc); const bx = bikeX(t), bob = Math.sin(t * 30) * 4;
+  // road sign (twist)
+  if (t >= T.F - 0.5 && t < T.G) { const k = clamp((t - (T.F - 0.5)) / 1.1), x = lerp(1400, 560, eOut(k)); ctx.save(); ctx.fillStyle = '#777'; ctx.fillRect(x - 10, 900, 20, 520); ctx.fillStyle = '#1f6f3e'; ctx.strokeStyle = '#fff'; ctx.lineWidth = 8;
+    ctx.beginPath(); ctx.moveTo(x - 330, 720); ctx.lineTo(x - 20, 720); ctx.lineTo(x - 20, 860); ctx.lineTo(x - 330, 860); ctx.lineTo(x - 380, 790); ctx.closePath(); ctx.fill(); ctx.stroke(); ctx.beginPath(); ctx.moveTo(x + 20, 720); ctx.lineTo(x + 330, 720); ctx.lineTo(x + 380, 790); ctx.lineTo(x + 330, 860); ctx.lineTo(x + 20, 860); ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.font = `400 64px ${FONT}`; ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('MADRID', x - 185, 792); ctx.fillText('PARIS', x + 185, 792);
+    ctx.font = `400 44px ${FONT}`; ctx.fillStyle = '#ffd23f'; ctx.fillText('🏆 0', x - 185, 900); ctx.fillText('🏆🏆', x + 185, 900); ctx.restore(); }
+  if (t < T.G) { smoke(t, bx); bike(t, bx, bob); }
+  // Mbappé
+  let mx = 260, my = ROAD, mEx = 'shock', mPose = RUNP(t), lean = 0.18, soot = false, hop = Math.abs(Math.sin(t * 22)) * 18;
+  if (t < T.B) { mx = lerp(-300, 120, eOut(t / T.B)); }
+  else if (t < T.C) { mx = 160 + Math.sin(t * 2) * 20; mEx = 'shock'; }
+  else if (t < T.vroom) { mx = lerp(160, 390, eIO((t - T.C) / 1.8)); mPose = { bArm: [-60 * Math.sin(t * 26), -40], fArm: [100, 80], bLeg: [-45 * Math.sin(t * 26), -25], fLeg: [45 * Math.sin(t * 26), 25] }; mEx = 'shock'; lean = 0.3; }
+  else if (t < T.D) { mx = lerp(420, 260, clamp((t - T.vroom) / 0.8)); soot = t > T.vroom + 0.25; mEx = soot ? 'deadpan' : 'shock'; }
+  else if (t < T.leap) { mx = lerp(260, 300, (t - T.D)); mEx = 'angry'; lean = 0.35; }
+  else if (t < T.land) { const k = (t - T.leap) / (T.land - T.leap); mx = lerp(300, 520, k); my = ROAD - Math.sin(k * Math.PI) * 420; mPose = { bArm: [-160, -140], fArm: [165, 150], bLeg: [-60, -20], fLeg: [-40, -10] }; lean = 1.0 * k + 0.3; mEx = 'shock'; hop = 0; }
+  else if (t < T.E) { mx = lerp(520, 470, clamp((t - T.land) / 0.5)); my = ROAD + 10; lean = 1.45; mEx = 'cry'; mPose = { bArm: [150, 120], fArm: [160, 130], bLeg: [-20, -10], fLeg: [-10, -5] }; hop = 0; }
+  else if (t < T.F) { mx = 280; mEx = LUNGE.some(a => t >= a && t < a + 0.4) ? 'angry' : 'shock'; lean = LUNGE.some(a => t >= a && t < a + 0.4) ? 0.5 : 0.25; }
+  else if (t < T.G) { const k = clamp((t - T.F) / 0.6); mx = lerp(330, 420, k); mPose = t > T.stop ? { bArm: [-14, -6], fArm: [14, 6], bLeg: [-8, -4], fLeg: [8, 4] } : RUNP(t); lean = t > T.stop ? -0.1 : 0.25; hop = t > T.stop ? 0 : hop; mEx = t < T.stop + 0.4 ? 'shock' : t < T.stop + 1.6 ? 'shock' : 'cry'; }
+  else { mx = 380; my = ROAD + 40; mEx = 'cry'; mPose = { bArm: [-30, -60], fArm: [30, 60], bLeg: [80, 60], fLeg: [90, 70] }; lean = 0.1; hop = 0; }
+  CB('mbappe', { x: mx, y: my - hop, f: 1, s: 1.2, expr: mEx, pose: mPose, lean, sq: t >= T.G ? Math.sin(t * 20) * 0.03 : 0 }, t, 1.1);
+  if (soot) { ctx.save(); ctx.fillStyle = 'rgba(20,20,22,.85)'; ctx.beginPath(); ctx.ellipse(mx + 10, my - 420, 130, 115, 0, 0, 7); ctx.fill(); ctx.fillStyle = '#fff'; for (const ex of [-30, 50]) { ctx.beginPath(); ctx.arc(mx + 10 + ex, my - 450, 18, 0, 7); ctx.fill(); } ctx.fillStyle = '#111'; for (const ex of [-30, 50]) { ctx.beginPath(); ctx.arc(mx + 10 + ex, my - 450, 7, 0, 7); ctx.fill(); } ctx.restore(); }
+  // drool + hungry eyes in the chase beats
+  if ((t >= T.B && t < T.D) || (t >= T.E && t < T.F)) { ctx.fillStyle = 'rgba(150,210,255,.9)'; const k = (t * 1.8) % 1; ctx.beginPath(); ctx.ellipse(mx + 60, my - 330 + k * 140, 10, 16, 0, 0, 7); ctx.fill(); }
+  // the fishing rod: Dembélé dangles the 2025 cup in front of Mbappé; it jerks up at every lunge
+  if (t >= T.E && t < T.F) { const L = LUNGE.findIndex(a => t >= a && t < a + 0.6), up = L >= 0 ? Math.sin(clamp((t - LUNGE[L]) / 0.6) * Math.PI) * 300 : 0;
+    const tipx = bx - 420, tipy = 520, cx = mx + 210, cy = 1080 - up + Math.sin(t * 5) * 20; ctx.strokeStyle = '#6b4a2a'; ctx.lineWidth = 12; ctx.beginPath(); ctx.moveTo(bx - 170, ROAD - 520); ctx.lineTo(tipx, tipy); ctx.stroke();
+    ctx.strokeStyle = '#eee'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(tipx, tipy); ctx.lineTo(cx, cy - 60); ctx.stroke(); ucl(cx, cy, 0.5, '2025', Math.sin(t * 4) * 0.15); }
+  if (t >= T.G) { const k = (t - T.G) / 4, fx = lerp(820, 1000, k); ctx.save(); ctx.globalAlpha = 1; bike(t, fx, Math.sin(t * 30) * 3, 1); ctx.restore(); }
+  if (t >= T.land && t < T.land + 0.8) { const q = (t - T.land) / 0.8; ctx.fillStyle = `rgba(200,190,170,${0.8 * (1 - q)})`; for (let i = 0; i < 8; i++) { ctx.beginPath(); ctx.arc(mx + 120 + i * 30 * q, ROAD - 20 - i * 8, 30 + q * 40, 0, 7); ctx.fill(); } }
+}
+function pop(txt, x, y, k, col = '#ffd23f') { if (k < 0 || k > 1) return; ctx.save(); ctx.globalAlpha = 1 - k; ctx.font = `400 ${90 + k * 30}px ${FONT}`; ctx.textAlign = 'center'; ctx.lineWidth = 10; ctx.strokeStyle = INK; ctx.fillStyle = col; ctx.strokeText(txt, x, y - k * 80); ctx.fillText(txt, x, y - k * 80); ctx.restore(); }
+function frame(t) { const S = () => scene(t);
+  if (t < T.B) SHOT.wide(ctx, S, { x: 560, y: 1150, zoom: 0.98 });
+  else if (t < T.C) SHOT.xcu(ctx, S, { x: 250, y: 1000, zoom: lerp(1.6, 1.8, (t - T.B) / 2.8) });
+  else if (t < T.vroom) SHOT.low(ctx, S, { x: 520, y: 1150, zoom: 1.05, lift: 60 });
+  else if (t < T.D) SHOT.dutch(ctx, S, { x: 480, y: 1120, zoom: 1.05, rot: 0.08 });
+  else if (t < T.E) SHOT.wide(ctx, S, { x: 560, y: 1150, zoom: 0.95 });
+  else if (t < T.F) SHOT.cu(ctx, S, { x: 440, y: 1000, zoom: 1.2 });
+  else if (t < T.G) SHOT.wide(ctx, S, { x: 540, y: 1100, zoom: 0.95 });
+  else SHOT.low(ctx, S, { x: 560, y: 1150, zoom: 1.0, lift: 80 }); }
+const CAPS = [[0.2, T.B, 'PSG: 2 Champions Leagues 🏆🏆'], [T.B + 0.2, T.C, 'Mbappé: 0 😩'], [T.C + 0.2, T.vroom, '"Come get it" 😜', -1], [T.vroom + 0.1, T.D, 'VROOM 💨'],
+  [T.leap, T.land, 'So close… 😭'], [T.land + 0.1, T.E, 'Faceplant 🤕'], [T.E + 0.2, T.F, '🎣 "Come on, Kylian" 😜'], [T.stop + 0.1, T.stop + 1.5, '2024: left PSG for Madrid 🤦'], [T.stop + 1.5, T.G, 'PSG since then: 🏆🏆 😂'], [T.G + 0.3, T.END, 'Back to PSG? 👇']];
+function hud(t) { for (const c of CAPS) if (t >= c[0] && t < c[1]) card(c[2], 540, t >= T.END - CTA2.DUR ? 1420 : 250, c[2].length > 22 ? 54 : 62, { pop: (t - c[0]) / 0.3, bg: /😩|💨|😭|🤕|🤦|😂/.test(c[2]) ? '#fff3b0' : '#fffaf0', tail: c[3] });
+  ctx.font = '600 24px Inter'; ctx.fillStyle = 'rgba(255,255,255,.8)'; ctx.textAlign = 'left'; ctx.fillText('Cartoon parody', 40, 1890); }
+const CUTS = [[T.B, 'whip'], [T.C, 'whip'], [T.vroom, 'flash'], [T.D, 'whip'], [T.E, 'whip'], [T.F, 'leak'], [T.G, 'iris']];
+const SHAKE = [T.vroom, T.land, ...LUNGE];
+function grade() { ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); const v = ctx.createRadialGradient(540, 960, 560, 540, 960, 1250); v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,0,.28)'); ctx.fillStyle = v; ctx.fillRect(0, 0, W, H); ctx.restore(); }
+window.DURATION = T.END; window.render = function (t) { window.T2T = t; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.clearRect(0, 0, W, H); ctx.fillStyle = '#2b2d6e'; ctx.fillRect(0, 0, W, H);
+  const hs = SHAKE.reduce((m, a) => Math.max(m, t >= a && t < a + 0.25 ? 14 * (1 - (t - a) / 0.25) : 0), 0) + (t < T.G ? 2 : 0);
+  ctx.save(); ctx.translate(Math.sin(t * 91) * hs, Math.cos(t * 77) * hs); frame(t); ctx.restore(); grade(); ctx.setTransform(1, 0, 0, 1, 0, 0); for (const [tc, kind] of CUTS) MOTION.cut(ctx, t, tc, kind);
+  if (!window.NO_HUD) { hud(t); CTA2.draw(ctx, t - (DURATION - CTA2.DUR), { y: 1650 }); } };
+if (!location.search.includes('render')) { const t0 = performance.now(); (window.CAST_READY || Promise.resolve()).then(() => (function loop() { render(((performance.now() - t0) / 1000) % DURATION); requestAnimationFrame(loop); })()); }
+</script></body></html>

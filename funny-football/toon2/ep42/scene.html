@@ -55,15 +55,15 @@ function CB(n, o, t, ph = 0) { const k = o.life ?? 1, sw = Math.sin(t * 2.1 + ph
 
 
 
-// ---------------- Ep42 THE CHASE (owner 24 Nov): Mbappé chases Dembélé, who rides on the back of the PSG president's motorbike
-// holding two Champions League trophies (2025, 2026). Mbappé never reaches them. Facts: ep42/facts.md.
+
+// ---------------- Ep42 v2 THE CHASE (owner: "chưa đủ hài; cúp xa tay Dembélé; Mbappé dí sát cúp; chủ tịch/Dembélé/xe chưa có miếng gì")
+// Cups are drawn IN Dembélé's hands (hand position computed from the arm pose). Mbappé keeps a visible gap except at the attempts.
 const CODEX = { smug: 'smug', strain: 'strain', shock: 'shock', angry: 'angry', laugh: 'happy', cry: 'sad', deadpan: 'bored' };
-const T = { A: 0, B: 2.6, C: 5.4, vroom: 7.2, D: 8.6, leap: 9.6, land: 10.6, E: 12.0, F: 16.0, stop: 16.6, G: 19.5, END: 24.4 };
-const LUNGE = [12.8, 13.8, 14.8], ROAD = 1520;
-function speed(t) { return t >= T.stop && t < T.G ? Math.max(0, 1 - (t - T.stop) / 0.5) * 0.3 : 1; }
-let SC0 = 0, ST0 = 0; function scroll(t) { // integrated scroll distance (deterministic: integrate from 0 each frame)
-  let s = 0, dt = 1 / 30; for (let u = 0; u < t; u += dt) s += 900 * speed(u) * Math.min(dt, t - u); return s; }
-const BGC = {}; function city(t, sc) {
+const T = { A: 0, kiss: 1.2, B: 2.6, C: 5.0, look: 6.4, wheelie: 6.8, D: 8.6, snap: 9.8, post: 10.2, E: 12.0, hook: 14.0, F: 15.8, brake: 16.0, splat: 16.7, G: 19.6, END: 25.0 };
+const LUNGE = [12.6, 13.3, 14.0], ROAD = 1520;
+function speed(t) { if (t >= T.brake && t < T.G) return Math.max(0, 1 - (t - T.brake) / 0.25); if (t >= T.G) return 0; return t >= T.wheelie && t < T.wheelie + 0.8 ? 1.6 : 1; }
+function scroll(t) { let s = 0, dt = 1 / 30; for (let u = 0; u < t; u += dt) s += 900 * speed(u) * Math.min(dt, t - u); return s; }
+function city(t, sc) {
   const g0 = ctx.createLinearGradient(0, -300, 0, 1200); g0.addColorStop(0, '#2b2d6e'); g0.addColorStop(0.55, '#e96b5a'); g0.addColorStop(1, '#ffc66b'); ctx.fillStyle = g0; ctx.fillRect(-500, -500, W + 1000, 1700);
   ctx.fillStyle = 'rgba(255,240,200,.9)'; ctx.beginPath(); ctx.arc(820, 760, 120, 0, 7); ctx.fill();
   // Eiffel tower (far, slow parallax)
@@ -79,73 +79,101 @@ function ucl(x, y, s, lab, rot = 0) { // big-eared Champions League trophy
   ctx.beginPath(); ctx.moveTo(-80, -60); ctx.quadraticCurveTo(-95, 140, -24, 190); ctx.lineTo(-30, 240); ctx.lineTo(-70, 270); ctx.lineTo(70, 270); ctx.lineTo(30, 240); ctx.lineTo(24, 190); ctx.quadraticCurveTo(95, 140, 80, -60); ctx.closePath(); ctx.fill(); ctx.stroke();
   ctx.fillStyle = 'rgba(255,255,255,.7)'; ctx.fillRect(-55, -40, 14, 150); if (lab) { ctx.fillStyle = '#0b1f4d'; ctx.beginPath(); ctx.roundRect(-62, 60, 124, 60, 10); ctx.fill(); ctx.font = `400 50px ${FONT}`; ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(lab, 0, 92); } ctx.restore(); }
 function wheel(x, y, r, a) { ctx.save(); ctx.translate(x, y); ctx.fillStyle = '#151515'; ctx.beginPath(); ctx.arc(0, 0, r, 0, 7); ctx.fill(); ctx.fillStyle = '#c9ced6'; ctx.beginPath(); ctx.arc(0, 0, r * 0.55, 0, 7); ctx.fill(); ctx.strokeStyle = '#555'; ctx.lineWidth = 6; for (let i = 0; i < 5; i++) { ctx.rotate(1.2566); ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(0, r * 0.5); ctx.stroke(); } ctx.rotate(a); ctx.restore(); }
-function bikeX(t) { let x = 790; if (t >= T.vroom && t < T.D) x += eOut((t - T.vroom) / 0.4) * 260 - eIO((t - T.vroom - 0.6) / 0.8) * 260 * (t > T.vroom + 0.6 ? 1 : 0);
-  if (t >= T.leap && t < T.E) x += Math.sin(clamp((t - T.leap) / 1.6) * Math.PI) * 140; if (t >= T.stop && t < T.G) x += eIO((t - T.stop) / 2.5) * 900; if (t >= T.G) x = 900 + (t - T.G) * 0; return x; }
-const UPH = { bArm: [-145, -135], fArm: [145, 135], bLeg: [80, 0], fLeg: [90, 0] }, DRIVE = { bArm: [70, 40], fArm: [60, 30], bLeg: [80, 0], fLeg: [90, 0] }, ROD = { bArm: [-60, -20], fArm: [140, 90], bLeg: [80, 0], fLeg: [90, 0] };
+
+// hand position from the same geometry chibi.js uses (shoulder + two half-arm segments, angles measured from straight down)
+function handPos(n, o, side, ang) { const L = lay(n), C = CC[n], p = side === 'f' ? L.fs : L.bs, r = Math.PI / 180, a = C.arm * 0.5;
+  return W2(o, p[0] + (Math.sin(ang[0] * r) + Math.sin(ang[1] * r)) * a, p[1] + (Math.cos(ang[0] * r) + Math.cos(ang[1] * r)) * a); }
+function headAt(n, o) { const L = lay(n), R = (CC[n].head && CC[n].head.R) || 100; return W2(o, 0, L.shY - R * 0.95); }
+const DRIVE = { bArm: [70, 40], fArm: [60, 30], bLeg: [80, 0], fLeg: [90, 0] }, HONK = { bArm: [70, 40], fArm: [100, 60], bLeg: [80, 0], fLeg: [90, 0] };
 const RUNP = (t, k = 22) => ({ bArm: [-60 * Math.sin(t * k), -40], fArm: [60 * Math.sin(t * k), 40], bLeg: [-45 * Math.sin(t * k), -25], fLeg: [45 * Math.sin(t * k), 25] });
-function bike(t, bx, bob, far = 0) { const y = ROAD - 40 + bob, sc = far ? 0.55 : 1; ctx.save(); ctx.translate(bx, y); ctx.scale(sc, sc); ctx.translate(-bx, -y);
-  // riders (behind the body): president driving (faces right), Dembélé on the back facing Mbappé (left)
-  CB('pres', { x: bx + 90, y: y - 70, f: 1, s: 1.0, expr: t >= T.vroom && t < T.vroom + 1 ? 'laugh' : 'smug', pose: DRIVE, life: 0.4 }, t, 1.3);
-  const rod = t >= T.E && t < T.F; CB('dembele', { x: bx - 110, y: y - 70, f: -1, s: 1.05, expr: t < T.B ? 'smug' : 'laugh', pose: rod ? ROD : UPH, hop: Math.abs(Math.sin(t * 7)) * 12 }, t, 0.4);
+function bikeX(t) { let x = 800; if (t >= T.wheelie && t < T.D) x += eOut((t - T.wheelie) / 0.5) * 200 - eIO((t - T.wheelie - 0.9) / 0.8) * 200 * (t > T.wheelie + 0.9 ? 1 : 0);
+  if (t >= T.G) x += eIO((t - T.G - 1.2) / 2.5) * 900; return x; }
+function demPose(t) { // arms + what is in each hand
+  if (t >= T.kiss && t < T.kiss + 1.0) return { pose: { bArm: [-150, -130], fArm: [150, 210], bLeg: [80, 0], fLeg: [90, 0] }, kiss: true };
+  if (t >= T.D && t < T.E) return { pose: { bArm: [-150, -135], fArm: [120, 175], bLeg: [80, 0], fLeg: [90, 0] }, selfie: true };
+  if (t >= T.E && t < T.F) return { pose: { bArm: [-150, -135], fArm: [120, 100], bLeg: [80, 0], fLeg: [90, 0] }, rod: true };
+  const w = Math.sin(t * 6) * 12; return { pose: { bArm: [-150 + w, -140 + w], fArm: [150 - w, 140 - w], bLeg: [80, 0], fLeg: [90, 0] } }; }
+function notes(x, y, t, t0) { if (t < t0 || t > t0 + 1.2) return; for (let i = 0; i < 4; i++) { const k = (t - t0 - i * 0.15) / 0.9; if (k < 0 || k > 1) continue; ctx.save(); ctx.globalAlpha = 1 - k; ctx.font = `400 ${60 + k * 30}px ${FONT}`; ctx.fillStyle = '#ffd23f'; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.textAlign = 'center'; const nx = x + 40 + k * 160, ny = y - k * 200 + Math.sin(k * 9 + i) * 20; ctx.strokeText(i % 2 ? '♪' : '♫', nx, ny); ctx.fillText(i % 2 ? '♪' : '♫', nx, ny); ctx.restore(); } }
+function bike(t, bx, far = 0) { const y = ROAD - 40 + Math.sin(t * 30) * 4, sc = far ? 0.6 : 1; const wl = t >= T.wheelie && t < T.wheelie + 1.4 ? Math.sin(clamp((t - T.wheelie) / 1.4) * Math.PI) * 0.6 : 0;
+  ctx.save(); ctx.translate(bx - 180, y + 40); ctx.rotate(-wl); ctx.scale(sc, sc); ctx.translate(-(bx - 180), -(y + 40));
+  const look = t >= T.look && t < T.wheelie + 1.2, honk = (t >= 0.3 && t < 1.1) || (t >= T.G + 0.3 && t < T.G + 1.3);
+  const po = { x: bx + 90, y: y - 70, f: look ? -1 : 1, s: 1.0, expr: look ? 'laugh' : honk ? 'laugh' : 'smug', pose: honk ? HONK : DRIVE, life: 0.4 };
+  CB('pres', po, t, 1.3);
+  if (look) { const h = headAt('pres', po); ctx.save(); ctx.fillStyle = '#111'; ctx.beginPath(); ctx.roundRect(h[0] - 70, h[1] - 18, 60, 30, 8); ctx.roundRect(h[0] + 6, h[1] - 18, 60, 30, 8); ctx.fill(); ctx.fillRect(h[0] - 12, h[1] - 8, 20, 6); ctx.restore(); }
+  const dp = demPose(t), dobj = { x: bx - 110, y: y - 70, f: -1, s: 1.05, expr: dp.kiss ? 'smug' : dp.selfie ? 'laugh' : 'laugh', pose: dp.pose, hop: Math.abs(Math.sin(t * 7)) * 10 };
+  CB('dembele', dobj, t, 0.4);
+  // cups IN the hands
+  const hb = handPos('dembele', dobj, 'b', dp.pose.bArm), hf = handPos('dembele', dobj, 'f', dp.pose.fArm);
+  if (dp.selfie) { ucl(hb[0] - 30, hb[1] - 150, 0.5, '2025', -0.2); ucl(hb[0] + 60, hb[1] - 170, 0.5, '2026', 0.2);
+    ctx.save(); ctx.translate(hf[0], hf[1]); ctx.rotate(0.3); ctx.fillStyle = '#111'; ctx.beginPath(); ctx.roundRect(-34, -70, 68, 120, 12); ctx.fill(); ctx.restore();
+    if (t >= T.snap && t < T.snap + 0.15) { ctx.save(); ctx.fillStyle = 'rgba(255,255,255,.95)'; ctx.beginPath(); ctx.arc(hf[0], hf[1] - 20, 120, 0, 7); ctx.fill(); ctx.restore(); } }
+  else if (dp.rod) { ucl(hb[0], hb[1] - 160, 0.55, '2026', -0.1); if (t >= T.hook) ucl(hb[0] + 150, hb[1] - 120, 0.5, '2025', 0.25); }
+  else { ucl(hb[0] - 10, hb[1] - 170, 0.55, '2025', -0.2 + Math.sin(t * 6) * 0.1); ucl(hf[0] + 10, hf[1] - 170, dp.kiss ? 0.62 : 0.55, '2026', dp.kiss ? -0.5 : 0.2 - Math.sin(t * 6) * 0.1); }
+  if (dp.kiss) { const h = headAt('dembele', dobj); for (let i = 0; i < 4; i++) { const k = ((t - T.kiss) * 1.4 + i * 0.25) % 1; ctx.save(); ctx.globalAlpha = 1 - k; ctx.font = `400 ${50 + k * 20}px ${FONT}`; ctx.textAlign = 'center'; ctx.fillText('💋', h[0] - 120 - k * 60, h[1] - 60 - k * 160); ctx.restore(); } }
   // body
   ctx.fillStyle = '#0b1f4d'; ctx.strokeStyle = INK; ctx.lineWidth = 8; ctx.beginPath(); ctx.moveTo(bx - 250, y - 90); ctx.quadraticCurveTo(bx - 260, y - 10, bx - 200, y + 10); ctx.lineTo(bx + 170, y + 10); ctx.quadraticCurveTo(bx + 240, y - 40, bx + 200, y - 130); ctx.lineTo(bx + 120, y - 120); ctx.lineTo(bx + 60, y - 70); ctx.lineTo(bx - 200, y - 95); ctx.closePath(); ctx.fill(); ctx.stroke();
   ctx.fillStyle = '#d6203a'; ctx.fillRect(bx - 200, y - 60, 360, 22); ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#fff'; ctx.font = `400 24px ${FONT}`; ctx.fillText('PSG PRESIDENT', bx + 10, y - 49); ctx.font = `400 34px ${FONT}`; ctx.fillText('NASSER AL-KHELAIFI', bx + 30, y - 12);
   ctx.strokeStyle = '#222'; ctx.lineWidth = 12; ctx.beginPath(); ctx.moveTo(bx + 180, y - 120); ctx.lineTo(bx + 220, y - 230); ctx.lineTo(bx + 170, y - 250); ctx.stroke(); ctx.fillStyle = '#ffe27a'; ctx.beginPath(); ctx.ellipse(bx + 230, y - 110, 26, 20, 0, 0, 7); ctx.fill();
+  // little PSG flag on the back
+  ctx.strokeStyle = '#ddd'; ctx.lineWidth = 6; ctx.beginPath(); ctx.moveTo(bx - 240, y - 90); ctx.lineTo(bx - 240, y - 330); ctx.stroke(); ctx.fillStyle = '#0b1f4d'; ctx.beginPath(); ctx.moveTo(bx - 240, y - 330); ctx.quadraticCurveTo(bx - 300, y - 320 + Math.sin(t * 14) * 12, bx - 350, y - 300); ctx.lineTo(bx - 240, y - 270); ctx.fill(); ctx.fillStyle = '#d6203a'; ctx.fillRect(bx - 290, y - 318, 16, 44);
   ctx.fillStyle = '#777'; ctx.fillRect(bx - 300, y - 20, 90, 22); wheel(bx - 180, y + 40, 72, t * 18); wheel(bx + 170, y + 40, 72, t * 18);
-  // the trophies
-  if (!rod) { const w = Math.sin(t * 6) * 0.12; ucl(bx - 320, y - 640 + Math.sin(t * 6) * 14, 0.58, '2025', -0.25 + w); ucl(bx + 100, y - 680 - Math.sin(t * 6) * 14, 0.58, '2026', 0.25 - w); }
-  else { ucl(bx + 100, y - 680, 0.58, '2026', 0.2); }
-  ctx.restore(); }
-function smoke(t, bx) { const v = t >= T.vroom && t < T.D; for (let i = 0; i < 12; i++) { const k = ((t * (v ? 1.6 : 0.8) + i / 12) % 1), big = v ? 1 : 0.35; ctx.fillStyle = v ? `rgba(40,40,45,${0.7 * (1 - k)})` : `rgba(200,200,210,${0.5 * (1 - k)})`; ctx.beginPath(); ctx.arc(bx - 310 - k * 520, ROAD - 40 - k * 120 + Math.sin(i * 3) * 30, (30 + k * 120) * big, 0, 7); ctx.fill(); } }
-function scene(t) { const sc = scroll(t); city(t, sc); const bx = bikeX(t), bob = Math.sin(t * 30) * 4;
-  // road sign (twist)
-  if (t >= T.F - 0.5 && t < T.G) { const k = clamp((t - (T.F - 0.5)) / 1.1), x = lerp(1400, 560, eOut(k)); ctx.save(); ctx.fillStyle = '#777'; ctx.fillRect(x - 10, 900, 20, 520); ctx.fillStyle = '#1f6f3e'; ctx.strokeStyle = '#fff'; ctx.lineWidth = 8;
-    ctx.beginPath(); ctx.moveTo(x - 330, 720); ctx.lineTo(x - 20, 720); ctx.lineTo(x - 20, 860); ctx.lineTo(x - 330, 860); ctx.lineTo(x - 380, 790); ctx.closePath(); ctx.fill(); ctx.stroke(); ctx.beginPath(); ctx.moveTo(x + 20, 720); ctx.lineTo(x + 330, 720); ctx.lineTo(x + 380, 790); ctx.lineTo(x + 330, 860); ctx.lineTo(x + 20, 860); ctx.closePath(); ctx.fill(); ctx.stroke();
-    ctx.font = `400 64px ${FONT}`; ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('MADRID', x - 185, 792); ctx.fillText('PARIS', x + 185, 792);
-    ctx.font = `400 44px ${FONT}`; ctx.fillStyle = '#ffd23f'; ctx.fillText('🏆 0', x - 185, 900); ctx.fillText('🏆🏆', x + 185, 900); ctx.restore(); }
-  if (t < T.G) { smoke(t, bx); bike(t, bx, bob); }
-  // Mbappé
-  let mx = 260, my = ROAD, mEx = 'shock', mPose = RUNP(t), lean = 0.18, soot = false, hop = Math.abs(Math.sin(t * 22)) * 18;
-  if (t < T.B) { mx = lerp(-300, 120, eOut(t / T.B)); }
-  else if (t < T.C) { mx = 160 + Math.sin(t * 2) * 20; mEx = 'shock'; }
-  else if (t < T.vroom) { mx = lerp(160, 390, eIO((t - T.C) / 1.8)); mPose = { bArm: [-60 * Math.sin(t * 26), -40], fArm: [100, 80], bLeg: [-45 * Math.sin(t * 26), -25], fLeg: [45 * Math.sin(t * 26), 25] }; mEx = 'shock'; lean = 0.3; }
-  else if (t < T.D) { mx = lerp(420, 260, clamp((t - T.vroom) / 0.8)); soot = t > T.vroom + 0.25; mEx = soot ? 'deadpan' : 'shock'; }
-  else if (t < T.leap) { mx = lerp(260, 300, (t - T.D)); mEx = 'angry'; lean = 0.35; }
-  else if (t < T.land) { const k = (t - T.leap) / (T.land - T.leap); mx = lerp(300, 520, k); my = ROAD - Math.sin(k * Math.PI) * 420; mPose = { bArm: [-160, -140], fArm: [165, 150], bLeg: [-60, -20], fLeg: [-40, -10] }; lean = 1.0 * k + 0.3; mEx = 'shock'; hop = 0; }
-  else if (t < T.E) { mx = lerp(520, 470, clamp((t - T.land) / 0.5)); my = ROAD + 10; lean = 1.45; mEx = 'cry'; mPose = { bArm: [150, 120], fArm: [160, 130], bLeg: [-20, -10], fLeg: [-10, -5] }; hop = 0; }
-  else if (t < T.F) { mx = 280; mEx = LUNGE.some(a => t >= a && t < a + 0.4) ? 'angry' : 'shock'; lean = LUNGE.some(a => t >= a && t < a + 0.4) ? 0.5 : 0.25; }
-  else if (t < T.G) { const k = clamp((t - T.F) / 0.6); mx = lerp(330, 420, k); mPose = t > T.stop ? { bArm: [-14, -6], fArm: [14, 6], bLeg: [-8, -4], fLeg: [8, 4] } : RUNP(t); lean = t > T.stop ? -0.1 : 0.25; hop = t > T.stop ? 0 : hop; mEx = t < T.stop + 0.4 ? 'shock' : t < T.stop + 1.6 ? 'shock' : 'cry'; }
-  else { mx = 380; my = ROAD + 40; mEx = 'cry'; mPose = { bArm: [-30, -60], fArm: [30, 60], bLeg: [80, 60], fLeg: [90, 70] }; lean = 0.1; hop = 0; }
-  CB('mbappe', { x: mx, y: my - hop, f: 1, s: 1.2, expr: mEx, pose: mPose, lean, sq: t >= T.G ? Math.sin(t * 20) * 0.03 : 0 }, t, 1.1);
-  if (soot) { ctx.save(); ctx.fillStyle = 'rgba(20,20,22,.85)'; ctx.beginPath(); ctx.ellipse(mx + 10, my - 420, 130, 115, 0, 0, 7); ctx.fill(); ctx.fillStyle = '#fff'; for (const ex of [-30, 50]) { ctx.beginPath(); ctx.arc(mx + 10 + ex, my - 450, 18, 0, 7); ctx.fill(); } ctx.fillStyle = '#111'; for (const ex of [-30, 50]) { ctx.beginPath(); ctx.arc(mx + 10 + ex, my - 450, 7, 0, 7); ctx.fill(); } ctx.restore(); }
-  // drool + hungry eyes in the chase beats
-  if ((t >= T.B && t < T.D) || (t >= T.E && t < T.F)) { ctx.fillStyle = 'rgba(150,210,255,.9)'; const k = (t * 1.8) % 1; ctx.beginPath(); ctx.ellipse(mx + 60, my - 330 + k * 140, 10, 16, 0, 0, 7); ctx.fill(); }
-  // the fishing rod: Dembélé dangles the 2025 cup in front of Mbappé; it jerks up at every lunge
-  if (t >= T.E && t < T.F) { const L = LUNGE.findIndex(a => t >= a && t < a + 0.6), up = L >= 0 ? Math.sin(clamp((t - LUNGE[L]) / 0.6) * Math.PI) * 300 : 0;
-    const tipx = bx - 420, tipy = 520, cx = mx + 210, cy = 1080 - up + Math.sin(t * 5) * 20; ctx.strokeStyle = '#6b4a2a'; ctx.lineWidth = 12; ctx.beginPath(); ctx.moveTo(bx - 170, ROAD - 520); ctx.lineTo(tipx, tipy); ctx.stroke();
-    ctx.strokeStyle = '#eee'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(tipx, tipy); ctx.lineTo(cx, cy - 60); ctx.stroke(); ucl(cx, cy, 0.5, '2025', Math.sin(t * 4) * 0.15); }
-  if (t >= T.G) { const k = (t - T.G) / 4, fx = lerp(820, 1000, k); ctx.save(); ctx.globalAlpha = 1; bike(t, fx, Math.sin(t * 30) * 3, 1); ctx.restore(); }
-  if (t >= T.land && t < T.land + 0.8) { const q = (t - T.land) / 0.8; ctx.fillStyle = `rgba(200,190,170,${0.8 * (1 - q)})`; for (let i = 0; i < 8; i++) { ctx.beginPath(); ctx.arc(mx + 120 + i * 30 * q, ROAD - 20 - i * 8, 30 + q * 40, 0, 7); ctx.fill(); } }
+  notes(bx + 220, y - 260, t, 0.3); notes(bx + 220, y - 260, t, T.G + 0.3);
+  ctx.restore(); return { hb, hf, dobj }; }
+function smoke(t, bx) { const v = t >= T.wheelie && t < T.D; for (let i = 0; i < 12; i++) { const k = ((t * (v ? 1.6 : 0.8) + i / 12) % 1), big = v ? 1 : 0.35; ctx.fillStyle = v ? `rgba(40,40,45,${0.7 * (1 - k)})` : `rgba(200,200,210,${0.5 * (1 - k)})`; ctx.beginPath(); ctx.arc(bx - 310 - k * 520, ROAD - 40 - k * 120 + Math.sin(i * 3) * 30, (30 + k * 120) * big, 0, 7); ctx.fill(); } }
+function sign(t, x) { ctx.save(); ctx.fillStyle = '#777'; ctx.fillRect(x - 10, 860, 20, 560); ctx.fillStyle = '#1f6f3e'; ctx.strokeStyle = '#fff'; ctx.lineWidth = 8;
+  ctx.beginPath(); ctx.moveTo(x - 330, 700); ctx.lineTo(x - 20, 700); ctx.lineTo(x - 20, 860); ctx.lineTo(x - 330, 860); ctx.lineTo(x - 390, 780); ctx.closePath(); ctx.fill(); ctx.stroke(); ctx.beginPath(); ctx.moveTo(x + 20, 700); ctx.lineTo(x + 330, 700); ctx.lineTo(x + 390, 780); ctx.lineTo(x + 330, 860); ctx.lineTo(x + 20, 860); ctx.closePath(); ctx.fill(); ctx.stroke();
+  ctx.font = `400 66px ${FONT}`; ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('MADRID', x - 185, 760); ctx.fillText('PARIS', x + 185, 760);
+  ctx.font = `400 40px ${FONT}`; ctx.fillStyle = '#ffd23f'; ctx.fillText('🏆 0', x - 185, 822); ctx.fillText('🏆🏆', x + 185, 822); ctx.restore(); }
+function scene(t) { const sc = scroll(t); city(t, sc); const bx = bikeX(t);
+  const signX = t >= T.F - 0.6 ? lerp(1500, 700, eOut(clamp((t - (T.F - 0.6)) / 0.9))) : null; if (signX != null) sign(t, signX);
+  let H = null; if (t < T.G + 4) { smoke(t, bx); H = bike(t, bx); }
+  // ---- Mbappé: keeps a visible gap (≥ 250 px) except during the attempts
+  let mx = 180, my = ROAD, mEx = 'shock', mPose = RUNP(t), lean = 0.2, soot = false, hop = Math.abs(Math.sin(t * 22)) * 16, mTilt = 0, mSq = 0;
+  if (t < T.B) { mx = lerp(-400, -60, eOut(t / T.B)); }
+  else if (t < T.C) { mx = 170 + Math.sin(t * 2) * 15; }
+  else if (t < T.wheelie) { mx = lerp(170, 360, eIO((t - T.C) / 1.6)); mEx = t < T.look ? 'shock' : 'laugh'; lean = 0.32; mPose = { bArm: [-60 * Math.sin(t * 26), -40], fArm: [110, 95], bLeg: [-45 * Math.sin(t * 26), -25], fLeg: [45 * Math.sin(t * 26), 25] }; }
+  else if (t < T.D) { mx = lerp(360, 170, clamp((t - T.wheelie) / 0.8)); soot = t > T.wheelie + 0.35; mEx = soot ? 'deadpan' : 'shock'; }
+  else if (t < T.E) { mx = 230; mEx = t > T.snap - 0.3 && t < T.post + 1.6 ? 'cry' : 'shock'; }
+  else if (t < T.hook) { const L = LUNGE.findIndex(a => t >= a && t < a + 0.45); mx = L >= 0 ? 300 : 210; mEx = L >= 0 ? 'angry' : 'shock'; lean = L >= 0 ? 0.55 : 0.2; }
+  else if (t < T.brake) { mx = 260; mPose = { bArm: [150, 110], fArm: [-150, -110], bLeg: [-60, -30], fLeg: [-50, -30] }; lean = -0.35; mEx = 'shock'; hop = 0; mTilt = 0.15; }
+  else if (t < T.splat) { const k = (t - T.brake) / (T.splat - T.brake); mx = lerp(260, 560, k); my = lerp(ROAD, 1030, k) - Math.sin(k * Math.PI) * 300; mPose = { bArm: [-170, -175], fArm: [170, 175], bLeg: [-20, -10], fLeg: [20, 10] }; lean = 1.4 * k; mEx = 'shock'; hop = 0; }
+  else if (t < T.G + 6) { const k = eIO(clamp((t - T.splat - 0.6) / 1.0)); mx = lerp(560, 420, k); my = lerp(1030, ROAD + 30, k); mPose = k < 1 ? { bArm: [-170, -150], fArm: [170, 150], bLeg: [-20, -10], fLeg: [20, 10] } : { bArm: [-30, -60], fArm: [30, 60], bLeg: [80, 60], fLeg: [90, 70] }; lean = 0; mEx = t < T.splat + 0.8 ? 'shock' : 'cry'; hop = 0; mSq = t < T.splat + 0.3 ? 0.12 : 0; }
+  CB('mbappe', { x: mx, y: my - hop, f: 1, s: 1.2, expr: mEx, pose: mPose, lean, tilt: mTilt, sq: mSq }, t, 1.1);
+  if (soot) { const h = headAt('mbappe', { x: mx, y: my - hop, f: 1, s: 1.2, lean }); ctx.save(); ctx.fillStyle = 'rgba(20,20,22,.88)'; ctx.beginPath(); ctx.ellipse(h[0], h[1], 135, 120, 0, 0, 7); ctx.fill(); ctx.fillStyle = '#fff'; for (const ex of [-36, 40]) { ctx.beginPath(); ctx.arc(h[0] + ex, h[1] - 10, 18, 0, 7); ctx.fill(); } ctx.fillStyle = '#111'; for (const ex of [-36, 40]) { ctx.beginPath(); ctx.arc(h[0] + ex, h[1] - 10, 7, 0, 7); ctx.fill(); } ctx.restore(); }
+  if ((t >= T.B && t < T.wheelie) || (t >= T.E && t < T.hook)) { const h = headAt('mbappe', { x: mx, y: my - hop, f: 1, s: 1.2, lean }); ctx.fillStyle = 'rgba(150,210,255,.9)'; const k = (t * 1.8) % 1; ctx.beginPath(); ctx.ellipse(h[0] + 30, h[1] + 110 + k * 140, 10, 16, 0, 0, 7); ctx.fill(); }
+  // fishing rod: Dembélé's front hand holds the rod; the 2025 cup dangles just out of Mbappé's reach; on the 3rd lunge he bites the hook
+  if (H && t >= T.E && t < T.brake) { const tip = [H.hf[0] - 420, H.hf[1] - 300]; ctx.strokeStyle = '#6b4a2a'; ctx.lineWidth = 12; ctx.beginPath(); ctx.moveTo(H.hf[0], H.hf[1]); ctx.lineTo(tip[0], tip[1]); ctx.stroke();
+    const mh = headAt('mbappe', { x: mx, y: my - hop, f: 1, s: 1.2, lean }); ctx.strokeStyle = '#eee'; ctx.lineWidth = 3;
+    if (t < T.hook) { const L = LUNGE.findIndex(a => t >= a && t < a + 0.6), up = L >= 0 ? Math.sin(clamp((t - LUNGE[L]) / 0.6) * Math.PI) * 260 : 0; const cx = mh[0] + 230, cy = mh[1] + 40 - up + Math.sin(t * 5) * 15;
+      ctx.beginPath(); ctx.moveTo(tip[0], tip[1]); ctx.lineTo(cx, cy - 70); ctx.stroke(); ucl(cx, cy, 0.45, '2025', Math.sin(t * 4) * 0.15); }
+    else { ctx.beginPath(); ctx.moveTo(tip[0], tip[1]); ctx.lineTo(mh[0] + 70, mh[1] + 60); ctx.stroke();
+      for (let i = 0; i < 6; i++) { const k = ((t * 3 + i / 6) % 1); ctx.fillStyle = `rgba(255,${180 + i * 10},60,${1 - k})`; ctx.beginPath(); ctx.arc(mx - 60 - k * 200, ROAD - 10 - k * 60, 10 * (1 - k) + 4, 0, 7); ctx.fill(); } } }
+  if (t >= T.splat && t < T.splat + 0.5) { const q = (t - T.splat) / 0.5; ctx.save(); ctx.globalAlpha = 1 - q; ctx.font = `400 ${110 + q * 40}px ${FONT}`; ctx.textAlign = 'center'; ctx.lineWidth = 12; ctx.strokeStyle = INK; ctx.fillStyle = '#ffd23f'; ctx.strokeText('SPLAT', 560, 560 - q * 60); ctx.fillText('SPLAT', 560, 560 - q * 60); ctx.restore(); }
 }
-function pop(txt, x, y, k, col = '#ffd23f') { if (k < 0 || k > 1) return; ctx.save(); ctx.globalAlpha = 1 - k; ctx.font = `400 ${90 + k * 30}px ${FONT}`; ctx.textAlign = 'center'; ctx.lineWidth = 10; ctx.strokeStyle = INK; ctx.fillStyle = col; ctx.strokeText(txt, x, y - k * 80); ctx.fillText(txt, x, y - k * 80); ctx.restore(); }
+function postCard(t) { // Dembélé's selfie as a social post (screen space)
+  const k = eBack((t - T.post) / 0.35); if (t < T.post || t > T.E) return; ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.translate(540, 1150); ctx.rotate(-0.04); ctx.scale(k, k);
+  ctx.fillStyle = '#fff'; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.beginPath(); ctx.roundRect(-330, -380, 660, 760, 30); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#0b1f4d'; ctx.beginPath(); ctx.arc(-270, -320, 32, 0, 7); ctx.fill(); ctx.font = `400 40px ${FONT}`; ctx.fillStyle = INK; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText("Dembélé's selfie", -225, -320);
+  ctx.fillStyle = '#ffcf7a'; ctx.fillRect(-300, -270, 600, 460); ucl(-120, -170, 0.55, '2025', -0.2); ucl(120, -180, 0.55, '2026', 0.2); ctx.font = `400 150px ${FONT}`; ctx.textAlign = 'center'; ctx.fillText('😎', -10, 30); ctx.font = `400 110px ${FONT}`; ctx.fillText('😭', 220, 120);
+  ctx.font = `400 44px ${FONT}`; ctx.fillStyle = INK; ctx.textAlign = 'left'; ctx.fillText('❤️ 💬 ↗', -290, 240); ctx.font = `400 40px ${FONT}`; ctx.fillText('"Me and my 2 friends 🏆🏆"', -290, 310); ctx.restore(); }
 function frame(t) { const S = () => scene(t);
-  if (t < T.B) SHOT.wide(ctx, S, { x: 560, y: 1150, zoom: 0.98 });
-  else if (t < T.C) SHOT.xcu(ctx, S, { x: 250, y: 1000, zoom: lerp(1.6, 1.8, (t - T.B) / 2.8) });
-  else if (t < T.vroom) SHOT.low(ctx, S, { x: 520, y: 1150, zoom: 1.05, lift: 60 });
-  else if (t < T.D) SHOT.dutch(ctx, S, { x: 480, y: 1120, zoom: 1.05, rot: 0.08 });
-  else if (t < T.E) SHOT.wide(ctx, S, { x: 560, y: 1150, zoom: 0.95 });
-  else if (t < T.F) SHOT.cu(ctx, S, { x: 440, y: 1000, zoom: 1.2 });
-  else if (t < T.G) SHOT.wide(ctx, S, { x: 540, y: 1100, zoom: 0.95 });
-  else SHOT.low(ctx, S, { x: 560, y: 1150, zoom: 1.0, lift: 80 }); }
-const CAPS = [[0.2, T.B, 'PSG: 2 Champions Leagues 🏆🏆'], [T.B + 0.2, T.C, 'Mbappé: 0 😩'], [T.C + 0.2, T.vroom, '"Come get it" 😜', -1], [T.vroom + 0.1, T.D, 'VROOM 💨'],
-  [T.leap, T.land, 'So close… 😭'], [T.land + 0.1, T.E, 'Faceplant 🤕'], [T.E + 0.2, T.F, '🎣 "Come on, Kylian" 😜'], [T.stop + 0.1, T.stop + 1.5, '2024: left PSG for Madrid 🤦'], [T.stop + 1.5, T.G, 'PSG since then: 🏆🏆 😂'], [T.G + 0.3, T.END, 'Back to PSG? 👇']];
-function hud(t) { for (const c of CAPS) if (t >= c[0] && t < c[1]) card(c[2], 540, t >= T.END - CTA2.DUR ? 1420 : 250, c[2].length > 22 ? 54 : 62, { pop: (t - c[0]) / 0.3, bg: /😩|💨|😭|🤕|🤦|😂/.test(c[2]) ? '#fff3b0' : '#fffaf0', tail: c[3] });
+  if (t < T.B) SHOT.wide(ctx, S, { x: 600, y: 1150, zoom: 0.98 });
+  else if (t < T.C) SHOT.xcu(ctx, S, { x: 200, y: 1000, zoom: lerp(1.5, 1.7, (t - T.B) / 2.4) });
+  else if (t < T.wheelie) SHOT.low(ctx, S, { x: 560, y: 1150, zoom: 1.0, lift: 60 });
+  else if (t < T.D) SHOT.dutch(ctx, S, { x: 520, y: 1120, zoom: 0.98, rot: 0.08 });
+  else if (t < T.E) { SHOT.cu(ctx, S, { x: 560, y: 1050, zoom: 1.1 }); postCard(t); }
+  else if (t < T.F) SHOT.wide(ctx, S, { x: 520, y: 1100, zoom: 0.95 });
+  else if (t < T.G) SHOT.cu(ctx, S, { x: 600, y: 1000, zoom: 1.05 });
+  else SHOT.low(ctx, S, { x: 600, y: 1100, zoom: 0.98, lift: 60 }); }
+const CAPS = [[0.2, T.kiss, 'PSG: 2 Champions Leagues 🏆🏆'], [T.kiss, T.B, 'MWAH 💋'], [T.B + 0.2, T.C, 'Mbappé: 0 😩'], [T.C + 0.2, T.look, 'Almost… 🤏'], [T.look, T.D, 'Bye 😎💨', 1],
+  [T.D + 0.2, T.post, '📸 Selfie time'], [T.E + 0.2, T.hook, '🎣 "Come on, Kylian" 😜'], [T.hook, T.F, 'HOOKED 😂'], [T.splat + 0.3, T.splat + 1.6, '2024: left PSG for Madrid 🤦'], [T.splat + 1.6, T.G, 'PSG since then: 🏆🏆'], [T.G + 0.4, T.END, 'Back to PSG? 👇']];
+function hud(t) { for (const c of CAPS) if (t >= c[0] && t < c[1]) card(c[2], 540, t >= T.END - CTA2.DUR ? 1420 : 250, c[2].length > 22 ? 54 : 62, { pop: (t - c[0]) / 0.3, bg: /😩|💨|😂|🤦|🏆🏆$|🤏/.test(c[2]) ? '#fff3b0' : '#fffaf0', tail: c[3] });
   ctx.font = '600 24px Inter'; ctx.fillStyle = 'rgba(255,255,255,.8)'; ctx.textAlign = 'left'; ctx.fillText('Cartoon parody', 40, 1890); }
-const CUTS = [[T.B, 'whip'], [T.C, 'whip'], [T.vroom, 'flash'], [T.D, 'whip'], [T.E, 'whip'], [T.F, 'leak'], [T.G, 'iris']];
-const SHAKE = [T.vroom, T.land, ...LUNGE];
+const CUTS = [[T.B, 'whip'], [T.C, 'whip'], [T.wheelie, 'flash'], [T.D, 'whip'], [T.E, 'whip'], [T.F, 'whip'], [T.G, 'leak']];
+const SHAKE = [T.wheelie, T.snap, T.hook, T.brake, T.splat, ...LUNGE];
 function grade() { ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); const v = ctx.createRadialGradient(540, 960, 560, 540, 960, 1250); v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,0,.28)'); ctx.fillStyle = v; ctx.fillRect(0, 0, W, H); ctx.restore(); }
 window.DURATION = T.END; window.render = function (t) { window.T2T = t; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.clearRect(0, 0, W, H); ctx.fillStyle = '#2b2d6e'; ctx.fillRect(0, 0, W, H);
-  const hs = SHAKE.reduce((m, a) => Math.max(m, t >= a && t < a + 0.25 ? 14 * (1 - (t - a) / 0.25) : 0), 0) + (t < T.G ? 2 : 0);
+  const hs = SHAKE.reduce((m, a) => Math.max(m, t >= a && t < a + 0.25 ? 14 * (1 - (t - a) / 0.25) : 0), 0) + (speed(t) > 0 ? 2 : 0);
   ctx.save(); ctx.translate(Math.sin(t * 91) * hs, Math.cos(t * 77) * hs); frame(t); ctx.restore(); grade(); ctx.setTransform(1, 0, 0, 1, 0, 0); for (const [tc, kind] of CUTS) MOTION.cut(ctx, t, tc, kind);
   if (!window.NO_HUD) { hud(t); CTA2.draw(ctx, t - (DURATION - CTA2.DUR), { y: 1650 }); } };
 if (!location.search.includes('render')) { const t0 = performance.now(); (window.CAST_READY || Promise.resolve()).then(() => (function loop() { render(((performance.now() - t0) / 1000) % DURATION); requestAnimationFrame(loop); })()); }
