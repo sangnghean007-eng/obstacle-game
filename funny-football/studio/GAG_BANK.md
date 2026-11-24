@@ -152,3 +152,7 @@ Columns: id | gag | technique (rule-of-3, misdirection, escalation, cutaway, dea
 | U75 | Third place hops up once per goal (+1 ⚽ ×3) and whispers '2 points behind you' (Ep41 v3) | rule-of-3 | S |
 | U76 | Penalty at the cup bonks the third-placed coach (Ep41 v3) | slapstick | S |
 | U77 | After all the fighting, the leader just climbs the pole and takes the cup (Ep41 v3) | misdirection | M |
+| U78 | Rival waves two trophies from the back of the club president's motorbike while the hero chases on foot (Ep42, owner's idea) | escalation | M |
+| U79 | VROOM: exhaust soot covers the chaser's face, only blinking eyes left (Ep42) | slapstick | S |
+| U80 | Trophy dangled on a fishing rod like a carrot, yanked up at every lunge (Ep42) | visual pun | M |
+| U81 | Road sign MADRID 🏆0 / PARIS 🏆🏆 at the moment he stops (Ep42) | misdirection | M |

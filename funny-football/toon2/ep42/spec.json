@@ -1,0 +1,72 @@
+{
+ "logline": "Mbappé chases Dembélé, who rides on the back of PSG president Nasser Al-Khelaifi's motorbike waving two Champions League trophies; he never reaches them, then a road sign reminds him he left PSG for Madrid.",
+ "beats": [
+  {
+   "shot": "wide",
+   "idea": "PSG motorbike through Paris (Al-Khelaifi driving), Dembélé on the back holding UCL 2025 + 2026",
+   "text": "PSG: 2 Champions Leagues 🏆🏆"
+  },
+  {
+   "shot": "xcu",
+   "idea": "Mbappé running behind, drooling",
+   "text": "Mbappé: 0 😩"
+  },
+  {
+   "shot": "low",
+   "idea": "Dembélé waggles the cups; Mbappé's fingertips almost there",
+   "text": "Come get it 😜"
+  },
+  {
+   "shot": "dutch",
+   "idea": "VROOM: exhaust soot all over Mbappé's face",
+   "text": "VROOM 💨"
+  },
+  {
+   "shot": "wide",
+   "idea": "flying leap over the bike, misses, faceplant",
+   "text": "So close… 😭"
+  },
+  {
+   "shot": "cu",
+   "idea": "Dembélé dangles the 2025 cup on a fishing rod, yanks it at every lunge",
+   "text": "Come on, Kylian 😜"
+  },
+  {
+   "shot": "wide",
+   "idea": "road sign MADRID (🏆 0) | PARIS (🏆🏆): he left PSG in 2024",
+   "text": "2024: left PSG for Madrid 🤦"
+  },
+  {
+   "shot": "low",
+   "idea": "bike rides off into the sunset, Mbappé sits crying; question + follow card",
+   "text": "Back to PSG? 👇"
+  }
+ ],
+ "techniques": [
+  "escalation",
+  "rule-of-3",
+  "visual pun",
+  "misdirection",
+  "callback"
+ ],
+ "gags": [
+  "trophy-motorbike-tease",
+  "exhaust-soot-face",
+  "leap-faceplant",
+  "trophy-on-fishing-rod",
+  "madrid-paris-road-sign"
+ ],
+ "twist": "the road sign: he chose the Madrid road in 2024 — PSG won it twice right after",
+ "callback": "the two cups from the first shot ride off into the sunset while Mbappé sits on the road",
+ "ending": "two-sided question + follow card",
+ "hidden_details": [
+  "the cups are dated 2025 and 2026",
+  "the sign shows 🏆 0 under MADRID and 🏆🏆 under PARIS",
+  "the bike carries the president's name"
+ ],
+ "meme_frame": "Mbappé drooling, fingertips inches from the two trophies",
+ "style": "chibi-caricature-street-chase",
+ "prev_style": "chibi-caricature-podium-fight",
+ "hook_frame0": "cover: SO CLOSE… 🏆🏆 — PSG 2 · Mbappé 0",
+ "novelty_override": "lead mbappe 3x in last 5: the owner asked for this Mbappé story explicitly (24 Nov)"
+}
