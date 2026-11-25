@@ -79,16 +79,36 @@ function headAt(n, o) { const L = lay(n), R = (CC[n].head && CC[n].head.R) || 10
 function room(t) { ctx.fillStyle = '#1f2a44'; ctx.fillRect(-800, -800, W + 1600, H + 1600);
   for (let i = -3; i < 9; i++) { const x = i * 170; ctx.fillStyle = i % 2 ? '#a50044' : '#004d98'; ctx.fillRect(x, 300, 160, 900); ctx.strokeStyle = INK; ctx.lineWidth = 5; ctx.strokeRect(x, 300, 160, 900); ctx.fillStyle = 'rgba(255,255,255,.25)'; for (let k = 0; k < 3; k++) ctx.fillRect(x + 20 + k * 40, 330, 24, 8); ctx.fillStyle = '#ffd23f'; ctx.beginPath(); ctx.arc(x + 130, 760, 10, 0, 7); ctx.fill(); }
   ctx.fillStyle = '#7a4a2a'; ctx.fillRect(-800, 1200, W + 1600, 900); ctx.fillStyle = '#5e3820'; for (let i = -4; i < 12; i++) ctx.fillRect(i * 140, 1200, 6, 900); }
-function tv(t) { // wall TV on the right; screen text changes with the match
-  ctx.save(); ctx.translate(840, 640); ctx.rotate(-0.06); ctx.fillStyle = '#111'; ctx.strokeStyle = INK; ctx.lineWidth = 8; ctx.beginPath(); ctx.roundRect(-230, -150, 460, 300, 18); ctx.fill(); ctx.stroke();
-  const g = goalAt(t), flash = g && t < g.t + 0.9, chan = t >= T.remote;
-  ctx.fillStyle = chan ? '#0d1a3a' : flash ? (Math.floor(t * 8) % 2 ? '#f7f7f7' : '#c9a227') : '#2e8b57'; ctx.fillRect(-205, -125, 410, 250);
-  ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = flash ? INK : '#fff';
-  if (chan) { ctx.font = `400 40px ${FONT}`; ctx.fillStyle = '#ffd23f'; ctx.fillText('LALIGA', 0, -78); ctx.font = `400 56px ${FONT}`; ctx.fillStyle = '#fff'; ctx.fillText('BARÇA 36', 0, -12); ctx.fillText('REAL 33', 0, 52); }
-  else if (t >= T.G) { ctx.font = `400 46px ${FONT}`; ctx.fillText('FULL TIME', 0, -70); ctx.font = `400 84px ${FONT}`; ctx.fillText('REAL 5-1 PSV', 0, 10); ctx.font = `400 34px ${FONT}`; ctx.fillStyle = '#ffd23f'; ctx.fillText('15 PTS · TOP', 0, 80); }
-  else if (flash) { ctx.font = `400 120px ${FONT}`; ctx.fillText('GOAL', 0, 0); }
-  else { ctx.font = `400 84px ${FONT}`; ctx.fillText('REAL ' + (g ? g.sc : '0-1') + ' PSV', 0, -10); ctx.font = `400 36px ${FONT}`; ctx.fillStyle = '#ffd23f'; ctx.fillText(g ? g.min + ' ' + ({ valverde: 'VALVERDE', bellingham: 'BELLINGHAM', mbappe: 'MBAPPÉ', vini: 'VINÍCIUS' })[g.n] : "32' PERIŠIĆ (PEN)", 0, 70); }
-  ctx.restore(); }
+function bugTxt(t) { const g = goalAt(t); if (t >= T.G) return ['RMA', '5-1', 'PSV', 'FT']; return ['RMA', g ? g.sc : '0-1', 'PSV', g ? g.min : 'HT']; }
+function screen(t, w, h) { // the match on TV: pitch, tiny players, ball, and ONLY a broadcast score bug
+  const g = goalAt(t), goalNow = g && t - g.t < 0.9, chan = t >= T.remote;
+  ctx.save(); ctx.beginPath(); ctx.rect(0, 0, w, h); ctx.clip();
+  for (let i = 0; i < 8; i++) { ctx.fillStyle = i % 2 ? '#3f9e45' : '#4aae4f'; ctx.fillRect(i * w / 8, 0, w / 8 + 1, h); }
+  ctx.strokeStyle = 'rgba(255,255,255,.85)'; ctx.lineWidth = Math.max(2, w / 160); ctx.strokeRect(w * 0.04, h * 0.1, w * 0.92, h * 0.82); ctx.beginPath(); ctx.moveTo(w / 2, h * 0.1); ctx.lineTo(w / 2, h * 0.92); ctx.stroke(); ctx.beginPath(); ctx.arc(w / 2, h * 0.51, h * 0.14, 0, 7); ctx.stroke();
+  ctx.strokeRect(w * 0.86, h * 0.33, w * 0.1, h * 0.36); ctx.fillStyle = 'rgba(255,255,255,.35)'; ctx.fillRect(w * 0.955, h * 0.4, w * 0.03, h * 0.22);
+  // players (white = Real, red-white = PSV) and the ball
+  const ph = (goalNow || chan) ? 0 : t; for (let i = 0; i < 10; i++) { const home = i < 5, bx = (home ? 0.35 : 0.6) + Math.sin(ph * 0.9 + i * 1.7) * 0.18, by = 0.2 + (i % 5) * 0.16 + Math.cos(ph * 1.1 + i) * 0.04;
+    const px = goalNow && home ? 0.8 + (i % 3) * 0.04 : bx, py = goalNow && home ? 0.45 + (i % 2) * 0.1 : by; ctx.fillStyle = home ? '#ffffff' : '#d6203a'; ctx.strokeStyle = INK; ctx.lineWidth = Math.max(1.5, w / 260); ctx.beginPath(); ctx.arc(w * px, h * py, Math.max(4, w / 55), 0, 7); ctx.fill(); ctx.stroke(); }
+  const ballX = goalNow ? 0.965 : 0.5 + Math.sin(t * 1.3) * 0.25, ballY = goalNow ? 0.5 : 0.5 + Math.sin(t * 2.1) * 0.25; ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(w * ballX, h * ballY, Math.max(3, w / 90), 0, 7); ctx.fill(); ctx.stroke();
+  if (goalNow) { ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.lineWidth = Math.max(2, w / 200); for (let k = 0; k < 4; k++) { ctx.beginPath(); ctx.arc(w * 0.965, h * 0.5, w * (0.03 + k * 0.025) * (1 + Math.sin(t * 20) * 0.1), 0, 7); ctx.stroke(); } }
+  // score bug (top-left) — the only text on the TV
+  const sc = Math.max(0.5, w / 460); ctx.save(); ctx.translate(w * 0.04, h * 0.05); ctx.scale(sc, sc);
+  if (chan) { ctx.fillStyle = 'rgba(8,12,30,.94)'; ctx.beginPath(); ctx.roundRect(0, 0, 300, 96, 10); ctx.fill(); ctx.font = `400 26px ${FONT}`; ctx.textBaseline = 'middle'; ctx.textAlign = 'left'; ctx.fillStyle = '#ffd23f'; ctx.fillText('LALIGA', 12, 18); ctx.fillStyle = '#fff'; ctx.fillText('1 BARÇA  36', 12, 46); ctx.fillText('2 REAL  33', 12, 76); }
+  else { const [a, sco, b, mn] = bugTxt(t), fl = goalNow && Math.floor(t * 8) % 2; ctx.fillStyle = 'rgba(8,12,30,.94)'; ctx.beginPath(); ctx.roundRect(0, 0, 300, 48, 10); ctx.fill(); ctx.fillStyle = '#f2f2f2'; ctx.fillRect(0, 0, 10, 48); ctx.fillStyle = '#d6203a'; ctx.fillRect(170, 0, 10, 48);
+    ctx.font = `400 32px ${FONT}`; ctx.textBaseline = 'middle'; ctx.textAlign = 'left'; ctx.fillStyle = '#fff'; ctx.fillText(a, 18, 26); ctx.fillStyle = fl ? INK : '#fff'; if (fl) { ctx.fillStyle = '#ffd23f'; ctx.fillRect(76, 4, 82, 40); ctx.fillStyle = INK; } ctx.textAlign = 'center'; ctx.fillText(sco, 117, 26); ctx.textAlign = 'left'; ctx.fillStyle = '#fff'; ctx.fillText(b, 188, 26); ctx.fillStyle = '#ffd23f'; ctx.fillText(mn, 248, 26); }
+  ctx.restore(); ctx.restore(); }
+function tv(t) { ctx.save(); ctx.translate(820, 620); ctx.rotate(-0.05); ctx.fillStyle = '#111'; ctx.strokeStyle = INK; ctx.lineWidth = 8; ctx.beginPath(); ctx.roundRect(-260, -170, 520, 340, 18); ctx.fill(); ctx.stroke(); ctx.translate(-240, -150); screen(t, 480, 300); ctx.restore();
+  ctx.save(); ctx.fillStyle = '#333'; ctx.fillRect(810, 790, 20, 60); ctx.restore(); }
+function ots(t) { // over-the-shoulder: the TV fills the frame, the two heads from behind in the foreground
+  ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.fillStyle = '#1f2a44'; ctx.fillRect(0, 0, W, H); ctx.fillStyle = '#a50044'; for (let i = 0; i < 7; i++) { ctx.fillStyle = i % 2 ? '#a50044' : '#004d98'; ctx.fillRect(i * 170 - 40, 0, 160, 1300); }
+  ctx.translate(540, 760); ctx.rotate(-0.02); ctx.fillStyle = '#111'; ctx.strokeStyle = INK; ctx.lineWidth = 12; ctx.beginPath(); ctx.roundRect(-510, -330, 1020, 660, 26); ctx.fill(); ctx.stroke(); ctx.translate(-480, -300); screen(t, 960, 600); ctx.restore();
+  ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); const glow = ctx.createLinearGradient(0, 1100, 0, 1920); glow.addColorStop(0, 'rgba(120,170,255,.25)'); glow.addColorStop(1, 'rgba(0,0,0,0)'); ctx.fillStyle = glow; ctx.fillRect(0, 1100, W, 820);
+  const bob = (i) => Math.abs(Math.sin(t * 16 + i)) * (bugTxt(t)[1] === '0-1' ? 18 : 0);
+  [['#e8cf8a', '#a50044', '11', 'RAPHINHA', 300], ['#151010', '#004d98', '10', 'YAMAL', 760]].forEach(([hair, sh, num, nm, x], i) => { const y = 1450 - bob(i);
+    ctx.fillStyle = sh; ctx.strokeStyle = INK; ctx.lineWidth = 8; ctx.beginPath(); ctx.ellipse(x, y + 420, 330, 300, 0, Math.PI, 0); ctx.fill(); ctx.stroke(); ctx.fillStyle = '#fff'; ctx.font = `400 50px ${FONT}`; ctx.textAlign = 'center'; ctx.fillText(nm, x, y + 230); ctx.font = `400 130px ${FONT}`; ctx.fillStyle = '#ffd23f'; ctx.fillText(num, x, y + 360);
+    ctx.fillStyle = '#c98a5e'; ctx.beginPath(); ctx.ellipse(x, y + 60, 70, 60, 0, 0, 7); ctx.fill(); ctx.stroke(); ctx.fillStyle = i ? hair : '#2a1a10'; ctx.beginPath(); ctx.ellipse(x, y - 40, 150, 140, 0, 0, 7); ctx.fill(); ctx.stroke();
+    if (i) { ctx.fillStyle = '#151010'; for (let k = 0; k < 22; k++) { const a = k * 0.9, rr = 60 + (k % 3) * 35; ctx.beginPath(); ctx.arc(x + Math.cos(a) * rr, y - 60 + Math.sin(a) * rr * 0.8, 34, 0, 7); ctx.fill(); ctx.strokeStyle = 'rgba(255,255,255,.15)'; ctx.lineWidth = 3; ctx.stroke(); } }
+    else { ctx.fillStyle = hair; ctx.beginPath(); ctx.ellipse(x, y - 95, 140, 95, 0, Math.PI * 1.02, Math.PI * 1.98); ctx.fill(); ctx.fillStyle = '#f3dfa0'; for (let k = 0; k < 6; k++) { ctx.beginPath(); ctx.ellipse(x - 90 + k * 36, y - 150 + Math.abs(k - 2.5) * 10, 22, 36, 0.3, 0, 7); ctx.fill(); } } }); ctx.restore(); }
 const LAUGH = (t) => ({ bArm: [-30 + Math.sin(t * 18) * 25, -60], fArm: [95 + Math.sin(t * 18) * 10, 85], bLeg: [-8, -4], fLeg: [8, 4] });
 const COVER = { bArm: [150, 175], fArm: [150, 175], bLeg: [-8, -4], fLeg: [8, 4] }, ICE = { bArm: [-14, -6], fArm: [170, 200], bLeg: [-8, -4], fLeg: [8, 4] }, REMOTE = { bArm: [-14, -6], fArm: [90, 70], bLeg: [-8, -4], fLeg: [8, 4] };
 function seatedState(n, t) { // expression, pose, jerk, hide
@@ -134,6 +154,7 @@ function drawScene(t) { room(t); tv(t);
   return S; }
 function pop(txt, x, y, k, col = '#ffd23f', size = 120) { if (k < 0 || k > 1) return; ctx.save(); ctx.globalAlpha = 1 - k * k; ctx.font = `400 ${size + k * 30}px ${FONT}`; ctx.textAlign = 'center'; ctx.lineWidth = 12; ctx.strokeStyle = INK; ctx.fillStyle = col; ctx.strokeText(txt, x, y - k * 60); ctx.fillText(txt, x, y - k * 60); ctx.restore(); }
 function frame(t) { const S = () => drawScene(t), g = goalAt(t), dt = g ? t - g.t : 0;
+  if (t < 1.6 || (g && dt < 0.9 && t < T.G)) { ots(t); ctx.setTransform(1, 0, 0, 1, 0, 0); if (t < 1.6) pop('HAHAHA', 540, 1250, (t % 0.8) / 0.8, '#fff', 110); return; }
   if (t < 3.0) SHOT.wide(ctx, S, { x: 560, y: 960, zoom: lerp(1.05, 1.1, t / 3) });
   else if (t < 6.4) SHOT.cu(ctx, S, { x: dt < 0.9 ? 700 : 330, y: 1000, zoom: dt < 0.9 ? 1.3 : 1.25 });
   else if (t < 9.8) SHOT.wide(ctx, S, { x: 480, y: 960, zoom: 1.05 });
@@ -142,12 +163,12 @@ function frame(t) { const S = () => drawScene(t), g = goalAt(t), dt = g ? t - g.
   else if (t < T.G) SHOT.low(ctx, S, { x: 520, y: 1050, zoom: 1.05, lift: 60 });
   else if (t < T.H) SHOT.cu(ctx, S, { x: t < T.remote ? 450 : 620, y: 1000, zoom: 1.15 });
   else SHOT.wide(ctx, S, { x: 540, y: 960, zoom: 1.02 });
-  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.setTransform(1, 0, 0, 1, 0, 0); if (t < T.dark) { ctx.fillStyle = `rgba(110,160,255,${0.06 + 0.04 * Math.sin(t * 11) * Math.sin(t * 5)})`; ctx.fillRect(0, 0, W, H); }
   for (const G of GOALS) for (const [who, d] of G.hits) { const x = who === 'raphinha' ? 300 : who === 'cush' ? 540 : 700; pop(who === 'cush' ? 'POOF' : 'SLAP', x, 560, (t - G.t - d) / 0.6); }
-  if (t >= 0.4 && t < 3.0) pop('HAHAHA', 300, 620, ((t - 0.4) % 1.3) / 1.3, '#fff', 90);
+  if (t >= 1.6 && t < 3.0) pop('HAHAHA', 300, 620, ((t - 1.6) % 1.3) / 1.3, '#fff', 90);
   if (t >= T.remote + 0.4 && t < T.H + 0.6) pop('HEHE', 420, 640, ((t - T.remote - 0.4) % 1.0) / 1.0, '#fff', 90);
   if (t >= T.dark) { ctx.fillStyle = 'rgba(7,10,24,.84)'; ctx.fillRect(0, 0, W, H); for (let i = 0; i < 5; i++) { const vic = i >= 5, ex = vic ? 360 + (i - 5) * 300 : 140 + i * 200, ey = vic ? 1150 : 760 + Math.sin(i) * 40, blink = Math.sin(t * 7 + i * 1.7) > 0.92 ? 0.2 : 1; ctx.fillStyle = vic ? '#9fd8ff' : '#fff'; for (const s2 of [-24, 24]) { ctx.beginPath(); ctx.ellipse(ex + s2, ey, 13, 13 * blink, 0, 0, 7); ctx.fill(); } if (vic) { ctx.fillStyle = 'rgba(120,200,255,.8)'; const k = (t * 1.5 + i * .3) % 1; ctx.beginPath(); ctx.ellipse(ex - 24, ey + 30 + k * 80, 7, 11, 0, 0, 7); ctx.fill(); } } const SL = [24.45, 24.75, 25.0, 25.3, 25.55]; SL.forEach((a, i) => { const k = (t - a) / 0.35; if (k >= 0 && k < 1) { ctx.fillStyle = `rgba(255,255,255,${0.25 * (1 - k)})`; ctx.fillRect(0, 0, W, H); } pop('SLAP', 230 + (i % 3) * 300, 700 + (i % 2) * 260, k, '#ffd23f', 130); }); } }
-const CAPS = [[0.2, 1.4, 'Barça watching Real 📺'], [1.4, 3.0, 'Real 0-1 PSV 😂'], [3.0 + 1.0, 6.4, '"Keep laughing" 😏', -1], [6.4 + 1.0, 9.8, '2-1 · Bellingham 👋👋'], [9.8 + 1.8, 13.4, '"Wake up!" 👋', -1],
+const CAPS = [[0.2, 1.6, 'Watching Real vs PSV 📺'], [1.6, 3.0, 'Real losing 0-1 😂'], [3.0 + 1.0, 6.4, '"Keep laughing" 😏', -1], [6.4 + 1.0, 9.8, '2-1 · Bellingham 👋👋'], [9.8 + 1.8, 13.4, '"Wake up!" 👋', -1],
   [13.4 + 0.9, 16.4, '4-1 · Mbappé again 😱'], [16.4 + 0.9, T.G, '5-1 · Vinícius samba 💃'], [T.G + 0.2, T.remote, 'Full time 5-1 🤕'], [T.remote + 0.3, T.H, 'LaLiga: Barça 36 · Real 33 😏'], [T.dark + 1.6, T.END, 'Still laughing? 👇']];
 function hud(t) { for (const c of CAPS) if (t >= c[0] && t < c[1]) card(c[2], 540, t >= T.END - CTA2.DUR ? 1420 : 250, c[2].length > 22 ? 54 : 62, { pop: (t - c[0]) / 0.3, bg: /😂|👋|😱|💃|🤕|😏/.test(c[2]) ? '#fff3b0' : '#fffaf0', tail: c[3] });
   ctx.font = '600 24px Inter'; ctx.fillStyle = 'rgba(255,255,255,.8)'; ctx.textAlign = 'left'; ctx.fillText('Cartoon parody', 40, 1890); }
