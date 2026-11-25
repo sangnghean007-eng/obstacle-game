@@ -72,7 +72,7 @@ const GOALS = [ { t: 3.0, n: 'valverde', min: "50'", sc: '1-1', hits: [['raphinh
   { t: 9.8, n: 'mbappe', min: "64'", sc: '3-1', hits: [['yamal', 1.7]] },
   { t: 13.4, n: 'mbappe', min: "84'", sc: '4-1', hits: [['cush', 1.4], ['yamal', 1.9], ['raphinha', 2.2]] },
   { t: 16.4, n: 'vini', min: "87'", sc: '5-1', hits: [['raphinha', 1.4], ['yamal', 1.75], ['raphinha', 2.1], ['yamal', 2.45]] } ];
-const SEAT = { raphinha: 320, yamal: 610 }, BENCHY = 1470, SS = 1.32;
+const SEAT = { raphinha: 220, yamal: 470 }, BENCHY = 1470, SS = 1.3;
 function goalAt(t) { let g = null; for (const x of GOALS) if (t >= x.t) g = x; return g; }
 function slapsOn(n, t) { let c = 0; for (const g of GOALS) for (const [who, dt] of g.hits) if ((who === n) && t >= g.t + dt) c++; return Math.min(c, 6); }
 function headAt(n, o) { const L = lay(n), R = (CC[n].head && CC[n].head.R) || 100; return W2(o, 0, L.shY - R * 0.95); }
@@ -97,18 +97,13 @@ function screen(t, w, h) { // the match on TV: pitch, tiny players, ball, and ON
   else { const [a, sco, b, mn] = bugTxt(t), fl = goalNow && Math.floor(t * 8) % 2; ctx.fillStyle = 'rgba(8,12,30,.94)'; ctx.beginPath(); ctx.roundRect(0, 0, 300, 48, 10); ctx.fill(); ctx.fillStyle = '#f2f2f2'; ctx.fillRect(0, 0, 10, 48); ctx.fillStyle = '#d6203a'; ctx.fillRect(170, 0, 10, 48);
     ctx.font = `400 32px ${FONT}`; ctx.textBaseline = 'middle'; ctx.textAlign = 'left'; ctx.fillStyle = '#fff'; ctx.fillText(a, 18, 26); ctx.fillStyle = fl ? INK : '#fff'; if (fl) { ctx.fillStyle = '#ffd23f'; ctx.fillRect(76, 4, 82, 40); ctx.fillStyle = INK; } ctx.textAlign = 'center'; ctx.fillText(sco, 117, 26); ctx.textAlign = 'left'; ctx.fillStyle = '#fff'; ctx.fillText(b, 188, 26); ctx.fillStyle = '#ffd23f'; ctx.fillText(mn, 248, 26); }
   ctx.restore(); ctx.restore(); }
-function tv(t) { ctx.save(); ctx.translate(820, 620); ctx.rotate(-0.05); ctx.fillStyle = '#111'; ctx.strokeStyle = INK; ctx.lineWidth = 8; ctx.beginPath(); ctx.roundRect(-260, -170, 520, 340, 18); ctx.fill(); ctx.stroke(); ctx.translate(-240, -150); screen(t, 480, 300); ctx.restore();
-  ctx.save(); ctx.fillStyle = '#333'; ctx.fillRect(810, 790, 20, 60); ctx.restore(); }
-function ots(t) { // over-the-shoulder: the TV fills the frame, the two heads from behind in the foreground
-  ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.fillStyle = '#1f2a44'; ctx.fillRect(0, 0, W, H); ctx.fillStyle = '#a50044'; for (let i = 0; i < 7; i++) { ctx.fillStyle = i % 2 ? '#a50044' : '#004d98'; ctx.fillRect(i * 170 - 40, 0, 160, 1300); }
-  ctx.translate(540, 760); ctx.rotate(-0.02); ctx.fillStyle = '#111'; ctx.strokeStyle = INK; ctx.lineWidth = 12; ctx.beginPath(); ctx.roundRect(-510, -330, 1020, 660, 26); ctx.fill(); ctx.stroke(); ctx.translate(-480, -300); screen(t, 960, 600); ctx.restore();
-  ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); const glow = ctx.createLinearGradient(0, 1100, 0, 1920); glow.addColorStop(0, 'rgba(120,170,255,.25)'); glow.addColorStop(1, 'rgba(0,0,0,0)'); ctx.fillStyle = glow; ctx.fillRect(0, 1100, W, 820);
-  const bob = (i) => Math.abs(Math.sin(t * 16 + i)) * (bugTxt(t)[1] === '0-1' ? 18 : 0);
-  [['#e8cf8a', '#a50044', '11', 'RAPHINHA', 300], ['#151010', '#004d98', '10', 'YAMAL', 760]].forEach(([hair, sh, num, nm, x], i) => { const y = 1450 - bob(i);
-    ctx.fillStyle = sh; ctx.strokeStyle = INK; ctx.lineWidth = 8; ctx.beginPath(); ctx.ellipse(x, y + 420, 330, 300, 0, Math.PI, 0); ctx.fill(); ctx.stroke(); ctx.fillStyle = '#fff'; ctx.font = `400 50px ${FONT}`; ctx.textAlign = 'center'; ctx.fillText(nm, x, y + 230); ctx.font = `400 130px ${FONT}`; ctx.fillStyle = '#ffd23f'; ctx.fillText(num, x, y + 360);
-    ctx.fillStyle = '#c98a5e'; ctx.beginPath(); ctx.ellipse(x, y + 60, 70, 60, 0, 0, 7); ctx.fill(); ctx.stroke(); ctx.fillStyle = i ? hair : '#2a1a10'; ctx.beginPath(); ctx.ellipse(x, y - 40, 150, 140, 0, 0, 7); ctx.fill(); ctx.stroke();
-    if (i) { ctx.fillStyle = '#151010'; for (let k = 0; k < 22; k++) { const a = k * 0.9, rr = 60 + (k % 3) * 35; ctx.beginPath(); ctx.arc(x + Math.cos(a) * rr, y - 60 + Math.sin(a) * rr * 0.8, 34, 0, 7); ctx.fill(); ctx.strokeStyle = 'rgba(255,255,255,.15)'; ctx.lineWidth = 3; ctx.stroke(); } }
-    else { ctx.fillStyle = hair; ctx.beginPath(); ctx.ellipse(x, y - 95, 140, 95, 0, Math.PI * 1.02, Math.PI * 1.98); ctx.fill(); ctx.fillStyle = '#f3dfa0'; for (let k = 0; k < 6; k++) { ctx.beginPath(); ctx.ellipse(x - 90 + k * 36, y - 150 + Math.abs(k - 2.5) * 10, 22, 36, 0.3, 0, 7); ctx.fill(); } } }); ctx.restore(); }
+function tv(t) { ctx.save(); ctx.translate(790, 600); ctx.rotate(-0.04); ctx.scale(1.05, 1.05); ctx.fillStyle = '#111'; ctx.strokeStyle = INK; ctx.lineWidth = 8; ctx.beginPath(); ctx.roundRect(-260, -170, 520, 340, 18); ctx.fill(); ctx.stroke(); ctx.translate(-240, -150); screen(t, 480, 300); ctx.restore();
+  ctx.save(); ctx.fillStyle = '#333'; ctx.fillRect(780, 780, 20, 70); ctx.restore(); }
+function ots(t) { // SPLIT SCREEN: top = the TV match (score bug only), bottom = Yamal + Raphinha's faces (owner: "chia đôi, cầu thủ một bên, TV một bên")
+  ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.fillStyle = '#111'; ctx.fillRect(0, 0, W, H);
+  ctx.save(); ctx.beginPath(); ctx.rect(0, 0, W, 950); ctx.clip(); ctx.fillStyle = '#111'; ctx.fillRect(0, 0, W, 950); ctx.translate(30, 180); screen(t, 1020, 640); ctx.restore();
+  ctx.save(); ctx.beginPath(); ctx.rect(0, 970, W, 950); ctx.clip(); ctx.translate(540, 1470); ctx.scale(1.35, 1.35); ctx.translate(-465, -1020); drawScene(t); ctx.restore();
+  ctx.fillStyle = '#fff'; ctx.fillRect(0, 950, W, 20); ctx.restore(); }
 const LAUGH = (t) => ({ bArm: [-30 + Math.sin(t * 18) * 25, -60], fArm: [95 + Math.sin(t * 18) * 10, 85], bLeg: [-8, -4], fLeg: [8, 4] });
 const COVER = { bArm: [150, 175], fArm: [150, 175], bLeg: [-8, -4], fLeg: [8, 4] }, ICE = { bArm: [-14, -6], fArm: [170, 200], bLeg: [-8, -4], fLeg: [8, 4] }, REMOTE = { bArm: [-14, -6], fArm: [90, 70], bLeg: [-8, -4], fLeg: [8, 4] };
 function seatedState(n, t) { // expression, pose, jerk, hide
@@ -124,7 +119,7 @@ function seatedState(n, t) { // expression, pose, jerk, hide
   if (t >= T.H) { ex = t < T.H + 0.4 ? 'laugh' : 'shock'; pose = t < T.H + 0.4 ? LAUGH(t) : undefined; }
   return { ex, pose, jerk, hide }; }
 function scorer(t) { const g = goalAt(t); if (!g || t >= T.G) return null; const dt = t - g.t; if (dt < 0.6 || dt > g.hits[g.hits.length - 1][1] + 0.9) return null;
-  const firstT = g.hits[0][1], tgt = g.hits.filter(h => dt >= h[1] - 0.25).pop() || g.hits[0], who = tgt[0] === 'cush' ? 'yamal' : tgt[0], sx = who === 'raphinha' ? 120 : 830;
+  const firstT = g.hits[0][1], tgt = g.hits.filter(h => dt >= h[1] - 0.25).pop() || g.hits[0], who = tgt[0] === 'cush' ? 'yamal' : tgt[0], sx = who === 'raphinha' ? 70 : 640;
   const enter = clamp((dt - 0.6) / 0.5), leave = clamp((dt - g.hits[g.hits.length - 1][1] - 0.4) / 0.5), side = who === 'raphinha' ? -1 : 1;
   const x = sx + side * (1 - enter) * 500 + side * leave * 600, dance = g.n === 'vini' ? Math.sin(t * 14) * 30 : 0;
   return { g, dt, x: x + dance, who, tgt, swing: g.hits.find(h => dt >= h[1] - 0.06 && dt < h[1] + 0.35), wind: g.hits.find(h => dt >= h[1] - 0.4 && dt < h[1] - 0.06) }; }
@@ -138,7 +133,7 @@ function drawScene(t) { room(t); tv(t);
   // the five shadows rise behind them at the end
   if (t >= T.H + 0.2 && t < T.dark) { const k = eOut((t - T.H - 0.2) / 0.5); for (let i = 0; i < 5; i++) { const x = 100 + i * 220, y = 1300 - k * 420; ctx.save(); ctx.fillStyle = 'rgba(10,10,18,.92)'; ctx.beginPath(); ctx.ellipse(x, y - 160, 80, 90, 0, 0, 7); ctx.fill(); ctx.fillRect(x - 90, y - 80, 180, 300); ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(x - 26, y - 170, 10, 0, 7); ctx.arc(x + 26, y - 170, 10, 0, 7); ctx.fill(); ctx.restore(); } }
   // bench back
-  ctx.fillStyle = '#c8a271'; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.fillRect(60, 1180, 860, 60); ctx.strokeRect(60, 1180, 860, 60);
+  ctx.fillStyle = '#c8a271'; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.fillRect(20, 1180, 640, 60); ctx.strokeRect(20, 1180, 640, 60);
   for (const n of ['raphinha', 'yamal']) { const st = seatedState(n, t); seated[n] = st;
     CB(n, { x: SEAT[n], y: BENCHY + st.hide * 140, f: 1, s: SS, expr: st.ex, pose: st.pose, tilt: st.jerk, sq: st.jerk ? 0.06 : 0 }, t, n === 'yamal' ? 0.3 : 2.1);
     const h = headAt(n, { x: SEAT[n], y: BENCHY + st.hide * 140, f: 1, s: SS }), c = slapsOn(n, t);
@@ -148,25 +143,26 @@ function drawScene(t) { room(t); tv(t);
   const g4 = GOALS[3], d4 = t - g4.t; if (d4 > 0.9 && d4 < 3.2) { const fly = clamp((d4 - g4.hits[0][1]) / 0.6); for (const n of ['raphinha', 'yamal']) { const x = SEAT[n] + (n === 'yamal' ? 1 : -1) * fly * 700, y = 1080 - fly * 500 - Math.sin(fly * 3) * 50;
       ctx.save(); ctx.translate(x, y); ctx.rotate(fly * 6); ctx.fillStyle = n === 'yamal' ? '#a50044' : '#004d98'; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.beginPath(); ctx.roundRect(-110, -80, 220, 160, 40); ctx.fill(); ctx.stroke(); ctx.restore(); } }
   // bench front (covers the legs)
-  ctx.fillStyle = '#a8814f'; ctx.strokeStyle = INK; ctx.lineWidth = 7; ctx.fillRect(40, 1330, 900, 120); ctx.strokeRect(40, 1330, 900, 120); ctx.fillStyle = '#6b4a2a'; ctx.fillRect(80, 1450, 30, 220); ctx.fillRect(870, 1450, 30, 220);
+  ctx.fillStyle = '#a8814f'; ctx.strokeStyle = INK; ctx.lineWidth = 7; ctx.fillRect(0, 1330, 690, 120); ctx.strokeRect(0, 1330, 690, 120); ctx.fillStyle = '#6b4a2a'; ctx.fillRect(40, 1450, 30, 220); ctx.fillRect(620, 1450, 30, 220);
   // remote in Yamal's hand at the channel change
-  if (t >= T.remote - 0.2 && t < T.H) { ctx.save(); ctx.translate(700, 1150); ctx.rotate(-0.3); ctx.fillStyle = '#222'; ctx.beginPath(); ctx.roundRect(-20, -70, 40, 140, 10); ctx.fill(); ctx.fillStyle = '#e53935'; ctx.beginPath(); ctx.arc(0, -45, 8, 0, 7); ctx.fill(); ctx.restore(); }
+  if (t >= T.remote - 0.2 && t < T.H) { ctx.save(); ctx.translate(570, 1150); ctx.rotate(-0.3); ctx.fillStyle = '#222'; ctx.beginPath(); ctx.roundRect(-20, -70, 40, 140, 10); ctx.fill(); ctx.fillStyle = '#e53935'; ctx.beginPath(); ctx.arc(0, -45, 8, 0, 7); ctx.fill(); ctx.restore(); }
   return S; }
 function pop(txt, x, y, k, col = '#ffd23f', size = 120) { if (k < 0 || k > 1) return; ctx.save(); ctx.globalAlpha = 1 - k * k; ctx.font = `400 ${size + k * 30}px ${FONT}`; ctx.textAlign = 'center'; ctx.lineWidth = 12; ctx.strokeStyle = INK; ctx.fillStyle = col; ctx.strokeText(txt, x, y - k * 60); ctx.fillText(txt, x, y - k * 60); ctx.restore(); }
 function frame(t) { const S = () => drawScene(t), g = goalAt(t), dt = g ? t - g.t : 0;
-  if (t < 1.6 || (g && dt < 0.9 && t < T.G)) { ots(t); ctx.setTransform(1, 0, 0, 1, 0, 0); if (t < 1.6) pop('HAHAHA', 540, 1250, (t % 0.8) / 0.8, '#fff', 110); return; }
-  if (t < 3.0) SHOT.wide(ctx, S, { x: 560, y: 960, zoom: lerp(1.05, 1.1, t / 3) });
-  else if (t < 6.4) SHOT.cu(ctx, S, { x: dt < 0.9 ? 700 : 330, y: 1000, zoom: dt < 0.9 ? 1.3 : 1.25 });
-  else if (t < 9.8) SHOT.wide(ctx, S, { x: 480, y: 960, zoom: 1.05 });
-  else if (t < 13.4) SHOT.xcu(ctx, S, { x: dt < 0.9 ? 760 : 620, y: 950, zoom: dt < 0.9 ? 1.5 : 1.55 });
-  else if (t < 16.4) SHOT.dutch(ctx, S, { x: 520, y: 1000, zoom: 1.0, rot: -0.08 });
-  else if (t < T.G) SHOT.low(ctx, S, { x: 520, y: 1050, zoom: 1.05, lift: 60 });
-  else if (t < T.H) SHOT.cu(ctx, S, { x: t < T.remote ? 450 : 620, y: 1000, zoom: 1.15 });
-  else SHOT.wide(ctx, S, { x: 540, y: 960, zoom: 1.02 });
+    const goalPush = g && dt < 0.9 && t < T.G;   // push in on the TV at every goal (TV + both heads stay in frame)
+  if (goalPush) SHOT.cu(ctx, S, { x: 560, y: 840, zoom: lerp(1.0, 1.18, eOut(dt / 0.5)) });
+  else if (t < 3.0) SHOT.wide(ctx, S, { x: 540, y: 900, zoom: lerp(0.98, 1.04, t / 3) });
+  else if (t < 6.4) SHOT.cu(ctx, S, { x: 420, y: 930, zoom: 1.12 });
+  else if (t < 9.8) SHOT.wide(ctx, S, { x: 540, y: 900, zoom: 1.0 });
+  else if (t < 13.4) SHOT.xcu(ctx, S, { x: 540, y: 900, zoom: 1.3 });
+  else if (t < 16.4) SHOT.dutch(ctx, S, { x: 540, y: 900, zoom: 1.0, rot: -0.06 });
+  else if (t < T.G) SHOT.low(ctx, S, { x: 520, y: 900, zoom: 1.0, lift: 40 });
+  else if (t < T.H) SHOT.cu(ctx, S, { x: 560, y: 880, zoom: 1.08 });
+  else SHOT.wide(ctx, S, { x: 540, y: 900, zoom: 1.0 });
   ctx.setTransform(1, 0, 0, 1, 0, 0); if (t < T.dark) { ctx.fillStyle = `rgba(110,160,255,${0.06 + 0.04 * Math.sin(t * 11) * Math.sin(t * 5)})`; ctx.fillRect(0, 0, W, H); }
-  for (const G of GOALS) for (const [who, d] of G.hits) { const x = who === 'raphinha' ? 300 : who === 'cush' ? 540 : 700; pop(who === 'cush' ? 'POOF' : 'SLAP', x, 560, (t - G.t - d) / 0.6); }
-  if (t >= 1.6 && t < 3.0) pop('HAHAHA', 300, 620, ((t - 1.6) % 1.3) / 1.3, '#fff', 90);
-  if (t >= T.remote + 0.4 && t < T.H + 0.6) pop('HEHE', 420, 640, ((t - T.remote - 0.4) % 1.0) / 1.0, '#fff', 90);
+  for (const G of GOALS) for (const [who, d] of G.hits) { const x = who === 'raphinha' ? 200 : who === 'cush' ? 360 : 480; pop(who === 'cush' ? 'POOF' : 'SLAP', x, 880, (t - G.t - d) / 0.6); }
+  if (t >= 0.3 && t < 3.0) pop('HAHAHA', 330, 820, ((t - 0.3) % 1.3) / 1.3, '#fff', 90);
+  if (t >= T.remote + 0.4 && t < T.H + 0.6) pop('HEHE', 330, 820, ((t - T.remote - 0.4) % 1.0) / 1.0, '#fff', 90);
   if (t >= T.dark) { ctx.fillStyle = 'rgba(7,10,24,.84)'; ctx.fillRect(0, 0, W, H); for (let i = 0; i < 5; i++) { const vic = i >= 5, ex = vic ? 360 + (i - 5) * 300 : 140 + i * 200, ey = vic ? 1150 : 760 + Math.sin(i) * 40, blink = Math.sin(t * 7 + i * 1.7) > 0.92 ? 0.2 : 1; ctx.fillStyle = vic ? '#9fd8ff' : '#fff'; for (const s2 of [-24, 24]) { ctx.beginPath(); ctx.ellipse(ex + s2, ey, 13, 13 * blink, 0, 0, 7); ctx.fill(); } if (vic) { ctx.fillStyle = 'rgba(120,200,255,.8)'; const k = (t * 1.5 + i * .3) % 1; ctx.beginPath(); ctx.ellipse(ex - 24, ey + 30 + k * 80, 7, 11, 0, 0, 7); ctx.fill(); } } const SL = [24.45, 24.75, 25.0, 25.3, 25.55]; SL.forEach((a, i) => { const k = (t - a) / 0.35; if (k >= 0 && k < 1) { ctx.fillStyle = `rgba(255,255,255,${0.25 * (1 - k)})`; ctx.fillRect(0, 0, W, H); } pop('SLAP', 230 + (i % 3) * 300, 700 + (i % 2) * 260, k, '#ffd23f', 130); }); } }
 const CAPS = [[0.2, 1.6, 'Watching Real vs PSV 📺'], [1.6, 3.0, 'Real losing 0-1 😂'], [3.0 + 1.0, 6.4, '"Keep laughing" 😏', -1], [6.4 + 1.0, 9.8, '2-1 · Bellingham 👋👋'], [9.8 + 1.8, 13.4, '"Wake up!" 👋', -1],
   [13.4 + 0.9, 16.4, '4-1 · Mbappé again 😱'], [16.4 + 0.9, T.G, '5-1 · Vinícius samba 💃'], [T.G + 0.2, T.remote, 'Full time 5-1 🤕'], [T.remote + 0.3, T.H, 'LaLiga: Barça 36 · Real 33 😏'], [T.dark + 1.6, T.END, 'Still laughing? 👇']];
