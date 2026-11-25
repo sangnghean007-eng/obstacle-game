@@ -1,44 +1,44 @@
 {
- "logline": "Yamal and Raphinha laugh at Real 0-1 PSV; after each of Real's five goals the scorer sneaks in and slaps them — and when they laugh at the LaLiga table, all five return in the dark.",
+ "logline": "Yamal and Raphinha laugh at Real 0-1 PSV; after each Real goal the scorer slaps them — and every time they defend the wrong way — until the lights go out and Real take a selfie with them.",
  "beats": [
   {
    "shot": "wide",
-   "idea": "Barça dressing room: Yamal + Raphinha laugh at Real 0-1 PSV on the TV",
-   "text": "Real 0-1 PSV 😂"
+   "idea": "TV on the right shows Real 0-1 PSV (score bug only); Yamal + Raphinha laugh on the left",
+   "text": "Real losing 0-1 😂"
   },
   {
    "shot": "cu",
-   "idea": "50' Valverde 1-1: sneaks in behind, slaps Raphinha; Yamal keeps laughing at him",
+   "idea": "Valverde 1-1 sneaks in from the left: slap; Yamal laughs at Raphinha",
    "text": "Keep laughing 😏"
   },
   {
    "shot": "wide",
-   "idea": "60' Bellingham 2-1: double slap",
-   "text": "2-1 · Bellingham 👋👋"
+   "idea": "they guard the LEFT — Bellingham 2-1 comes from the right",
+   "text": "2-1 · wrong side 😂"
   },
   {
    "shot": "xcu",
-   "idea": "64' Mbappé 3-1: Yamal acts cool — 'Wake up!' slap (callback to Ep41)",
+   "idea": "they look left for the next one — Mbappé 3-1 pops up on the right: Wake up!",
    "text": "Wake up! 👋"
   },
   {
    "shot": "dutch",
-   "idea": "84' Mbappé 4-1: they hide behind cushions; Mbappé slaps the cushions away",
-   "text": "4-1 · Mbappé again 😱"
+   "idea": "cushions over their faces — Mbappé 4-1 slaps the tops of their heads",
+   "text": "4-1 · from above 😂"
   },
   {
    "shot": "low",
-   "idea": "87' Vinícius 5-1: samba slaps to the beat",
+   "idea": "hard hats on — Vinícius 5-1 samba-slaps their cheeks",
    "text": "5-1 · Vinícius samba 💃"
   },
   {
    "shot": "cu",
-   "idea": "full time 5-1, ice packs; remote → LaLiga table Barça 36 · Real 33; they start laughing again",
+   "idea": "full time, ice packs; remote → LaLiga table; they laugh again; five shadows, lights out, five slaps",
    "text": "LaLiga: Barça 36 · Real 33 😏"
   },
   {
    "shot": "wide",
-   "idea": "five shadows rise behind them, lights out, five slaps in the dark; question + follow card",
+   "idea": "lights on: the Real scorers pose behind the swollen pair, Mbappé's selfie freezes into a photo; question + follow card",
    "text": "Still laughing? 👇"
   }
  ],
@@ -51,22 +51,22 @@
  ],
  "gags": [
   "scorer-sneaks-in-slap",
-  "double-slap",
-  "wake-up-reversal",
-  "cushion-poof",
-  "samba-slaps",
-  "ice-packs-remote-relaugh",
-  "five-shadows-blackout-slaps"
+  "guard-the-wrong-side",
+  "look-the-wrong-way",
+  "cushions-slapped-from-above",
+  "hard-hats-slapped-on-cheeks",
+  "five-shadows-blackout-slaps",
+  "selfie-freeze-photo"
  ],
- "twist": "they think the LaLiga table saves them — the five scorers are already standing behind them",
+ "twist": "every defence covers the side the LAST slap came from",
  "callback": "'Wake up!' reverses Ep41 (Yamal slapped Mbappé); the laughing from the opening returns right before the final blackout",
- "ending": "blackout slaps + question + follow card",
+ "ending": "blackout slaps + selfie freeze-frame + question + follow card",
  "hidden_details": [
   "red cheeks get redder with every slap",
   "the TV shows the real scorer and minute after each goal",
   "five pairs of eyes in the dark = the five goals"
  ],
- "meme_frame": "Valverde slapping laughing Raphinha while Yamal still laughs",
+ "meme_frame": "Real's scorers grinning in a selfie behind the swollen Yamal and Raphinha",
  "style": "chibi-caricature-dressing-room",
  "prev_style": "chibi-caricature-sky-staircase",
  "hook_frame0": "cover: KEEP LAUGHING 👋😏 — Real 0-1 → 5-1 PSV",

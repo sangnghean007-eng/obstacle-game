@@ -1,4 +1,4 @@
-# Ep44 "Keep Laughing" — posts (keep-laughing-9x16.mp4, 28.0 s)
+# Ep44 "Keep Laughing" — posts (keep-laughing-9x16.mp4, 29.7 s)
 Story by the owner. Facts: ep44/facts.md. Real: 24 Nov 2026, Real Madrid 5-1 PSV (Champions League); PSV led 1-0 at half time (Perišić pen 32'); Valverde 50', Bellingham 60', Mbappé 64' and 84', Vinícius 87'; Real top of the league phase on 15 points. LaLiga: Barça 36, Real 33.
 Invented: Yamal and Raphinha watching, every slap, every line, the cushions, the ice packs, the blackout.
 
@@ -11,12 +11,11 @@ Yamal Laughed at Real 0-1… Then 5 Slaps 😂 #shorts #realmadrid #yamal
 Description:
 Real Madrid were losing 0-1 to PSV… so Yamal and Raphinha started laughing 😂
 👋 50' Valverde: "Keep laughing"
-👋👋 60' Bellingham: double slap
-👋 64' Mbappé: "Wake up!"
-😱 84' Mbappé again: the cushions don't help
-💃 87' Vinícius: samba slaps
-Full time: Real 5-1 PSV 🤕
-Then they see the LaLiga table and laugh again… big mistake 😂
+🛡️ They guard the left… 60' Bellingham comes from the right
+👀 They look left… 64' Mbappé: "Wake up!"
+🛡️ Cushions up… 84' Mbappé slaps from above
+⛑️ Hard hats on… 87' Vinícius samba-slaps their cheeks
+Full time: Real 5-1 PSV 🤕 Then they laugh at the LaLiga table… lights out 😂📸
 Still laughing? 👇
 Follow for more 🍿
 Cartoon parody · invented lines
@@ -32,7 +31,7 @@ Upload settings: Category Comedy · Not made for kids · Altered or synthetic co
 ## TikTok
 Caption:
 Real 0-1 PSV… Yamal and Raphinha laugh 😂
-Then Real score 5 👋👋👋👋👋
+Then Real score 5… and they defend the wrong way every time 👋
 Still laughing? 👇 Follow for more 🍿
 Cartoon parody
 #realmadrid #yamal #mbappe #championsleague #footballtiktok
@@ -43,7 +42,7 @@ Settings: Sound name "Soccer 365 – Keep Laughing" · Comments on · Duet and S
 Caption:
 Real 0-1 PSV… Barça stars laughing 😂
 Then every Real scorer came back for a slap 👋
-Valverde, Bellingham, Mbappé (twice), Vinícius 💃
+They guard the wrong side every time 🛡️⛑️
 Full time: 5-1 🤕
 Still laughing? 👇 Follow for more 🍿
 
@@ -51,7 +50,7 @@ Cartoon parody · invented lines
 .
 #realmadrid #yamal #championsleague #footballfunny #footballcartoon
 Cover: cover-9x16.jpg
-Alt text: Cartoon parody. Yamal and Raphinha laugh at Real Madrid losing 0-1 to PSV on a dressing-room TV; after each of Real's five goals the scorer sneaks in behind them and slaps them; at full time 5-1 they laugh again at the LaLiga table and five shadows appear behind them before the lights go out.
+Alt text: Cartoon parody. Yamal and Raphinha laugh at Real Madrid losing 0-1 to PSV on a dressing-room TV; after each of Real's five goals the scorer sneaks in behind them and slaps them; at full time 5-1 they laugh again at the LaLiga table and five shadows appear behind them; the lights go out, and when they come back the Real scorers take a selfie with them.
 Pinned comment: Best slap: Valverde, Bellingham, Mbappé or Vinícius? 👇
 Settings: Share to Feed on · Audio name "Soccer 365 – Keep Laughing".
 
@@ -67,7 +66,7 @@ Replies ready: (1) "0-1 at half time. 5-1 at full time. 👋" (2) "Rate the come
 ## Facebook (Reels)
 Real 0-1 PSV at half time… Yamal and Raphinha laugh 😂
 Then every Real scorer comes back for a slap 👋
-Valverde, Bellingham, Mbappé twice, Vinícius 💃
+They defend the wrong side every time 🛡️
 Full time: 5-1 🤕
 Still laughing?
 Cartoon parody · invented lines

@@ -170,3 +170,6 @@ Columns: id | gag | technique (rule-of-3, misdirection, escalation, cutaway, dea
 | U93 | Hiding behind cushions — the cushions get slapped away first (Ep44) | escalation | S |
 | U94 | Samba slaps to the beat (Ep44) | sound gag | S |
 | U95 | They laugh again at the table; five shadows already behind them; lights out, five slaps in the dark (Ep44) | misdirection | L |
+| U96 | After each slap they defend — always against the last direction; the next slap comes from another side (Ep44 v3, owner's idea) | rule-of-3 | L |
+| U97 | Hard hats on after a slap on the head — the next slap lands on the cheeks (Ep44 v3) | misdirection | M |
+| U98 | Lights on: the winners pose behind the swollen losers and the selfie freezes into a photo (Ep44 v3) | callback | M |
