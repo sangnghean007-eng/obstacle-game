@@ -1,0 +1,73 @@
+{
+ "logline": "Yamal, injured and on crutches, brings Barça's scorers to collect payback from Mbappé and Vinícius — who hide behind a giant 5/5 shield; every attack bounces back and Yamal limps home crying.",
+ "beats": [
+  {
+   "shot": "cu",
+   "idea": "Yamal on a crutch, bandaged ankle, red cheeks from Ep44; Gordon, Adeyemi, Jesus behind him",
+   "text": "Payback for 5 slaps 😤"
+  },
+  {
+   "shot": "low",
+   "idea": "the gang marches across a western street; Yamal hops on his crutch",
+   "text": "Yamal didn't even play 🩹"
+  },
+  {
+   "shot": "wide",
+   "idea": "Mbappé + Vinícius raise a giant shield: 5/5 WINS · 15 PTS · 1ST",
+   "text": "Real: 5 wins out of 5 🛡️"
+  },
+  {
+   "shot": "cu",
+   "idea": "Gordon shoots twice, both rebound into his face",
+   "text": "Gordon x2 ↩️"
+  },
+  {
+   "shot": "dutch",
+   "idea": "Adeyemi rocket-sprints into the shield: BONK; Jesus leaps: BOING",
+   "text": "Adeyemi 💨 / Jesus 🦘"
+  },
+  {
+   "shot": "xcu",
+   "idea": "Yamal swings his crutch: it rebounds onto his own bandaged ankle",
+   "text": "His bad ankle 🦶😭"
+  },
+  {
+   "shot": "wide",
+   "idea": "shield bash: the whole gang flies like bowling pins",
+   "text": "STRIKE 🎳"
+  },
+  {
+   "shot": "low",
+   "idea": "Yamal limps home crying, Vinícius dances; question + follow card",
+   "text": "Next Clásico: who wins? 👇"
+  }
+ ],
+ "techniques": [
+  "rule-of-3",
+  "escalation",
+  "callback",
+  "visual pun",
+  "misdirection"
+ ],
+ "gags": [
+  "injured-debt-collector-on-crutch",
+  "giant-record-shield",
+  "double-rebound-face",
+  "rocket-sprint-bonk",
+  "crutch-rebounds-on-own-ankle",
+  "shield-bash-bowling-strike"
+ ],
+ "twist": "the debt collector is the one who didn't play — and his own crutch hurts him most",
+ "callback": "'Payback for 5 slaps' and Yamal's red cheeks call back Ep44",
+ "ending": "crying walk home + question + follow card",
+ "hidden_details": [
+  "Yamal's cheeks are still red from Ep44",
+  "the bandage is on the ankle that kept him out",
+  "Gordon gets hit twice = his two goals"
+ ],
+ "meme_frame": "Yamal's crutch bouncing off the 5/5 shield onto his own ankle",
+ "style": "chibi-caricature-western-standoff",
+ "prev_style": "chibi-caricature-dressing-room",
+ "hook_frame0": "cover: PAYBACK? 😤 …OUCH — Barça 4-1 · Real 5/5 🛡️",
+ "novelty_override": "lead yamal + mbappe again: the owner asked for this exact story (26 Nov). Next own-choice episode must rest both."
+}

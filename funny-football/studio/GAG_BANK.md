@@ -173,3 +173,8 @@ Columns: id | gag | technique (rule-of-3, misdirection, escalation, cutaway, dea
 | U96 | After each slap they defend — always against the last direction; the next slap comes from another side (Ep44 v3, owner's idea) | rule-of-3 | L |
 | U97 | Hard hats on after a slap on the head — the next slap lands on the cheeks (Ep44 v3) | misdirection | M |
 | U98 | Lights on: the winners pose behind the swollen losers and the selfie freezes into a photo (Ep44 v3) | callback | M |
+| U99 | Injured star on crutches leads the 'debt collectors' (Ep45, owner's idea) | misdirection | M |
+| U100 | Giant shield printed with the rival's record (5/5 · 15 PTS · 1ST) blocks everything (Ep45) | visual pun | L |
+| U101 | Two shots, two rebounds into the shooter's own face = his two goals (Ep45) | callback | S |
+| U102 | Crutch swung at the shield rebounds onto his own bandaged ankle (Ep45) | escalation | M |
+| U103 | Shield bash sends the whole gang flying like bowling pins: STRIKE (Ep45) | sound gag | M |
