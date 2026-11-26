@@ -1,0 +1,23 @@
+{
+ "logline": "Man United's 'standards' are a high-jump bar that keeps dropping — from a treble in 1999 to a draw on the ground in 2026 — and they still trip over it, while Pochettino shouts 'so proud' and a groundsman digs it lower.",
+ "beats": [
+  {"shot": "low", "idea": "1999: the bar is in the sky — TREBLE — a 1999 jumper flops over it", "text": "1999: the treble 🏆🏆🏆"},
+  {"shot": "wide", "idea": "2013: lower bar — LEAGUE TITLE — cleared", "text": "2013: last league title"},
+  {"shot": "dutch", "idea": "CLUNK, CLUNK: TOP 4 → ANY TROPHY → EUROPE PLEASE → NOT RELEGATED", "text": "Then the bar kept dropping 📉"},
+  {"shot": "cu", "idea": "2026: the bar lies on the ground: A DRAW; Pochettino watches", "text": "2026: the bar = a draw"},
+  {"shot": "wide", "idea": "Bruno carries Lammens, Tielemans and Amad over it (he scored both), then collapses on the mat", "text": "Bruno carries everyone 💪"},
+  {"shot": "xcu", "idea": "Lammens trips over the bar lying on the ground", "text": "Keeper trips over it 🤦"},
+  {"shot": "cu", "idea": "Amad celebrates — VAR ❌; Tielemans red card, walks off", "text": "Amad's goal… VAR 📺 / Tielemans 🟥"},
+  {"shot": "wide", "idea": "Pochettino with a megaphone: SO PROUD! — crickets; a groundsman digs the bar into the ground; next: Leipzig · Bayern · Villarreal; old fan holds a 1999 photo", "text": "Rock bottom… or keep digging? 👇"}
+ ],
+ "techniques": ["visual pun", "escalation", "rule-of-3", "deadpan", "callback"],
+ "gags": ["standards-high-jump-bar", "signs-dropping-clunk", "carry-the-team-over-a-floor-bar", "trip-over-a-bar-on-the-ground", "so-proud-megaphone-crickets", "dig-the-bar-lower", "old-fan-1999-photo"],
+ "twist": "even with the bar on the ground they trip — and the answer is to dig it lower",
+ "callback": "the 1999 treble from the first shot returns as the old fan's photo",
+ "ending": "keep-digging + two-sided question + follow card",
+ "hidden_details": ["the 1999 and 2013 jumpers wear 99 and 13", "the scoreboard reads FERNANDES ⚽⚽", "the next three opponents are written on the buried bar"],
+ "meme_frame": "Bruno carrying three teammates over a bar lying on the ground",
+ "style": "chibi-caricature-athletics",
+ "prev_style": "chibi-caricature-western-standoff",
+ "hook_frame0": "cover: MAN UTD'S BAR IN 2026 📉"
+}

@@ -181,3 +181,8 @@ Columns: id | gag | technique (rule-of-3, misdirection, escalation, cutaway, dea
 | U104 | Sprinter hits the shield and flattens like a pancake, then peels off (Ep45 v2) | slapstick | S |
 | U105 | Human pyramid reaches over — the shield grows taller — one finger tap — the pyramid collapses (Ep45 v2) | escalation | L |
 | U106 | 'Going home…' — the shield rolls after him like a wheel and flattens him: 'Or not' (Ep45 v2) | misdirection | L |
+| U107 | A club's standards as a high-jump bar dropping year by year with signs: TREBLE → LEAGUE TITLE → TOP 4 → ANY TROPHY → EUROPE PLEASE → NOT RELEGATED → A DRAW (Ep46) | visual pun | L |
+| U108 | Star carries three teammates over a bar lying on the ground, then collapses (Ep46) | escalation | M |
+| U109 | Keeper trips over a bar lying on the ground (Ep46) | slapstick | S |
+| U110 | Manager shouts the real quote 'so proud' through a megaphone; crickets (Ep46) | deadpan | M |
+| U111 | Groundsman digs a hole to lower the bar further; old fan with a 1999 photo (Ep46) | callback | M |
