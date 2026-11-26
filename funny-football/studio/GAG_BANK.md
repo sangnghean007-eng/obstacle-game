@@ -178,3 +178,6 @@ Columns: id | gag | technique (rule-of-3, misdirection, escalation, cutaway, dea
 | U101 | Two shots, two rebounds into the shooter's own face = his two goals (Ep45) | callback | S |
 | U102 | Crutch swung at the shield rebounds onto his own bandaged ankle (Ep45) | escalation | M |
 | U103 | Shield bash sends the whole gang flying like bowling pins: STRIKE (Ep45) | sound gag | M |
+| U104 | Sprinter hits the shield and flattens like a pancake, then peels off (Ep45 v2) | slapstick | S |
+| U105 | Human pyramid reaches over — the shield grows taller — one finger tap — the pyramid collapses (Ep45 v2) | escalation | L |
+| U106 | 'Going home…' — the shield rolls after him like a wheel and flattens him: 'Or not' (Ep45 v2) | misdirection | L |

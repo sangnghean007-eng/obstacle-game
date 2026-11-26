@@ -70,10 +70,10 @@ function CB(n, o, t, ph = 0) { const k = o.life ?? 1, sw = Math.sin(t * 2.1 + ph
 
 
 
-// ---------------- Ep45 DEBT COLLECTORS (owner 26 Nov). Facts: ep45/facts.md — Barça 4-1 Sabah (Gordon 2, Adeyemi, Jesus); Yamal missed it (ankle); Real 5/5, 15 pts, 1st.
+// ---------------- Ep45 v2 DEBT COLLECTORS (owner: "diễn biến và kết chưa đã"). Facts: ep45/facts.md — Barça 4-1 Sabah (Gordon 2, Adeyemi, Jesus); Yamal out (ankle); Real 5/5, 15 pts, 1st.
 const CODEX = { smug: 'smug', strain: 'strain', shock: 'shock', angry: 'angry', laugh: 'happy', cry: 'sad', deadpan: 'bored' };
-const T = { A: 0, B: 3.0, C: 6.4, gk: 9.0, ad: 10.6, je: 12.0, Y: 13.4, crutch: 15.2, F: 17.0, bash: 17.8, G: 20.6, Q: 24.8, END: 27.8 };
-const FEET = 1520, SHX = 790;
+const T = { A: 0, B: 2.4, C: 4.6, gk: 6.6, ad: 8.4, py: 10.4, grow: 11.4, tap: 12.2, Y: 13.0, crutch: 14.8, F: 15.6, bash: 16.0, G: 17.4, kickS: 18.4, flat: 20.0, pop: 21.0, Q: 21.3, END: 26.4 };
+const FEET = 1520, SHX = 790, SHS = 0.74;
 function handPos(n, o, side, ang) { const L = lay(n), C = CC[n], p = side === 'f' ? L.fs : L.bs, r = Math.PI / 180, a = C.arm * 0.5; return W2(o, p[0] + (Math.sin(ang[0] * r) + Math.sin(ang[1] * r)) * a, p[1] + (Math.cos(ang[0] * r) + Math.cos(ang[1] * r)) * a); }
 function headAt(n, o) { const L = lay(n), R = (CC[n].head && CC[n].head.R) || 100; return W2(o, 0, L.shY - R * 0.95); }
 const BGW = {}; function street(t) { if (!BGW.c) { const c = document.createElement('canvas'); c.width = W + 1200; c.height = H + 1200; const g = c.getContext('2d'); g.translate(600, 600);
@@ -83,7 +83,7 @@ const BGW = {}; function street(t) { if (!BGW.c) { const c = document.createElem
     for (const [x, h] of [[-80, 520], [1080, 600]]) { g.fillStyle = '#8a5a34'; g.fillRect(x - 160, 1180 - h, 320, h); g.fillStyle = '#6b4226'; g.fillRect(x - 175, 1180 - h - 40, 350, 50); g.fillStyle = '#3a2414'; g.fillRect(x - 60, 1180 - 200, 120, 200); }
     g.fillStyle = '#4f7d3a'; for (const x of [200, 880]) { g.fillRect(x - 18, 980, 36, 200); g.fillRect(x - 70, 1040, 52, 22); g.fillRect(x - 70, 990, 22, 70); g.fillRect(x + 18, 1010, 52, 22); g.fillRect(x + 48, 960, 22, 72); } BGW.c = c; }
   ctx.drawImage(BGW.c, -600, -600); for (let i = 0; i < 3; i++) { const x = ((t * 140 + i * 500) % 1600) - 300; ctx.strokeStyle = '#8a5a34'; ctx.lineWidth = 6; ctx.beginPath(); ctx.arc(x, 1420 - i * 40, 40, 0, 7); ctx.stroke(); ctx.beginPath(); ctx.moveTo(x - 40, 1420 - i * 40); ctx.lineTo(x + 40, 1420 - i * 40); ctx.stroke(); } }
-function shield(t, x, y, s = 1, rot = 0) { ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s); ctx.strokeStyle = INK; ctx.lineWidth = 12;
+function shield(t, x, y, s = 1, rot = 0, sy = 1) { ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s * sy); ctx.strokeStyle = INK; ctx.lineWidth = 12;
   const g = ctx.createLinearGradient(-260, -380, 260, 380); g.addColorStop(0, '#ffffff'); g.addColorStop(1, '#dfe3ea'); ctx.fillStyle = g;
   ctx.beginPath(); ctx.moveTo(-260, -380); ctx.lineTo(260, -380); ctx.lineTo(260, 60); ctx.quadraticCurveTo(250, 300, 0, 420); ctx.quadraticCurveTo(-250, 300, -260, 60); ctx.closePath(); ctx.fill(); ctx.stroke();
   ctx.strokeStyle = '#c9a227'; ctx.lineWidth = 22; ctx.beginPath(); ctx.moveTo(-224, -344); ctx.lineTo(224, -344); ctx.lineTo(224, 56); ctx.quadraticCurveTo(214, 270, 0, 376); ctx.quadraticCurveTo(-214, 270, -224, 56); ctx.closePath(); ctx.stroke();
@@ -93,74 +93,81 @@ function shield(t, x, y, s = 1, rot = 0) { ctx.save(); ctx.translate(x, y); ctx.
 function ball(x, y, r = 30, rot = 0) { ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.fillStyle = '#fff'; ctx.strokeStyle = INK; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(0, 0, r, 0, 7); ctx.fill(); ctx.stroke(); ctx.fillStyle = INK; ctx.beginPath(); for (let i = 0; i < 5; i++) { const a = i * 1.2566; ctx.lineTo(Math.cos(a) * r * 0.38, Math.sin(a) * r * 0.38); } ctx.fill(); ctx.restore(); }
 function pop(txt, x, y, k, col = '#ffd23f', size = 110) { if (k < 0 || k > 1) return; ctx.save(); ctx.globalAlpha = 1 - k * k; ctx.font = `400 ${size + k * 30}px ${FONT}`; ctx.textAlign = 'center'; ctx.lineWidth = 12; ctx.strokeStyle = INK; ctx.fillStyle = col; ctx.strokeText(txt, x, y - k * 60); ctx.fillText(txt, x, y - k * 60); ctx.restore(); }
 const WALK = (t, a = 1) => ({ bArm: [-35 * Math.sin(t * 10) * a, -20], fArm: [35 * Math.sin(t * 10) * a, 20], bLeg: [-30 * Math.sin(t * 10) * a, -15], fLeg: [30 * Math.sin(t * 10) * a, 15] });
-const KICKP = { bArm: [-60, -40], fArm: [60, 40], bLeg: [-10, -4], fLeg: [80, 40] }, FLY = { bArm: [-150, -120], fArm: [160, 120], bLeg: [-50, -20], fLeg: [60, 20] }, DOWN = { bArm: [100, 80], fArm: [110, 90], bLeg: [-60, -20], fLeg: [-40, -10] };
-function barca(t) { // the gang: positions/poses for Gordon, Adeyemi, Jesus, Yamal
-  const march = clamp((t - T.B) / 3.0), baseX = lerp(-260, 0, eIO(march)) + (t < T.B ? lerp(-420, -260, eOut(t / T.B)) - (-260) : 0);
-  const strike = clamp((t - T.bash - 0.15) / 0.8), fly = (i) => strike > 0 ? { dx: -strike * (500 + i * 120), dy: -Math.sin(strike * Math.PI) * (260 + i * 60), rot: -strike * (5 + i) } : { dx: 0, dy: 0, rot: 0 };
-  const P = { gordon: { x: 290, f: 1, ex: 'angry', pose: t >= T.B && t < T.C ? WALK(t) : undefined }, adeyemi: { x: 160, f: 1, ex: 'angry', pose: t >= T.B && t < T.C ? WALK(t + 0.3) : undefined }, jesus: { x: 30, f: 1, ex: 'angry', pose: t >= T.B && t < T.C ? WALK(t + 0.6) : undefined },
-    yamal: { x: 430, f: 1, ex: 'angry', pose: { bArm: [-14, -6], fArm: [100, 85], bLeg: [-8, -4], fLeg: [40, 60] } } };
-  for (const k in P) P[k].x += baseX;
-  if (t >= T.C && t < T.gk) { for (const k of ['gordon', 'adeyemi', 'jesus', 'yamal']) { P[k].ex = 'shock'; P[k].pose = undefined; } }
-  // Gordon: two shots, both rebound into his face
-  if (t >= T.gk && t < T.ad) { const d = t - T.gk; P.gordon.x = 330; P.gordon.pose = (d > 0.2 && d < 0.5) || (d > 0.8 && d < 1.1) ? KICKP : undefined; P.gordon.ex = d < 0.5 ? 'smug' : d < 0.8 ? 'shock' : d < 1.1 ? 'angry' : 'cry'; P.gordon.tilt = (d > 0.62 && d < 0.8) || d > 1.22 ? -0.4 : 0; }
-  if (t >= T.ad) P.gordon.ex = 'cry';
-  // Adeyemi: rocket sprint, BONK
-  if (t >= T.ad && t < T.je) { const d = t - T.ad, k = clamp(d / 0.45); P.adeyemi.x = d < 0.45 ? lerp(160, 500, k) : lerp(500, 260, clamp((d - 0.45) / 0.5)); P.adeyemi.pose = d < 0.45 ? { bArm: [-60 * Math.sin(t * 30), -40], fArm: [60 * Math.sin(t * 30), 40], bLeg: [-50 * Math.sin(t * 30), -30], fLeg: [50 * Math.sin(t * 30), 30] } : DOWN; P.adeyemi.lean = d < 0.45 ? 0.35 : -0.9; P.adeyemi.ex = d < 0.45 ? 'angry' : 'shock'; P.adeyemi.y = d > 0.45 ? FEET + 40 : FEET; }
-  if (t >= T.je) { P.adeyemi.x = 260; P.adeyemi.pose = DOWN; P.adeyemi.lean = -1.3; P.adeyemi.ex = 'cry'; P.adeyemi.y = FEET + 60; }
-  // Jesus: leap, BOING
-  if (t >= T.je && t < T.Y) { const d = t - T.je, k = clamp(d / 0.6); P.jesus.x = d < 0.6 ? lerp(30, 500, k) : lerp(500, 110, clamp((d - 0.6) / 0.6)); P.jesus.y = FEET - Math.sin(Math.min(1, d / 1.2) * Math.PI) * 420; P.jesus.pose = FLY; P.jesus.lean = d < 0.6 ? 0.5 : -0.8 - d; P.jesus.ex = d < 0.6 ? 'angry' : 'shock'; }
-  if (t >= T.Y) { P.jesus.x = 110; P.jesus.ex = 'cry'; P.jesus.pose = DOWN; P.jesus.lean = -1.2; P.jesus.y = FEET + 60; }
-  // Yamal: crutch swing → rebounds onto his own bandaged ankle
-  if (t >= T.Y && t < T.F) { const d = t - T.Y; P.yamal.x = lerp(430, 500, clamp(d / 0.6)); P.yamal.ex = d < 1.2 ? 'angry' : d < T.crutch - T.Y + 0.3 ? 'shock' : 'cry'; P.yamal.pose = d > 1.2 && d < 1.8 ? { bArm: [-160, -170], fArm: [100, 85], bLeg: [-8, -4], fLeg: [40, 60] } : P.yamal.pose; P.yamal.hop = t > T.crutch + 0.2 ? Math.abs(Math.sin(t * 12)) * 60 : 0; }
-  if (t >= T.F && t < T.G) { P.yamal.ex = t < T.bash ? 'cry' : 'shock'; P.yamal.x = 500; }
-  if (strike > 0 && t < T.G) { let i = 0; for (const k of ['yamal', 'gordon', 'adeyemi', 'jesus']) { const f = fly(i++); P[k].x += f.dx; P[k].y = (P[k].y || FEET) + f.dy; P[k].lean = f.rot; P[k].pose = FLY; P[k].ex = 'shock'; } }
-  if (t >= T.G) { P.yamal.x = lerp(380, -260, clamp((t - T.G - 0.8) / 3.6)); P.yamal.ex = 'cry'; P.yamal.pose = { bArm: [-14, -6], fArm: [60, 40], bLeg: [-8, -4], fLeg: [40, 60] }; P.yamal.hop = Math.abs(Math.sin(t * 6)) * 40; P.yamal.f = -1;
-    for (const [k, x] of [['gordon', 120], ['adeyemi', 260], ['jesus', 30]]) { P[k].x = x; P[k].y = FEET + 70; P[k].pose = DOWN; P[k].lean = -1.4; P[k].ex = 'cry'; } }
+const KICKP = { bArm: [-60, -40], fArm: [60, 40], bLeg: [-10, -4], fLeg: [80, 40] }, FLY = { bArm: [-150, -120], fArm: [160, 120], bLeg: [-50, -20], fLeg: [60, 20] }, DOWN = { bArm: [100, 80], fArm: [110, 90], bLeg: [-60, -20], fLeg: [-40, -10] }, UPA = { bArm: [-165, -175], fArm: [165, 175], bLeg: [-8, -4], fLeg: [8, 4] }, STAND = { bArm: [-14, -6], fArm: [14, 6], bLeg: [-8, -4], fLeg: [8, 4] };
+function growK(t) { return t < T.grow ? 0 : t < T.G ? eBack(clamp((t - T.grow) / 0.5)) : 0; }
+function gang(t) { const P = { jesus: { x: 30, y: FEET, f: 1, ex: 'angry' }, adeyemi: { x: 160, y: FEET, f: 1, ex: 'angry' }, gordon: { x: 290, y: FEET, f: 1, ex: 'angry' }, yamal: { x: 430, y: FEET, f: 1, ex: 'angry', pose: { bArm: [-14, -6], fArm: [100, 85], bLeg: [-8, -4], fLeg: [40, 60] } } };
+  const off = t < T.B ? lerp(-420, -260, eOut(t / T.B)) : lerp(-260, 0, eIO(clamp((t - T.B) / 2.0))); for (const k in P) P[k].x += off;
+  if (t >= T.B && t < T.C) { P.gordon.pose = WALK(t); P.adeyemi.pose = WALK(t + .3); P.jesus.pose = WALK(t + .6); P.yamal.hop = Math.abs(Math.sin(t * 10)) * 30; }
+  if (t >= T.C && t < T.gk) for (const k in P) P[k].ex = 'shock';
+  // 1 Gordon: two shots, two rebounds into his face
+  if (t >= T.gk && t < T.ad) { const d = t - T.gk; P.gordon.x = 330; P.gordon.pose = (d > .2 && d < .5) || (d > .8 && d < 1.1) ? KICKP : undefined; P.gordon.ex = d < .5 ? 'smug' : d < .8 ? 'shock' : d < 1.1 ? 'angry' : 'cry'; P.gordon.tilt = (d > .55 && d < .8) || d > 1.15 ? -0.45 : 0; }
+  if (t >= T.ad && t < T.py) P.gordon.ex = 'cry';
+  // 2 Adeyemi: rocket into the shield → flattened like a pancake → peels off
+  if (t >= T.ad && t < T.py) { P.yamal.x = 250; P.gordon.x = 120; P.jesus.x = -60; }
+  if (t >= T.ad && t < T.py) { const d = t - T.ad; if (d < 0.4) { P.adeyemi.x = lerp(160, 560, d / 0.4); P.adeyemi.pose = { bArm: [-60 * Math.sin(t * 30), -40], fArm: [60 * Math.sin(t * 30), 40], bLeg: [-50 * Math.sin(t * 30), -30], fLeg: [50 * Math.sin(t * 30), 30] }; P.adeyemi.lean = 0.35; }
+    else if (d < 1.2) { P.adeyemi.x = 575; P.adeyemi.pancake = 1; P.adeyemi.ex = 'shock'; P.adeyemi.pose = UPA; } else { const k = clamp((d - 1.2) / 0.5); P.adeyemi.x = lerp(575, 470, k); P.adeyemi.lean = -k * 1.4; P.adeyemi.pose = DOWN; P.adeyemi.ex = 'cry'; P.adeyemi.y = FEET + k * 50; } }
+  // 3 Pyramid: Gordon bottom, Adeyemi middle, Jesus top — shield grows — one tap — collapse
+  if (t >= T.py && t < T.Y) { const d = t - T.py, up = eOut(clamp(d / 0.7)), fall = clamp((t - T.tap - 0.25) / 0.55), wob = t > T.tap ? Math.sin((t - T.tap) * 30) * 0.08 * (1 - fall) : 0;
+    P.gordon.x = 470; P.gordon.y = FEET; P.gordon.pose = UPA; P.gordon.ex = t < T.grow ? 'strain' : 'shock';
+    P.adeyemi.x = 470; P.adeyemi.y = FEET - 330 * up; P.adeyemi.pose = UPA; P.adeyemi.ex = t < T.grow ? 'smug' : 'shock'; P.adeyemi.lean = 0; P.adeyemi.pancake = 0;
+    P.jesus.x = 470; P.jesus.y = FEET - 650 * up; P.jesus.pose = { bArm: [-14, -6], fArm: [110, 100], bLeg: [-8, -4], fLeg: [8, 4] }; P.jesus.ex = t < T.grow ? 'laugh' : 'shock';
+    for (const [k, i] of [['gordon', 0], ['adeyemi', 1], ['jesus', 2]]) { P[k].lean = wob * (i + 1) - fall * (0.6 + i * 0.5); P[k].x -= fall * (120 + i * 220); P[k].y += fall * fall * (i * 330); if (fall > 0) { P[k].pose = FLY; P[k].ex = 'shock'; } } }
+  // 4 Yamal: crutch swing rebounds onto his bad ankle
+  if (t >= T.Y && t < T.F) { const d = t - T.Y; P.yamal.x = lerp(430, 500, clamp(d / 0.6)); P.yamal.ex = d < 1.2 ? 'angry' : t < T.crutch + 0.3 ? 'shock' : 'cry'; P.yamal.swing = d > 1.2 && d < 2.1; P.yamal.hop = t > T.crutch + 0.2 ? Math.abs(Math.sin(t * 12)) * 60 : 0;
+    for (const [k, x] of [['gordon', 140], ['adeyemi', 260], ['jesus', 20]]) { P[k].x = x; P[k].y = FEET + 60; P[k].pose = DOWN; P[k].lean = -1.3; P[k].ex = 'cry'; } }
+  // 5 Shield bash: everyone flies like bowling pins
+  if (t >= T.F && t < T.G) { const s = clamp((t - T.bash - 0.15) / 0.8); let i = 0; P.yamal.x = 500; P.yamal.ex = t < T.bash ? 'cry' : 'shock';
+    for (const [k, x] of [['yamal', 500], ['gordon', 330], ['adeyemi', 220], ['jesus', 100]]) { if (k !== 'yamal') { P[k].x = x; P[k].y = FEET; P[k].pose = undefined; P[k].ex = 'cry'; P[k].lean = 0; }
+      if (s > 0) { P[k].x = x - s * (500 + i * 120); P[k].y = FEET - Math.sin(s * Math.PI) * (260 + i * 60); P[k].lean = -s * (5 + i); P[k].pose = FLY; P[k].ex = 'shock'; } i++; } }
+  // 6 Going home… the shield rolls after him and flattens him
+  if (t >= T.G) { for (const k of ['gordon', 'adeyemi', 'jesus']) P[k].hide = 1; const k = clamp((t - T.G - 0.3) / 2.6); P.yamal.x = t < T.flat ? lerp(560, 300, k) : 300; P.yamal.f = -1; P.yamal.ex = 'cry'; P.yamal.hop = t < T.flat ? Math.abs(Math.sin(t * 6)) * 40 : 0; P.yamal.pose = { bArm: [-14, -6], fArm: [60, 40], bLeg: [-8, -4], fLeg: [40, 60] };
+    if (t >= T.flat && t < T.pop) P.yamal.flat = 1; if (t >= T.pop) { P.yamal.bent = 1; P.yamal.pose = UPA; P.yamal.hop = Math.abs(Math.sin(t * 8)) * 20; } }
   return P; }
-function crutchAndBandage(P, t) { const y = P.yamal, o = { x: y.x, y: (y.y || FEET) - (y.hop || 0), f: y.f, s: 1.2, lean: y.lean || 0 };
-  const swing = t >= T.Y + 1.2 && t < T.crutch + 0.3, d = t - T.Y - 1.2;
+function crutch(P, t) { const y = P.yamal; if (y.flat) return; const o = { x: y.x, y: y.y - (y.hop || 0), f: y.f, s: 1.2, lean: y.lean || 0 }, hp = headAt('yamal', o);
   ctx.save(); ctx.strokeStyle = '#9aa3ad'; ctx.lineWidth = 16; ctx.lineCap = 'round';
-  if (swing) { const a = d < 0.6 ? -2.2 + d * 3.5 : 0.1 + Math.sin((d - 0.6) * 10) * 0.3; const hp = headAt('yamal', o); ctx.translate(hp[0] + 60 * o.f, hp[1] + 230); ctx.rotate(a * o.f); ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(0, 420); ctx.stroke(); ctx.lineWidth = 26; ctx.beginPath(); ctx.moveTo(-36, 0); ctx.lineTo(36, 0); ctx.stroke(); }
-  else { const hp = headAt('yamal', o); ctx.beginPath(); ctx.moveTo(hp[0] + 70 * o.f, hp[1] + 240); ctx.lineTo(hp[0] + 110 * o.f, o.y); ctx.stroke(); ctx.lineWidth = 26; ctx.beginPath(); ctx.moveTo(hp[0] + 40 * o.f, hp[1] + 240); ctx.lineTo(hp[0] + 100 * o.f, hp[1] + 240); ctx.stroke(); }
-  ctx.restore(); ctx.save(); ctx.fillStyle = '#fff'; ctx.strokeStyle = INK; ctx.lineWidth = 4; ctx.translate(o.x + 40 * o.f, o.y - 50); ctx.rotate(o.lean); ctx.beginPath(); ctx.roundRect(-34, -40, 68, 70, 14); ctx.fill(); ctx.stroke(); ctx.strokeStyle = '#ccc'; for (let k = 0; k < 3; k++) { ctx.beginPath(); ctx.moveTo(-30, -26 + k * 20); ctx.lineTo(30, -20 + k * 20); ctx.stroke(); } ctx.restore(); }
-function scene(t) { street(t);
-  const show = t >= T.C, bashK = t >= T.bash && t < T.G ? Math.sin(clamp((t - T.bash) / 0.6) * Math.PI) : 0, sx = SHX - bashK * 260, up = show ? eBack((t - T.C) / 0.6) : 0;
-  // Real pair behind the shield (heads peeking)
-  const dance = t >= T.G ? Math.sin(t * 9) : 0;
-  CB('mbappe', { x: sx - 95 + (t >= T.G ? -60 : 0), y: FEET - (t >= T.C && t < T.G ? 170 * up : 0), f: -1, s: 1.15, expr: t < T.C ? 'smug' : 'laugh', pose: t >= T.G ? { bArm: [-160, -130], fArm: [160, 130], bLeg: [-8, -4], fLeg: [8, 4] } : undefined, hop: t >= T.G ? Math.abs(dance) * 30 : 0 }, t, 1.1);
-  CB('vini', { x: sx + 100 + (t >= T.G ? 60 : 0), y: FEET - (t >= T.C && t < T.G ? 170 * up : 0), f: -1, s: 1.12, expr: t < T.C ? 'smug' : 'laugh', pose: t >= T.G ? { bArm: [-60 + dance * 50, -40], fArm: [60 - dance * 50, 40], bLeg: [-20 + dance * 30, -10], fLeg: [20 - dance * 30, 10] } : undefined, hop: t >= T.G ? Math.abs(Math.sin(t * 9 + 1)) * 40 : 0, lean: t >= T.G ? dance * 0.15 : 0 }, t, 1.7);
-  if (show && t < T.G) shield(t, sx, FEET - 130 - (1 - up) * 900, 0.74, bashK * -0.15);
-  if (t >= T.G) shield(t, SHX + 40, FEET - 300, 0.7, 0.3);
-  const P = barca(t);
-  for (const k of ['jesus', 'adeyemi', 'gordon', 'yamal']) { const p = P[k]; CB(k, { x: p.x, y: (p.y || FEET) - (p.hop || 0), f: p.f, s: k === 'yamal' ? 1.2 : 1.12, expr: p.ex, pose: p.pose, lean: p.lean || 0, tilt: p.tilt || 0 }, t, k.length * 0.3);
-    if (k === 'yamal') crutchAndBandage(P, t); }
-  // Yamal's cheeks still red from Ep44
-  { const y = P.yamal, h = headAt('yamal', { x: y.x, y: (y.y || FEET) - (y.hop || 0), f: y.f, s: 1.2, lean: y.lean || 0 }); ctx.save(); ctx.fillStyle = 'rgba(255,80,80,.45)'; for (const s2 of [-1, 1]) { ctx.beginPath(); ctx.ellipse(h[0] + s2 * 58, h[1] + 35, 34, 24, 0, 0, 7); ctx.fill(); } ctx.restore();
-    if (t >= T.G) { ctx.fillStyle = 'rgba(120,200,255,.9)'; for (let i = 0; i < 4; i++) { const k = ((t * 1.6 + i * 0.25) % 1); ctx.beginPath(); ctx.ellipse(h[0] + (i % 2 ? 40 : -40) + (i % 2 ? 1 : -1) * k * 60, h[1] + k * 260, 12, 20, 0, 0, 7); ctx.fill(); } } }
-  // Gordon's two rebounds
-  if (t >= T.gk && t < T.ad) for (const [s0, i] of [[0.2, 0], [0.8, 1]]) { const d = t - T.gk - s0; if (d < 0 || d > 0.6) continue; const gx = P.gordon.x + 80, q = d < 0.25 ? d / 0.25 : 1 - (d - 0.25) / 0.2; ball(lerp(gx, sx - 230, Math.max(0, q)), lerp(FEET - 40, FEET - 420, Math.max(0, d < 0.25 ? q : 1 - q * 0.0) ) - (d >= 0.25 ? (d - 0.25) * 200 : 0), 30, d * 20); }
-}
+  if (y.swing) { const d = t - T.Y - 1.2, a = d < 0.6 ? -2.2 + d * 3.5 : 0.1 + Math.sin((d - 0.6) * 10) * 0.3; ctx.translate(hp[0] + 60 * o.f, hp[1] + 230); ctx.rotate(a * o.f); ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(0, 420); ctx.stroke(); ctx.lineWidth = 26; ctx.beginPath(); ctx.moveTo(-36, 0); ctx.lineTo(36, 0); ctx.stroke(); }
+  else if (y.bent) { ctx.beginPath(); ctx.moveTo(hp[0] + 70 * o.f, hp[1] + 240); ctx.quadraticCurveTo(hp[0] + 200 * o.f, hp[1] + 380, hp[0] + 60 * o.f, o.y); ctx.stroke(); }
+  else { ctx.beginPath(); ctx.moveTo(hp[0] + 70 * o.f, hp[1] + 240); ctx.lineTo(hp[0] + 110 * o.f, o.y); ctx.stroke(); ctx.lineWidth = 26; ctx.beginPath(); ctx.moveTo(hp[0] + 40 * o.f, hp[1] + 240); ctx.lineTo(hp[0] + 100 * o.f, hp[1] + 240); ctx.stroke(); }
+  ctx.restore(); ctx.save(); ctx.fillStyle = '#fff'; ctx.strokeStyle = INK; ctx.lineWidth = 4; ctx.translate(o.x + 40 * o.f, o.y - 50); ctx.beginPath(); ctx.roundRect(-34, -40, 68, 70, 14); ctx.fill(); ctx.stroke(); ctx.restore(); }
+function rollShield(t) { if (t < T.kickS || t >= T.pop + 0.6) return null; const k = clamp((t - T.kickS) / (T.flat - T.kickS)), x = t < T.flat ? lerp(SHX + 120, 300, k) : lerp(300, -500, clamp((t - T.flat) / 1.0)), ang = -(SHX + 120 - x) / 170;
+  shield(t, x, FEET - 220, 0.5, ang); return x; }
+function scene(t) { street(t); const g = growK(t), bashK = t >= T.bash && t < T.G ? Math.sin(clamp((t - T.bash) / 0.6) * Math.PI) : 0, sx = SHX - bashK * 260, up = t >= T.C ? eBack((t - T.C) / 0.6) : 0;
+  const stepUp = t >= T.C && t < T.kickS ? 170 * up + g * 250 : 0, dance = t >= T.Q ? Math.sin(t * 9) : 0, kicking = t >= T.kickS - 0.3 && t < T.kickS + 0.3;
+  CB('mbappe', { x: sx - 95, y: FEET - stepUp, f: -1, s: 1.15, expr: t < T.C ? 'smug' : 'laugh', pose: kicking ? KICKP : t >= T.Q ? { bArm: [-14, -6], fArm: [150, 120 + dance * 30], bLeg: [-8, -4], fLeg: [8, 4] } : undefined }, t, 1.1);
+  CB('vini', { x: sx + 100, y: FEET - stepUp, f: -1, s: 1.12, expr: t < T.C ? 'smug' : 'laugh', pose: t >= T.Q || (t >= T.G && t < T.kickS) ? { bArm: [-60 + dance * 50, -40], fArm: [60 - dance * 50, 40], bLeg: [-20 + dance * 30, -10], fLeg: [20 - dance * 30, 10] } : undefined, hop: t >= T.Q ? Math.abs(Math.sin(t * 9 + 1)) * 40 : 0 }, t, 1.7);
+  if (t >= T.C && t < T.kickS) shield(t, sx, FEET - 130 - (1 - up) * 900 - g * 250, SHS, bashK * -0.15, 1 + g * 0.65);
+  rollShield(t);
+  if (t >= T.tap - 0.1 && t < T.tap + 0.5) { ctx.save(); ctx.font = `400 120px ${FONT}`; ctx.textAlign = 'center'; ctx.fillText('👉', sx - 230, FEET - 130 - 250 - 380 * SHS * 1.65 + 40); ctx.restore(); }
+  const P = gang(t);
+  for (const k of ['jesus', 'adeyemi', 'gordon', 'yamal']) { const p = P[k]; if (p.hide) continue; const o = { x: p.x, y: p.y - (p.hop || 0), f: p.f, s: k === 'yamal' ? 1.2 : 1.12, expr: p.ex, pose: p.pose, lean: p.lean || 0, tilt: p.tilt || 0 };
+    ctx.save(); if (p.pancake) { ctx.translate(p.x + 60, 0); ctx.scale(0.42, 1.08); ctx.translate(-(p.x + 60), 0); } if (p.flat) { ctx.translate(p.x, FEET); ctx.scale(1.35, 0.14); ctx.translate(-p.x, -FEET); }
+    CB(k, o, t, k.length * 0.3); ctx.restore(); if (k === 'yamal') crutch(P, t); }
+  { const y = P.yamal; if (!y.flat) { const h = headAt('yamal', { x: y.x, y: y.y - (y.hop || 0), f: y.f, s: 1.2, lean: y.lean || 0 }); ctx.save(); ctx.fillStyle = 'rgba(255,80,80,.45)'; for (const s2 of [-1, 1]) { ctx.beginPath(); ctx.ellipse(h[0] + s2 * 58, h[1] + 35, 34, 24, 0, 0, 7); ctx.fill(); } ctx.restore();
+      if (t >= T.G) { ctx.fillStyle = 'rgba(120,200,255,.9)'; for (let i = 0; i < 4; i++) { const k = ((t * 1.6 + i * 0.25) % 1); ctx.beginPath(); ctx.ellipse(h[0] + (i % 2 ? 40 : -40) + (i % 2 ? 1 : -1) * k * 60, h[1] + k * 260, 12, 20, 0, 0, 7); ctx.fill(); } } } }
+  if (t >= T.gk && t < T.ad) for (const s0 of [0.2, 0.8]) { const d = t - T.gk - s0; if (d < 0 || d > 0.6) continue; const gx = P.gordon.x + 80; if (d < 0.25) ball(lerp(gx, sx - 200, d / 0.25), lerp(FEET - 40, FEET - 420, d / 0.25), 32, d * 20); else ball(lerp(sx - 200, P.gordon.x + 20, (d - 0.25) / 0.2), lerp(FEET - 420, FEET - 560, (d - 0.25) / 0.2), 32, d * 20); } }
 function frame(t) { const S = () => scene(t);
-  if (t < T.B) SHOT.cu(ctx, S, { x: 360, y: 1050, zoom: 1.25 });
+  if (t < T.B) SHOT.cu(ctx, S, { x: 330, y: 1050, zoom: 1.25 });
   else if (t < T.C) SHOT.low(ctx, S, { x: 420, y: 1150, zoom: 1.0, lift: 80 });
   else if (t < T.gk) SHOT.wide(ctx, S, { x: 600, y: 1080, zoom: 0.95 });
   else if (t < T.ad) SHOT.cu(ctx, S, { x: 520, y: 1050, zoom: 1.12 });
-  else if (t < T.je) SHOT.dutch(ctx, S, { x: 500, y: 1080, zoom: 1.0, rot: 0.07 });
-  else if (t < T.Y) SHOT.wide(ctx, S, { x: 480, y: 1000, zoom: 0.95 });
+  else if (t < T.py) SHOT.dutch(ctx, S, { x: 560, y: 1080, zoom: 1.05, rot: 0.07 });
+  else if (t < T.Y) SHOT.wide(ctx, S, { x: 560, y: 900, zoom: lerp(0.95, 0.8, clamp((t - T.py) / 1.2)) });
   else if (t < T.F) SHOT.xcu(ctx, S, { x: 600, y: 1100, zoom: 1.3 });
   else if (t < T.G) SHOT.wide(ctx, S, { x: 520, y: 1050, zoom: 0.9 });
-  else SHOT.low(ctx, S, { x: 480, y: 1100, zoom: 0.95, lift: 60 });
+  else if (t < T.Q) SHOT.low(ctx, S, { x: 480, y: 1150, zoom: 0.95, lift: 60 });
+  else SHOT.wide(ctx, S, { x: 560, y: 1080, zoom: 0.95 });
   ctx.setTransform(1, 0, 0, 1, 0, 0);
-  pop('BOINK', 300, 820, (t - T.gk - 0.45) / 0.6); pop('BOINK', 300, 820, (t - T.gk - 1.05) / 0.6); pop('BONK', 560, 760, (t - T.ad - 0.45) / 0.6); pop('BOING', 560, 640, (t - T.je - 0.6) / 0.7);
+  pop('BOINK', 300, 820, (t - T.gk - 0.45) / 0.6); pop('BOINK', 300, 820, (t - T.gk - 1.05) / 0.6); pop('SPLAT', 600, 760, (t - T.ad - 0.4) / 0.7, '#ffd23f', 130);
+  pop('TAP', 380, 420, (t - T.tap) / 0.7, '#fff', 100); pop('CRASH', 420, 760, (t - T.tap - 0.6) / 0.8, '#ffd23f', 130);
   pop('CLANG', 640, 700, (t - T.crutch + 0.25) / 0.5, '#fff'); pop('OUCH', 520, 900, (t - T.crutch) / 0.8, '#ff6b6b', 130); pop('STRIKE', 540, 700, (t - T.bash - 0.3) / 1.0, '#ffd23f', 150);
-  if (t >= T.G) pop('HU HU', 360, 760, ((t - T.G) % 1.1) / 1.1, '#9fd8ff', 90); }
-const CAPS = [[0.2, 1.6, 'Barça 4-1 Sabah ✅'], [1.6, T.B, 'Payback for 5 slaps 😤'], [T.B + 0.2, T.C, "Yamal didn't even play 🩹"], [T.C + 0.2, T.gk, 'Real: 5 wins out of 5 🛡️'],
-  [T.gk + 0.2, T.ad, 'Gordon x2 ↩️'], [T.ad + 0.1, T.je, 'Adeyemi 💨'], [T.je + 0.1, T.Y, 'Jesus 🦘'], [T.Y + 0.1, T.crutch, 'Yamal: my turn 😤'], [T.crutch, T.F, 'His bad ankle 🦶😭'],
-  [T.F + 0.1, T.bash, 'Shield bash…'], [T.G + 0.2, T.Q, 'Yamal goes home crying 😭'], [T.Q, T.END, 'Next Clásico: who wins? 👇']];
-function hud(t) { for (const c of CAPS) if (t >= c[0] && t < c[1]) card(c[2], 540, t >= T.END - CTA2.DUR ? 1420 : 250, c[2].length > 22 ? 54 : 62, { pop: (t - c[0]) / 0.3, bg: /😤|🩹|↩️|💨|🦘|😭|🦶/.test(c[2]) ? '#fff3b0' : '#fffaf0' });
+  pop('SPLAT', 380, 1100, (t - T.flat) / 0.9, '#ffd23f', 150); if (t >= T.G && t < T.flat) pop('HU HU', 330, 760, ((t - T.G) % 1.1) / 1.1, '#9fd8ff', 90); if (t >= T.pop) pop('HU HU HU', 360, 760, ((t - T.pop) % 1.0) / 1.0, '#9fd8ff', 100); }
+const CAPS = [[0.2, 1.4, 'Barça 4-1 Sabah ✅'], [1.4, T.B, 'Payback for 5 slaps 😤'], [T.B + 0.2, T.C, "Yamal didn't even play 🩹"], [T.C + 0.2, T.gk, 'Real: 5 wins out of 5 🛡️'],
+  [T.gk + 0.1, T.ad, 'Gordon x2 ↩️'], [T.ad + 0.1, T.py, 'Adeyemi: pancake 🥞'], [T.py + 0.1, T.grow, 'Team pyramid 💪'], [T.grow, T.tap, 'The shield grows 📈'], [T.tap, T.Y, 'Tap. 👉'],
+  [T.Y + 0.1, T.crutch, 'Yamal: my turn 😤'], [T.crutch, T.F, 'His bad ankle 🦶😭'], [T.F + 0.1, T.G, 'STRIKE 🎳'], [T.G + 0.2, T.flat, 'Going home… 😭'], [T.flat, T.Q, 'Or not 🛞'], [T.Q + 0.2, T.END, 'Next Clásico: who wins? 👇']];
+function hud(t) { for (const c of CAPS) if (t >= c[0] && t < c[1]) card(c[2], 540, t >= T.END - CTA2.DUR ? 1420 : 250, c[2].length > 22 ? 54 : 62, { pop: (t - c[0]) / 0.3, bg: /😤|🩹|↩️|🥞|📈|👉|😭|🦶|🛞/.test(c[2]) ? '#fff3b0' : '#fffaf0' });
   ctx.font = '600 24px Inter'; ctx.fillStyle = 'rgba(40,20,10,.8)'; ctx.textAlign = 'left'; ctx.fillText('Cartoon parody', 40, 1890); }
-const CUTS = [[T.B, 'whip'], [T.C, 'flash'], [T.gk, 'whip'], [T.ad, 'whip'], [T.je, 'whip'], [T.Y, 'whip'], [T.F, 'whip'], [T.G, 'leak']];
-const SHAKE = [T.C + 0.3, T.gk + 0.45, T.gk + 1.05, T.ad + 0.45, T.je + 0.6, T.crutch, T.bash + 0.3];
+const CUTS = [[T.B, 'whip'], [T.C, 'flash'], [T.gk, 'whip'], [T.ad, 'whip'], [T.py, 'whip'], [T.Y, 'whip'], [T.F, 'whip'], [T.G, 'leak'], [T.Q, 'whip']];
+const SHAKE = [T.C + 0.3, T.gk + 0.45, T.gk + 1.05, T.ad + 0.4, T.grow, T.tap + 0.6, T.crutch, T.bash + 0.3, T.flat];
 function grade() { ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); const v = ctx.createRadialGradient(540, 960, 560, 540, 960, 1250); v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(60,20,0,.25)'); ctx.fillStyle = v; ctx.fillRect(0, 0, W, H); ctx.restore(); }
 window.DURATION = T.END; window.render = function (t) { window.T2T = t; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.clearRect(0, 0, W, H); ctx.fillStyle = '#f4a259'; ctx.fillRect(0, 0, W, H);
   const hs = SHAKE.reduce((m, a) => Math.max(m, t >= a && t < a + 0.25 ? 16 * (1 - (t - a) / 0.25) : 0), 0);

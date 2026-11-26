@@ -3,43 +3,43 @@
  "beats": [
   {
    "shot": "cu",
-   "idea": "Yamal on a crutch, bandaged ankle, red cheeks from Ep44; Gordon, Adeyemi, Jesus behind him",
+   "idea": "Yamal on a crutch with Gordon, Adeyemi, Jesus",
    "text": "Payback for 5 slaps 😤"
   },
   {
    "shot": "low",
-   "idea": "the gang marches across a western street; Yamal hops on his crutch",
+   "idea": "the march; Yamal hops on his crutch",
    "text": "Yamal didn't even play 🩹"
   },
   {
    "shot": "wide",
-   "idea": "Mbappé + Vinícius raise a giant shield: 5/5 WINS · 15 PTS · 1ST",
+   "idea": "Mbappé + Vinícius raise the 5/5 shield",
    "text": "Real: 5 wins out of 5 🛡️"
   },
   {
    "shot": "cu",
-   "idea": "Gordon shoots twice, both rebound into his face",
+   "idea": "Gordon: two shots, two rebounds into his face",
    "text": "Gordon x2 ↩️"
   },
   {
    "shot": "dutch",
-   "idea": "Adeyemi rocket-sprints into the shield: BONK; Jesus leaps: BOING",
-   "text": "Adeyemi 💨 / Jesus 🦘"
-  },
-  {
-   "shot": "xcu",
-   "idea": "Yamal swings his crutch: it rebounds onto his own bandaged ankle",
-   "text": "His bad ankle 🦶😭"
+   "idea": "Adeyemi rockets into the shield and flattens like a pancake",
+   "text": "Adeyemi: pancake 🥞"
   },
   {
    "shot": "wide",
-   "idea": "shield bash: the whole gang flies like bowling pins",
-   "text": "STRIKE 🎳"
+   "idea": "human pyramid reaches over — the shield grows taller — one tap — crash",
+   "text": "The shield grows 📈 / Tap. 👉"
+  },
+  {
+   "shot": "xcu",
+   "idea": "Yamal's crutch rebounds onto his own bad ankle; shield bash STRIKE",
+   "text": "His bad ankle 🦶😭"
   },
   {
    "shot": "low",
-   "idea": "Yamal limps home crying, Vinícius dances; question + follow card",
-   "text": "Next Clásico: who wins? 👇"
+   "idea": "Yamal limps home crying — the shield rolls after him and flattens him; he pops up crying louder; question + follow card",
+   "text": "Going home… / Or not 🛞"
   }
  ],
  "techniques": [
@@ -53,19 +53,21 @@
   "injured-debt-collector-on-crutch",
   "giant-record-shield",
   "double-rebound-face",
-  "rocket-sprint-bonk",
+  "pancake-on-shield",
+  "pyramid-vs-growing-shield-one-tap",
   "crutch-rebounds-on-own-ankle",
-  "shield-bash-bowling-strike"
+  "shield-bash-bowling-strike",
+  "rolling-shield-flattens"
  ],
- "twist": "the debt collector is the one who didn't play — and his own crutch hurts him most",
+ "twist": "the shield grows when they get close, falls to one tap — and then chases him home",
  "callback": "'Payback for 5 slaps' and Yamal's red cheeks call back Ep44",
- "ending": "crying walk home + question + follow card",
+ "ending": "walk home → rolled flat by the shield → pops up crying + question + follow card",
  "hidden_details": [
   "Yamal's cheeks are still red from Ep44",
   "the bandage is on the ankle that kept him out",
   "Gordon gets hit twice = his two goals"
  ],
- "meme_frame": "Yamal's crutch bouncing off the 5/5 shield onto his own ankle",
+ "meme_frame": "the human pyramid reaching over a shield that keeps growing",
  "style": "chibi-caricature-western-standoff",
  "prev_style": "chibi-caricature-dressing-room",
  "hook_frame0": "cover: PAYBACK? 😤 …OUCH — Barça 4-1 · Real 5/5 🛡️",
