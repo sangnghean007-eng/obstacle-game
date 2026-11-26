@@ -14,3 +14,7 @@ Rotation: (a) animation & timing → (b) gag writing → (c) retention & hooks �
 - Read remotion-dev/skills (timing, transitions, light-leaks, motion-blur, sfx). Ported into our engine: `toon2/motion.js` (spring ease, cut transitions whip/flash/leak/iris, blur trail) and `fx2.py` record_scratch / sub_boom / fail_horn (own synthesis; no sampled meme audio).
 - Packaged our own pipeline as a project skill: `.claude/skills/soccer365-episode/SKILL.md` (auto-loads in future sessions).
 - Applied to Ep40 v4: transitions on every cut, spring stand-up/climb, record scratch on the "look at the ball" beat.
+
+## 26 Nov 2026: 'Bruno đâu nữa' (Ep46)
+- A code-drawn face for the LEAD character is not recognisable. Leads must use a caricature head sheet (cast/<name>/caric). Made cast/bruno (ElevenLabs gpt-image-2, 185 credits; cut by grid when heads touch).
+- Make the lead do his real signature behaviours (Bruno: captain's armband, skip-hop penalty run-up, arms-wide complaint) so viewers recognise him even before the face.

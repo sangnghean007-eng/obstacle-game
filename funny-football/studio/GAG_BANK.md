@@ -186,3 +186,6 @@ Columns: id | gag | technique (rule-of-3, misdirection, escalation, cutaway, dea
 | U109 | Keeper trips over a bar lying on the ground (Ep46) | slapstick | S |
 | U110 | Manager shouts the real quote 'so proud' through a megaphone; crickets (Ep46) | deadpan | M |
 | U111 | Groundsman digs a hole to lower the bar further; old fan with a 1999 photo (Ep46) | callback | M |
+| U112 | A player's signature complaint (arms wide) escalates x3: arms wide → hands on head → on his knees crying (Ep46 v2) | rule-of-3 | M |
+| U113 | Manager's 'so proud' — the captain turns to camera, deadpan (Ep46 v2) | 4th-wall | M |
+| U114 | The captain ends up carrying the bar itself (Ep46 v2) | visual pun | M |

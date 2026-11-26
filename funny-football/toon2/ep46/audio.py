@@ -9,7 +9,7 @@ from fx2 import Mix2
 D = 29.4; d = Desk(D); m = Mix2(D, ep=46)
 song = Song('noirjazz', key='C', minor=True, seed=46).form([('intro', 2), ('verse', 3), ('drop', 3), ('break', 2), ('drop', 3), ('outro', 3)]); st = song.render()
 L = min(len(st['drums']), int(D * SR)); env = np.ones(L)
-for a, b, g in ((0, 5.4, 0.35), (21.6, 23.6, 0.0)): env[int(a * SR):int(b * SR)] = g
+for a, b, g in ((0, 5.4, 0.35), (19.8, 21.8, 0.08)): env[int(a * SR):int(b * SR)] = g
 env = np.convolve(env, np.ones(1500) / 1500, 'same'); d.add_stems({k: v[:L] * env for k, v in st.items()})
 r = np.random.default_rng(46)
 def tt(dur): return np.arange(int(dur * SR)) / SR
@@ -25,15 +25,17 @@ def dig(t, g=.3): k = tt(.2); m.f(np.convolve(r.standard_normal(len(k)), np.ones
 m.crowd(0.2, 'cheer', 2.6, .4); m.whoosh(1.3, .8, .4); fanfare(2.0, .35); m.vo('generic_m', 'yay', 2.2, .5, 0)
 m.whoosh(4.2, .7, .35); m.crowd(4.6, 'cheer', 1.0, .3); fanfare(4.8, .25, (392, 494, 587, 784))
 for a in (6.0, 7.0, 8.0, 9.0): m.thump(a, .6); m.clang(a + .02, .35, 0); fall(a + .05, .22)
-m.thump(T := 9.6, .8); fall(9.65, .3); m.wahwah(10.3, .22); m.vo('generic_m', 'hmm', 11.0, .4, .3)
-[m.vo('generic_m', 'grunt', 12.3 + i * .55, .45, -.2) for i in range(5)]; [m.thump(12.4 + i * .5, .25) for i in range(6)]
-m.vo('generic_m', 'yelp', 16.4, .5, -.2); m.thump(16.55, .7); m.smack(16.6, .5); m.slide_whistle(16.6, False, .5, .22)
-m.vo('generic_m', 'yay', 18.2, .55, -.2); [beep(18.9 + i * .22) for i in range(3)]; m.record_scratch(19.0, .45); m.vo('generic_m', 'no', 19.2, .5, -.2)
-whistle(20.0, .6, .35); m.vo('generic_m', 'no', 20.4, .45, -.3); [m.thump(20.7 + i * .35, .15) for i in range(3)]
-m.f(np.sin(2 * np.pi * 2400 * tt(.3)) * .15 * np.exp(-tt(.3) * 3), 21.75, .2); m.vo('generic_m', 'yay', 21.85, .7, .3); m.crowd(22.0, 'ooh', .4, .1); cricket(22.6, 23.6, .14)
-for i in range(8): dig(23.8 + i * .45, .3)
-m.fail_horn(24.6, .2); m.vo('generic_m', 'cry', 26.0, .4, .4, 'sob'); m.timpani(27.0, 55, .3, .3)
+m.thump(9.6, .8); fall(9.65, .3); m.wahwah(10.2, .2); m.vo('generic_m', 'grunt', 10.9, .5, 0)   # Bruno arrives, chest thump
+m.thump(11.0, .35); m.thump(11.25, .35)
+for g0 in (12.6, 13.6): [m.thump(g0 - .6 + i * .15, .15) for i in range(3)]; m.spring(g0 - .3, .2); m.thump(g0, .7); m.whoosh(g0 + .03, .5, .4); m.crowd(g0 + .1, 'cheer', 1.0, .35); m.vo('generic_m', 'yay', g0 + .2, .5, 0)
+m.vo('generic_m', 'yelp', 14.8, .5, -.3); m.thump(14.95, .7); m.smack(15.0, .5); m.vo('generic_m', 'no', 15.1, .6, 0)          # trip → Bruno complains
+m.vo('generic_m', 'yay', 16.4, .55, -.3); [beep(16.8 + i * .2) for i in range(3)]; m.record_scratch(17.0, .45); m.vo('generic_m', 'gasp', 17.1, .6, 0)
+whistle(18.0, .6, .35); m.vo('generic_m', 'cry', 18.6, .6, 0, 'wail')
+m.f(np.sin(2 * np.pi * 2400 * tt(.3)) * .15 * np.exp(-tt(.3) * 3), 19.85, .2); m.vo('generic_m', 'yay', 19.95, .7, .3); cricket(20.35, 21.9, .18)
+for i in range(4): dig(22.0 + i * .4, .3)
+m.vo('generic_m', 'hmm', 23.2, .55, 0); m.thump(23.5, .5); m.vo('generic_m', 'grunt', 23.6, .5, 0); [m.thump(24.0 + i * .5, .2) for i in range(6)]
+m.fail_horn(25.2, .2); m.timpani(26.4, 55, .3, .3)
 m.cta(D - 2.4)
 d.add('fx', (m.fx + m.music).T, 0, 1.0); d.add('vox', m.vox.T, 0, 1.25)
-d.duck('music', [2.0, 4.8, 9.6, 16.55, 19.0, 20.0], .45, .15, .4); d.room('fx', 'stadium', .12)
+d.duck('music', [2.0, 4.8, 9.6, 12.6, 13.6, 14.95, 17.0, 18.0], .45, .15, .4); d.room('fx', 'stadium', .12)
 print(d.master(sys.argv[1], os.path.join(H, 'release', 'stems')))
