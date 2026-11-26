@@ -1,0 +1,73 @@
+{
+ "logline": "Man United's standards are a high-jump bar that drops from a treble to a draw on the ground; captain Bruno scores twice and complains louder at every team-mate mishap, Pochettino says 'so proud', and Bruno carries the bar away himself.",
+ "beats": [
+  {
+   "shot": "low",
+   "idea": "1999: the bar is in the sky — TREBLE — a 1999 jumper flops over it",
+   "text": "1999: the treble 🏆🏆🏆"
+  },
+  {
+   "shot": "wide",
+   "idea": "2013: lower bar — LEAGUE TITLE — cleared",
+   "text": "2013: last league title"
+  },
+  {
+   "shot": "dutch",
+   "idea": "CLUNK, CLUNK: TOP 4 → ANY TROPHY → EUROPE PLEASE → NOT RELEGATED",
+   "text": "Then the bar kept dropping 📉"
+  },
+  {
+   "shot": "cu",
+   "idea": "now: the bar lies on the ground (A DRAW); captain Bruno (armband) steps up",
+   "text": "Now the bar = a draw"
+  },
+  {
+   "shot": "wide",
+   "idea": "Bruno's skip-hop run-up twice: two goals",
+   "text": "Captain Bruno: 2 goals ⚽⚽"
+  },
+  {
+   "shot": "cu",
+   "idea": "keeper trips over the floor bar → Bruno arms wide; Amad's goal VAR ❌ → hands on head; red card → on his knees crying",
+   "text": "Trip 🤦 VAR ❌ Red 🟥"
+  },
+  {
+   "shot": "xcu",
+   "idea": "Pochettino megaphone: SO PROUD! — Bruno turns to camera, deadpan; crickets",
+   "text": "Pochettino: \"so proud\" 🥹"
+  },
+  {
+   "shot": "wide",
+   "idea": "a groundsman digs the bar lower; Bruno lifts it and carries it toward NEXT: Leipzig · Bayern · Villarreal; old fan holds a 1999 photo",
+   "text": "Bruno carries… everything 🏋️"
+  }
+ ],
+ "techniques": [
+  "visual pun",
+  "escalation",
+  "rule-of-3",
+  "4th-wall",
+  "callback"
+ ],
+ "gags": [
+  "standards-high-jump-bar",
+  "signs-dropping-clunk",
+  "captain-skip-hop-two-goals",
+  "complaint-escalates-x3",
+  "trip-over-a-bar-on-the-ground",
+  "so-proud-megaphone-deadpan-to-camera",
+  "captain-carries-the-bar-away"
+ ],
+ "twist": "the only one who clears the bar is Bruno — so he ends up carrying the bar itself",
+ "callback": "the 1999 treble from the first shot returns as the old fan's photo",
+ "ending": "keep-digging + two-sided question + follow card",
+ "hidden_details": [
+  "the 1999 and 2013 jumpers wear 99 and 13",
+  "the scoreboard reads FERNANDES ⚽⚽",
+  "the next three opponents are written on the buried bar"
+ ],
+ "meme_frame": "Bruno's arms-wide complaint as the keeper trips over a bar lying on the ground",
+ "style": "chibi-caricature-athletics",
+ "prev_style": "chibi-caricature-western-standoff",
+ "hook_frame0": "cover: MAN UTD'S BAR NOW 📉 — Bruno complaining"
+}

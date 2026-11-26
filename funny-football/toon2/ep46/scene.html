@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset="utf-8"><title>The Bar</title><style>html,body{margin:0;background:#000}</style></head><body><canvas id="c" width="1080" height="1920"></canvas>
+<!doctype html><html><head><meta charset="utf-8"><title>Top From the Bottom</title><style>html,body{margin:0;background:#000}</style></head><body><canvas id="c" width="1080" height="1920"></canvas>
 <script src="../styles.js"></script><script src="../pro.js"></script><script src="../fx.js"></script><script src="../shots.js"></script><script src="../chibi.js"></script><script src="../chibi_cast.js"></script><script src="../rig2.js"></script><script src="../castimg.js"></script><script src="../motion.js"></script><script src="../cta2.js"></script><script src="../cast/skins.js"></script>
 <script>
 // Ep40 "PENALTY PODIUM" (facts: ep40/facts.md). Barça 36, Real 33, Atlético 28; Yamal and Mbappé both missed penalties this weekend; both teams won.
@@ -80,102 +80,116 @@ function CB(n, o, t, ph = 0) { const k = o.life ?? 1, sw = Math.sin(t * 2.1 + ph
 
 
 
-// ---------------- Ep46 v2 THE BAR (owner: "chưa đủ rõ ràng và đặc sắc · Bruno đâu"). Bruno (caricature head) is the lead of 2026:
-// captain's armband, his skip-hop penalty run-up for both goals, and his famous arms-wide complaint escalating at every team-mate mishap.
-const CODEX = { smug: 'smug', strain: 'strain', shock: 'shock', angry: 'angry', laugh: 'happy', cry: 'sad', deadpan: 'bored' };
-const T = { A: 0, B: 3.2, C: 5.4, D: 9.6, E: 12.0, g1: 12.6, g2: 13.6, F: 14.4, G: 16.2, H: 18.0, I: 19.8, J: 21.8, lift: 23.4, K: 26.4, END: 29.4 };
-const GROUND = 1500, PX = [300, 780];
-const BARS = [[0, 220, 'TREBLE 🏆🏆🏆'], [T.B, 520, 'LEAGUE TITLE 🏆'], [6.0, 800, 'TOP 4'], [7.0, 1000, 'ANY TROPHY'], [8.0, 1180, 'EUROPE PLEASE'], [9.0, 1340, 'NOT RELEGATED 🙏'], [T.D, 1478, 'A DRAW'], [T.J + 0.6, 1600, 'A DRAW']];
-function barNow(t) { let b = BARS[0]; for (const x of BARS) if (t >= x[0]) b = x; const i = BARS.indexOf(b), prev = BARS[Math.max(0, i - 1)], k = eOut(clamp((t - b[0]) / 0.35)); return { y: i ? lerp(prev[1], b[1], k) : b[1], label: b[2], drop: t - b[0] < 0.35 && i > 0 }; }
+// ---------------- Ep46 v3 TOP FROM THE BOTTOM (owner: "xoáy sâu vị trí thứ 19 ở cả hai giải · xoay ngược lại · đỉnh từ dưới lên").
+// Facts (ep46/facts.md): Man United 19th of 20 in the Premier League and 19th of 36 in the Champions League league phase; Pochettino winless, said "so proud";
+// next: Leipzig, Bayern, Villarreal. Invented: the table tower, the FLIP lever, champagne, VAR monitor, the banner, every other line.
+const CODEX = { smug: 'smug', shock: 'shock', angry: 'angry', laugh: 'happy', cry: 'sad', deadpan: 'bored', sad: 'sad', scared: 'shock' };
+const T = { A: 0, B: 3.0, flip1: 3.8, C: 6.0, pop: 7.0, D: 9.4, flip2: 10.6, E: 12.6, spin: 12.8, spinEnd: 14.8, F: 15.6, var: 16.4, back: 17.0, G: 18.8, star: 20.4, face: 21.4, H: 22.6, flip3: 23.2, END: 27.0 };
+const CX = 540, CY = 900, TX0 = 230, TX1 = 930, TY0 = 200, TY1 = 1600, GY = 1700, BX = 800;
 function handPos(n, o, side, ang) { const L = lay(n), C = CC[n], p = side === 'f' ? L.fs : L.bs, r = Math.PI / 180, a = C.arm * 0.5; return W2(o, p[0] + (Math.sin(ang[0] * r) + Math.sin(ang[1] * r)) * a, p[1] + (Math.cos(ang[0] * r) + Math.cos(ang[1] * r)) * a); }
 function headAt(n, o) { const L = lay(n), R = (CC[n].head && CC[n].head.R) || 100; return W2(o, 0, L.shY - R * 0.95); }
 function pop(txt, x, y, k, col = '#ffd23f', size = 110) { if (k < 0 || k > 1) return; ctx.save(); ctx.globalAlpha = 1 - k * k; ctx.font = `400 ${size + k * 30}px ${FONT}`; ctx.textAlign = 'center'; ctx.lineWidth = 12; ctx.strokeStyle = INK; ctx.fillStyle = col; ctx.strokeText(txt, x, y - k * 60); ctx.fillText(txt, x, y - k * 60); ctx.restore(); }
-const BGS = {}; function stadium(t, gloom) { if (!BGS.c) { const c = document.createElement('canvas'); c.width = W + 1200; c.height = H + 1800; const g = c.getContext('2d'); g.translate(600, 1200);
-    const sky = g.createLinearGradient(0, -1200, 0, 900); sky.addColorStop(0, '#9cc8f0'); sky.addColorStop(1, '#e6f0fb'); g.fillStyle = sky; g.fillRect(-600, -1200, W + 1200, H + 1800);
-    g.fillStyle = 'rgba(255,255,255,.9)'; for (let i = 0; i < 9; i++) { const x = (i * 313) % 1500 - 200, y = -1000 + i * 140; for (let k = 0; k < 4; k++) { g.beginPath(); g.ellipse(x + k * 70, y - (k % 2) * 30, 90, 50, 0, 0, 7); g.fill(); } }
-    g.fillStyle = '#7a1a14'; g.fillRect(-600, 760, W + 1200, 420); for (let r = 0; r < 6; r++) for (let i = 0; i < 40; i++) { g.fillStyle = (i + r) % 7 ? '#c8261d' : '#e8e8e8'; g.fillRect(-560 + i * 60, 790 + r * 62, 44, 34); }
-    g.fillStyle = '#3f9e45'; g.fillRect(-600, 1180, W + 1200, 1200); g.fillStyle = '#c9623f'; g.fillRect(-600, 1430, W + 1200, 120); g.strokeStyle = '#fff'; g.lineWidth = 6; for (let i = 0; i < 3; i++) { g.beginPath(); g.moveTo(-600, 1450 + i * 40); g.lineTo(W + 600, 1450 + i * 40); g.stroke(); } BGS.c = c; }
-  ctx.drawImage(BGS.c, -600, -1200); if (gloom) { ctx.fillStyle = `rgba(30,30,50,${0.35 * gloom})`; ctx.fillRect(-600, -1200, W + 1200, H + 1800); } }
-function rig(t) { const b = barNow(t); const by = b.y + (b.drop ? Math.sin((t * 40)) * 6 : 0);
-  ctx.save(); ctx.fillStyle = '#1f5fbf'; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.beginPath(); ctx.roundRect(380, 1360, 320, 140, 16); ctx.fill(); ctx.stroke(); ctx.fillStyle = '#2a6fd6'; ctx.fillRect(390, 1370, 300, 26);
-  for (const x of PX) { ctx.fillStyle = '#e8e8e8'; ctx.fillRect(x - 12, 160, 24, GROUND - 160); ctx.strokeRect(x - 12, 160, 24, GROUND - 160); ctx.fillStyle = '#da291c'; for (let y = 200; y < GROUND; y += 120) ctx.fillRect(x - 12, y, 24, 60); }
-  if (by > GROUND) { ctx.fillStyle = '#5a3a20'; ctx.beginPath(); ctx.ellipse(540, GROUND + 20, 300, 60, 0, 0, 7); ctx.fill(); }
-  ctx.strokeStyle = '#ffd23f'; ctx.lineWidth = 18; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(PX[0], by); ctx.lineTo(PX[1], by); ctx.stroke(); ctx.strokeStyle = INK; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(PX[0], by - 9); ctx.lineTo(PX[1], by - 9); ctx.stroke();
-  // the sign hanging from the bar
-  const sw = Math.sin(t * 3) * 0.05; ctx.translate(540, by + 6); ctx.rotate(sw); ctx.strokeStyle = '#555'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(-60, 0); ctx.lineTo(-60, 26); ctx.moveTo(60, 0); ctx.lineTo(60, 26); ctx.stroke();
-  ctx.font = `400 ${b.label.length > 18 ? 44 : 64}px ${FONT}`; const w = ctx.measureText(b.label).width + 44; ctx.fillStyle = '#fffaf0'; ctx.strokeStyle = INK; ctx.lineWidth = 5; ctx.beginPath(); ctx.roundRect(-w / 2, 26, w, 90, 14); ctx.fill(); ctx.stroke(); ctx.fillStyle = INK; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(b.label, 0, 73); ctx.restore(); }
-function flop(n, t, t0, barY, k1 = 1) { // Fosbury flop over the bar: run-up, arc, land on the mat
-  const d = t - t0, run = clamp(d / 0.9), air = clamp((d - 0.9) / 0.8), land = d > 1.7;
-  let x, y, lean = 0, pose; if (d < 0.9) { x = lerp(-150, 260, run); y = GROUND; pose = { bArm: [-60 * Math.sin(t * 22), -40], fArm: [60 * Math.sin(t * 22), 40], bLeg: [-45 * Math.sin(t * 22), -25], fLeg: [45 * Math.sin(t * 22), 25] }; }
-  else if (!land) { x = lerp(260, 640, air); y = lerp(GROUND, 1400, air) - Math.sin(air * Math.PI) * (GROUND - barY + 260); lean = -air * 3.4; pose = { bArm: [-160, -170], fArm: [160, 170], bLeg: [-20, 20], fLeg: [20, 40] }; }
-  else { x = 640; y = 1400; lean = -1.57; pose = { bArm: [-160, -130], fArm: [160, 130], bLeg: [-8, -4], fLeg: [8, 4] }; }
-  CB(n, { x, y, f: 1, s: 1.0, expr: 'laugh', pose, lean }, t, 0.3); }
-function ball(x, y, r = 30, rot = 0) { ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.fillStyle = '#fff'; ctx.strokeStyle = INK; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(0, 0, r, 0, 7); ctx.fill(); ctx.stroke(); ctx.fillStyle = INK; ctx.beginPath(); for (let i = 0; i < 5; i++) { const a = i * 1.2566; ctx.lineTo(Math.cos(a) * r * 0.38, Math.sin(a) * r * 0.38); } ctx.fill(); ctx.restore(); }
-function armband(n, o) { const L = lay(n), p = W2(o, L.bs[0] - 6, L.bs[1] + 40); ctx.save(); ctx.translate(p[0], p[1]); ctx.rotate(o.lean || 0); ctx.fillStyle = '#ffd23f'; ctx.strokeStyle = INK; ctx.lineWidth = 3; ctx.fillRect(-22, -12, 44, 24); ctx.strokeRect(-22, -12, 44, 24); ctx.font = `400 22px ${FONT}`; ctx.fillStyle = INK; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('C', 0, 1); ctx.restore(); }
-function brunoState(t) { // x, y, f, expr, pose, lean
-  const st = { x: 520, y: GROUND, f: 1, ex: 'smug', pose: undefined, lean: 0, sq: 0, hop: 0 };
-  if (t < T.E) { const k = eOut(clamp((t - T.D - 0.2) / 0.6)); st.x = lerp(-150, 430, k); st.pose = t > T.D + 0.9 ? { bArm: [-14, -6], fArm: [150, 175], bLeg: [-8, -4], fLeg: [8, 4] } : { bArm: [-50 * Math.sin(t * 20), -30], fArm: [50 * Math.sin(t * 20), 30], bLeg: [-40 * Math.sin(t * 20), -20], fLeg: [40 * Math.sin(t * 20), 20] }; }
-  else if (t < T.F) { for (const [g0, i] of [[T.g1, 0], [T.g2, 1]]) { const d = t - g0 + 0.6; if (d >= 0 && d < 1.0) { const k = clamp(d / 0.6); st.x = lerp(330, 560, k) - i * 0; st.hop = d > 0.25 && d < 0.4 ? Math.sin((d - 0.25) / 0.15 * Math.PI) * 70 : 0; st.pose = d < 0.6 ? { bArm: [-50 * Math.sin(t * 20), -30], fArm: [50 * Math.sin(t * 20), 30], bLeg: [-40 * Math.sin(t * 20), -20], fLeg: [40 * Math.sin(t * 20), 20] } : { bArm: [-60, -40], fArm: [60, 40], bLeg: [-10, -4], fLeg: [80, 40] }; st.ex = d < 0.6 ? 'smug' : 'laugh'; } } if (t >= T.g2 + 0.4) { st.x = 560; st.ex = 'laugh'; st.pose = { bArm: [-160, -130], fArm: [160, 130], bLeg: [-8, -4], fLeg: [8, 4] }; } }
-  else if (t < T.G) { st.x = 640; st.f = -1; st.ex = 'angry'; st.pose = t > T.F + 0.6 ? { bArm: [-110, -100], fArm: [110, 100], bLeg: [-12, -6], fLeg: [12, 6] } : undefined; }
-  else if (t < T.H) { st.x = 640; st.f = -1; st.ex = t > T.G + 0.8 ? 'shock' : 'angry'; st.pose = t > T.G + 0.8 ? { bArm: [-160, -210], fArm: [160, 210], bLeg: [-12, -6], fLeg: [12, 6] } : { bArm: [-110, -100], fArm: [110, 100], bLeg: [-12, -6], fLeg: [12, 6] }; }
-  else if (t < T.I) { st.x = 640; st.f = -1; st.ex = 'cry'; st.pose = { bArm: [-160, -220], fArm: [160, 220], bLeg: [60, 100], fLeg: [70, 110] }; st.y = GROUND + 60; st.sq = Math.sin(t * 20) * 0.03; }
-  else if (t < T.J) { st.x = 640; st.f = t > T.I + 0.9 ? 1 : -1; st.ex = 'deadpan'; st.pose = undefined; }
-  else if (t < T.lift) { st.x = 560; st.ex = 'deadpan'; st.pose = t > T.J + 0.8 ? { bArm: [60, 90], fArm: [50, 80], bLeg: [-30, -10], fLeg: [30, 10] } : undefined; st.lean = t > T.J + 0.8 ? 0.4 : 0; }
-  else { const k = clamp((t - T.lift - 0.4) / 3.2); st.x = lerp(500, 800, eIO(k)); st.ex = 'deadpan'; st.pose = { bArm: [-150, -175], fArm: [150, 175], bLeg: [-25 * Math.sin(t * 7), -10], fLeg: [25 * Math.sin(t * 7), 10] }; st.lean = 0.12; st.sq = 0.05; }
+function armband(n, o) { const L = lay(n), p = W2(o, L.bs[0] - 6, L.bs[1] + 40); ctx.save(); ctx.translate(p[0], p[1]); ctx.rotate(o.lean || 0); ctx.scale(o.s / 1.25, o.s / 1.25); ctx.fillStyle = '#ffd23f'; ctx.strokeStyle = INK; ctx.lineWidth = 3; ctx.fillRect(-22, -12, 44, 24); ctx.strokeRect(-22, -12, 44, 24); ctx.font = `400 22px ${FONT}`; ctx.fillStyle = INK; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('C', 0, 1); ctx.restore(); }
+const toW = (p, th) => { const dx = p[0] - CX, dy = p[1] - CY; return [CX + dx * Math.cos(th) - dy * Math.sin(th), CY + dx * Math.sin(th) + dy * Math.cos(th)]; };
+const ucl = t => t >= T.D && t < T.F;
+// tower angle: PL flips at flip1, VAR flips it back at 'back', Pochettino leans on the lever at flip3; UCL flips at flip2 then spins 3 turns
+function theta(t) { if (ucl(t)) { let a = t < T.flip2 ? 0 : Math.PI * eBack(clamp((t - T.flip2) / 0.6)); if (t >= T.spin) a = Math.PI + 6 * Math.PI * eIO(clamp((t - T.spin) / (T.spinEnd - T.spin))); return a; }
+  let a = Math.PI * eBack(clamp((t - T.flip1) / 0.8)); if (t >= T.back) a = Math.PI + Math.PI * eBack(clamp((t - T.back) / 0.6)); if (t >= T.flip3) a = 2 * Math.PI + Math.PI * eBack(clamp((t - T.flip3) / 0.7)); return a; }
+function lever(t) { if (ucl(t) && t >= T.spin - 0.1 && t < T.spinEnd) return Math.sin(t * 18) * 0.6; const pulls = ucl(t) ? [T.flip2 - 0.3] : [T.flip1 - 0.3, T.back - 0.2, T.flip3 - 0.2];
+  let a = -0.6; for (const p of pulls) if (t >= p) a = lerp(-0.6, 0.6, eOut(clamp((t - p) / 0.3))); if (!ucl(t) && t >= T.back - 0.2 && t < T.flip3 - 0.2) a = 0.6; return a; }
+const BGS = {}; function studio(t) { if (!BGS.c) { const c = document.createElement('canvas'); c.width = W + 1200; c.height = H + 1800; const g = c.getContext('2d'); g.translate(600, 900);
+    const sky = g.createLinearGradient(0, -900, 0, 1800); sky.addColorStop(0, '#1b1440'); sky.addColorStop(0.6, '#3b1f5c'); sky.addColorStop(1, '#5a2340'); g.fillStyle = sky; g.fillRect(-600, -900, W + 1200, H + 1800);
+    g.fillStyle = 'rgba(255,255,255,.7)'; for (let i = 0; i < 90; i++) { g.beginPath(); g.arc((i * 397) % (W + 1100) - 550, (i * 211) % 1500 - 800, 2 + (i % 3), 0, 7); g.fill(); }
+    for (let r = 0; r < 4; r++) for (let i = 0; i < 46; i++) { g.fillStyle = ['#2a1530', '#3a1a2a', '#22122a'][(i + r) % 3]; g.beginPath(); g.arc(-580 + i * 52 + (r % 2) * 26, 1500 + r * 40, 30, Math.PI, 0); g.fill(); }
+    g.fillStyle = '#3f9e45'; g.fillRect(-600, GY, W + 1200, 900); g.fillStyle = '#358a3b'; for (let i = 0; i < 20; i++) g.fillRect(-600 + i * 120, GY, 60, 900); BGS.c = c; }
+  ctx.drawImage(BGS.c, -600, -900);
+  for (const [x, d] of [[120, 1], [960, -1]]) { const sw = Math.sin(t * 0.8 + x) * 0.15; ctx.save(); ctx.translate(x, -200); ctx.rotate(d * 0.35 + sw); const g = ctx.createLinearGradient(0, 0, 0, 1900); g.addColorStop(0, 'rgba(255,240,180,.35)'); g.addColorStop(1, 'rgba(255,240,180,0)'); ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(-30, 0); ctx.lineTo(30, 0); ctx.lineTo(320, 1900); ctx.lineTo(-320, 1900); ctx.closePath(); ctx.fill(); ctx.restore(); } }
+function rowCol(i, n) { if (i === 19) return '#da291c'; if (n === 20) return i <= 4 ? '#3a7bd5' : i === 5 ? '#f39c3a' : i >= 18 ? '#8a2b2b' : '#efe9dc'; return i <= 8 ? '#3a7bd5' : i <= 24 ? '#f39c3a' : '#8a2b2b'; }
+function tower(t, th) { const n = ucl(t) ? 36 : 20, rh = (TY1 - TY0) / n;
+  ctx.save(); ctx.strokeStyle = '#2a2a33'; ctx.lineWidth = 34; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(CX - 470, GY + 10); ctx.lineTo(CX, CY); ctx.lineTo(CX + 470, GY + 10); ctx.stroke(); ctx.restore();
+  ctx.save(); ctx.translate(CX, CY); ctx.rotate(th); ctx.translate(-CX, -CY);
+  ctx.fillStyle = 'rgba(0,0,0,.35)'; ctx.fillRect(TX0 + 16, TY0 - 90 + 16, TX1 - TX0, TY1 - TY0 + 90);
+  ctx.fillStyle = '#1a1430'; ctx.strokeStyle = INK; ctx.lineWidth = 8; ctx.fillRect(TX0, TY0 - 90, TX1 - TX0, 90); ctx.strokeRect(TX0, TY0 - 90, TX1 - TX0, 90);
+  ctx.font = `400 62px ${FONT}`; ctx.fillStyle = n === 20 ? '#fff' : '#9fd0ff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(n === 20 ? 'PREMIER LEAGUE' : 'CHAMPIONS LEAGUE ★', CX, TY0 - 42);
+  for (let i = 1; i <= n; i++) { const y = TY0 + (i - 1) * rh, mu = i === 19; ctx.fillStyle = rowCol(i, n); ctx.fillRect(TX0, y, TX1 - TX0, rh); ctx.strokeStyle = INK; ctx.lineWidth = 3; ctx.strokeRect(TX0, y, TX1 - TX0, rh);
+    ctx.fillStyle = mu ? '#ffd23f' : 'rgba(0,0,0,.18)'; ctx.fillRect(TX0, y, 96, rh); ctx.fillStyle = mu ? INK : (rowCol(i, n) === '#efe9dc' ? INK : '#fff'); ctx.font = `400 ${Math.round(rh * (mu ? 0.85 : 0.62))}px ${FONT}`; ctx.fillText(String(i), TX0 + 48, y + rh / 2 + 2);
+    if (mu) { ctx.fillStyle = '#fff'; ctx.font = `400 ${Math.round(rh * 0.8)}px ${FONT}`; ctx.textAlign = 'left'; ctx.fillText('MAN UTD', TX0 + 120, y + rh / 2 + 2); ctx.textAlign = 'center'; ctx.strokeStyle = '#ffd23f'; ctx.lineWidth = 7; ctx.strokeRect(TX0 + 4, y + 4, TX1 - TX0 - 8, rh - 8); }
+    else { ctx.fillStyle = 'rgba(0,0,0,.16)'; ctx.beginPath(); ctx.arc(TX0 + 130, y + rh / 2, rh * 0.3, 0, 7); ctx.fill(); ctx.fillRect(TX0 + 160, y + rh * 0.38, 220 + (i * 53) % 160, rh * 0.24); } }
+  ctx.restore(); ctx.save(); ctx.fillStyle = '#c9a227'; ctx.strokeStyle = INK; ctx.lineWidth = 5; ctx.beginPath(); ctx.arc(CX, CY, 26, 0, 7); ctx.fill(); ctx.stroke(); ctx.restore(); }
+function footY(t) { const n = ucl(t) ? 36 : 20; return TY0 + 19 * (TY1 - TY0) / n; }
+function brunoState(t) { const st = { ex: 'deadpan', pose: undefined, bottle: false };
+  const up = { bArm: [-160, -170], fArm: [160, 170], bLeg: [-8, -4], fLeg: [8, 4] };
+  if (t < T.B) st.ex = t < 1.6 ? 'deadpan' : 'cry';
+  else if (t < T.C) { st.ex = t < T.flip1 ? 'deadpan' : t < T.flip1 + 0.8 ? 'shock' : 'laugh'; if (t >= T.flip1 + 0.8) st.pose = up; }
+  else if (t < T.D) { st.bottle = true; st.ex = t < T.pop ? 'laugh' : t < T.pop + 1.2 ? 'shock' : 'deadpan'; st.pose = { bArm: [-160, -170], fArm: [150, 175], bLeg: [-8, -4], fLeg: [8, 4] }; }
+  else if (t < T.E) st.ex = t < T.flip2 ? 'smug' : t < T.flip2 + 0.6 ? 'shock' : 'deadpan';
+  else if (t < T.F) st.ex = t < T.spinEnd ? 'shock' : 'cry';
+  else if (t < T.G) { st.ex = t < T.var ? 'smug' : t < T.back ? 'shock' : 'cry'; if (t < T.var) st.pose = up; }
+  else if (t < T.H) { st.ex = t < T.star ? 'laugh' : 'deadpan'; if (t < T.star) st.pose = up; }
+  else st.ex = t < T.flip3 + 0.7 ? 'shock' : 'deadpan';
   return st; }
-function scene(t) { const gloom = t >= T.I ? clamp((t - T.I) / 1.5) * 0.8 : 0; stadium(t, gloom);
-  if (t >= T.J) { CB('fan', { x: 760, y: 1170, f: -1, s: 0.9, expr: 'cry', pose: { bArm: [-14, -6], fArm: [100, 80], bLeg: [-8, -4], fLeg: [8, 4] } }, t, 0.4); ctx.save(); ctx.translate(640, 880); ctx.rotate(-0.15); ctx.fillStyle = '#fff'; ctx.strokeStyle = INK; ctx.lineWidth = 4; ctx.fillRect(-70, -55, 140, 110); ctx.strokeRect(-70, -55, 140, 110); ctx.fillStyle = '#c9a227'; ctx.font = `400 32px ${FONT}`; ctx.textAlign = 'center'; ctx.fillText('1999 🏆🏆🏆', 0, 10); ctx.restore(); }
-  // the bar: lifted out and carried by Bruno at the end
-  if (t < T.lift) rig(t); else { ctx.save(); ctx.fillStyle = '#5a3a20'; ctx.beginPath(); ctx.ellipse(540, GROUND + 20, 300, 60, 0, 0, 7); ctx.fill(); ctx.fillStyle = '#e8e8e8'; for (const x of PX) ctx.fillRect(x - 12, 160, 24, GROUND - 160); ctx.restore(); }
-  if (t < T.B) flop('j1999', t, 0.4, 220); if (t >= T.B && t < T.C) flop('j2013', t, T.B + 0.1, 520);
-  // sign for the next games
-  if (t >= T.J) { ctx.save(); ctx.translate(960, 1140); ctx.fillStyle = '#6b4a2a'; ctx.fillRect(-8, 0, 16, 360); ctx.fillStyle = '#fffaf0'; ctx.strokeStyle = INK; ctx.lineWidth = 5; ctx.beginPath(); ctx.roundRect(-150, -150, 300, 170, 12); ctx.fill(); ctx.stroke(); ctx.font = `400 40px ${FONT}`; ctx.fillStyle = INK; ctx.textAlign = 'center'; ctx.fillText('NEXT →', 0, -105); ctx.fillText('LEIPZIG', 0, -62); ctx.fillText('BAYERN', 0, -22); ctx.fillStyle = '#c0281c'; ctx.fillText('VILLARREAL', 0, 14); ctx.restore(); }
-  // Pochettino
-  if (t >= T.D && t < T.J + 0.8) { const mega = t >= T.I && t < T.J; CB('pochettino', { x: t < T.J ? 930 : lerp(930, 1400, (t - T.J) / 0.8), y: GROUND, f: t < T.J ? -1 : 1, s: 1.05, expr: t < T.F ? 'smug' : t < T.I ? 'shock' : mega ? 'laugh' : 'sad', pose: mega ? { bArm: [-14, -6], fArm: [100, 85], bLeg: [-8, -4], fLeg: [8, 4] } : undefined }, t, 1.1);
-    if (mega) { const hp = headAt('pochettino', { x: 930, y: GROUND, f: -1, s: 1.05 }); ctx.save(); ctx.translate(hp[0] - 120, hp[1] + 40); ctx.rotate(0.2); ctx.fillStyle = '#e8e8e8'; ctx.strokeStyle = INK; ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(0, -20); ctx.lineTo(-120, -60); ctx.lineTo(-120, 60); ctx.lineTo(0, 20); ctx.closePath(); ctx.fill(); ctx.stroke(); ctx.restore(); } }
-  // team-mates' mishaps (behind Bruno)
-  if (t >= T.F && t < T.G + 1.5) { const d = t - T.F, k = clamp(d / 0.5), fall = clamp((d - 0.5) / 0.35); CB('lammens', { x: lerp(120, 280, k) + fall * 100, y: GROUND + fall * 40, f: 1, s: 1.05, expr: fall ? 'shock' : 'smug', lean: fall * 1.45, pose: fall ? { bArm: [150, 120], fArm: [160, 130], bLeg: [-20, -10], fLeg: [-60, -30] } : { bArm: [-60 * Math.sin(t * 14), -40], fArm: [60 * Math.sin(t * 14), 40], bLeg: [-35 * Math.sin(t * 14), -20], fLeg: [35 * Math.sin(t * 14), 20] } }, t, 0.7); }
-  if (t >= T.G && t < T.H + 0.6) { const d = t - T.G, k = clamp(d / 0.6); CB('amad', { x: lerp(150, 330, k), y: GROUND - Math.sin(k * Math.PI) * 120, f: 1, s: 0.95, expr: d < 0.9 ? 'laugh' : 'cry', pose: d < 0.9 ? { bArm: [-165, -170], fArm: [165, 170], bLeg: [-8, -4], fLeg: [8, 4] } : undefined }, t, 1.3); }
-  if (t >= T.H && t < T.I + 0.4) { const d = t - T.H, k = clamp((d - 0.6) / 1.0); CB('tielemans', { x: lerp(330, -200, k), y: GROUND, f: -1, s: 1.02, expr: d < 0.6 ? 'shock' : 'cry', pose: d > 0.6 ? { bArm: [-30 * Math.sin(t * 8), -10], fArm: [30 * Math.sin(t * 8), 10], bLeg: [-25 * Math.sin(t * 8), -10], fLeg: [25 * Math.sin(t * 8), 10] } : undefined }, t, 1.9);
-    if (d < 1.2) { ctx.save(); ctx.translate(200, 880); ctx.rotate(-0.2); ctx.fillStyle = '#e53935'; ctx.strokeStyle = INK; ctx.lineWidth = 5; ctx.fillRect(-45, -65, 90, 130); ctx.strokeRect(-45, -65, 90, 130); ctx.restore(); } }
-  // groundsman digging
-  if (t >= T.J && t < T.lift + 0.4) { const dig = Math.sin(t * 9); CB('keeper', { x: 200, y: GROUND, f: 1, s: 1.0, expr: 'deadpan', pose: { bArm: [-60 + dig * 30, -30], fArm: [70 + dig * 30, 40], bLeg: [-8, -4], fLeg: [8, 4] } }, t, 0.9);
-    ctx.save(); ctx.translate(300, 1360 + dig * 20); ctx.rotate(0.6 + dig * 0.2); ctx.strokeStyle = '#6b4a2a'; ctx.lineWidth = 12; ctx.beginPath(); ctx.moveTo(0, -120); ctx.lineTo(0, 80); ctx.stroke(); ctx.fillStyle = '#888'; ctx.beginPath(); ctx.moveTo(-34, 80); ctx.lineTo(34, 80); ctx.lineTo(0, 150); ctx.closePath(); ctx.fill(); ctx.restore();
-    ctx.fillStyle = '#6b4a2a'; for (let i = 0; i < 6; i++) { const k2 = ((t * 1.8 + i / 6) % 1); ctx.beginPath(); ctx.arc(330 + k2 * 160, 1450 - Math.sin(k2 * Math.PI) * 180, 14, 0, 7); ctx.fill(); } }
-  // BRUNO (front, caricature head, captain's armband)
-  if (t >= T.D) { const b = brunoState(t), o = { x: b.x, y: b.y - b.hop, f: b.f, s: 1.25, lean: b.lean };
-    CB('bruno', Object.assign({}, o, { expr: b.ex, pose: b.pose, sq: b.sq }), t, 0.2); armband('bruno', o);
-    if (t >= T.lift) { const hp = headAt('bruno', o); ctx.save(); ctx.strokeStyle = '#ffd23f'; ctx.lineWidth = 18; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(hp[0] - 240, hp[1] + 150); ctx.lineTo(hp[0] + 240, hp[1] + 150); ctx.stroke(); ctx.restore(); }
-    for (const [g0, i] of [[T.g1, 0], [T.g2, 1]]) { const d = t - g0; if (d >= 0 && d < 0.7) ball(lerp(620, 1150, d / 0.7), lerp(GROUND - 40, GROUND - 400, d / 0.7), 30, d * 15); } }
-  if (t >= T.E && t < T.F) { for (const g0 of [T.g1 - 0.6, T.g2 - 0.6]) if (t >= g0 - 0.3 && t < g0 + 0.6) ball(560, GROUND - 26, 30); } }
-function scoreboard(t) { if (t < T.E || t >= T.I) return; const amadOff = t >= T.G + 0.8; ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.translate(540, 1720); ctx.fillStyle = 'rgba(10,12,28,.9)'; ctx.beginPath(); ctx.roundRect(-330, -60, 660, 120, 18); ctx.fill();
-  ctx.font = `400 50px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#fff'; ctx.fillText('SPORTING 2-2 MAN UTD', 0, -10);
-  ctx.font = `400 28px ${FONT}`; ctx.fillStyle = '#ffd23f'; ctx.fillText(t >= T.G && t < T.H ? (amadOff ? 'AMAD ⚽ ❌ VAR' : 'AMAD ⚽ ?') : t >= T.H ? 'TIELEMANS 🟥 90+' : 'FERNANDES ⚽⚽', 0, 34); ctx.restore(); }
-function frame(t) { const S = () => scene(t), b = brunoState(t);
-  if (t < T.B) SHOT.low(ctx, S, { x: 540, y: lerp(420, 900, eIO(t / T.B)), zoom: lerp(1.0, 0.8, t / T.B), lift: 0 });
-  else if (t < T.C) SHOT.wide(ctx, S, { x: 540, y: 900, zoom: 0.8 });
-  else if (t < T.D) SHOT.dutch(ctx, S, { x: 540, y: lerp(800, 1250, (t - T.C) / 4.2), zoom: 1.05, rot: -0.06 });
-  else if (t < T.E) SHOT.cu(ctx, S, { x: 520, y: 1150, zoom: 1.12 });
-  else if (t < T.F) SHOT.wide(ctx, S, { x: 560, y: 1100, zoom: 0.95 });
-  else if (t < T.I) SHOT.cu(ctx, S, { x: 480, y: 1120, zoom: 1.05 });
-  else if (t < T.J) SHOT.xcu(ctx, S, { x: t < T.I + 0.9 ? 860 : 640, y: 1000, zoom: 1.5 });
-  else SHOT.wide(ctx, S, { x: 600, y: 1100, zoom: 0.95 });
-  ctx.setTransform(1, 0, 0, 1, 0, 0); scoreboard(t);
-  const yr = t < T.B ? '1999' : t < T.C ? '2013' : t >= T.D && t < T.E ? '2026' : null; if (yr) { ctx.save(); ctx.globalAlpha = 0.9; ctx.font = `400 170px ${FONT}`; ctx.textAlign = 'left'; ctx.lineWidth = 14; ctx.strokeStyle = INK; ctx.fillStyle = '#ffd23f'; ctx.strokeText(yr, 40, 520); ctx.fillText(yr, 40, 520); ctx.restore(); }
-  for (const x of BARS.slice(2, 7)) pop('CLUNK', 540, 760, (t - x[0]) / 0.5, '#fff', 90);
-  pop('GOAL ⚽', 700, 760, (t - T.g1) / 0.8, '#ffd23f', 110); pop('GOAL ⚽', 700, 760, (t - T.g2) / 0.8, '#ffd23f', 110);
-  pop('TRIP', 340, 900, (t - T.F - 0.5) / 0.7, '#ffd23f', 110); pop('VAR ❌', 360, 820, (t - T.G - 0.8) / 0.9, '#ff6b6b', 110); pop('🟥', 220, 700, (t - T.H) / 0.8, '#fff', 120);
-  pop('"SO PROUD!"', 540, 600, (t - T.I - 0.1) / 1.4, '#ffd23f', 120); if (t >= T.I + 1.0 && t < T.J) pop('🦗', 760, 820, ((t - T.I - 1.0) % 0.9) / 0.9, '#fff', 80);
-  pop('😩', 560, 700, (t - T.lift - 0.2) / 0.9, '#fff', 100); }
-const CAPS = [[0.2, T.B, 'The treble 🏆🏆🏆'], [T.B + 0.1, T.C, 'The last league title'], [T.C + 0.2, T.D, 'Then the bar kept dropping 📉'], [T.D + 0.2, T.E, 'Now the bar = a draw'],
-  [T.E + 0.2, T.F, 'Captain Bruno: 2 goals ⚽⚽'], [T.F + 0.5, T.G, 'Keeper trips over it 🤦'], [T.G + 0.6, T.H, "Amad's goal: VAR ❌"], [T.H + 0.1, T.I, 'Red card 🟥'], [T.I + 0.1, T.J, 'Pochettino: "so proud" 🥹'],
-  [T.J + 0.2, T.lift, 'Digging even lower ⛏️'], [T.lift, T.K, 'Bruno carries… everything 🏋️'], [T.K, T.END, 'Rock bottom… or keep digging? 👇']];
-function hud(t) { for (const c of CAPS) if (t >= c[0] && t < c[1]) card(c[2], 540, t >= T.END - CTA2.DUR ? 1420 : 250, c[2].length > 22 ? 54 : 62, { pop: (t - c[0]) / 0.3, bg: /🤦|❌|🟥|🥹|⛏️|📉|🏋️/.test(c[2]) ? '#fff3b0' : '#fffaf0' });
-  ctx.font = '600 24px Inter'; ctx.fillStyle = 'rgba(20,20,30,.8)'; ctx.textAlign = 'left'; ctx.fillText('Cartoon parody', 40, 1890); }
-const CUTS = [[T.B, 'whip'], [T.C, 'whip'], [T.D, 'flash'], [T.E, 'whip'], [T.F, 'whip'], [T.I, 'whip'], [T.J, 'leak']];
-const SHAKE = [6.0, 7.0, 8.0, 9.0, T.D, T.g1, T.g2, T.F + 0.5, T.G + 0.8, T.H, T.lift];
-function grade() { ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); const v = ctx.createRadialGradient(540, 960, 560, 540, 960, 1250); v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,0,.25)'); ctx.fillStyle = v; ctx.fillRect(0, 0, W, H); ctx.restore(); }
-window.DURATION = T.END; window.render = function (t) { window.T2T = t; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.clearRect(0, 0, W, H); ctx.fillStyle = '#9cc8f0'; ctx.fillRect(0, 0, W, H);
+function bruno(t, th) { const b = brunoState(t), s = ucl(t) ? 0.62 : 0.82, o = { x: BX, y: footY(t), f: -1, s };
+  ctx.save(); ctx.translate(CX, CY); ctx.rotate(th); ctx.translate(-CX, -CY);
+  CB('bruno', Object.assign({}, o, { expr: b.ex, pose: b.pose, sq: ucl(t) && t > T.spin && t < T.spinEnd ? Math.sin(t * 30) * 0.05 : 0 }), t, 0.2); armband('bruno', o);
+  let tip = null; if (b.bottle) { const hp = handPos('bruno', o, 'f', [150, 175]); ctx.save(); ctx.translate(hp[0], hp[1]); ctx.fillStyle = '#1f6b3a'; ctx.strokeStyle = INK; ctx.lineWidth = 4; ctx.beginPath(); ctx.roundRect(-16, -70, 32, 80, 8); ctx.fill(); ctx.stroke(); ctx.fillRect(-7, -100, 14, 34); ctx.strokeRect(-7, -100, 14, 34); ctx.fillStyle = '#ffd23f'; ctx.fillRect(-16, -40, 32, 22); ctx.restore(); tip = [hp[0], hp[1] - 100]; }
+  ctx.restore(); return { head: toW(headAt('bruno', o), th), tip: tip && toW(tip, th) }; }
+function pochState(t) { const st = { x: 120, ex: 'smug', pose: undefined, sq: 0 }; const pull = { bArm: [-14, -6], fArm: [70, 95], bLeg: [-8, -4], fLeg: [8, 4] }, up = { bArm: [-160, -170], fArm: [160, 170], bLeg: [-8, -4], fLeg: [8, 4] };
+  if (t < T.B) { st.x = -300; } else if (t < T.C) { st.x = lerp(-200, 120, eOut((t - T.B) / 0.4)); st.pose = t < T.flip1 + 0.8 ? pull : up; st.ex = t < T.flip1 + 0.8 ? 'smug' : 'laugh'; }
+  else if (t < T.D) { st.pose = t < T.pop + 0.45 ? up : undefined; st.ex = t < T.pop + 0.45 ? 'laugh' : t < T.pop + 1.0 ? 'shock' : 'cry'; if (t > T.pop + 0.45 && t < T.pop + 0.8) st.sq = 0.12; }
+  else if (t < T.E) { st.pose = t < T.flip2 + 0.6 ? pull : up; st.ex = t < T.flip2 + 0.6 ? 'smug' : 'laugh'; }
+  else if (t < T.F) { st.pose = t < T.spinEnd ? pull : undefined; st.ex = t < T.spinEnd ? 'angry' : 'scared'; }
+  else if (t < T.G) { st.pose = t >= T.back - 0.2 ? pull : undefined; st.ex = t < T.var ? 'smug' : t < T.back + 0.6 ? 'shock' : 'sad'; }
+  else if (t < T.H) { st.pose = t < T.G + 0.6 ? { bArm: [-14, -6], fArm: [150, 170], bLeg: [-8, -4], fLeg: [8, 4] } : up; st.ex = 'laugh'; }
+  else { st.pose = t < T.flip3 ? { bArm: [40, 120], fArm: [-40, -120], bLeg: [-8, -4], fLeg: [8, 4] } : up; st.ex = t < T.flip3 ? 'smug' : t < T.flip3 + 0.6 ? 'shock' : 'laugh'; }
+  return st; }
+function leverDraw(t) { const a = lever(t); ctx.save(); ctx.translate(250, GY - 20); ctx.fillStyle = '#555'; ctx.strokeStyle = INK; ctx.lineWidth = 5; ctx.beginPath(); ctx.roundRect(-50, -30, 100, 50, 8); ctx.fill(); ctx.stroke();
+  ctx.font = `400 26px ${FONT}`; ctx.fillStyle = '#ffd23f'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('FLIP', 0, -4); ctx.rotate(a); ctx.strokeStyle = '#ccc'; ctx.lineWidth = 14; ctx.beginPath(); ctx.moveTo(0, -30); ctx.lineTo(0, -230); ctx.stroke(); ctx.fillStyle = '#e53935'; ctx.beginPath(); ctx.arc(0, -240, 26, 0, 7); ctx.fill(); ctx.stroke(); ctx.restore(); }
+function banner(t) { if (t < T.G + 0.1) return; const k = eOut(clamp((t - T.G - 0.1) / 0.6)), h = 520 * k; ctx.save(); ctx.fillStyle = '#6b4a2a'; ctx.fillRect(250, 186, 580, 22);
+  ctx.beginPath(); ctx.rect(250, 208, 580, h); ctx.clip(); ctx.fillStyle = '#fffaf0'; ctx.strokeStyle = INK; ctx.lineWidth = 8; ctx.fillRect(262, 208, 556, 520); ctx.strokeRect(262, 208, 556, 520);
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.font = `400 200px ${FONT}`; ctx.lineWidth = 14; ctx.strokeStyle = INK; ctx.fillStyle = GOLD; ctx.strokeText('TOP 2', 520, 420); ctx.fillText('TOP 2', 520, 420);
+  ctx.font = `400 110px ${FONT}`; ctx.fillStyle = '#c0281c'; ctx.fillText('*', 760, 340); ctx.font = '96px serif'; ctx.fillText('🏆', 540, 590);
+  ctx.font = `400 30px ${FONT}`; ctx.fillStyle = INK; ctx.fillText('*counting from the bottom', 540, 690); ctx.restore(); }
+function varMon(t) { if (t < T.F + 0.2 || t >= T.G) return; const x = lerp(1250, 900, eOut((t - T.F - 0.2) / 0.5)) + 400 * eIO(clamp((t - T.back - 0.9) / 0.5)); ctx.save(); ctx.translate(x, 1420); ctx.fillStyle = '#333'; ctx.fillRect(-10, 0, 20, 280); ctx.fillStyle = '#1a1a22'; ctx.strokeStyle = INK; ctx.lineWidth = 6; ctx.beginPath(); ctx.roundRect(-170, -230, 340, 240, 14); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = t < T.var ? '#2a6fd6' : '#c0281c'; ctx.fillRect(-150, -210, 300, 200); ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.font = `400 56px ${FONT}`; ctx.fillText('VAR', 0, -165);
+  ctx.font = `400 ${t < T.var ? 40 : 34}px ${FONT}`; if (t < T.var) ctx.fillText('CHECKING' + '...'.slice(0, 1 + Math.floor(t * 4) % 3), 0, -90); else { ctx.fillText('TABLE', 0, -105); ctx.fillText('UPSIDE DOWN ❌', 0, -60); } ctx.restore(); }
+function scene(t) { studio(t); const th = theta(t); tower(t, th); banner(t);
+  const ps = pochState(t), po = { x: ps.x, y: GY, f: 1, s: 0.85 }; leverDraw(t); CB('pochettino', Object.assign({}, po, { expr: ps.ex, pose: ps.pose, sq: ps.sq }), t, 1.1);
+  const bp = bruno(t, th), ph = headAt('pochettino', po);
+  if (t >= T.pop && t < T.D && bp.tip) { const d = t - T.pop, k = clamp(d / 0.45); if (d < 0.6) { ctx.save(); ctx.translate(lerp(bp.tip[0], ph[0], k), lerp(bp.tip[1], ph[1] - 60, k)); ctx.rotate(d * 20); ctx.fillStyle = '#d9b382'; ctx.strokeStyle = INK; ctx.lineWidth = 3; ctx.beginPath(); ctx.roundRect(-14, -18, 28, 36, 6); ctx.fill(); ctx.stroke(); ctx.restore(); }
+    if (d > 0.45) { ctx.save(); ctx.strokeStyle = 'rgba(255,250,220,.9)'; ctx.lineCap = 'round'; for (let i = 0; i < 6; i++) { const w = Math.sin(t * 30 + i) * 14; ctx.lineWidth = 20 - i * 2; ctx.beginPath(); ctx.moveTo(bp.tip[0] + i * 3, bp.tip[1]); ctx.quadraticCurveTo(bp.tip[0] + w - 40, (bp.tip[1] + ph[1]) / 2, ph[0] + w + i * 6 - 20, ph[1] - 40); ctx.stroke(); }
+      ctx.fillStyle = 'rgba(255,250,220,.9)'; for (let i = 0; i < 14; i++) { const a = i * 0.45 + t * 3, r = 70 + (i % 4) * 18; ctx.beginPath(); ctx.arc(ph[0] + Math.cos(a) * r, ph[1] + Math.sin(a) * r * 0.5, 14, 0, 7); ctx.fill(); } ctx.restore(); } }
+  if (t >= T.pop + 0.45 && t < T.pop + 1.6) for (let i = 0; i < 3; i++) { const a = t * 6 + i * 2.1; ctx.font = '46px serif'; ctx.textAlign = 'center'; ctx.fillText('⭐', ph[0] + Math.cos(a) * 80, ph[1] - 90 + Math.sin(a) * 24); }
+  if (ucl(t) && t >= T.spinEnd) for (let i = 0; i < 3; i++) { const a = t * 6 + i * 2.1; ctx.font = '40px serif'; ctx.textAlign = 'center'; ctx.fillText('⭐', bp.head[0] + Math.cos(a) * 70, bp.head[1] + 80 + Math.sin(a) * 20); }
+  if (ucl(t) && t > T.spin && t < T.spinEnd) { ctx.save(); ctx.strokeStyle = 'rgba(255,255,255,.5)'; ctx.lineWidth = 8; for (let i = 0; i < 5; i++) { ctx.beginPath(); ctx.arc(CX, CY, 760 + i * 40, t * 9 + i, t * 9 + i + 0.9); ctx.stroke(); } ctx.restore(); }
+  varMon(t); }
+function frame(t) { const S = () => scene(t);
+  if (t < T.B) SHOT.low(ctx, S, { x: lerp(700, 560, eIO(clamp((t - 0.6) / 2.0))), y: lerp(1330, 1000, eIO(clamp((t - 0.6) / 2.0))), zoom: lerp(1.7, 0.9, eIO(clamp((t - 0.6) / 2.0))), lift: 0 });
+  else if (t < T.C) SHOT.wide(ctx, S, { x: 540, y: 960, zoom: 0.86 });
+  else if (t < T.D) SHOT.cu(ctx, S, { x: lerp(300, 220, clamp((t - T.pop) / 0.6)), y: lerp(520, 1200, eIO(clamp((t - T.pop - 0.1) / 0.5))), zoom: 1.35 });
+  else if (t < T.E) SHOT.wide(ctx, S, { x: 540, y: 960, zoom: 0.86 });
+  else if (t < T.F) SHOT.dutch(ctx, S, { x: 540, y: 980, zoom: 0.92, rot: -0.12 + Math.sin(t * 2) * 0.03 });
+  else if (t < T.G) SHOT.low(ctx, S, { x: 560, y: 1000, zoom: 0.82, lift: 0 });
+  else if (t < T.star) SHOT.xcu(ctx, S, { x: 540, y: lerp(560, 480, (t - T.G) / 1.6), zoom: 1.35 });
+  else if (t < T.face) SHOT.xcu(ctx, S, { x: 540, y: 690, zoom: lerp(1.6, 3.0, eOut((t - T.star) / 0.5)) });
+  else if (t < T.H) SHOT.xcu(ctx, S, { x: BX - 10, y: footY(t) - 280, zoom: 2.0 });
+  else SHOT.wide(ctx, S, { x: 540, y: 960, zoom: 0.86 });
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  pop('19th 😬', 540, 800, (t - 0.5) / 1.2, '#ff6b6b', 140); pop('2nd! 🤩', 540, 700, (t - T.flip1 - 0.8) / 1.2, '#ffd23f', 150); pop('"SO PROUD!"', 640, 1400, (t - T.C - 0.2) / 0.8, '#ffd23f', 110);
+  pop('POP!', 360, 700, (t - T.pop) / 0.6, '#fff', 110); pop('BONK', 420, 1000, (t - T.pop - 0.45) / 0.8, '#ffd23f', 130);
+  pop('19 → 18', 540, 640, (t - T.flip2 - 0.6) / 1.4, '#ffd23f', 150); pop('🌀🌀🌀', 540, 560, (t - T.spin - 0.2) / 1.6, '#fff', 120); pop('STILL 18 😵', 540, 640, (t - T.spinEnd - 0.1) / 0.8, '#ffd23f', 120);
+  pop('CLUNK', 540, 1300, (t - T.back - 0.6) / 0.8, '#fff', 140); pop('TOP 2 AGAIN! 🤩', 540, 1300, (t - T.flip3 - 0.6) / 1.0, '#ffd23f', 100);
+  if (t >= T.H && t < T.END - CTA2.DUR) { ctx.save(); ctx.fillStyle = 'rgba(192,40,28,.95)'; ctx.fillRect(0, 1500, W, 90); ctx.fillStyle = '#fff'; ctx.font = `400 46px ${FONT}`; ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
+    const msg = 'MAN UTD: 19th in the Premier League · 19th in the Champions League · NEXT: Leipzig · Bayern · Villarreal · '; const w = ctx.measureText(msg).width, x0 = 60 - ((t - T.H) * 420) % w; ctx.fillText(msg + msg, x0, 1547); ctx.restore(); } }
+const CAPS = [[0.2, T.B, 'Premier League: 19th 😬'], [T.B + 0.1, T.flip1 + 0.8, 'Pochettino has an idea 💡'], [T.flip1 + 0.8, T.C, 'Flip it: now 2nd! 🤩'], [T.C, T.pop, 'Champagne! 🍾'], [T.pop + 0.45, T.D, 'Cork: BONK 🤕'],
+  [T.D + 0.1, T.flip2 + 0.6, 'Champions League: 19th of 36'], [T.flip2 + 0.6, T.E, 'Flipped… 18th 😐'], [T.E + 0.1, T.spinEnd, 'Spin it harder! 🌀'], [T.spinEnd, T.F, 'Still the middle 😵'],
+  [T.F + 0.1, T.var, 'VAR checks the table 📺'], [T.var, T.back + 0.6, 'Upside down ❌'], [T.back + 0.6, T.G, 'Back to 19th ⬇️'], [T.G + 0.1, T.star, 'New banner: TOP 2! 🏆'], [T.star, T.H, '*counting from the bottom'],
+  [T.H, T.flip3 + 0.6, 'Pochettino leans on the lever…'], [T.flip3 + 0.6, T.END, 'Is 19th the new top? 👇']];
+function hud(t) { for (const c of CAPS) if (t >= c[0] && t < c[1]) card(c[2], 540, t >= T.END - CTA2.DUR ? 1420 : 250, c[2].length > 24 ? 52 : 62, { pop: (t - c[0]) / 0.3, bg: /🤩|🤕|😐|😵|❌|⬇️|\*|👇/.test(c[2]) ? '#fff3b0' : '#fffaf0' });
+  ctx.font = '600 24px Inter'; ctx.fillStyle = 'rgba(255,255,255,.8)'; ctx.textAlign = 'left'; ctx.fillText('Cartoon parody', 40, 1890); }
+const CUTS = [[T.B, 'whip'], [T.C, 'whip'], [T.D, 'flash'], [T.E, 'whip'], [T.F, 'whip'], [T.G, 'leak'], [T.star, 'whip'], [T.face, 'whip'], [T.H, 'whip']];
+const SHAKE = [T.flip1 + 0.8, T.pop, T.pop + 0.45, T.flip2 + 0.6, T.spinEnd, T.back + 0.6, T.flip3 + 0.7];
+function grade() { ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); const v = ctx.createRadialGradient(540, 960, 560, 540, 960, 1250); v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,0,.3)'); ctx.fillStyle = v; ctx.fillRect(0, 0, W, H); ctx.restore(); }
+window.DURATION = T.END; window.render = function (t) { window.T2T = t; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.clearRect(0, 0, W, H); ctx.fillStyle = '#1b1440'; ctx.fillRect(0, 0, W, H);
   const hs = SHAKE.reduce((m, a) => Math.max(m, t >= a && t < a + 0.25 ? 14 * (1 - (t - a) / 0.25) : 0), 0);
   ctx.save(); ctx.translate(Math.sin(t * 91) * hs, Math.cos(t * 77) * hs); frame(t); ctx.restore(); grade(); ctx.setTransform(1, 0, 0, 1, 0, 0); for (const [tc, kind] of CUTS) MOTION.cut(ctx, t, tc, kind);
   if (!window.NO_HUD) { hud(t); CTA2.draw(ctx, t - (DURATION - CTA2.DUR), { y: 1650 }); } };

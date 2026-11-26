@@ -189,3 +189,8 @@ Columns: id | gag | technique (rule-of-3, misdirection, escalation, cutaway, dea
 | U112 | A player's signature complaint (arms wide) escalates x3: arms wide → hands on head → on his knees crying (Ep46 v2) | rule-of-3 | M |
 | U113 | Manager's 'so proud' — the captain turns to camera, deadpan (Ep46 v2) | 4th-wall | M |
 | U114 | The captain ends up carrying the bar itself (Ep46 v2) | visual pun | M |
+| U115 | A league table built as a tower on an axle; the manager pulls a FLIP lever and 19th becomes 2nd (Ep46 v3) | visual pun | L |
+| U116 | Upside-down champagne: the cork shoots "up" into the manager's head, foam pours on him (Ep46 v3) | escalation | M |
+| U117 | Flip a 36-team table: 19th → 18th, the middle never moves (Ep46 v3) | anticlimax | M |
+| U118 | VAR monitor rules "TABLE UPSIDE DOWN ❌" and flips it back, CLUNK (Ep46 v3) | callback | M |
+| U119 | Banner "TOP 2*" — zoom on the asterisk: *counting from the bottom (Ep46 v3) | visual pun | L |

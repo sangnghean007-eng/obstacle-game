@@ -1,73 +1,23 @@
 {
- "logline": "Man United's standards are a high-jump bar that drops from a treble to a draw on the ground; captain Bruno scores twice and complains louder at every team-mate mishap, Pochettino says 'so proud', and Bruno carries the bar away himself.",
+ "logline": "Man United are 19th in both the Premier League and the Champions League, so Pochettino flips the table upside down: 2nd! But the 36-team table only gives 18th, VAR flips it back, and his new banner reads TOP 2, counting from the bottom.",
  "beats": [
-  {
-   "shot": "low",
-   "idea": "1999: the bar is in the sky — TREBLE — a 1999 jumper flops over it",
-   "text": "1999: the treble 🏆🏆🏆"
-  },
-  {
-   "shot": "wide",
-   "idea": "2013: lower bar — LEAGUE TITLE — cleared",
-   "text": "2013: last league title"
-  },
-  {
-   "shot": "dutch",
-   "idea": "CLUNK, CLUNK: TOP 4 → ANY TROPHY → EUROPE PLEASE → NOT RELEGATED",
-   "text": "Then the bar kept dropping 📉"
-  },
-  {
-   "shot": "cu",
-   "idea": "now: the bar lies on the ground (A DRAW); captain Bruno (armband) steps up",
-   "text": "Now the bar = a draw"
-  },
-  {
-   "shot": "wide",
-   "idea": "Bruno's skip-hop run-up twice: two goals",
-   "text": "Captain Bruno: 2 goals ⚽⚽"
-  },
-  {
-   "shot": "cu",
-   "idea": "keeper trips over the floor bar → Bruno arms wide; Amad's goal VAR ❌ → hands on head; red card → on his knees crying",
-   "text": "Trip 🤦 VAR ❌ Red 🟥"
-  },
-  {
-   "shot": "xcu",
-   "idea": "Pochettino megaphone: SO PROUD! — Bruno turns to camera, deadpan; crickets",
-   "text": "Pochettino: \"so proud\" 🥹"
-  },
-  {
-   "shot": "wide",
-   "idea": "a groundsman digs the bar lower; Bruno lifts it and carries it toward NEXT: Leipzig · Bayern · Villarreal; old fan holds a 1999 photo",
-   "text": "Bruno carries… everything 🏋️"
-  }
+  {"shot": "low", "idea": "close on Bruno, sad, standing on row 19 of a giant Premier League table tower; pull out", "text": "Premier League: 19th 😬"},
+  {"shot": "wide", "idea": "Pochettino walks in, pulls a FLIP lever; the tower spins 180°; Bruno hangs upside down at 2nd", "text": "Flip it: now 2nd! 🤩"},
+  {"shot": "cu", "idea": "upside-down champagne: Pochettino cheers SO PROUD, the cork shoots down and BONKs him, foam pours on him", "text": "Champagne! … Cork: BONK 🤕"},
+  {"shot": "wide", "idea": "Champions League tower, 36 rows; 19th is the middle; flip → 18th", "text": "Flipped… 18th 😐"},
+  {"shot": "dutch", "idea": "Pochettino pumps the lever: the tower spins three times; Bruno dizzy; still 18th", "text": "Spin it harder! 🌀"},
+  {"shot": "low", "idea": "VAR monitor rolls in: TABLE UPSIDE DOWN ❌ → flipped back, CLUNK, Bruno back to 19th", "text": "VAR: upside down ❌"},
+  {"shot": "xcu", "idea": "a banner unrolls: TOP 2 🏆 — zoom to the asterisk: *counting from the bottom; Bruno deadpan to camera", "text": "*counting from the bottom"},
+  {"shot": "wide", "idea": "Pochettino leans proudly on the lever: the tower flips again, Bruno upside down in front of TOP 2; ticker 19th · 19th; question + CTA", "text": "Is 19th the new top? 👇"}
  ],
- "techniques": [
-  "visual pun",
-  "escalation",
-  "rule-of-3",
-  "4th-wall",
-  "callback"
- ],
- "gags": [
-  "standards-high-jump-bar",
-  "signs-dropping-clunk",
-  "captain-skip-hop-two-goals",
-  "complaint-escalates-x3",
-  "trip-over-a-bar-on-the-ground",
-  "so-proud-megaphone-deadpan-to-camera",
-  "captain-carries-the-bar-away"
- ],
- "twist": "the only one who clears the bar is Bruno — so he ends up carrying the bar itself",
- "callback": "the 1999 treble from the first shot returns as the old fan's photo",
- "ending": "keep-digging + two-sided question + follow card",
- "hidden_details": [
-  "the 1999 and 2013 jumpers wear 99 and 13",
-  "the scoreboard reads FERNANDES ⚽⚽",
-  "the next three opponents are written on the buried bar"
- ],
- "meme_frame": "Bruno's arms-wide complaint as the keeper trips over a bar lying on the ground",
- "style": "chibi-caricature-athletics",
+ "techniques": ["visual pun", "rule-of-3", "escalation", "anticlimax", "4th-wall", "callback", "deadpan"],
+ "gags": ["flip-the-table-tower-lever", "upside-down-champagne-cork-bonk", "flip-36-only-gains-one", "spin-harder-dizzy", "var-checks-table-upside-down", "banner-asterisk-from-the-bottom", "lean-on-lever-flips-again"],
+ "twist": "the flip only works in a 20-team table; in a 36-team table 19th is the middle, so nothing changes",
+ "callback": "the FLIP lever from the start is triggered again by accident at the end",
+ "ending": "loop-flip + two-sided question + follow card",
+ "hidden_details": ["upside down, 19 reads like 61", "the PREMIER LEAGUE header ends up upside down on the grass", "the ticker lists the next three opponents"],
+ "meme_frame": "Bruno hanging upside down in front of the TOP 2* banner",
+ "style": "chibi-caricature-gameshow-table",
  "prev_style": "chibi-caricature-western-standoff",
- "hook_frame0": "cover: MAN UTD'S BAR NOW 📉 — Bruno complaining"
+ "hook_frame0": "cover: 19th = TOP 2?! 🙃 — Bruno upside down on the table"
 }

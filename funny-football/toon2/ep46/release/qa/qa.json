@@ -2,12 +2,12 @@
  [
   "length",
   "PASS",
-  "29.6 s"
+  "27.1 s"
  ],
  [
   "loudness",
   "PASS",
-  "-14.2 LUFS, true peak -4.2 dBTP"
+  "-14.4 LUFS, true peak -4.2 dBTP"
  ],
  [
   "silence",
@@ -32,6 +32,6 @@
  [
   "safe zones",
   "LOOK",
-  "release/qa/safezones.png"
+  "ep46/release/qa/safezones.png"
  ]
 ]
